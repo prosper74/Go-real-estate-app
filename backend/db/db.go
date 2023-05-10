@@ -80,8 +80,7 @@ func (d *Database) UpdateUser(user *models.User) error {
 		"firstName":         user.FirstName,
 		"lastName":          user.LastName,
 		"phoneNumber":       user.PhoneNumber,
-		"isVerified":        user.IsVerified,
-		"verificationToken": user.VerificationToken,
+		"isVerified":        user.Verified,
 		"updatedAt":         user.UpdatedAt,
 	}}
 	_, err := d.userColl.UpdateOne(context.Background(), filter, update)
