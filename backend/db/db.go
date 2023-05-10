@@ -3,7 +3,9 @@ package db
 import (
 	"context"
 	"log"
+	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/prosper74/real-estate-app/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -19,7 +21,13 @@ type Database struct {
 }
 
 func NewDatabase() *Database {
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Error loading .env file")
+	}
+
+	MONGODB_URI := os.Getenv("MONGODB_URI")
+	clientOptions := options.Client().ApplyURI(MONGODB_URI)
 	client, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
 		log.Fatal(err)
@@ -30,7 +38,7 @@ func NewDatabase() *Database {
 		log.Fatal(err)
 	}
 
-	db := client.Database("realestate")
+	db := client.Database("realEstate")
 	userColl := db.Collection("users")
 	propertyColl := db.Collection("properties")
 
