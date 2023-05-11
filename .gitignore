@@ -3,6 +3,7 @@ run.bat
 run.sh
 database.yml
 coverage.out
+MarkdownExample.md
 
 # Logs
 logs
