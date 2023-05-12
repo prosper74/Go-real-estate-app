@@ -9,11 +9,11 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func (am *Database) CreateUser(ctx context.Context, user *models.User) (*models.User, error) {
+func (d *Database) CreateUser(ctx context.Context, user *models.User) (*models.User, error) {
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 
-	res, err := am.UserCollection.InsertOne(ctx, user)
+	res, err := d.UserCollection.InsertOne(ctx, user)
 	if err != nil {
 		return nil, err
 	}
@@ -22,9 +22,9 @@ func (am *Database) CreateUser(ctx context.Context, user *models.User) (*models.
 	return user, nil
 }
 
-func (am *Database) GetUserByID(ctx context.Context, id primitive.ObjectID) (*models.User, error) {
+func (d *Database) GetUserByID(ctx context.Context, id primitive.ObjectID) (*models.User, error) {
 	var user models.User
-	err := am.UserCollection.FindOne(ctx, bson.M{"_id": id}).Decode(&user)
+	err := d.UserCollection.FindOne(ctx, bson.M{"_id": id}).Decode(&user)
 	if err != nil {
 		return nil, err
 	}
@@ -32,9 +32,9 @@ func (am *Database) GetUserByID(ctx context.Context, id primitive.ObjectID) (*mo
 	return &user, nil
 }
 
-func (am *Database) GetAllUsers(ctx context.Context) ([]*models.User, error) {
+func (d *Database) GetAllUsers(ctx context.Context) ([]*models.User, error) {
 	var users []*models.User
-	cur, err := am.UserCollection.Find(ctx, bson.M{})
+	cur, err := d.UserCollection.Find(ctx, bson.M{})
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func (am *Database) GetAllUsers(ctx context.Context) ([]*models.User, error) {
 	return users, nil
 }
 
-func (am *Database) UpdateUser(ctx context.Context, id primitive.ObjectID, user *models.User) (*models.User, error) {
+func (d *Database) UpdateUser(ctx context.Context, id primitive.ObjectID, user *models.User) (*models.User, error) {
 	user.UpdatedAt = time.Now()
 	update := bson.M{
 		"$set": bson.M{
@@ -67,7 +67,7 @@ func (am *Database) UpdateUser(ctx context.Context, id primitive.ObjectID, user 
 			"updated_at": user.UpdatedAt,
 		},
 	}
-	_, err := am.UserCollection.UpdateOne(ctx, bson.M{"_id": id}, update)
+	_, err := d.UserCollection.UpdateOne(ctx, bson.M{"_id": id}, update)
 	if err != nil {
 		return nil, err
 	}

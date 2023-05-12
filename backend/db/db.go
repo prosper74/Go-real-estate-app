@@ -15,7 +15,7 @@ type Database struct {
 	PropertyCollection *mongo.Collection
 }
 
-func NewDatabase(dbConnectionString string) *Database {
+func NewDatabase(dbConnectionString string) (*Database, error) {
 	clientOptions := options.Client().ApplyURI(dbConnectionString)
 	client, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
@@ -35,12 +35,5 @@ func NewDatabase(dbConnectionString string) *Database {
 		Client:             client,
 		UserCollection:     UserCollection,
 		PropertyCollection: PropertyCollection,
-	}
-}
-
-func (d *Database) Close() {
-	err := d.Client.Disconnect(context.Background())
-	if err != nil {
-		log.Fatal(err)
-	}
+	}, nil
 }
