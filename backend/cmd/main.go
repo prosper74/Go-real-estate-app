@@ -2,16 +2,27 @@ package main
 
 import (
 	"context"
+	"encoding/gob"
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"time"
 
+	"github.com/alexedwards/scs/v2"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"github.com/prosper74/real-estate-app/api"
+	"github.com/prosper74/real-estate-app/config"
 	"github.com/prosper74/real-estate-app/db"
+	"github.com/prosper74/real-estate-app/models"
 )
+
+var app config.AppConfig
+var session *scs.SessionManager
+var infoLog *log.Logger
+var errorLog *log.Logger
 
 func main() {
 	err := godotenv.Load()
@@ -47,7 +58,34 @@ func run() (*db.Database, error) {
 		log.Println("Error loading .env file")
 	}
 
+	// Things to be stored in the session
+	// gob, is a built in library used for storing sessions
+	gob.Register(models.Property{})
+	gob.Register(models.User{})
+	gob.Register(make(map[string]int))
+
+	// Read flags
+	inProduction := flag.Bool("production", true, "App is in production")
+
+	// setup middlewares
+	app.InProduction = *inProduction
+
+	infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	app.InfoLog = infoLog
+
+	errorLog = log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	app.ErrorLog = errorLog
+
+	session = scs.New()
+	session.Lifetime = 24 * time.Hour
+	session.Cookie.Persist = true
+	session.Cookie.SameSite = http.SameSiteLaxMode
+	session.Cookie.Secure = app.InProduction
+
+	app.Session = session
+
 	mongodbURI := os.Getenv("MONGODB_URI")
+
 	// Connect to database
 	log.Println("Connecting to database...")
 	connectedDB, err := db.NewDatabase(mongodbURI)
