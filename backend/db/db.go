@@ -10,9 +10,9 @@ import (
 )
 
 type Database struct {
-	client         *mongo.Client
-	UserCollection *mongo.Collection
-	propertyColl   *mongo.Collection
+	client             *mongo.Client
+	UserCollection     *mongo.Collection
+	PropertyCollection *mongo.Collection
 }
 
 func NewDatabase(dbConnectionString string) *Database {
@@ -22,8 +22,6 @@ func NewDatabase(dbConnectionString string) *Database {
 		log.Fatal(err)
 	}
 
-	log.Println("Connected to mongodb")
-
 	err = client.Ping(context.Background(), readpref.Primary())
 	if err != nil {
 		log.Fatal(err)
@@ -31,12 +29,12 @@ func NewDatabase(dbConnectionString string) *Database {
 
 	db := client.Database("realEstate")
 	UserCollection := db.Collection("users")
-	propertyColl := db.Collection("properties")
+	PropertyCollection := db.Collection("properties")
 
 	return &Database{
-		client:         client,
-		UserCollection: UserCollection,
-		propertyColl:   propertyColl,
+		client:             client,
+		UserCollection:     UserCollection,
+		PropertyCollection: PropertyCollection,
 	}
 }
 
