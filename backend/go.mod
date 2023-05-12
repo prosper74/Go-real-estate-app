@@ -3,6 +3,7 @@ module github.com/prosper74/real-estate-app
 go 1.19
 
 require (
+	github.com/alexedwards/scs/v2 v2.5.1 // indirect
 	github.com/friendsofgo/errors v0.9.2 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
