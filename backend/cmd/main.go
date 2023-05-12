@@ -11,9 +11,7 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	"github.com/prosper74/real-estate-app/api"
 	"github.com/prosper74/real-estate-app/config"
 	"github.com/prosper74/real-estate-app/db"
 	"github.com/prosper74/real-estate-app/models"
@@ -41,15 +39,16 @@ func main() {
 	// Close database connection when main function finish running and the mail server if mail has finsished sending
 	defer connectedDB.Client.Disconnect(context.Background())
 
-	// Create a new router
-	router := mux.NewRouter()
-
 	// Set up routes for the API
-	api.SetupRoutes(router)
-
-	// Start the server
-	log.Fatal(http.ListenAndServe(host+":"+port, router))
 	fmt.Printf("Server started at host %s and port %s", host, port)
+	// Create a variable to serve the routes
+	srv := &http.Server{
+		Addr:    host + ":" + port,
+		Handler: routes(&app),
+	}
+
+	err = srv.ListenAndServe()
+	log.Fatal(err)
 }
 
 func run() (*db.Database, error) {

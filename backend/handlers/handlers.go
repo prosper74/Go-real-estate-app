@@ -5,12 +5,14 @@ import (
 )
 
 func Home(w http.ResponseWriter, r *http.Request) {
-	resp := []byte(`{"status": "ok"}`)
-	// w.Header().Set("Content-Type", "application/json")
-	// w.Header().Set("Content-Length", fmt.Sprint(len(resp)))
+	resp := []byte(`{"status": "ok"}, {"Welcome": "Hello World!"}`)
 	w.Write(resp)
 }
 
-func UserRegister(w http.ResponseWriter, r *http.Request) {
+func SignUp(w http.ResponseWriter, r *http.Request) {
+	// Logic for handling user registration
+}
+
+func PostSignUp(w http.ResponseWriter, r *http.Request) {
 	// Logic for handling user registration
 }
