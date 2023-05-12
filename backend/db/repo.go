@@ -7,18 +7,13 @@ import (
 	"github.com/prosper74/real-estate-app/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type UserModel struct {
-	Collection *mongo.Collection
-}
-
-func (am *UserModel) CreateUser(ctx context.Context, user *models.User) (*models.User, error) {
+func (am *Database) CreateUser(ctx context.Context, user *models.User) (*models.User, error) {
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 
-	res, err := am.Collection.InsertOne(ctx, user)
+	res, err := am.UserCollection.InsertOne(ctx, user)
 	if err != nil {
 		return nil, err
 	}
@@ -27,9 +22,9 @@ func (am *UserModel) CreateUser(ctx context.Context, user *models.User) (*models
 	return user, nil
 }
 
-func (am *UserModel) GetUserByID(ctx context.Context, id primitive.ObjectID) (*models.User, error) {
+func (am *Database) GetUserByID(ctx context.Context, id primitive.ObjectID) (*models.User, error) {
 	var user models.User
-	err := am.Collection.FindOne(ctx, bson.M{"_id": id}).Decode(&user)
+	err := am.UserCollection.FindOne(ctx, bson.M{"_id": id}).Decode(&user)
 	if err != nil {
 		return nil, err
 	}
@@ -37,9 +32,9 @@ func (am *UserModel) GetUserByID(ctx context.Context, id primitive.ObjectID) (*m
 	return &user, nil
 }
 
-func (am *UserModel) GetAllUsers(ctx context.Context) ([]*models.User, error) {
+func (am *Database) GetAllUsers(ctx context.Context) ([]*models.User, error) {
 	var users []*models.User
-	cur, err := am.Collection.Find(ctx, bson.M{})
+	cur, err := am.UserCollection.Find(ctx, bson.M{})
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +55,7 @@ func (am *UserModel) GetAllUsers(ctx context.Context) ([]*models.User, error) {
 	return users, nil
 }
 
-func (am *UserModel) UpdateUser(ctx context.Context, id primitive.ObjectID, user *models.User) (*models.User, error) {
+func (am *Database) UpdateUser(ctx context.Context, id primitive.ObjectID, user *models.User) (*models.User, error) {
 	user.UpdatedAt = time.Now()
 	update := bson.M{
 		"$set": bson.M{
@@ -72,10 +67,33 @@ func (am *UserModel) UpdateUser(ctx context.Context, id primitive.ObjectID, user
 			"updated_at": user.UpdatedAt,
 		},
 	}
-	_, err := am.Collection.UpdateOne(ctx, bson.M{"_id": id}, update)
+	_, err := am.UserCollection.UpdateOne(ctx, bson.M{"_id": id}, update)
 	if err != nil {
 		return nil, err
 	}
 
 	return user, nil
+}
+
+func (d *Database) GetUserByEmail(email string) (*models.User, error) {
+	filter := bson.M{"email": email}
+	var user models.User
+	err := d.UserCollection.FindOne(context.Background(), filter).Decode(&user)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+func (d *Database) DeleteUser(id string) error {
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+	filter := bson.M{"_id": oid}
+	_, err = d.UserCollection.DeleteOne(context.Background(), filter)
+	if err != nil {
+		return err
+	}
+	return nil
 }
