@@ -10,7 +10,7 @@ import (
 )
 
 type Database struct {
-	client             *mongo.Client
+	Client             *mongo.Client
 	UserCollection     *mongo.Collection
 	PropertyCollection *mongo.Collection
 }
@@ -32,14 +32,14 @@ func NewDatabase(dbConnectionString string) *Database {
 	PropertyCollection := db.Collection("properties")
 
 	return &Database{
-		client:             client,
+		Client:             client,
 		UserCollection:     UserCollection,
 		PropertyCollection: PropertyCollection,
 	}
 }
 
 func (d *Database) Close() {
-	err := d.client.Disconnect(context.Background())
+	err := d.Client.Disconnect(context.Background())
 	if err != nil {
 		log.Fatal(err)
 	}
