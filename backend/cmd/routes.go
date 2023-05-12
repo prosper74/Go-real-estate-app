@@ -32,9 +32,9 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Use(NoSurf)
 	mux.Use(SessionLoad)
 
-	mux.Get("/", handlers.Home)
-	mux.Get("/signup", handlers.SignUp)
-	mux.Post("/signup", handlers.PostSignUp)
+	mux.Get("/", handlers.Repo.Home)
+	mux.Get("/signup", handlers.Repo.SignUp)
+	mux.Post("/signup", handlers.Repo.PostSignUp)
 
 	return mux
 }

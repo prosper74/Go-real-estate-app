@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/prosper74/real-estate-app/internal/config"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
@@ -13,6 +14,7 @@ type Database struct {
 	Client             *mongo.Client
 	UserCollection     *mongo.Collection
 	PropertyCollection *mongo.Collection
+	App                *config.AppConfig
 }
 
 func NewDatabase(dbConnectionString string) (*Database, error) {
