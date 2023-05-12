@@ -12,9 +12,9 @@ import (
 
 	"github.com/alexedwards/scs/v2"
 	"github.com/joho/godotenv"
-	"github.com/prosper74/real-estate-app/config"
-	"github.com/prosper74/real-estate-app/db"
-	"github.com/prosper74/real-estate-app/models"
+	"github.com/prosper74/real-estate-app/internal/config"
+	"github.com/prosper74/real-estate-app/internal/db"
+	"github.com/prosper74/real-estate-app/internal/models"
 )
 
 var app config.AppConfig

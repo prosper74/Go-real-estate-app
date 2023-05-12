@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/prosper74/real-estate-app/models"
+	"github.com/prosper74/real-estate-app/internal/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )

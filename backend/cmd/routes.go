@@ -20,8 +20,8 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/prosper74/real-estate-app/config"
-	"github.com/prosper74/real-estate-app/handlers"
+	"github.com/prosper74/real-estate-app/internal/config"
+	"github.com/prosper74/real-estate-app/internal/handlers"
 )
 
 func routes(app *config.AppConfig) http.Handler {
