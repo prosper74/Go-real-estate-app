@@ -41,11 +41,16 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) PostSignUp(w http.ResponseWriter, r *http.Request) {
-	// Logic for handling user registration
-	first_name := r.Form.Get("first_name")
-	last_name := r.Form.Get("last_name")
-	email := r.Form.Get("email")
-	password := r.Form.Get("password")
+	// err := r.ParseForm()
+	// if err != nil {
+	// 	log.Println("Error parsing form")
+	// 	return
+	// }
+
+	first_name := "Prosper"
+	last_name := "Atu"
+	email := "atu@prosper.com"
+	password := "password"
 
 	fmt.Println("Username: ", first_name+" "+last_name)
 	fmt.Println("Email: ", email)
