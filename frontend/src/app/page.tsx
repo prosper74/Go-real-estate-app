@@ -265,6 +265,8 @@ export default function Home({ data }: any) {
           Submit
         </button>
       </form>
+
+      
     </main>
   );
 }
