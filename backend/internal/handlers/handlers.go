@@ -3,11 +3,13 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/justinas/nosurf"
 	"github.com/prosper74/real-estate-app/internal/config"
 	"github.com/prosper74/real-estate-app/internal/db"
+	"github.com/prosper74/real-estate-app/internal/models"
 )
 
 var Repo *Repository
@@ -31,9 +33,16 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	// Logic for handling user registration
 
+	// _, err := m.DB.GetAllUsers()
+	// if err != nil {
+	// 	log.Println("error getting user: ", err)
+	// }
+
+	// fmt.Println(json.MarshalIndent(users, "", "    "))
+
 	data := make(map[string]interface{})
 	data["CSRFToken"] = nosurf.Token(r)
-
+	// data["users"] = users
 	out, _ := json.MarshalIndent(data, "", "    ")
 
 	resp := []byte(out)
@@ -41,20 +50,19 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) PostSignUp(w http.ResponseWriter, r *http.Request) {
-	// err := r.ParseForm()
-	// if err != nil {
-	// 	log.Println("Error parsing form")
-	// 	return
-	// }
+	var user *models.User
 
-	first_name := "Prosper"
-	last_name := "Atu"
-	email := "atu@prosper.com"
-	password := "password"
+	user.FirstName = "Prosper"
+	user.LastName = "Atu"
+	user.Email = "atu@prosper.com"
+	user.Password = "password"
 
-	fmt.Println("Username: ", first_name+" "+last_name)
-	fmt.Println("Email: ", email)
-	fmt.Println("Password: ", password)
+	response, err := m.DB.CreateUser(user)
+	if err != nil {
+		log.Println("Unable to create user:", err)
+	}
+
+	fmt.Println(json.MarshalIndent(response, "", "    "))
 
 	resp := []byte(`{"status": "ok"}, {"message": "User created"}`)
 	w.Write(resp)

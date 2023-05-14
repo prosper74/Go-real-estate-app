@@ -9,7 +9,10 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func (d *Database) CreateUser(ctx context.Context, user *models.User) (*models.User, error) {
+func (d *Database) CreateUser(user *models.User) (*models.User, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 
@@ -22,7 +25,10 @@ func (d *Database) CreateUser(ctx context.Context, user *models.User) (*models.U
 	return user, nil
 }
 
-func (d *Database) GetUserByID(ctx context.Context, id primitive.ObjectID) (*models.User, error) {
+func (d *Database) GetUserByID(id primitive.ObjectID) (*models.User, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
 	var user models.User
 	err := d.UserCollection.FindOne(ctx, bson.M{"_id": id}).Decode(&user)
 	if err != nil {
@@ -32,7 +38,10 @@ func (d *Database) GetUserByID(ctx context.Context, id primitive.ObjectID) (*mod
 	return &user, nil
 }
 
-func (d *Database) GetAllUsers(ctx context.Context) ([]*models.User, error) {
+func (d *Database) GetAllUsers() ([]*models.User, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
 	var users []*models.User
 	cur, err := d.UserCollection.Find(ctx, bson.M{})
 	if err != nil {
@@ -55,7 +64,10 @@ func (d *Database) GetAllUsers(ctx context.Context) ([]*models.User, error) {
 	return users, nil
 }
 
-func (d *Database) UpdateUser(ctx context.Context, id primitive.ObjectID, user *models.User) (*models.User, error) {
+func (d *Database) UpdateUser(id primitive.ObjectID, user *models.User) (*models.User, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
 	user.UpdatedAt = time.Now()
 	update := bson.M{
 		"$set": bson.M{
@@ -76,9 +88,12 @@ func (d *Database) UpdateUser(ctx context.Context, id primitive.ObjectID, user *
 }
 
 func (d *Database) GetUserByEmail(email string) (*models.User, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
 	filter := bson.M{"email": email}
 	var user models.User
-	err := d.UserCollection.FindOne(context.Background(), filter).Decode(&user)
+	err := d.UserCollection.FindOne(ctx, filter).Decode(&user)
 	if err != nil {
 		return nil, err
 	}
@@ -86,12 +101,15 @@ func (d *Database) GetUserByEmail(email string) (*models.User, error) {
 }
 
 func (d *Database) DeleteUser(id string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
 	oid, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return err
 	}
 	filter := bson.M{"_id": oid}
-	_, err = d.UserCollection.DeleteOne(context.Background(), filter)
+	_, err = d.UserCollection.DeleteOne(ctx, filter)
 	if err != nil {
 		return err
 	}
