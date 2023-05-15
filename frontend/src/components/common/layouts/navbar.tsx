@@ -32,7 +32,11 @@ export default function Header() {
   });
 
   return (
-    <Navbar fluid={true} rounded={true} className="bg-transparent fixed w-full z-20 top-0 left-0 border-b border-gray-200">
+    <Navbar
+      fluid={true}
+      rounded={true}
+      className="shadow-lg fixed w-full z-20 top-0 left-0 border-b border-gray-200 !backdrop-blur-[8px] !bg-transparent sm:!px-10"
+    >
       <Navbar.Brand href="https://flowbite.com/">
         <img
           src="https://flowbite.com/docs/images/logo.svg"
