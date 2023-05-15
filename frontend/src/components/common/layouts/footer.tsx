@@ -1,6 +1,4 @@
-import {
-  FacebookIconFilled, InstagramIcon, TwitterIcon,
-} from "../svgIcons";
+import { FooterSocials } from "./layoutData";
 // import Link from 'next/link';
 // import Image from 'next/image';
 
@@ -88,35 +86,26 @@ export default function Footer() {
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
             © 2023{" "}
-            <a href="https://atuprosper.com/" target="_blank" className="hover:underline">
+            <a
+              href="https://atuprosper.com/"
+              target="_blank"
+              className="hover:underline"
+            >
               Atu Prosper
             </a>
             . Made with love
           </span>
           <div className="flex mt-4 space-x-6 sm:justify-center sm:mt-0">
-            <a
-              href="#"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
-            >
-              <FacebookIconFilled />
-              <span className="sr-only">Facebook page</span>
-            </a>
-            
-            <a
-              href="#"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
-            >
-              <InstagramIcon />
-              <span className="sr-only">Instagram page</span>
-            </a>
-
-            <a
-              href="#"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
-            >
-              <TwitterIcon />
-              <span className="sr-only">Twitter page</span>
-            </a>            
+            {FooterSocials.map((social) => (
+              <a
+                key={social.id}
+                href={social.url}
+                className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+              >
+                {social.icon}
+                <span className="sr-only">{social.name} page</span>
+              </a>
+            ))}
           </div>
         </div>
       </div>
