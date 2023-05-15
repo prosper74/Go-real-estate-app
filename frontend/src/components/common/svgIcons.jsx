@@ -111,7 +111,7 @@ export const GoogleIcon = ({ width, height }) => {
   );
 };
 
-export const FacebookIcon = ({ width, height }) => {
+export const FacebookIcon = ({ width = 19, height = 19 }) => {
   return (
     <svg
       width={width}
@@ -121,6 +121,23 @@ export const FacebookIcon = ({ width, height }) => {
       viewBox="0 0 24 24"
     >
       <path d="M15.12,5.32H17V2.14A26.11,26.11,0,0,0,14.26,2C11.54,2,9.68,3.66,9.68,6.7V9.32H6.61v3.56H9.68V22h3.68V12.88h3.06l.46-3.56H13.36V7.05C13.36,6,13.64,5.32,15.12,5.32Z" />
+    </svg>
+  );
+};
+
+export const FacebookIconFilled = () => {
+  return (
+    <svg
+      className="w-5 h-5"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+        clip-rule="evenodd"
+      />
     </svg>
   );
 };
@@ -577,4 +594,3 @@ export const AppleIcon = () => {
     </svg>
   );
 };
-
