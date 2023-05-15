@@ -1,5 +1,4 @@
-// components/layout.js
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Navbar from './navbar';
 import Footer from './footer';
