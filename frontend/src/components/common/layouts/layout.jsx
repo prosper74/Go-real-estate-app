@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Navbar from './navbar';
+import Header from './navbar';
 import Footer from './footer';
 import { setSnackbar } from '@src/store/reducers/feedbackReducer';
 
@@ -20,7 +20,7 @@ export default function Layout({ children }) {
     <>
       <div className="flex flex-col min-h-screen ">
         <header>
-          <Navbar />
+          <Header />
         </header>
         {/* Feedback snackbar */}
         {feedback.open && (
