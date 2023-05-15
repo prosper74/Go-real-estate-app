@@ -1,16 +1,16 @@
 import React, { FC, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSelector, RootStateOrAny } from 'react-redux';
-import UserDropdown from './userDropdown';
-import AuthPortal from '@src/components/auth';
-import LoginPopupButton from '../buttons/loginPopup';
-import {
-  HomeIcon,
-  RentIcon,
-  SettingsIcon,
-  ShortletIcon,
-  UserIcon,
-} from '../svgIcons';
+// import UserDropdown from './userDropdown';
+// import AuthPortal from '@src/components/auth';
+// import LoginPopupButton from '../buttons/loginPopup';
+// import {
+//   HomeIcon,
+//   RentIcon,
+//   SettingsIcon,
+//   ShortletIcon,
+//   UserIcon,
+// } from '../svgIcons';
 
 const Navbar: FC = () => {
   const user = useSelector((state: RootStateOrAny) => state.user);
