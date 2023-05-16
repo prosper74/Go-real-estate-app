@@ -1,13 +1,30 @@
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import {
   FooterSocials,
   LegalMenu,
   MainMenu,
   ResourcesMenu,
 } from "./layoutData";
-import Link from "next/link";
-import Image from "next/image";
 
 export default function Footer() {
+  const [selectedNav, setSelectedNav] = useState('');
+
+  useEffect(() => {
+    if (window.location.href.indexOf("/how-it-works") > -1) {
+      setSelectedNav("/how-it-works");
+    } else if (window.location.href.indexOf("/about") > -1) {
+      setSelectedNav("/about");
+    } else if (window.location.href.indexOf("/how-it-works") > -1) {
+      setSelectedNav("/how-it-works");
+    } else {
+      setSelectedNav("");
+    }
+  });
+
+  console.log("Srlrcted nav:", selectedNav)
+
   return (
     <footer className="border-t sm:!px-10 lg:!px-32">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
@@ -40,7 +57,12 @@ export default function Footer() {
               <ul className="text-gray-600 dark:text-gray-400 font-medium">
                 {ResourcesMenu.map((menu) => (
                   <li key={menu.id} className="mb-4">
-                    <Link href={menu.url} className="hover:underline text-primary">
+                    <Link
+                      href={menu.url}
+                      className={`hover:underline ${
+                        selectedNav === menu.url ? 'text-primary' : ''
+                      }`}
+                    >
                       {menu.name}
                     </Link>
                   </li>
