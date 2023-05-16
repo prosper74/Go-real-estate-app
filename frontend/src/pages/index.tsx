@@ -1,5 +1,3 @@
-// index.tsx
-import React, { FC } from 'react';
 import Head from 'next/head';
 import axios from 'axios';
 // import HomeBanner from '@src/components/home/banner';
