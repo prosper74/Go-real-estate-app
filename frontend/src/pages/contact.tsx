@@ -1,6 +1,7 @@
 import Head from "next/head";
-import { Card } from "flowbite-react";
+import { Card, Button } from "flowbite-react";
 import { ContactUsLinks } from "@src/components/common/layouts/layoutData";
+import { MessageIcon } from "@src/components/common/svgIcons";
 
 export default function ContactUs() {
   return (
@@ -69,21 +70,17 @@ export default function ContactUs() {
                 placeholder="Leave a comment..."
               ></textarea>
             </div>
-            <button
-              type="submit"
-              className="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-primary-700 sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-            >
-              Send message
-            </button>
+            <Button type="submit" color="gray" className="hover:text-primary font-semibold text-3xl">
+              Send Message &nbsp;
+              <MessageIcon dimensions="w-4 h-4" />
+            </Button>
           </form>
         </div>
 
-        <div className="gap-4 mx-auto mb-20 max-w-screen-xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div className="gap-4 mx-auto my-20 max-w-screen-xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {ContactUsLinks.map((d) => (
             <Card key={d.id} className="text-center bg-inherit">
-              <div className="flex justify-center">
-                {d.icon}
-              </div>
+              <div className="flex justify-center">{d.icon}</div>
 
               <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
                 {d.contact}
