@@ -1,7 +1,9 @@
 import Head from "next/head";
 import { Card, Button } from "flowbite-react";
+import { motion } from "framer-motion";
 import { ContactUsLinks } from "@src/components/common/layouts/layoutData";
 import { MessageIcon } from "@src/components/common/svgIcons";
+import { textAnimate } from "@src/components/common/variants";
 
 export default function ContactUs() {
   return (
@@ -11,19 +13,36 @@ export default function ContactUs() {
         <link rel="icon" href="/favicon.png" />
       </Head>
 
-      <section className="px-4 mx-auto mt-32 sm:!px-10 lg:!px-32">
+      <motion.section className="px-4 mx-auto mt-32 sm:!px-10 lg:!px-32">
         <div className="gap-16 mx-auto max-w-screen-xl lg:grid lg:grid-cols-2">
-          <div>
-            <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-center lg:text-left text-gray-900 dark:text-white">
+          <motion.div
+            initial={"offscreen"}
+            whileInView={"onscreen"}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ staggerChildren: 0.5 }}
+          >
+            <motion.h2
+              className="mb-4 text-4xl tracking-tight font-extrabold text-center lg:text-left text-gray-900 dark:text-white"
+              variants={textAnimate}
+            >
               Contact Us
-            </h2>
-            <p className="mb-8 lg:mb-16 font-light text-center lg:text-left text-gray-500 dark:text-gray-400 sm:text-xl">
+            </motion.h2>
+            <motion.p
+              className="mb-8 lg:mb-16 font-light text-center lg:text-left text-gray-500 dark:text-gray-400 sm:text-xl"
+              variants={textAnimate}
+            >
               Got a technical issue? Want to send feedback about a beta feature?
               Need details about our Business plan? Let us know.
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
 
-          <form className="space-y-4">
+          <motion.form
+            className="space-y-4"
+            initial={"offscreen"}
+            whileInView={"onscreen"}
+            viewport={{ once: true, amount: 0.5 }}
+            variants={textAnimate}
+          >
             <div>
               <label
                 htmlFor="email"
@@ -70,14 +89,24 @@ export default function ContactUs() {
                 placeholder="Leave a comment..."
               ></textarea>
             </div>
-            <Button type="submit" color="gray" className="hover:text-primary font-semibold text-3xl">
+            <Button
+              type="submit"
+              color="gray"
+              className="hover:text-primary font-semibold text-3xl"
+            >
               Send Message &nbsp;
               <MessageIcon dimensions="w-4 h-4" />
             </Button>
-          </form>
+          </motion.form>
         </div>
 
-        <div className="gap-4 mx-auto my-20 max-w-screen-xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <motion.div
+          className="gap-4 mx-auto my-20 max-w-screen-xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+          initial={"offscreen"}
+          whileInView={"onscreen"}
+          viewport={{ once: true, amount: 0.5 }}
+          variants={textAnimate}
+        >
           {ContactUsLinks.map((d) => (
             <Card key={d.id} className="text-center bg-inherit">
               <div className="flex justify-center">{d.icon}</div>
@@ -91,20 +120,24 @@ export default function ContactUs() {
               </p>
             </Card>
           ))}
-        </div>
+        </motion.div>
 
-        <div>
+        <motion.div
+          initial={"offscreen"}
+          whileInView={"onscreen"}
+          viewport={{ once: true, amount: 0.5 }}
+          variants={textAnimate}
+        >
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63432.56370732463!2d3.38054035323504!3d6.453654935303592!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bf4cc9b07cf55%3A0xc4ae10b395418b9b!2sLagos%20Island!5e0!3m2!1sen!2sng!4v1684200130396!5m2!1sen!2sng"
             width="100%"
             height="300"
             className="border-none rounded-lg my-20"
-            allowfullscreen=""
             loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
+            referrerPolicy="no-referrer-when-downgrade"
           ></iframe>
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
     </>
   );
 }

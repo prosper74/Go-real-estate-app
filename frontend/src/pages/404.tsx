@@ -22,9 +22,9 @@ const FourOhFour: FC = () => {
                   The page you are looking for does not exist.
                 </p>
                 <Link href="/">
-                  <a className="px-6 py-2 text-sm font-semibold text-purple-600 bg-blue-100 rounded-lg hover:bg-purple-600 hover:text-white hover:shadow-xl transition-all duration-300">
+                  <span className="px-6 py-2 text-sm font-semibold text-purple-600 bg-blue-100 rounded-lg hover:bg-purple-600 hover:text-white hover:shadow-xl transition-all duration-300">
                     Go home
-                  </a>
+                  </span>
                 </Link>
               </div>
               <div className="mt-4">
