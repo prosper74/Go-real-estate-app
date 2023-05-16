@@ -36,6 +36,24 @@ export const ResourcesMenu = [
   },
 ];
 
+export const LegalMenu = [
+  {
+    id: 1,
+    name: "FAQ",
+    url: "/faq",
+  },
+  {
+    id: 2,
+    name: "Privacy Policy",
+    url: "/privacy",
+  },
+  {
+    id: 3,
+    name: "Terms & Conditions",
+    url: "/terms-and-conditions",
+  },
+];
+
 export const FooterSocials = [
   {
     id: 1,

@@ -1,4 +1,9 @@
-import { FooterSocials, MainMenu, ResourcesMenu } from "./layoutData";
+import {
+  FooterSocials,
+  LegalMenu,
+  MainMenu,
+  ResourcesMenu,
+} from "./layoutData";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -48,11 +53,13 @@ export default function Footer() {
                 Legal
               </h2>
               <ul className="text-gray-600 dark:text-gray-400 font-medium">
-                <li>
-                  <a href="#" className="hover:underline">
-                    Terms &amp; Conditions
-                  </a>
-                </li>
+                {LegalMenu.map((menu) => (
+                  <li key={menu.id} className="mb-4">
+                    <Link href={menu.url} className="hover:underline">
+                      {menu.name}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
