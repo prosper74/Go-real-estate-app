@@ -40,7 +40,7 @@ export default function Footer() {
               <ul className="text-gray-600 dark:text-gray-400 font-medium">
                 {ResourcesMenu.map((menu) => (
                   <li key={menu.id} className="mb-4">
-                    <Link href={menu.url} className="hover:underline">
+                    <Link href={menu.url} className="hover:underline text-primary">
                       {menu.name}
                     </Link>
                   </li>
