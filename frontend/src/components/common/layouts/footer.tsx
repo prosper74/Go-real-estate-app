@@ -16,14 +16,12 @@ export default function Footer() {
       setSelectedNav("/how-it-works");
     } else if (window.location.href.indexOf("/about") > -1) {
       setSelectedNav("/about");
-    } else if (window.location.href.indexOf("/how-it-works") > -1) {
-      setSelectedNav("/how-it-works");
+    } else if (window.location.href.indexOf("/contact") > -1) {
+      setSelectedNav("/contact");
     } else {
       setSelectedNav("");
     }
   });
-
-  console.log("Srlrcted nav:", selectedNav)
 
   return (
     <footer className="border-t sm:!px-10 lg:!px-32">
