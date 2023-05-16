@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+import { Timeline, Button } from "flowbite-react";
 import { ForwardArrowAlt } from "@src/components/common/svgIcons";
 
 export default function AboutUs() {
@@ -10,13 +11,12 @@ export default function AboutUs() {
         <link rel="icon" href="/favicon.png" />
       </Head>
 
-      <section className="bg-white dark:bg-gray-900 px-4 mx-auto mt-24 sm:!px-10 lg:!px-32">
+      <section className="px-4 mx-auto mt-24 sm:!px-10 lg:!px-32">
         <div className="max-w-screen-xl">
           <div className="max-w-screen-lg text-gray-500 sm:text-lg dark:text-gray-400">
             <h2 className="mb-4 text-4xl tracking-tight font-bold text-gray-900 dark:text-white">
-              About Our{" "}
-              <span className="font-extrabold">200,000+</span> companies
-              worldwide
+              About Our <span className="font-extrabold">200,000+</span>{" "}
+              companies worldwide
             </h2>
             <p className="mb-4 font-light">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
@@ -73,6 +73,61 @@ export default function AboutUs() {
               alt="office content 2"
             />
           </div>
+        </div>
+
+        <div className="mb-32 mt-16">
+          <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+            Our Milestone
+          </h2>
+          <Timeline>
+            <Timeline.Item>
+              <Timeline.Point />
+              <Timeline.Content>
+                <Timeline.Time>February 2022</Timeline.Time>
+                <Timeline.Title>
+                  Application UI code in Tailwind CSS
+                </Timeline.Title>
+                <Timeline.Body>
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Deleniti nulla nisi, tempore exercitationem nobis cupiditate
+                  earum aspernatur maiores corporis? Omnis, repudiandae
+                  perferendis? Ipsam fuga tempora obcaecati in incidunt facilis
+                  nemo!
+                </Timeline.Body>
+                <Button color="gray" className="hover:text-primary">
+                  Learn More
+                  <ForwardArrowAlt />
+                </Button>
+              </Timeline.Content>
+            </Timeline.Item>
+            <Timeline.Item>
+              <Timeline.Point />
+              <Timeline.Content>
+                <Timeline.Time>March 2022</Timeline.Time>
+                <Timeline.Title>Marketing UI design in Figma</Timeline.Title>
+                <Timeline.Body>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Excepturi magnam vitae, facilis fugit odio eaque eum veniam
+                  accusamus. Sunt numquam corporis fugiat ullam, autem
+                  consequatur ratione adipisci dolore optio praesentium!
+                </Timeline.Body>
+              </Timeline.Content>
+            </Timeline.Item>
+            <Timeline.Item>
+              <Timeline.Point />
+              <Timeline.Content>
+                <Timeline.Time>April 2022</Timeline.Time>
+                <Timeline.Title>
+                  Secured and Scalable Backend with Go
+                </Timeline.Title>
+                <Timeline.Body>
+                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                  labore ipsum harum veritatis tempora, nulla quidem.
+                  Perferendis, maiores!
+                </Timeline.Body>
+              </Timeline.Content>
+            </Timeline.Item>
+          </Timeline>
         </div>
       </section>
     </>

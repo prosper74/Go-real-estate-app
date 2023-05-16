@@ -10,7 +10,7 @@ export default function ContactUs() {
         <link rel="icon" href="/favicon.png" />
       </Head>
 
-      <section className="bg-white dark:bg-gray-900 px-4 mx-auto mt-32 sm:!px-10 lg:!px-32">
+      <section className="px-4 mx-auto mt-32 sm:!px-10 lg:!px-32">
         <div className="gap-16 mx-auto max-w-screen-xl lg:grid lg:grid-cols-2">
           <div>
             <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-center lg:text-left text-gray-900 dark:text-white">
@@ -80,7 +80,7 @@ export default function ContactUs() {
 
         <div className="gap-4 mx-auto mb-20 max-w-screen-xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {ContactUsLinks.map((d) => (
-            <Card key={d.id} className="text-center">
+            <Card key={d.id} className="text-center bg-inherit">
               <div className="flex justify-center">
                 {d.icon}
               </div>
