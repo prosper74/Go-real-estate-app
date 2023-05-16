@@ -1,4 +1,4 @@
-import { FacebookIconFilled, InstagramIcon, TwitterIcon } from "../svgIcons";
+import { FacebookIconFilled, InstagramIcon, TwitterIcon, PhoneIcon, LocationIcon, EmailIcon } from "../svgIcons";
 
 export const MainMenu = [
   {
@@ -72,5 +72,28 @@ export const FooterSocials = [
     name: "Twitter",
     icon: <TwitterIcon />,
     url: "#",
+  },
+];
+
+export const ContactUsLinks = [
+  {
+    id: 1,
+    contact: "+234 803 333 333",
+    description: "Call us any time",
+    icon: <PhoneIcon fill="#a0a0a0" />,
+    url: "tel:+234 803 333 333",
+  },
+  {
+    id: 2,
+    contact: "property@realestate.com",
+    description: "Email Us",
+    icon: <EmailIcon fill="#a0a0a0" />,
+    url: "mailto:property@realestate.com",
+  },
+  {
+    id: 3,
+    contact: "4 Lorem Ipsum way, Lorem, Comatose.",
+    description: "Visit us week days 8am - 6pm",
+    icon: <LocationIcon fill="#a0a0a0" />,    
   },
 ];
