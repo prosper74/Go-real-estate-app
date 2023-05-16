@@ -1,7 +1,5 @@
 import Head from "next/head";
-import Link from "next/link";
 import { Card } from "flowbite-react";
-import { LocationIcon } from "@src/components/common/svgIcons";
 import { ContactUsLinks } from "@src/components/common/layouts/layoutData";
 
 export default function ContactUs() {

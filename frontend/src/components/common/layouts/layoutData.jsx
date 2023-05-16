@@ -1,4 +1,11 @@
-import { FacebookIconFilled, InstagramIcon, TwitterIcon, PhoneIcon, LocationIcon, EmailIcon } from "../svgIcons";
+import {
+  FacebookIconFilled,
+  InstagramIcon,
+  TwitterIcon,
+  PhoneIcon,
+  LocationIcon,
+  EmailIcon,
+} from "../svgIcons";
 
 export const MainMenu = [
   {
@@ -94,6 +101,6 @@ export const ContactUsLinks = [
     id: 3,
     contact: "4 Lorem Ipsum way, Lorem, Comatose.",
     description: "Visit us week days 8am - 6pm",
-    icon: <LocationIcon fill="#a0a0a0" />,    
+    icon: <LocationIcon fill="#a0a0a0" />,
   },
 ];
