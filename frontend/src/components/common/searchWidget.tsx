@@ -39,7 +39,7 @@ const SearchWidget: FC<ISearchWidget> = ({
       {/* Search Input  */}
       <div className="relative z-9">
         <input
-          className="w-full p-5 bg-white text-xl text-darkBlueGray-400 placeholder-darkBlueGray-400 outline-none rounded-xl shadow-lg"
+          className="w-full p-5 bg-white text-xl text-gray-500 placeholder-gray-500 outline-none rounded-xl shadow-lg"
           type="text"
           placeholder={placeholder}
           value={wordEntered}
