@@ -20,6 +20,18 @@ export default function Footer() {
       setSelectedNav("/about");
     } else if (window.location.href.indexOf("/contact") > -1) {
       setSelectedNav("/contact");
+    } else if (window.location.href.indexOf("/buy") > -1) {
+      setSelectedNav("/buy");
+    } else if (window.location.href.indexOf("/rent") > -1) {
+      setSelectedNav("/rent");
+    } else if (window.location.href.indexOf("/shortlet") > -1) {
+      setSelectedNav("/shortlet");
+    } else if (window.location.href.indexOf("/faq") > -1) {
+      setSelectedNav("/faq");
+    } else if (window.location.href.indexOf("/privacy") > -1) {
+      setSelectedNav("/privacy");
+    } else if (window.location.href.indexOf("/terms-and-conditions") > -1) {
+      setSelectedNav("/terms-and-conditions");
     } else {
       setSelectedNav("");
     }
@@ -48,7 +60,12 @@ export default function Footer() {
               <ul className="text-gray-600 dark:text-gray-400 font-medium">
                 {MainMenu.map((menu) => (
                   <li key={menu.id} className="mb-4">
-                    <Link href={menu.url} className="hover:underline">
+                    <Link
+                      href={menu.url}
+                      className={`hover:underline ${
+                        selectedNav === menu.url ? "text-primary" : ""
+                      }`}
+                    >
                       {menu.name}
                     </Link>
                   </li>
@@ -83,7 +100,12 @@ export default function Footer() {
               <ul className="text-gray-600 dark:text-gray-400 font-medium">
                 {LegalMenu.map((menu) => (
                   <li key={menu.id} className="mb-4">
-                    <Link href={menu.url} className="hover:underline">
+                    <Link
+                      href={menu.url}
+                      className={`hover:underline ${
+                        selectedNav === menu.url ? "text-primary" : ""
+                      }`}
+                    >
                       {menu.name}
                     </Link>
                   </li>
