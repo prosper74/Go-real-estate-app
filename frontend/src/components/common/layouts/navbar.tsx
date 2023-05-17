@@ -22,11 +22,11 @@ export default function Header() {
 
   useEffect(() => {
     if (window.location.href.indexOf("/buy") > -1) {
-      setSelectedNav("buy");
+      setSelectedNav("/buy");
     } else if (window.location.href.indexOf("/rent") > -1) {
-      setSelectedNav("rent");
+      setSelectedNav("/rent");
     } else if (window.location.href.indexOf("/shortlet") > -1) {
-      setSelectedNav("shortlet");
+      setSelectedNav("/shortlet");
     } else {
       setSelectedNav("");
     }
@@ -74,13 +74,13 @@ export default function Header() {
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse className="ml-auto mr-6 ">
-        <ul className="font-semibold text-gray-600 text-lg gap-6 flex">
+        <ul className="font-semibold text-lg gap-6 flex">
           {MainMenu.map((menu) => (
             <li key={menu.id}>
               <Link
                 href={menu.url}
                 className={`hover:underline ${
-                  selectedNav === menu.url ? "text-primary" : ""
+                  selectedNav === menu.url ? "!text-primary" : "text-gray-600"
                 }`}
               >
                 {menu.name}
