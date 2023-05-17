@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import {
   FooterSocials,
   LegalMenu,
   MainMenu,
   ResourcesMenu,
 } from "./layoutData";
+import { textAnimate } from "../variants";
 
 export default function Footer() {
-  const [selectedNav, setSelectedNav] = useState('');
+  const [selectedNav, setSelectedNav] = useState("");
 
   useEffect(() => {
     if (window.location.href.indexOf("/how-it-works") > -1) {
@@ -24,7 +26,13 @@ export default function Footer() {
   });
 
   return (
-    <footer className="border-t sm:!px-10 lg:!px-32">
+    <motion.footer
+      className="border-t sm:!px-10 lg:!px-32"
+      initial={"offscreen"}
+      whileInView={"onscreen"}
+      viewport={{ once: false, amount: 0.3 }}
+      variants={textAnimate}
+    >
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
@@ -58,7 +66,7 @@ export default function Footer() {
                     <Link
                       href={menu.url}
                       className={`hover:underline ${
-                        selectedNav === menu.url ? 'text-primary' : ''
+                        selectedNav === menu.url ? "text-primary" : ""
                       }`}
                     >
                       {menu.name}
@@ -113,6 +121,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 }
