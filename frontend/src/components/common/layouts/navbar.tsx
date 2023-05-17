@@ -37,16 +37,15 @@ export default function Header() {
       rounded={true}
       className="shadow-lg fixed w-full z-20 top-0 left-0 border-b border-gray-200 !backdrop-blur-[10px] !bg-transparent sm:!px-10 lg:!px-32"
     >
-      <Navbar.Brand href="https://flowbite.com/">
-        <img
-          src="https://flowbite.com/docs/images/logo.svg"
+      <Link href="/">
+        <Image
+          src="/logo.svg"
+          width={150}
+          height={40}
           className="mr-3 h-6 sm:h-9"
-          alt="Flowbite Logo"
+          alt="Logo"
         />
-        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-          Flowbite
-        </span>
-      </Navbar.Brand>
+      </Link>
       <div className="flex md:order-2">
         <Dropdown
           arrowIcon={false}
