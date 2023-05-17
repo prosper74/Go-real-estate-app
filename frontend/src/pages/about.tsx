@@ -51,7 +51,7 @@ export default function AboutUs() {
             <motion.span variants={imageAnimate}>
               <Link
                 href="#"
-                className="inline-flex items-center font-medium text-primary-600 hover:text-primary-800 dark:text-primary-500 dark:hover:text-primary-700"
+                className="bg-white py-2 px-6 rounded-lg shadow-sm inline-flex items-center font-medium text-primary-600 hover:text-primary"
               >
                 Learn more
                 <ForwardArrowAlt />
@@ -60,7 +60,7 @@ export default function AboutUs() {
           </motion.div>
         </div>
 
-        <div className="gap-16 items-center py-8 max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-16">
+        <div className="gap-16 items-center py-4 max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-16">
           <motion.div
             className="font-light text-gray-500 sm:text-lg dark:text-gray-400"
             initial={"offscreen"}
@@ -111,10 +111,10 @@ export default function AboutUs() {
         </div>
 
         <motion.div
-          className="mb-32 mt-16"
+          className="mb-32 mt-6"
           initial={"offscreen"}
           whileInView={"onscreen"}
-          viewport={{ once: false, amount: 0.5 }}
+          viewport={{ once: false, amount: 0.3 }}
           variants={textAnimate}
         >
           <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
