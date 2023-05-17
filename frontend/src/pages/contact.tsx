@@ -3,7 +3,7 @@ import { Card, Button } from "flowbite-react";
 import { motion } from "framer-motion";
 import { ContactUsLinks } from "@src/components/common/layouts/layoutData";
 import { MessageIcon } from "@src/components/common/svgIcons";
-import { textAnimate, imageAnimate} from "@src/components/common/variants";
+import { textAnimate, imageAnimate } from "@src/components/common/variants";
 
 export default function ContactUs() {
   return (
@@ -105,19 +105,30 @@ export default function ContactUs() {
           initial={"offscreen"}
           whileInView={"onscreen"}
           viewport={{ once: true, amount: 0.5 }}
-          variants={imageAnimate}
+          transition={{ staggerChildren: 0.5 }}
         >
           {ContactUsLinks.map((d) => (
             <Card key={d.id} className="text-center bg-inherit">
-              <div className="flex justify-center">{d.icon}</div>
+              <motion.div
+                className="flex justify-center"
+                variants={imageAnimate}
+              >
+                {d.icon}
+              </motion.div>
 
-              <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+              <motion.h5
+                className="text-xl font-bold tracking-tight text-gray-900 dark:text-white"
+                variants={textAnimate}
+              >
                 {d.contact}
-              </h5>
+              </motion.h5>
 
-              <p className="font-normal text-gray-700 dark:text-gray-400">
+              <motion.p
+                className="font-normal text-gray-700 dark:text-gray-400"
+                variants={textAnimate}
+              >
                 {d.description}
-              </p>
+              </motion.p>
             </Card>
           ))}
         </motion.div>

@@ -1,14 +1,17 @@
-import React, { FC, useState } from 'react';
-import { SearchIcon, CloseIcon } from '@src/components/common/svgIcons';
+import React, { FC, useState } from "react";
+import { SearchIcon, CloseIcon } from "@src/components/common/svgIcons";
 import {
   singleProperties,
   ISearchWidget,
-} from '@src/components/common/interfaces';
-import Link from 'next/link';
+} from "@src/components/common/interfaces";
+import Link from "next/link";
 
-const SearchWidget: FC<ISearchWidget> = ({ properties, placeholder }) => {
+const SearchWidget: FC<ISearchWidget> = ({
+  properties = {},
+  placeholder = "Find your new home",
+}) => {
   const [filteredProperties, setFilteredProperties] = useState([]);
-  const [wordEntered, setWordEntered] = useState('');
+  const [wordEntered, setWordEntered] = useState("");
 
   const handleFilter = (e: any) => {
     const searchedWords = e.target.value;
@@ -19,7 +22,7 @@ const SearchWidget: FC<ISearchWidget> = ({ properties, placeholder }) => {
         d.description.toLowerCase().includes(searchedWords.toLowerCase())
     );
 
-    if (searchedWords === '') {
+    if (searchedWords === "") {
       setFilteredProperties([]);
     } else {
       setFilteredProperties(newFilter);
@@ -28,7 +31,7 @@ const SearchWidget: FC<ISearchWidget> = ({ properties, placeholder }) => {
 
   const handleClose = () => {
     setFilteredProperties([]);
-    setWordEntered('');
+    setWordEntered("");
   };
 
   return (
@@ -41,6 +44,7 @@ const SearchWidget: FC<ISearchWidget> = ({ properties, placeholder }) => {
           placeholder={placeholder}
           value={wordEntered}
           onChange={handleFilter}
+          disabled
         />
         <div className="absolute top-5 right-3 transition duration-200">
           {filteredProperties.length != 0 ? (
@@ -63,8 +67,8 @@ const SearchWidget: FC<ISearchWidget> = ({ properties, placeholder }) => {
                   d.title
                     ? `/${d?.category?.name.toLowerCase()}/${d?.title
                         .toLowerCase()
-                        .replace(/ /g, '-')}&id=${d.id}`
-                    : ''
+                        .replace(/ /g, "-")}&id=${d.id}`
+                    : ""
                 }
               >
                 <a>
