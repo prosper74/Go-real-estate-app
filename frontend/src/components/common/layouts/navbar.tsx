@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Navbar, Dropdown, Avatar } from "flowbite-react";
 import Link from "next/link";
 import Image from "next/image";
+import { MainMenu } from "./layoutData";
 // import { useSelector, RootStateOrAny } from 'react-redux';
 // import UserDropdown from './userDropdown';
 // import AuthPortal from '@src/components/auth';
@@ -35,7 +36,7 @@ export default function Header() {
     <Navbar
       fluid={true}
       rounded={true}
-      className="shadow-lg fixed w-full z-20 top-0 left-0 border-b border-gray-200 !backdrop-blur-[10px] !bg-transparent sm:!px-10 lg:!px-32"
+      className="shadow-lg fixed w-full z-20 top-0 left-0 border-b border-gray-200 bg-[#fdeaff5d] !backdrop-blur-[12px] sm:!px-10 lg:!px-32"
     >
       <Link href="/">
         <Image
@@ -72,12 +73,26 @@ export default function Header() {
         </Dropdown>
         <Navbar.Toggle />
       </div>
-      <Navbar.Collapse>
-        <Navbar.Link href="/navbars" active={true}>
+      <Navbar.Collapse className="ml-auto mr-6 ">
+        <ul className="font-semibold text-gray-600 text-lg gap-6 flex">
+          {MainMenu.map((menu) => (
+            <li key={menu.id}>
+              <Link
+                href={menu.url}
+                className={`hover:underline ${
+                  selectedNav === menu.url ? "text-primary" : ""
+                }`}
+              >
+                {menu.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        {/* <Navbar.Link href="/contact" active={true}>
           Home
         </Navbar.Link>
-        <Navbar.Link href="/navbars">About</Navbar.Link>
-        <Navbar.Link href="/navbars">Services</Navbar.Link>
+        <Navbar.Link href="/about">About</Navbar.Link>
+        <Navbar.Link href="/navbars">Services</Navbar.Link> */}
       </Navbar.Collapse>
     </Navbar>
   );
