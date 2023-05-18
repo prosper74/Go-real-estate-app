@@ -9,9 +9,9 @@ export default function HomeBanner() {
         <div className="">
           <div className="flex flex-wrap items-center pt-10 pb-20">
             <div className="w-full md:w-1/2 mb-24 lg:mb-0">
-              <span className="block mb-4 font-medium tracking-widest uppercase text-sm text-purple-600">
+              <p className="block mb-4 font-medium tracking-widest uppercase text-sm text-purple-600">
                 A Better Way to Live
-              </span>
+              </p>
               <h1 className="max-w-xl mb-4 font-heading font-medium text-4xl md:text-3xl xl:text-8xl leading-none">
                 <span>Find Your Way </span>
                 <span className="relative inline-block">
