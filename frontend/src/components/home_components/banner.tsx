@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import {
   textAnimate,
-  imageAnimate,
   imageAnimateTop,
   imageAnimateBottom,
 } from "@src/components/common/variants";
@@ -55,18 +54,26 @@ export default function HomeBanner() {
               </motion.span>
             </motion.div>
             <div className="w-full md:w-1/2 px-4">
-              <div className="relative max-w-sm xl:max-w-none mx-auto">
-                <img
+              <motion.div
+                className="relative max-w-sm xl:max-w-none mx-auto"
+                initial={"offscreen"}
+                whileInView={"onscreen"}
+                viewport={{ once: false, amount: 0.5 }}
+                transition={{ staggerChildren: 0.5 }}
+              >
+                <motion.img
                   className="relative xl:max-w-max"
                   src="assets/images/widget.png"
                   alt=""
+                  variants={imageAnimateTop}
                 />
-                <img
+                <motion.img
                   className="absolute -top-3 -left-24 xl:max-w-max"
                   src="assets/images/elipse.png"
                   alt=""
+                  variants={imageAnimateBottom}
                 />
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
