@@ -1,17 +1,17 @@
 export default function HowItWorks() {
   return (
-    <section className="bg-white px-4 mx-auto my-32 sm:!px-10 lg:!px-32">
-      <div className="container xs:px-0 md:px-6 mx-auto">
+    <section className="px-4 mx-auto my-32 sm:!px-10 lg:!px-32">
+      <div>
         <div className="mb-10 text-center">
-          <span className="block mb-9 text-xs leading-4 font-medium uppercase tracking-widest text-gray-500">
+          <span className="block mb-2 text-xs leading-4 font-medium uppercase tracking-widest text-gray-500">
             How it works
           </span>
           <h2 className="text-4xl md:text-4xl xl:text-11xl leading-none font-heading font-medium">
             Easy to use
           </h2>
         </div>
-        <div className="flex flex-wrap md:flex-nowrap items-center justify-center -mx-4 mb-1 md:mb-10">
-          <div className="w-full md:w-11/12 px-4 mb-12 md:mb-0">
+        <div className="flex flex-wrap md:flex-nowrap items-center justify-center">
+          <div className="w-full mb-12 md:mb-0">
             <div className="flex flex-wrap">
               <div className="w-full md:w-1/2 xl:w-1/3 px-4">
                 <div className="relative max-w-sm mx-auto mb-8">

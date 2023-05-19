@@ -1,8 +1,8 @@
 import Head from "next/head";
 import HomeBanner from "@src/components/home_components/banner";
-// import HowItWorks from '@src/components/home/howItWorks';
+import HowItWorks from "@src/components/home_components/howItWorks";
 // import FeaturedProperties from '@src/components/home/featured';
-import CTASection from '@src/components/home_components/ctaSection';
+import CTASection from "@src/components/home_components/ctaSection";
 
 export default function Home() {
   return (
@@ -13,7 +13,8 @@ export default function Home() {
       </Head>
       <main className="mt-16">
         <HomeBanner />
-        <CTASection /> 
+        <HowItWorks />
+        <CTASection />
         {/* <FeaturedProperties properties={properties} />
         <HowItWorks />
         */}
