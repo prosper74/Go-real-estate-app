@@ -28,7 +28,7 @@ export default function HomeBanner() {
                 A Better Way to Live
               </motion.p>
               <motion.h1
-                className="max-w-xl mb-4 font-heading font-medium text-4xl md:text-3xl xl:text-8xl leading-none"
+                className="max-w-xl mb-4 font-heading font-medium text-3xl md:text-5xl xl:text-8xl leading-none"
                 variants={textAnimate}
               >
                 <span>Find Your Way </span>

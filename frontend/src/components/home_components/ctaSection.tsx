@@ -42,7 +42,7 @@ export default function CTASection() {
             className="flex flex-row mt-8"
             variants={imageAnimateBottom}
           >
-            <div className="flex mt-3 mr-2 w-48 h-14 bg-black text-white rounded-lg items-center justify-center">
+            <div className="flex mt-3 mr-2 w-48 h-14 bg-black text-white rounded-lg items-center justify-center cursor-pointer">
               <div className="mr-3">
                 <GooglePlayIcon />
               </div>
@@ -53,7 +53,7 @@ export default function CTASection() {
                 </div>
               </div>
             </div>
-            <div className="flex mt-3 w-48 h-14 bg-transparent text-black border border-black rounded-xl items-center justify-center">
+            <div className="flex mt-3 w-48 h-14 bg-transparent text-black border border-black rounded-xl items-center justify-center cursor-pointer">
               <div className="mr-3">
                 <AppleIcon />
               </div>
