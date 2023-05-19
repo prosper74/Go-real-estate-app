@@ -10,10 +10,10 @@ import SearchWidget from "../common/searchWidget";
 export default function HomeBanner() {
   const properties: singleProperties = {};
   return (
-    <section className="bg-purple-100 pb-12 2xl:pb-16 px-4 mx-auto sm:!px-10 lg:!px-32 overflow-hidden">
+    <section className="bg-purple-100 pb-8 2xl:pb-12 px-4 mx-auto sm:!px-10 lg:!px-32 overflow-hidden">
       <div className="relative rounded-b-10xl">
         <div className="">
-          <div className="flex flex-wrap items-center pt-10 pb-20">
+          <div className="flex flex-wrap items-center pt-8 pb-16">
             <motion.div
               className="w-full md:w-1/2 mb-24 lg:mb-0"
               initial={"offscreen"}
@@ -53,7 +53,7 @@ export default function HomeBanner() {
                 />
               </motion.span>
             </motion.div>
-            <div className="w-full md:w-1/2 px-4">
+            <div className="w-full md:w-1/2">
               <motion.div
                 className="relative max-w-sm xl:max-w-none mx-auto"
                 initial={"offscreen"}

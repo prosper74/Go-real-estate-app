@@ -13,8 +13,8 @@ export const imageAnimateTop = {
   onscreen: {
     y: 0,
     opacity: 1,
-    rotate: [0, 10, 0],
-    transition: { type: "spring", bounce: 0.4, duration: 1 },
+    rotate: [0, 10, 5, 0],
+    transition: { type: "spring", bounce: 0.4, duration: 1.5 },
   },
 };
 
@@ -23,8 +23,8 @@ export const imageAnimateBottom = {
   onscreen: {
     y: 0,
     opacity: 1,
-    rotate: [0, 10, 0],
-    transition: { type: "spring", bounce: 0.4, duration: 1 },
+    rotate: [0, 10, 5, 0],
+    transition: { type: "spring", bounce: 0.4, duration: 1.5 },
   },
 };
 
