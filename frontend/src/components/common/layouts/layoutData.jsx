@@ -104,3 +104,21 @@ export const ContactUsLinks = [
     icon: <LocationIcon fill="#a0a0a0" />,
   },
 ];
+
+export const HowItWorksData = [
+  {
+    id: 1,
+    heading: "Filter and Search",
+    description: "Browse our list of homes and properties, and find your favourite space.",
+  },
+  {
+    id: 1,
+    heading: "Schedule Viewing",
+    description: "Look through our available properties and schedule a viewing.",
+  },
+  {
+    id: 1,
+    heading: "Make an Offer",
+    description: "Make payment and prepare to move into your new space.",
+  },
+];
