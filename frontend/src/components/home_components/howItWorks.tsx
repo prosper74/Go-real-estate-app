@@ -1,8 +1,6 @@
 import { motion } from "framer-motion";
 import {
   textAnimate,
-  imageAnimateTop,
-  imageAnimateBottom,
   imageAnimateRight,
   imageAnimate,
 } from "@src/components/common/variants";
