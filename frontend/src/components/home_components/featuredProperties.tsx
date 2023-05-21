@@ -44,7 +44,7 @@ export default function FeaturedProperties() {
           viewport={{ once: false, amount: 0.5 }}
           variants={imageAnimate}
         >
-          <Tabs.Group aria-label="Tabs with icons" style="underline">
+          <Tabs.Group aria-label="Tabs with icons" style="underline" className="flex justify-center w-full">
             <Tabs.Item className="text-4xl" title="Buy" icon={HomeIconFixed}>
               <PropertySlider />
             </Tabs.Item>
@@ -55,15 +55,7 @@ export default function FeaturedProperties() {
               <PropertySlider />
             </Tabs.Item>
           </Tabs.Group>
-        </motion.div>
-
-        <motion.div
-          className="flex w-44 h-1 mx-auto bg-purple-600"
-          initial={"offscreen"}
-          whileInView={"onscreen"}
-          viewport={{ once: false, amount: 0.5 }}
-          variants={imageAnimateRight}
-        />
+        </motion.div>        
       </div>
     </section>
   );
