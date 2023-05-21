@@ -9,7 +9,8 @@ import {
   HomeIconFixed,
   RentIconFixed,
   ShortletIconFixed,
-} from "../common/svgIcons";
+} from "@src/components/common/svgIcons";
+import PropertySlider from "@src/components/common/properties/propertiesSlider";
 
 export default function FeaturedProperties() {
   return (
@@ -45,13 +46,13 @@ export default function FeaturedProperties() {
         >
           <Tabs.Group aria-label="Tabs with icons" style="underline">
             <Tabs.Item className="text-4xl" title="Buy" icon={HomeIconFixed}>
-              Buy content
+              <PropertySlider />
             </Tabs.Item>
             <Tabs.Item active={true} title="Rent" icon={RentIconFixed}>
-              Rent content
+              <PropertySlider />
             </Tabs.Item>
             <Tabs.Item title="Shortlet" icon={ShortletIconFixed}>
-              Shortlet content
+              <PropertySlider />
             </Tabs.Item>
           </Tabs.Group>
         </motion.div>
