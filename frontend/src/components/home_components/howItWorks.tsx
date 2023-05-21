@@ -8,7 +8,7 @@ import { HowItWorksData } from "../common/layouts/layoutData";
 
 export default function HowItWorks() {
   return (
-    <section className="px-4 mx-auto my-32 sm:!px-10 lg:!px-32">
+    <section className="px-4 mx-auto my-16 sm:!px-10 lg:!px-32">
       <div>
         <motion.div
           className="mb-10 text-center"
