@@ -1,6 +1,4 @@
-import Link from "next/link";
 import { Carousel } from "flowbite-react";
-import { FacebookIconFilled, InstagramIcon, TwitterIcon } from "../svgIcons";
 import PropertyCard from "./propertyCard";
 
 export default function PropertySlider() {
