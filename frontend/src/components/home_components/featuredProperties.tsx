@@ -2,7 +2,6 @@ import { Tabs } from "flowbite-react";
 import { motion } from "framer-motion";
 import {
   textAnimate,
-  imageAnimateRight,
   imageAnimate,
 } from "@src/components/common/variants";
 import {

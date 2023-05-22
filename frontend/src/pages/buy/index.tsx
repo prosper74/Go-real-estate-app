@@ -25,15 +25,9 @@ export default function BuyProperties() {
             >
               Buy Today <span className="font-extrabold">With Best Offers</span>
             </motion.h2>
-            <motion.p className="mb-4 font-light" variants={textAnimate}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
-              illum sint est id in dignissimos fuga, non corrupti? Blanditiis
-              accusamus commodi amet alias numquam qui nesciunt voluptatibus
-              inventore fugiat optio Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Quibusdam illum sint est id in dignissimos fuga,
-              non corrupti? Blanditiis accusamus commodi amet alias numquam qui
-              nesciunt voluptatibus inventore fugiat optio!
-            </motion.p>
+            <div>
+              
+            </div>
           </motion.div>
         </div>
       </section>
