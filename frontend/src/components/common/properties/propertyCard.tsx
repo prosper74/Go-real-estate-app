@@ -5,7 +5,7 @@ export default function PropertyCard() {
   return (
     <Link
       href="#"
-      className="items-center !bg-white rounded-lg sm:flex cursor-pointer"
+      className="items-center !bg-white rounded-lg shadow-lg sm:flex cursor-pointer"
     >
       <img
         className="w-full sm:w-1/2 md:w-1/3 h-[10rem] md:h-[16rem] rounded-lg sm:rounded-none sm:rounded-l-lg object-cover"
