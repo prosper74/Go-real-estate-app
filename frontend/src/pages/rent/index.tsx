@@ -1,96 +1,40 @@
-import React, { FC, useState } from 'react';
-import Head from 'next/head';
-import axios from 'axios';
-import PropertiesList from '@src/components/common/properties/propertiesList';
-import {
-  time,
-  alphabetic,
-  price,
-} from '@src/components/common/properties/sorting/sortFunctions';
-import { singleProperties } from '@src/components/common/interfaces';
+import Head from "next/head";
+import { motion } from "framer-motion";
+import { textAnimate } from "@src/components/common/variants";
+import PropertyCard from "@src/components/common/properties/propertyCard";
 
-interface IProps {
-  properties: singleProperties;
-  totalCount: number;
-}
-
-const RentPage: FC<IProps> = ({ properties, totalCount }) => {
-  const [sortOptions, setSortOptions] = useState([
-    {
-      label: 'NEWEST',
-      active: true,
-      function: (data: singleProperties) => time(data, 'asc'),
-    },
-    {
-      label: 'OLDEST',
-      active: false,
-      function: (data: singleProperties) => time(data, 'desc'),
-    },
-    {
-      label: 'A-Z',
-      active: false,
-      function: (data: singleProperties) => alphabetic(data, 'asc'),
-    },
-    {
-      label: 'Z-A',
-      active: false,
-      function: (data: singleProperties) => alphabetic(data, 'desc'),
-    },
-    {
-      label: 'LOWEST PRICE',
-      active: false,
-      function: (data: singleProperties) => price(data, 'desc'),
-    },
-    {
-      label: 'HIGHEST PRICE',
-      active: false,
-      function: (data: singleProperties) => price(data, 'asc'),
-    },
-  ]);
-
-  const selectedSort = sortOptions.filter((option) => option.active)[0];
-  const sortedProperties = selectedSort.function(properties);
-
+export default function RentProperties() {
   return (
     <>
       <Head>
         <title>Safe Haven | Rent Properties</title>
         <link rel="icon" href="/favicon.png" />
-        <meta content="View all ads of properties that are to be sold" />
       </Head>
 
-      <main className="my-24">
-        <div className="sm:container xs:px-4 md:px-6 xl:px-32 mx-auto bg-white">
-          <h1 className="font-bold text-center text-3xl mt-24 mb-10">
-            Rent Ads({totalCount})
-          </h1>
+      <section className="px-4 mx-auto my-24 sm:!px-10 lg:!px-32">
+        {/* <div className="max-w-screen-xl"> */}
+        <motion.div
+          className="mb-16 text-gray-500 sm:text-lg dark:text-gray-400"
+          initial={"offscreen"}
+          whileInView={"onscreen"}
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{ staggerChildren: 0.5 }}
+        >
+          <motion.h2
+            className="text-4xl tracking-tight font-bold text-gray-900 dark:text-white"
+            variants={textAnimate}
+          >
+            Rent That <span className="font-extrabold">Dream Home Today</span>
+          </motion.h2>
+        </motion.div>
+        {/* </div> */}
 
-          <PropertiesList
-            sortOptions={sortOptions}
-            setSortOptions={setSortOptions}
-            allProperties={sortedProperties}
-            sortedProperties={sortedProperties.slice(0, 9)}
-            totalCount={totalCount}
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+            <PropertyCard key={i} />
+          ))}
         </div>
-      </main>
+      </section>
     </>
   );
-};
-
-export default RentPage;
-
-export async function getServerSideProps() {
-  const properties = await axios.get(
-    `${process.env.NEXT_PUBLIC_REST_API}/adverts?category.name=Rent`
-  );
-  const totalCount = await axios.get(
-    `${process.env.NEXT_PUBLIC_REST_API}/adverts/count?category.name=Rent`
-  );
-  return {
-    props: {
-      properties: properties.data,
-      totalCount: totalCount.data,
-    },
-  };
 }
