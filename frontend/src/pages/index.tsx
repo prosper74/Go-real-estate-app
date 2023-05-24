@@ -3,8 +3,11 @@ import HomeBanner from "@src/components/home_components/banner";
 import HowItWorks from "@src/components/home_components/howItWorks";
 import FeaturedProperties from '@src/components/home_components/featuredProperties';
 import CTASection from "@src/components/home_components/ctaSection";
+import axios from "axios";
 
-export default function Home() {
+export default function Home({properties}: any) {
+  console.log("Properties: ", properties)
+
   return (
     <>
       <Head>
@@ -19,4 +22,13 @@ export default function Home() {
       </main>
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const res = await axios.get(`http://localhost:8080`);
+  return {
+    props: {
+      properties: res.data,
+    },
+  };
 }
