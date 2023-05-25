@@ -1,5 +1,7 @@
 package models
 
+import "github.com/prosper74/real-estate-app/internal/forms"
+
 type TemplateData struct {
 	StringMap       map[string]string
 	IntMap          map[string]int
@@ -9,5 +11,6 @@ type TemplateData struct {
 	Flash           string
 	Warning         string
 	Error           string
+	Form            *forms.Form
 	IsAuthenticated int
 }
