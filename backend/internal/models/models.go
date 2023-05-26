@@ -26,26 +26,19 @@ type Category struct {
 	UpdatedAt time.Time
 }
 
-// Room is the room model
-type Room struct {
-	ID          int
-	RoomName    string
-	Price       string
-	ImageSource string
-	Description string
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
-}
-
 // Reservation is the reservation model
 type Property struct {
 	ID          int
 	Name        string
 	Description string
+	Price       string
+	Duration    string
 	Location    string
 	Room        string
 	Toilet      string
 	Status      string
+	Image       string
+	Galery      []string
 	Category    Category
 	User        User
 	CreatedAt   time.Time
