@@ -60,12 +60,3 @@ type MailData struct {
 	Content  string
 	Template string
 }
-
-// Informations for sending mail
-type TodoList struct {
-	ID        int
-	Todo      string
-	UserID    int
-	CreatedAt time.Time
-	UpdatedAt time.Time
-}
