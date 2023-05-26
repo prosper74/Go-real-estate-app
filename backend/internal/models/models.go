@@ -51,12 +51,25 @@ type Property struct {
 
 // Favourites holds users favourite or wish list
 type Favourite struct {
+	ID         int
+	UserID     int
+	PropertyID int
+	Property   Property
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
+}
+
+// Review holds users reviews
+type Review struct {
 	ID          int
+	Description string
+	Rating      float32
 	UserID      int
 	PropertyID  int
+	User        User
 	Property    Property
 	CreatedAt   time.Time
-	UpdatedAt   time.Time	
+	UpdatedAt   time.Time
 }
 
 // Informations for sending mail
