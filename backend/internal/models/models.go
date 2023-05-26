@@ -15,13 +15,14 @@ type User struct {
 	AccessLevel int
 	Verified    bool
 	Address     string
+	Image       string
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }
 
 type Category struct {
 	ID        int
-	Name      string
+	Title     string
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -29,20 +30,33 @@ type Category struct {
 // Reservation is the reservation model
 type Property struct {
 	ID          int
-	Name        string
+	Title       string
 	Description string
 	Price       string
 	Duration    string
-	Location    string
-	Room        string
+	City        string
+	State       string
+	Bedroom     string
 	Toilet      string
+	Featured    bool
 	Status      string
-	Image       string
-	Galery      []string
+	Images      []string
+	CategoryID  int
+	UserID      int
 	Category    Category
 	User        User
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
+}
+
+// Favourites holds users favourite or wish list
+type Favourite struct {
+	ID          int
+	UserID      int
+	PropertyID  int
+	Property    Property
+	CreatedAt   time.Time
+	UpdatedAt   time.Time	
 }
 
 // Informations for sending mail
