@@ -33,11 +33,12 @@ type Property struct {
 	Title       string
 	Description string
 	Price       string
+	Type        string
 	Duration    string
 	City        string
 	State       string
 	Bedroom     string
-	Toilet      string
+	Bathroom    string
 	Featured    bool
 	Status      string
 	Images      []string
