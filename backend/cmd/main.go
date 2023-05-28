@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"encoding/gob"
 	"flag"
 	"fmt"
@@ -39,7 +38,7 @@ func main() {
 	}
 
 	// Close database connection when main function finish running and the mail server if mail has finsished sending
-	defer connectedDB.Client.Disconnect(context.Background())
+	defer connectedDB.SQL.Close()
 
 	// Set up routes for the API
 	fmt.Printf("Server started at host %s and port %s", host, port)
