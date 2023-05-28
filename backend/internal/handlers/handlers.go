@@ -2,14 +2,13 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/justinas/nosurf"
 	"github.com/prosper74/real-estate-app/internal/config"
-	"github.com/prosper74/real-estate-app/internal/db"
-	"github.com/prosper74/real-estate-app/internal/models"
+	"github.com/prosper74/real-estate-app/internal/driver"
+	"github.com/prosper74/real-estate-app/internal/repository"
+	"github.com/prosper74/real-estate-app/internal/repository/dbrepo"
 )
 
 var Repo *Repository
@@ -17,7 +16,15 @@ var Repo *Repository
 // Repository is the repository type
 type Repository struct {
 	App *config.AppConfig
-	DB  db.DatabaseRepo
+	DB  repository.DatabaseRepo
+}
+
+// This function creates a new repository
+func NewRepo(appConfig *config.AppConfig, dbConnectionPool *driver.DB) *Repository {
+	return &Repository{
+		App: appConfig,
+		DB:  dbrepo.NewPostgresRepo(dbConnectionPool.SQL, appConfig),
+	}
 }
 
 // This function NewHandlers, sets the repository for the handlers
@@ -46,24 +53,5 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	out, _ := json.MarshalIndent(data, "", "    ")
 
 	resp := []byte(out)
-	w.Write(resp)
-}
-
-func (m *Repository) PostSignUp(w http.ResponseWriter, r *http.Request) {
-	var user *models.User
-
-	user.FirstName = "Prosper"
-	user.LastName = "Atu"
-	user.Email = "atu@prosper.com"
-	user.Password = "password"
-
-	response, err := m.DB.CreateUser(user)
-	if err != nil {
-		log.Println("Unable to create user:", err)
-	}
-
-	fmt.Println(json.MarshalIndent(response, "", "    "))
-
-	resp := []byte(`{"status": "ok"}, {"message": "User created"}`)
 	w.Write(resp)
 }

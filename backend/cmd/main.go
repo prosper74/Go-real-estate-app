@@ -14,6 +14,8 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/prosper74/real-estate-app/internal/config"
 	"github.com/prosper74/real-estate-app/internal/db"
+	"github.com/prosper74/real-estate-app/internal/handlers"
+	"github.com/prosper74/real-estate-app/internal/helpers"
 	"github.com/prosper74/real-estate-app/internal/models"
 )
 
@@ -87,12 +89,22 @@ func run() (*db.Database, error) {
 
 	// Connect to database
 	log.Println("Connecting to database...")
-	connectedDB, err := db.NewDatabase(mongodbURI)
+	connectionString := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s", *dbHost, *dbPort, *dbName, *dbUser, *dbPassword, *dbSSL)
+	connectedDB, err := driver.ConnectSQL(connectionString)
 	if err != nil {
 		log.Fatal("Cannot connect to database. Closing application")
 	}
 
 	log.Println("Connected to database")
+
+	// Variable to reference our app
+	repo := handlers.NewRepo(&app, connectedDB)
+
+	// Pass the repo variable back to the new handler
+	handlers.NewHandlers(repo)
+
+	// Pass the app config to the helpers
+	helpers.NewHelpers(&app)
 
 	return connectedDB, nil
 }
