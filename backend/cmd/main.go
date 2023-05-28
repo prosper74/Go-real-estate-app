@@ -13,7 +13,7 @@ import (
 	"github.com/alexedwards/scs/v2"
 	"github.com/joho/godotenv"
 	"github.com/prosper74/real-estate-app/internal/config"
-	"github.com/prosper74/real-estate-app/internal/db"
+	"github.com/prosper74/real-estate-app/internal/driver"
 	"github.com/prosper74/real-estate-app/internal/handlers"
 	"github.com/prosper74/real-estate-app/internal/helpers"
 	"github.com/prosper74/real-estate-app/internal/models"
@@ -53,7 +53,7 @@ func main() {
 	log.Fatal(err)
 }
 
-func run() (*db.Database, error) {
+func run() (*driver.DB, error) {
 	err := godotenv.Load()
 	if err != nil {
 		log.Println("Error loading .env file")
@@ -67,6 +67,9 @@ func run() (*db.Database, error) {
 
 	// Read flags
 	inProduction := flag.Bool("production", true, "App is in production")
+	dbSSL := flag.String("dbssl", "disable", "Database ssl settings (disable, prefer, require)")
+
+	flag.Parse()
 
 	// setup middlewares
 	app.InProduction = *inProduction
@@ -85,11 +88,20 @@ func run() (*db.Database, error) {
 
 	app.Session = session
 
-	mongodbURI := os.Getenv("MONGODB_URI")
+	dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
+	dbName := os.Getenv("DB_NAME")
+	dbUser := os.Getenv("DB_USER")
+	dbPassword := os.Getenv("DB_PASSWORD")
+
+	if dbName == "" || dbUser == "" || dbHost == "" {
+		fmt.Println("Missing .env dependencies, attach the env dependencies in your .env file")
+		os.Exit(1)
+	}
 
 	// Connect to database
 	log.Println("Connecting to database...")
-	connectionString := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s", *dbHost, *dbPort, *dbName, *dbUser, *dbPassword, *dbSSL)
+	connectionString := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s", dbHost, dbPort, dbName, dbUser, dbPassword, *dbSSL)
 	connectedDB, err := driver.ConnectSQL(connectionString)
 	if err != nil {
 		log.Fatal("Cannot connect to database. Closing application")
