@@ -38,15 +38,6 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
-	// Logic for handling user registration
-
-	// _, err := m.DB.GetAllUsers()
-	// if err != nil {
-	// 	log.Println("error getting user: ", err)
-	// }
-
-	// fmt.Println(json.MarshalIndent(users, "", "    "))
-
 	data := make(map[string]interface{})
 	data["CSRFToken"] = nosurf.Token(r)
 	// data["users"] = users
