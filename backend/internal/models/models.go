@@ -13,7 +13,7 @@ type User struct {
 	Password    string
 	Phone       string
 	AccessLevel int
-	Verified    bool
+	Verified    int
 	Address     string
 	Image       string
 	CreatedAt   time.Time
@@ -39,7 +39,7 @@ type Property struct {
 	State       string
 	Bedroom     string
 	Bathroom    string
-	Featured    bool
+	Featured    int
 	Status      string
 	Images      []string
 	CategoryID  int
