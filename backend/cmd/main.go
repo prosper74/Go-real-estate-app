@@ -66,6 +66,8 @@ func run() (*driver.DB, error) {
 
 	// Read flags
 	inProduction := flag.Bool("production", true, "App is in production")
+	dbSSL := flag.String("dbssl", "disable", "Database ssl settings (disable, prefer, require)")
+
 
 	flag.Parse()
 
@@ -86,17 +88,21 @@ func run() (*driver.DB, error) {
 
 	app.Session = session
 
-	postgresURI := os.Getenv("POSTGRES_URI")
+	dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
+	dbName := os.Getenv("DB_NAME")
+	dbUser := os.Getenv("DB_USER")
+	dbPassword := os.Getenv("DB_PASSWORD")
 
-	if postgresURI == "" {
-		fmt.Println("Missing .env dependency, attach the postgresURI env dependency in your .env file")
+	if dbName == "" || dbUser == "" || dbHost == "" {
+		fmt.Println("Missing .env dependencies, attach the env dependencies in your .env file")
 		os.Exit(1)
 	}
 
 	// Connect to database
 	log.Println("Connecting to database...")
-
-	connectedDB, err := driver.ConnectSQL(postgresURI)
+	connectionString := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s", dbHost, dbPort, dbName, dbUser, dbPassword, *dbSSL)
+	connectedDB, err := driver.ConnectSQL(connectionString)
 	if err != nil {
 		log.Fatal("Cannot connect to database. Closing application")
 	}
