@@ -49,7 +49,6 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 
 	data := make(map[string]interface{})
 	data["templateData"] = templateData
-	data["token"] = nosurf.Token(r)
 
 	out, _ := json.MarshalIndent(data, "", "    ")
 
