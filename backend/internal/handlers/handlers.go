@@ -7,7 +7,6 @@ import (
 	"github.com/justinas/nosurf"
 	"github.com/prosper74/real-estate-app/internal/config"
 	"github.com/prosper74/real-estate-app/internal/driver"
-	"github.com/prosper74/real-estate-app/internal/helpers"
 	"github.com/prosper74/real-estate-app/internal/models"
 	"github.com/prosper74/real-estate-app/internal/repository"
 	"github.com/prosper74/real-estate-app/internal/repository/dbrepo"
@@ -36,20 +35,21 @@ func NewHandlers(r *Repository) {
 
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	templateData := &models.TemplateData{}
+
 	templateData.Flash = m.App.Session.PopString(r.Context(), "flash")
 	templateData.Error = m.App.Session.PopString(r.Context(), "error")
 	templateData.Warning = m.App.Session.PopString(r.Context(), "warning")
 	templateData.CSRFToken = nosurf.Token(r)
 
-	properties, err := m.DB.AllProperties()
-	if err != nil {
-		helpers.ServerError(w, err)
-		return
-	}
+	// properties, err := m.DB.AllProperties()
+	// if err != nil {
+	// 	helpers.ServerError(w, err)
+	// 	return
+	// }
 
 	data := make(map[string]interface{})
 	data["templateData"] = templateData
-	data["properties"] = properties
+	data["token"] = nosurf.Token(r)
 
 	out, _ := json.MarshalIndent(data, "", "    ")
 
