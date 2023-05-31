@@ -7,6 +7,7 @@ import (
 	"github.com/justinas/nosurf"
 	"github.com/prosper74/real-estate-app/internal/config"
 	"github.com/prosper74/real-estate-app/internal/driver"
+	"github.com/prosper74/real-estate-app/internal/helpers"
 	"github.com/prosper74/real-estate-app/internal/models"
 	"github.com/prosper74/real-estate-app/internal/repository"
 	"github.com/prosper74/real-estate-app/internal/repository/dbrepo"
@@ -41,13 +42,14 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	templateData.Warning = m.App.Session.PopString(r.Context(), "warning")
 	templateData.CSRFToken = nosurf.Token(r)
 
-	// properties, err := m.DB.AllProperties()
-	// if err != nil {
-	// 	helpers.ServerError(w, err)
-	// 	return
-	// }
+	users, err := m.DB.AllUsers()
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
 
 	data := make(map[string]interface{})
+	data["users"] = users
 	data["templateData"] = templateData
 
 	out, _ := json.MarshalIndent(data, "", "    ")
