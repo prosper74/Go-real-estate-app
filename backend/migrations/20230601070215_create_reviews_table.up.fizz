@@ -1,0 +1,7 @@
+create_table("reviews") {
+  t.Column("id", "integer", {primary: true})
+  t.Column("description", "varchar", {"default": ""})
+  t.Column("rating", "float4", {"default": 0.0})  
+  t.Column("property_id", "integer", {})
+  t.Column("user_id", "integer", {})
+}

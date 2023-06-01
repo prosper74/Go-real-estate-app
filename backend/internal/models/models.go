@@ -72,12 +72,3 @@ type Review struct {
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }
-
-// Informations for sending mail
-type MailData struct {
-	To       string
-	From     string
-	Subject  string
-	Content  string
-	Template string
-}
