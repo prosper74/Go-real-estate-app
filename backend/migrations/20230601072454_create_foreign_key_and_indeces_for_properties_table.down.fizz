@@ -1,0 +1,4 @@
+drop_foreign_key("properties", "properties_user_id_fk", {})
+drop_foreign_key("properties", "properties_category_id_fk", {})
+
+drop_index("properties", "properties_title_idx")
