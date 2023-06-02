@@ -1,0 +1,2 @@
+drop_column("properties", "city")
+drop_column("properties", "state")
