@@ -1,0 +1,2 @@
+add_column("properties", "city", "string", {"default": ""})
+add_column("properties", "state", "string", {"default": ""})
