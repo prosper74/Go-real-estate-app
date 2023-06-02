@@ -1,0 +1,7 @@
+drop_foreign_key("favourites", "favourites_user_id_fk", {})
+drop_foreign_key("favourites", "favourites_property_id_fk", {})
+
+drop_foreign_key("reviews", "reviews_user_id_fk", {})
+drop_foreign_key("reviews", "reviews_property_id_fk", {})
+
+drop_index("properties", "properties_title_idx")

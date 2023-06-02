@@ -1,0 +1,19 @@
+add_foreign_key("favourites", "user_id", {"users": ["id"]}, {
+    "on_delete": "cascade",
+    "on_update": "cascade",
+})
+
+add_foreign_key("favourites", "property_id", {"properties": ["id"]}, {
+    "on_delete": "cascade",
+    "on_update": "cascade",
+})
+
+add_foreign_key("reviews", "user_id", {"users": ["id"]}, {
+    "on_delete": "cascade",
+    "on_update": "cascade",
+})
+
+add_foreign_key("reviews", "property_id", {"properties": ["id"]}, {
+    "on_delete": "cascade",
+    "on_update": "cascade",
+})
