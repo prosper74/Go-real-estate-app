@@ -42,14 +42,14 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	templateData.Warning = m.App.Session.PopString(r.Context(), "warning")
 	templateData.CSRFToken = nosurf.Token(r)
 
-	users, err := m.DB.AllUsers()
+	properties, err := m.DB.AllFeaturedProperties()
 	if err != nil {
 		helpers.ServerError(w, err)
 		return
 	}
 
 	data := make(map[string]interface{})
-	data["users"] = users
+	data["properties"] = properties
 	data["templateData"] = templateData
 
 	out, _ := json.MarshalIndent(data, "", "    ")
