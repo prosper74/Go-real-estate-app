@@ -6,4 +6,5 @@ type DatabaseRepo interface {
 	AllUsers() ([]models.User, error)
 
 	AllProperties() ([]models.Property, error)
+	AllFeaturedProperties() ([]models.Property, error)
 }
