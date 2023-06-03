@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"runtime/debug"
+	"strings"
 
 	"github.com/prosper74/real-estate-app/internal/config"
 )
@@ -33,4 +34,19 @@ func ServerError(responseWriter http.ResponseWriter, err error) {
 func IsAuthenticated(request *http.Request) bool {
 	exists := app.Session.Exists(request.Context(), "user_id")
 	return exists
+}
+
+func ConvertPostgresArrayToStringSlice(arrayString string) []string {
+	// Remove the leading and trailing curly braces
+	arrayString = arrayString[1 : len(arrayString)-1]
+
+	// Split the string into individual elements
+	elements := strings.Split(arrayString, ",")
+
+	// Trim any leading or trailing whitespace from the elements
+	for i, element := range elements {
+		elements[i] = strings.TrimSpace(element)
+	}
+
+	return elements
 }
