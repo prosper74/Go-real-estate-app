@@ -12,5 +12,4 @@ create_table("properties") {
   t.Column("images", "text[]", {})
   t.Column("category_id", "integer", {})
   t.Column("user_id", "integer", {})
-  t.Column("room_id", "integer", {})
 }
