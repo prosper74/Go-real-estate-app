@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/prosper74/real-estate-app/internal/helpers"
 	"github.com/prosper74/real-estate-app/internal/models"
 )
 
@@ -132,6 +133,8 @@ func (m *postgresDBRepo) AllFeaturedProperties() ([]models.Property, error) {
 
 	for rows.Next() {
 		var property models.Property
+		var imagesArrayString string
+
 		err := rows.Scan(
 			&property.ID,
 			&property.Title,
@@ -145,7 +148,7 @@ func (m *postgresDBRepo) AllFeaturedProperties() ([]models.Property, error) {
 			&property.Bathroom,
 			&property.Featured,
 			&property.Status,
-			&property.Images,
+			&imagesArrayString,
 			&property.CategoryID,
 			&property.UserID,
 			&property.CreatedAt,
@@ -155,6 +158,9 @@ func (m *postgresDBRepo) AllFeaturedProperties() ([]models.Property, error) {
 			&property.Category.ID,
 			&property.Category.Title,
 		)
+
+		// Convert the array string to a string slice using the function
+		property.Images = helpers.ConvertPostgresArrayToStringSlice(imagesArrayString)
 
 		if err != nil {
 			return properties, err
