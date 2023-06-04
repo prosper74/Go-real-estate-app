@@ -28,8 +28,70 @@ body {
   background-color: #430064;
   cursor: pointer;
 }
+/* End of scrollbar */
 
+/* Swiper js styles */
 .swiper-button-next,
 .swiper-button-prev {
   color: #eecbff !important;
 }
+
+/* Card effect */
+.card {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background: #fff;
+  color: rgb(82, 82, 82);
+  transition: all 0.5s ease;
+  cursor: pointer;
+  user-select: none;
+  overflow: hidden;
+}
+
+.card .background-effect {
+  bottom: 0;
+  height: 0px;
+  width: 0px;
+}
+
+.card:hover {
+  color: #fff;
+  transform: scale(1.025);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 5px 10px;
+}
+
+.card:hover .background-effect {
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: -1;
+  background: #67009b;
+  animation: popBackground 0.3s ease-in;
+}
+
+@keyframes popBackground {
+  0% {
+      height: 20px;
+      border-top-left-radius: 50%;
+      border-top-right-radius: 50%;
+  }
+
+  50% {
+      height: 80px;
+      border-top-left-radius: 75%;
+      border-top-right-radius: 75%;
+  }
+
+  75% {
+      height: 160px;
+      border-top-left-radius: 85%;
+      border-top-right-radius: 85%;
+  }
+
+  100% {
+      height: 320px;
+      border-top-left-radius: 100%;
+      border-top-right-radius: 100%;
+  }
+}
+/* End ofCard effect */
