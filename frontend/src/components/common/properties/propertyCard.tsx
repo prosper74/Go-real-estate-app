@@ -9,7 +9,7 @@ export default function PropertyCard() {
     >
       <div className="background-effect"></div>
       <img
-        className="w-full sm:w-1/2 h-1/2 sm:h-full sm:rounded-none sm:rounded-l-lg object-cover"
+        className="w-full sm:w-[40%] h-[220px] sm:h-full sm:rounded-none sm:rounded-l-lg object-cover"
         src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png"
         alt="Bonnie Avatar"
       />
