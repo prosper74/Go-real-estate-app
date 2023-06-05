@@ -19,7 +19,7 @@ export default function PropertyCard() {
         </h3>
         <span>Location</span>
         <p className="mt-3 mb-4 font-light">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita...
+          Lorem ipsum elit. Expedita...
         </p>
         <ul className="flex space-x-4 sm:mt-0">
           <li>
