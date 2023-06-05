@@ -28,12 +28,5 @@ export default function PropertySlider() {
         ))}
       </Swiper>
     </section>
-    // <section className="h-[22rem] md:h-64">
-    //   <Carousel slideInterval={5000} className="bg-white rounded-lg">
-    //     {[1, 2, 3, 4, 5].map((i) => (
-    //       <PropertyCard key={i} />
-    //     ))}
-    //   </Carousel>
-    // </section>
   );
 }
