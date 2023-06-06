@@ -35,6 +35,7 @@ type Property struct {
 	Price       string
 	Type        string
 	Duration    string
+	Size        string
 	City        string
 	State       string
 	Bedroom     string

@@ -117,7 +117,7 @@ func (m *postgresDBRepo) AllFeaturedProperties() ([]models.Property, error) {
 
 	var properties []models.Property
 
-	query := `select p.id, p.title, p.description, p.price, p.type, p.duration, p.city, p.state, p.bedroom, p.bathroom, p.featured, p.status, p.images, p.category_id, p.user_id, p.created_at, p.updated_at,
+	query := `select p.id, p.title, p.description, p.price, p.type, p.duration, p.size, p.city, p.state, p.bedroom, p.bathroom, p.featured, p.status, p.images, p.category_id, p.user_id, p.created_at, p.updated_at,
 	u.id, u.first_name, c.id, c.title
 	from properties p
 	left join users u on (p.user_id = u.id)
@@ -142,6 +142,7 @@ func (m *postgresDBRepo) AllFeaturedProperties() ([]models.Property, error) {
 			&property.Price,
 			&property.Type,
 			&property.Duration,
+			&property.Size,
 			&property.City,
 			&property.State,
 			&property.Bedroom,
