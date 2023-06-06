@@ -1,6 +1,6 @@
 export interface Image {
   indexOf: any;
-  map(arg0: (image: any) => JSX.Element): import('react').ReactNode;
+  map(arg0: (image: any) => JSX.Element): import("react").ReactNode;
   url: string;
   id?: string;
   length: number;
@@ -10,77 +10,59 @@ export interface Image {
 }
 
 export interface Category {
-  name: string;
+  ID: number;
+  Title: string;
+  CreatedAt: string;
+  UpdatedAt: string;
 }
 
-export interface singleProperties {
-  slice(arg0: number, arg1: number): import('react').SetStateAction<never[]>;
+export interface SingleProperty {
+  slice(arg0: number, arg1: number): import("react").SetStateAction<never[]>;
   sort: any;
   length: number | undefined;
   filter: any;
   map: any;
-  features: any;
-  type: string[];
-  sittingroom: JSX.Element;
-  id: string;
-  name: string;
-  title: string;
-  description: string;
-  price: number;
-  category: Category;
-  state: string;
-  city: string;
-  per: string;
-  period: string;
-  createdAt: number;
-  bedrooms: number;
-  bedroom: number;
-  bathroom: number;
-  size: number;
-  images: Image;
-  users_permissions_user: {
-    id: string;
-    username: string;
-    phone: number;
-    verified: boolean;
-    image: Image;
-  };
-  0: {
-    users_permissions_user: {
-      id: string;
-      username: string;
-      phone: number;
-      verified: boolean;
-      image: Image;
-    };
-  };
+  ID: number;
+  Title: string;
+  Description: string;
+  Price: number;
+  Type: string;
+  Duration: string;
+  Size: string
+  City: string;
+  State: string;
+  Bedroom: number;
+  Bathroom: number;
+  Featured: number;
+  Status: string;
+  images: Image[];
+  CategoryID: number;
+  UserID: number;
+  Category: Category;
+  User: UserProps;
+  CreatedAt: string;
+  UpdatedAt: string;  
 }
 
-export interface featuresProps {
-  length: number;
-  map: any;
-  split: any;
-  id: string;
-  name: string;
-}
-
-export interface sortOptionProps {
+export interface SortOptionProps {
   label: string;
   active: boolean;
   function: any;
 }
 
-export interface userProps {
-  id: string;
-  properties: singleProperties;
-  username: string;
-  createdAt: string;
-  verified: boolean;
-  email: string;
-  phone: string;
-  image: {
-    url: string;
-  };
+export interface UserProps {
+  ID: number,
+  FirstName: string,
+  LastName: string,
+  Email: string,
+  Password: string,
+  Phone: string,
+  AccessLevel: number,
+  Verified: number,
+  Address: string,
+  Image: string,
+  CreatedAt: string,
+  UpdatedAt: string
 }
 
 export interface IImageUpload {
@@ -91,7 +73,7 @@ export interface IImageUpload {
 }
 
 export interface ISearchWidget {
-  properties: singleProperties;
+  properties: SingleProperty[];
   width: string;
   height: string;
   fill: string;
