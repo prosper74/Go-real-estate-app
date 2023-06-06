@@ -6,6 +6,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 import feedbackReducer from './feedbackReducer';
 import userReducer from './userReducer';
 import propertyReducer from './propertyReducer';
+import templateDataReducer from './templateDataReducer';
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   feedback: feedbackReducer,
   user: userReducer,
   property: propertyReducer,
+  templateData: templateDataReducer,
 });
 
 export default rootReducer;
