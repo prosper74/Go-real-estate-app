@@ -4,21 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { MainMenu } from "./layoutData";
 // import { useSelector, RootStateOrAny } from 'react-redux';
-// import UserDropdown from './userDropdown';
 // import AuthPortal from '@src/components/auth';
 // import LoginPopupButton from '../buttons/loginPopup';
-// import {
-//   HomeIcon,
-//   RentIcon,
-//   SettingsIcon,
-//   ShortletIcon,
-//   UserIcon,
-// } from '../svgIcons';
 
 export default function Header() {
   // const user = useSelector((state: RootStateOrAny) => state.user);
   const [selectedNav, setSelectedNav] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (window.location.href.indexOf("/buy") > -1) {
@@ -62,7 +54,7 @@ export default function Header() {
           <Dropdown.Header>
             <span className="block text-sm">Bonnie Green</span>
             <span className="block truncate text-sm font-medium">
-              name@flowbite.com
+              agent@realestate.com
             </span>
           </Dropdown.Header>
           <Dropdown.Item>Dashboard</Dropdown.Item>
@@ -88,11 +80,6 @@ export default function Header() {
             </li>
           ))}
         </ul>
-        {/* <Navbar.Link href="/contact" active={true}>
-          Home
-        </Navbar.Link>
-        <Navbar.Link href="/about">About</Navbar.Link>
-        <Navbar.Link href="/navbars">Services</Navbar.Link> */}
       </Navbar.Collapse>
     </Navbar>
   );
