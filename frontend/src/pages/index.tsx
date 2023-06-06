@@ -6,7 +6,7 @@ import CTASection from "@src/components/home_components/ctaSection";
 import axios from "axios";
 
 export default function Home({properties}: any) {
-  console.log("Properties: ", properties)
+  console.log("Properties: ", properties.properties)
 
   return (
     <>

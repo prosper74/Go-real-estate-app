@@ -36,6 +36,11 @@ body {
   color: #eecbff !important;
 }
 
+.swiper-pagination-bullet:active,
+.swiper-pagination-bullet-active:active {
+  color: #67009b !important;
+}
+
 /* Card effect */
 .card {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;

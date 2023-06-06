@@ -1,9 +1,9 @@
-import { Carousel } from "flowbite-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import PropertyCard from "./propertyCard";
 
 // Import Swiper styles
 import "swiper/css";
+import 'swiper/css/navigation';
 import "swiper/css/pagination";
 
 // import required modules
@@ -18,7 +18,6 @@ export default function PropertySlider() {
         }}
         modules={[Pagination]}
         loop={true}
-        navigation={true}
         className="bg-white rounded-lg shadow-lg"
       >
         {[1, 2, 3, 4, 5].map((i) => (
