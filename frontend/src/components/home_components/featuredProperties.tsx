@@ -10,8 +10,28 @@ import {
   ShortletIconFixed,
 } from "@src/components/common/svgIcons";
 import PropertySlider from "@src/components/common/properties/propertiesSlider";
+import { useSelector } from "react-redux";
+import { SingleProperty } from "../common/interfaces";
+
+interface IProps {
+  property: SingleProperty;
+}
 
 export default function FeaturedProperties() {
+  const properties = useSelector((state: IProps) => state.property);
+
+  const buyProperties = properties.properties!.filter(
+    (property: any) => property.Category.Title === "Buy"
+  );
+
+  const rentProperties = properties.properties!.filter(
+    (property: any) => property.Category.Title === "Rent"
+  );
+
+  const shortletProperties = properties.properties!.filter(
+    (property: any) => property.Category.Title === "Shortlet"
+  );
+
   return (
     <section className="px-4 mx-auto mt-16 mb-32 sm:!px-10 lg:!px-32">
       <div>
@@ -45,13 +65,15 @@ export default function FeaturedProperties() {
         >
           <Tabs.Group aria-label="Tabs with icons" style="underline" className="flex justify-center w-full">
             <Tabs.Item className="text-4xl" title="Buy" icon={HomeIconFixed}>
-              <PropertySlider />
+              <PropertySlider properties={buyProperties} />
             </Tabs.Item>
+
             <Tabs.Item active={true} title="Rent" icon={RentIconFixed}>
-              <PropertySlider />
+              <PropertySlider properties={rentProperties} />
             </Tabs.Item>
+
             <Tabs.Item title="Shortlet" icon={ShortletIconFixed}>
-              <PropertySlider />
+              <PropertySlider properties={shortletProperties} />
             </Tabs.Item>
           </Tabs.Group>
         </motion.div>        

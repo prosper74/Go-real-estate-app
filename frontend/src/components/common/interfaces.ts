@@ -41,7 +41,8 @@ export interface SingleProperty {
   Category: Category;
   User: UserProps;
   CreatedAt: string;
-  UpdatedAt: string;  
+  UpdatedAt: string;
+  properties?: SingleProperty[];
 }
 
 export interface SortOptionProps {
