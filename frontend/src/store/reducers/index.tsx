@@ -5,12 +5,14 @@ import { combineReducers } from '@reduxjs/toolkit';
 // import customizationReducer from './customizationReducer';
 import feedbackReducer from './feedbackReducer';
 import userReducer from './userReducer';
+import propertyReducer from './propertiesReducer';
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
 const rootReducer = combineReducers({
   feedback: feedbackReducer,
   user: userReducer,
+  property: propertyReducer,
 });
 
 export default rootReducer;
