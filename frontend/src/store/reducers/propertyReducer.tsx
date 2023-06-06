@@ -6,13 +6,13 @@ export const propertyReducer = createSlice({
   name: 'property',
   initialState,
   reducers: {
-    setProperties: (state, action) => ({
+    setProperty: (state, action) => ({
       ...state,
       ...action.payload,
     }),
   },
 });
 
-export const { setProperties } = propertyReducer.actions;
+export const { setProperty } = propertyReducer.actions;
 
 export default propertyReducer.reducer;

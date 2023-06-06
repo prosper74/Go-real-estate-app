@@ -1,12 +1,15 @@
 import Head from "next/head";
+import { useDispatch } from "react-redux";
+import { setProperty } from "@src/store/reducers/propertyReducer";
 import HomeBanner from "@src/components/home_components/banner";
 import HowItWorks from "@src/components/home_components/howItWorks";
-import FeaturedProperties from '@src/components/home_components/featuredProperties';
+import FeaturedProperties from "@src/components/home_components/featuredProperties";
 import CTASection from "@src/components/home_components/ctaSection";
 import axios from "axios";
 
-export default function Home({properties}: any) {
-  console.log("Properties: ", properties.properties)
+export default function Home({ properties }: any) {
+  const dispatch = useDispatch();
+  dispatch(setProperty({ properties }));
 
   return (
     <>

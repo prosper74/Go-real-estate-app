@@ -5,7 +5,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 // import customizationReducer from './customizationReducer';
 import feedbackReducer from './feedbackReducer';
 import userReducer from './userReducer';
-import propertyReducer from './propertiesReducer';
+import propertyReducer from './propertyReducer';
 
 // ==============================|| COMBINE REDUCER ||============================== //
 

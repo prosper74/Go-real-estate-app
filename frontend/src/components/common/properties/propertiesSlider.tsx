@@ -8,8 +8,17 @@ import "swiper/css/pagination";
 
 // import required modules
 import { Pagination, Autoplay } from "swiper";
+import { useSelector } from "react-redux";
+import { SingleProperty } from "../interfaces";
+
+interface IProps {
+  property: SingleProperty;
+}
 
 export default function PropertySlider() {
+  const properties = useSelector((state: IProps) => state.property);
+  console.log("Properties:", properties)
+
   return (
     <section>
       <Swiper
