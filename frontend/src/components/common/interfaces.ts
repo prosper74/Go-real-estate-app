@@ -35,7 +35,7 @@ export interface SingleProperty {
   Bathroom: number;
   Featured: number;
   Status: string;
-  images: Image[];
+  Images: Image[];
   CategoryID: number;
   UserID: number;
   Category: Category;

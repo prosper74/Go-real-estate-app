@@ -10,7 +10,11 @@ import "swiper/css/pagination";
 // import required modules
 import { Pagination, Autoplay } from "swiper";
 
-export default function PropertySlider({ properties }: any) {
+interface IProps {
+  properties: SingleProperty;
+}
+
+export default function PropertySlider({ properties }: IProps) {
   return (
     <section>
       <Swiper
