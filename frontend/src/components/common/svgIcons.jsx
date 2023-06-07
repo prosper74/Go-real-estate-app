@@ -453,12 +453,14 @@ export const ShowerIcon = ({
   );
 };
 
-export const HomeIcon = ({ width, height, fill }) => {
+export const HomeIcon = ({
+  dimensions = "w-10 h-10",
+  fill = "currentColor",
+}) => {
   return (
     <svg
-      width={width}
-      height={height}
-      className="mx-auto"
+      className={dimensions}
+      fill={fill}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
     >

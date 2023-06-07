@@ -10,6 +10,7 @@ import {
   TwitterIcon,
 } from "../svgIcons";
 import { SingleProperty } from "../interfaces";
+import { PropertyCardMeta } from "./propertyMeta";
 
 interface IProps {
   property: SingleProperty;
@@ -36,30 +37,32 @@ export default function PropertyCard({ property }: IProps) {
 
         <span className="flex items-center gap-2 mb-4">
           <HelpIcon />
-          <p>{property.Type}  |  Period: per year</p>
+          <p>{property.Type} | Period: per year</p>
         </span>
 
-        <ul className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        {/* <ul className="grid grid-cols-2 md:grid-cols-3 gap-3">
           <li className="flex items-center gap-1">
-            <BedIcon dimensions="w-5 h-5" fill="#67009b" />
+            <BedIcon dimensions="w-5 h-5" />
             <p>{property.Bedroom} Bedrooms</p>
           </li>
 
           <li className="flex items-center gap-1">
-            <ShowerIcon dimensions="w-5 h-5" fill="#67009b" />
+            <ShowerIcon dimensions="w-5 h-5" />
             <p>{property.Bathroom} Bathrooms</p>
           </li>
 
           <li className="flex items-center gap-1">
-            <TVIcon dimensions="w-5 h-5" fill="#67009b" />
+            <TVIcon dimensions="w-5 h-5" />
             <p>Kitchen</p>
           </li>
-        </ul>
+        </ul> */}
+
+        <PropertyCardMeta property={property} />
 
         <div className="flex items-center justify-between mt-4">
           <span className="flex items-center gap-1">
             <LocationIcon dimensions="w-5 h-5" />
-            {property.City}
+            <p>{property.City}, {property.State}</p>
           </span>
 
           <h3 className="font-bold text-xl md:text-2xl">
