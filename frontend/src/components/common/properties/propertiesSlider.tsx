@@ -26,11 +26,17 @@ export default function PropertySlider({ properties }: IProps) {
         autoplay={{ delay: 5000, disableOnInteraction: true }}
         className="bg-white rounded-lg shadow-lg"
       >
-        {properties.map((d: SingleProperty) => (
-          <SwiperSlide key={d.ID}>
-            <PropertyCard property={d} />
+        {properties.length! >= 1 ? (
+          properties.map((d: SingleProperty) => (
+            <SwiperSlide key={d.ID}>
+              <PropertyCard property={d} />
+            </SwiperSlide>
+          ))
+        ) : (
+          <SwiperSlide >
+            <h4 className="h-52 flex items-center justify-center text-2xl">No Item found</h4>
           </SwiperSlide>
-        ))}
+        )}
       </Swiper>
     </section>
   );

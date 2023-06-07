@@ -1,5 +1,14 @@
 import Link from "next/link";
-import { FacebookIconFilled, InstagramIcon, TwitterIcon } from "../svgIcons";
+import {
+  BedIcon,
+  FacebookIconFilled,
+  HelpIcon,
+  InstagramIcon,
+  LocationIcon,
+  ShowerIcon,
+  TVIcon,
+  TwitterIcon,
+} from "../svgIcons";
 import { SingleProperty } from "../interfaces";
 
 interface IProps {
@@ -21,27 +30,42 @@ export default function PropertyCard({ property }: IProps) {
         alt="Bonnie Avatar"
       />
       <div className="p-4 md:pr-10">
-        <h3 className="text-xl md:text-2xl font-bold tracking-tight">{property.Title}</h3>
+        <h3 className="text-xl md:text-2xl font-bold tracking-tight">
+          {property.Title}
+        </h3>
 
-        <span className="flex items-center gap-2">
-          <FacebookIconFilled />
-          <p>{property.Type}</p>
+        <span className="flex items-center gap-2 mb-4">
+          <HelpIcon />
+          <p>{property.Type}  |  Period: per year</p>
         </span>
-        
-        <p className="mt-3 mb-4 font-light">Lorem ipsum elit. Expedita...</p>
 
-        <span>{property.City}</span>
-        <ul className="flex space-x-4 sm:mt-0">
-          <li>
-            <FacebookIconFilled />
+        <ul className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <li className="flex items-center gap-1">
+            <BedIcon dimensions="w-5 h-5" fill="#67009b" />
+            <p>{property.Bedroom} Bedrooms</p>
           </li>
-          <li>
-            <InstagramIcon />
+
+          <li className="flex items-center gap-1">
+            <ShowerIcon dimensions="w-5 h-5" fill="#67009b" />
+            <p>{property.Bathroom} Bathrooms</p>
           </li>
-          <li>
-            <TwitterIcon />
+
+          <li className="flex items-center gap-1">
+            <TVIcon dimensions="w-5 h-5" fill="#67009b" />
+            <p>Kitchen</p>
           </li>
         </ul>
+
+        <div className="flex items-center justify-between mt-4">
+          <span className="flex items-center gap-1">
+            <LocationIcon dimensions="w-5 h-5" />
+            {property.City}
+          </span>
+
+          <h3 className="font-bold text-xl md:text-2xl">
+            ₦{Number(property.Price).toLocaleString()}
+          </h3>
+        </div>
       </div>
     </Link>
   );
