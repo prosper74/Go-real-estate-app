@@ -21,7 +21,14 @@ export default function PropertyCard({ property }: IProps) {
 
   return (
     <Link
-      href="#"
+      href={
+        property.Title
+          ? `/${property?.Category?.Title.toLowerCase()}/${property?.Title.toLowerCase().replace(
+              / /g,
+              "-"
+            )}/${property.ID}`
+          : ""
+      }
       className="card items-center rounded-lg sm:flex max-h-[19rem] sm:max-h-[16rem]"
     >
       <div className="background-effect"></div>
@@ -36,18 +43,26 @@ export default function PropertyCard({ property }: IProps) {
           {property.Title}
         </h3>
 
-        <span className="flex items-center gap-2 mb-4">          
-          <HelpIcon />
-          <p>{property.Type} | Period: per year</p>
-        </span>
+        <p className="flex items-center gap-3 mb-4">
+          <span className="flex items-center gap-1">
+            <HelpIcon />
+            {property.Type}
+          </span>
+          |
+          <span className="flex items-center gap-1">
+            <LocationIcon dimensions="w-5 h-5" />
+            {property.City}, {property.State}
+          </span>
+        </p>
 
         <PropertyCardMeta property={property} />
 
         <div className="flex items-center justify-between mt-4">
-          <span className="flex items-center gap-1">
-            <LocationIcon dimensions="w-5 h-5" />
-            <p>{property.City}, {property.State}</p>
-          </span>
+          {property.Category.Title === "Buy" ? (
+            "Buy for life"
+          ) : (
+            <p>Period: {property.Duration}</p>
+          )}
 
           <h3 className="font-bold text-xl md:text-2xl">
             ₦{Number(property.Price).toLocaleString()}
