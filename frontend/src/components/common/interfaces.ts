@@ -42,7 +42,7 @@ export interface SingleProperty {
   User: UserProps;
   CreatedAt: string;
   UpdatedAt: string;
-  properties?: SingleProperty[];
+  properties?: SingleProperty;
 }
 
 export interface SortOptionProps {
