@@ -117,7 +117,7 @@ export default function ContactUs() {
               </motion.div>
 
               <motion.h5
-                className="text-xl font-bold tracking-tight text-gray-900 dark:text-white"
+                className="text-xl font-bold tracking-tight text-gray-900 dark:text-white break-words"
                 variants={textAnimate}
               >
                 {d.contact}
