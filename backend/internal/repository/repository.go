@@ -7,4 +7,5 @@ type DatabaseRepo interface {
 
 	AllProperties() ([]models.Property, error)
 	AllFeaturedProperties() ([]models.Property, error)
+	AllBuyProperties() ([]models.Property, error)
 }
