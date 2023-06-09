@@ -58,7 +58,7 @@ func (m *postgresDBRepo) AllProperties() ([]models.Property, error) {
 
 	var properties []models.Property
 
-	query := `select p.id, p.title, p.description, p.price, p.type, p.duration, p.city, p.state, p.bedroom, p.bathroom, p.featured, p.status, p.images, p.category_id, p.user_id, p.created_at, p.updated_at,
+	query := `select p.id, p.title, p.description, p.price, p.type, p.duration, p.size, p.city, p.state, p.bedroom, p.bathroom, p.featured, p.status, p.images, p.category_id, p.user_id, p.created_at, p.updated_at,
 	u.id, u.first_name, c.id, c.title
 	from properties p
 	left join users u on (p.user_id = u.id)
@@ -73,6 +73,8 @@ func (m *postgresDBRepo) AllProperties() ([]models.Property, error) {
 
 	for rows.Next() {
 		var property models.Property
+		var imagesArrayString string
+
 		err := rows.Scan(
 			&property.ID,
 			&property.Title,
@@ -80,22 +82,26 @@ func (m *postgresDBRepo) AllProperties() ([]models.Property, error) {
 			&property.Price,
 			&property.Type,
 			&property.Duration,
+			&property.Size,
 			&property.City,
 			&property.State,
 			&property.Bedroom,
 			&property.Bathroom,
 			&property.Featured,
 			&property.Status,
-			&property.Images,
+			&imagesArrayString,
 			&property.CategoryID,
 			&property.UserID,
+			&property.CreatedAt,
+			&property.UpdatedAt,
 			&property.User.ID,
 			&property.User.FirstName,
 			&property.Category.ID,
 			&property.Category.Title,
-			&property.CreatedAt,
-			&property.UpdatedAt,
 		)
+
+		// Convert the array string to a string slice using the function
+		property.Images = helpers.ConvertPostgresArrayToStringSlice(imagesArrayString)
 
 		if err != nil {
 			return properties, err
