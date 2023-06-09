@@ -3,8 +3,18 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import { textAnimate } from "@src/components/common/variants";
 import PropertyCard from "@src/components/common/properties/propertyCard";
+import { useDispatch } from "react-redux";
+import { setTemplateData } from "@src/store/reducers/templateDataReducer";
+import { SingleProperty } from "@src/components/common/interfaces";
 
-export default function BuyProperties() {
+export default function BuyProperties({ data }: any) {
+  const dispatch = useDispatch();
+  const properties = data.properties;
+  const templateData = data.templateData;
+  dispatch(setTemplateData({ templateData })); 
+
+  console.log("Props: ", properties)
+
   return (
     <>
       <Head>
@@ -12,8 +22,7 @@ export default function BuyProperties() {
         <link rel="icon" href="/favicon.png" />
       </Head>
 
-      <section className="px-4 mx-auto my-24 sm:!px-10 lg:!px-32">
-        {/* <div className="max-w-screen-xl"> */}
+      <section className="px-4 mx-auto mt-20 mb-32 sm:!px-10 lg:!px-32">
         <motion.div
           className="mb-16 text-gray-500 sm:text-lg dark:text-gray-400"
           initial={"offscreen"}
@@ -28,11 +37,10 @@ export default function BuyProperties() {
             Buy Today <span className="font-extrabold">With Best Offers</span>
           </motion.h2>
         </motion.div>
-        {/* </div> */}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
-            <PropertyCard key={i} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {properties.map((property: SingleProperty) => (
+            <PropertyCard key={property.ID} property={property} />
           ))}
         </div>
       </section>

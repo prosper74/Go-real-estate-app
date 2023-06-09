@@ -1,4 +1,5 @@
 import Head from "next/head";
+import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setProperty } from "@src/store/reducers/propertyReducer";
 import { setTemplateData } from "@src/store/reducers/templateDataReducer";
@@ -6,7 +7,6 @@ import HomeBanner from "@src/components/home_components/banner";
 import HowItWorks from "@src/components/home_components/howItWorks";
 import FeaturedProperties from "@src/components/home_components/featuredProperties";
 import CTASection from "@src/components/home_components/ctaSection";
-import axios from "axios";
 
 export default function Home({ data }: any) {
   const dispatch = useDispatch();

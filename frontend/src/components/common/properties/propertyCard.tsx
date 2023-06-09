@@ -1,14 +1,5 @@
 import Link from "next/link";
-import {
-  BedIcon,
-  FacebookIconFilled,
-  HelpIcon,
-  InstagramIcon,
-  LocationIcon,
-  ShowerIcon,
-  TVIcon,
-  TwitterIcon,
-} from "../svgIcons";
+import { HelpIcon, LocationIcon } from "../svgIcons";
 import { SingleProperty } from "../interfaces";
 import { PropertyCardMeta } from "./propertyMeta";
 
@@ -29,7 +20,7 @@ export default function PropertyCard({ property }: IProps) {
             )}/${property.ID}`
           : ""
       }
-      className="card items-center rounded-lg sm:flex max-h-[19rem] sm:max-h-[16rem]"
+      className="card items-center rounded-lg sm:flex h-auto"
     >
       <div className="background-effect"></div>
       <img

@@ -58,6 +58,30 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	w.Write(resp)
 }
 
+func (m *Repository) Buy(w http.ResponseWriter, r *http.Request) {
+	templateData := &models.TemplateData{}
+
+	templateData.Flash = m.App.Session.PopString(r.Context(), "flash")
+	templateData.Error = m.App.Session.PopString(r.Context(), "error")
+	templateData.Warning = m.App.Session.PopString(r.Context(), "warning")
+	templateData.CSRFToken = nosurf.Token(r)
+
+	properties, err := m.DB.AllBuyProperties()
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	data := make(map[string]interface{})
+	data["properties"] = properties
+	data["templateData"] = templateData
+
+	out, _ := json.MarshalIndent(data, "", "    ")
+
+	resp := []byte(out)
+	w.Write(resp)
+}
+
 func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]interface{})
 	data["CSRFToken"] = nosurf.Token(r)

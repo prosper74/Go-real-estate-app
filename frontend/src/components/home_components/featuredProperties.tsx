@@ -1,16 +1,13 @@
 import { Tabs } from "flowbite-react";
+import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
-import {
-  textAnimate,
-  imageAnimate,
-} from "@src/components/common/variants";
+import { textAnimate, imageAnimate } from "@src/components/common/variants";
 import {
   HomeIconFixed,
   RentIconFixed,
   ShortletIconFixed,
 } from "@src/components/common/svgIcons";
 import PropertySlider from "@src/components/common/properties/propertiesSlider";
-import { useSelector } from "react-redux";
 import { SingleProperty } from "../common/interfaces";
 
 interface IProps {
@@ -63,7 +60,11 @@ export default function FeaturedProperties() {
           viewport={{ once: false, amount: 0.5 }}
           variants={imageAnimate}
         >
-          <Tabs.Group aria-label="Tabs with icons" style="underline" className="flex justify-center w-full">
+          <Tabs.Group
+            aria-label="Tabs with icons"
+            style="underline"
+            className="flex justify-center w-full"
+          >
             <Tabs.Item className="text-4xl" title="Buy" icon={HomeIconFixed}>
               <PropertySlider properties={buyProperties} />
             </Tabs.Item>
@@ -76,7 +77,7 @@ export default function FeaturedProperties() {
               <PropertySlider properties={shortletProperties} />
             </Tabs.Item>
           </Tabs.Group>
-        </motion.div>        
+        </motion.div>
       </div>
     </section>
   );
