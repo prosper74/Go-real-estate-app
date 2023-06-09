@@ -32,7 +32,7 @@ export default function Home({ data }: any) {
 }
 
 export async function getServerSideProps() {
-  const res = await axios.get(`http://localhost:8080`);
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_REST_API}`);
   return {
     props: {
       data: res.data,
