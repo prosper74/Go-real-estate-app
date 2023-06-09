@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { motion } from "framer-motion";
+import axios from "axios";
 import { textAnimate } from "@src/components/common/variants";
 import PropertyCard from "@src/components/common/properties/propertyCard";
 
@@ -37,4 +38,13 @@ export default function BuyProperties() {
       </section>
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_REST_API}/buy`);
+  return {
+    props: {
+      data: res.data,
+    },
+  };
 }
