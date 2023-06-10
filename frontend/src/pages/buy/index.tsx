@@ -46,9 +46,6 @@ export default function BuyProperties({ data }: any) {
               No Item found
             </h4>
           )}
-          {/* {properties.map((property: SingleProperty) => (
-            <PropertyCard key={property.ID} property={property} />
-          ))} */}
         </div>
       </section>
     </>

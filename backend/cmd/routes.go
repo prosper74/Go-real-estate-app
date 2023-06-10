@@ -19,8 +19,8 @@ func routes(app *config.AppConfig) http.Handler {
 
 	mux.Get("/", handlers.Repo.Home)
 	mux.Get("/buy", handlers.Repo.Buy)
-	mux.Get("/Rent", handlers.Repo.Rent)
-	mux.Get("/Shortlet", handlers.Repo.Shortlet)
+	mux.Get("/rent", handlers.Repo.Rent)
+	mux.Get("/shortlet", handlers.Repo.Shortlet)
 	mux.Get("/signup", handlers.Repo.SignUp)
 
 	return mux
