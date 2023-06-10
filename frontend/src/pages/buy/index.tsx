@@ -11,9 +11,7 @@ export default function BuyProperties({ data }: any) {
   const dispatch = useDispatch();
   const properties = data.properties;
   const templateData = data.templateData;
-  dispatch(setTemplateData({ templateData })); 
-
-  console.log("Props: ", properties)
+  dispatch(setTemplateData({ templateData }));
 
   return (
     <>
@@ -39,9 +37,18 @@ export default function BuyProperties({ data }: any) {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {properties.map((property: SingleProperty) => (
+          {properties.length! >= 1 ? (
+            properties.map((property: SingleProperty) => (
+              <PropertyCard key={property.ID} property={property} />
+            ))
+          ) : (
+            <h4 className="h-52 flex items-center justify-center text-2xl">
+              No Item found
+            </h4>
+          )}
+          {/* {properties.map((property: SingleProperty) => (
             <PropertyCard key={property.ID} property={property} />
-          ))}
+          ))} */}
         </div>
       </section>
     </>

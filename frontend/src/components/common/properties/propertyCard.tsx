@@ -8,8 +8,6 @@ interface IProps {
 }
 
 export default function PropertyCard({ property }: IProps) {
-  console.log("Props:", property);
-
   return (
     <Link
       href={
