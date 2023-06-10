@@ -15,7 +15,7 @@ export default function PropertyCard({ property }: IProps) {
           ? `/${property?.Category?.Title.toLowerCase()}/${property?.Title.toLowerCase().replace(
               / /g,
               "-"
-            )}/${property.ID}`
+            )}?id=${property.ID}`
           : ""
       }
       className="card items-center rounded-lg sm:flex h-auto"
