@@ -247,3 +247,69 @@ func (m *postgresDBRepo) AllBuyProperties() ([]models.Property, error) {
 
 	return properties, nil
 }
+
+// Get all Rent properties
+func (m *postgresDBRepo) AllRentProperties() ([]models.Property, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	var properties []models.Property
+
+	query := `select p.id, p.title, p.description, p.price, p.type, p.duration, p.size, p.city, p.state, p.bedroom, p.bathroom, p.featured, p.status, p.images, p.category_id, p.user_id, p.created_at, p.updated_at,
+	u.id, u.first_name, c.id, c.title
+	from properties p
+	left join users u on (p.user_id = u.id)
+	left join categories c on (p.category_id = c.id)
+	where p.category_id = 2
+	order by p.created_at asc`
+
+	rows, err := m.DB.QueryContext(ctx, query)
+	if err != nil {
+		return properties, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var property models.Property
+		var imagesArrayString string
+
+		err := rows.Scan(
+			&property.ID,
+			&property.Title,
+			&property.Description,
+			&property.Price,
+			&property.Type,
+			&property.Duration,
+			&property.Size,
+			&property.City,
+			&property.State,
+			&property.Bedroom,
+			&property.Bathroom,
+			&property.Featured,
+			&property.Status,
+			&imagesArrayString,
+			&property.CategoryID,
+			&property.UserID,
+			&property.CreatedAt,
+			&property.UpdatedAt,
+			&property.User.ID,
+			&property.User.FirstName,
+			&property.Category.ID,
+			&property.Category.Title,
+		)
+
+		// Convert the array string to a string slice using the function
+		property.Images = helpers.ConvertPostgresArrayToStringSlice(imagesArrayString)
+
+		if err != nil {
+			return properties, err
+		}
+		properties = append(properties, property)
+	}
+
+	if err = rows.Err(); err != nil {
+		return properties, err
+	}
+
+	return properties, nil
+}
