@@ -25,7 +25,7 @@ const RentSingle: FC<IProps> = () => {
         <meta content="View all ads of properties that are to be sold" />
       </Head>
 
-      <main className="my-24">
+      <main className="px-4 mx-auto my-24 sm:!px-10 lg:!px-32">
         <div className="sm:container xs:px-4 sm:px-6 xl:px-32 mx-auto bg-white">
           {/* <Breadcrumb category="Rent" property={property.title} /> */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-0 sm:gap-6 mt-6">
