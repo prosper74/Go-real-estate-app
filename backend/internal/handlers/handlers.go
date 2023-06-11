@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/justinas/nosurf"
 	"github.com/prosper74/real-estate-app/internal/config"
@@ -139,13 +139,9 @@ func (m *Repository) SingleProperty(w http.ResponseWriter, r *http.Request) {
 	templateData.Warning = m.App.Session.PopString(r.Context(), "warning")
 	templateData.CSRFToken = nosurf.Token(r)
 
-	// id, _ := strconv.Atoi(r.URL.Query().Get("id"))
-	title := r.URL.Query().Get("title")
-	id := r.URL.Query().Get("id")
-	fmt.Println("ID:", id)
-	fmt.Println("title:", title)
+	id, _ := strconv.Atoi(r.URL.Query().Get("id"))
 
-	property, err := m.DB.GetPropertyByID(8)
+	property, err := m.DB.GetPropertyByID(id)
 	if err != nil {
 		helpers.ServerError(w, err)
 		return
