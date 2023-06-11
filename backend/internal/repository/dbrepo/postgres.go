@@ -381,11 +381,12 @@ func (m *postgresDBRepo) AllShortletProperties() ([]models.Property, error) {
 }
 
 // Get a property by id
-func (m *postgresDBRepo) GetPropertyByID(id int) ([]models.Property, error) {
+func (m *postgresDBRepo) GetPropertyByID(id int) (models.Property, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	var properties []models.Property
+	var property models.Property
+	var imagesArrayString string
 
 	query := `select p.id, p.title, p.description, p.price, p.type, p.duration, p.size, p.city, p.state, p.bedroom, p.bathroom, p.featured, p.status, p.images, p.category_id, p.user_id, p.created_at, p.updated_at,
 	u.id, u.first_name, u.last_name, u.email, u.phone, u.verified, u.image, c.id, c.title
@@ -395,53 +396,44 @@ func (m *postgresDBRepo) GetPropertyByID(id int) ([]models.Property, error) {
 	where p.id = $1
 	order by p.created_at asc`
 
-	rows, err := m.DB.QueryContext(ctx, query, id)
+	row := m.DB.QueryRowContext(ctx, query, id)
+
+	err := row.Scan(
+		&property.ID,
+		&property.Title,
+		&property.Description,
+		&property.Price,
+		&property.Type,
+		&property.Duration,
+		&property.Size,
+		&property.City,
+		&property.State,
+		&property.Bedroom,
+		&property.Bathroom,
+		&property.Featured,
+		&property.Status,
+		&imagesArrayString,
+		&property.CategoryID,
+		&property.UserID,
+		&property.CreatedAt,
+		&property.UpdatedAt,
+		&property.User.ID,
+		&property.User.FirstName,
+		&property.User.LastName,
+		&property.User.Email,
+		&property.User.Phone,
+		&property.User.Verified,
+		&property.User.Image,
+		&property.Category.ID,
+		&property.Category.Title,
+	)
+
+	// Convert the array string to a string slice using the function
+	property.Images = helpers.ConvertPostgresArrayToStringSlice(imagesArrayString)
+
 	if err != nil {
-		return properties, err
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var property models.Property
-		var imagesArrayString string
-
-		err := rows.Scan(
-			&property.ID,
-			&property.Title,
-			&property.Description,
-			&property.Price,
-			&property.Type,
-			&property.Duration,
-			&property.Size,
-			&property.City,
-			&property.State,
-			&property.Bedroom,
-			&property.Bathroom,
-			&property.Featured,
-			&property.Status,
-			&imagesArrayString,
-			&property.CategoryID,
-			&property.UserID,
-			&property.CreatedAt,
-			&property.UpdatedAt,
-			&property.User.ID,
-			&property.User.FirstName,
-			&property.Category.ID,
-			&property.Category.Title,
-		)
-
-		// Convert the array string to a string slice using the function
-		property.Images = helpers.ConvertPostgresArrayToStringSlice(imagesArrayString)
-
-		if err != nil {
-			return properties, err
-		}
-		properties = append(properties, property)
+		return property, err
 	}
 
-	if err = rows.Err(); err != nil {
-		return properties, err
-	}
-
-	return properties, nil
+	return property, nil
 }

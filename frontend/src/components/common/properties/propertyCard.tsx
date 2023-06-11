@@ -12,10 +12,10 @@ export default function PropertyCard({ property }: IProps) {
     <Link
       href={
         property.Title
-          ? `/${property?.Category?.Title.toLowerCase()}/${property?.Title.toLowerCase().replace(
+          ? `/${property?.Category?.Title.toLowerCase()}/property?title=${property?.Title.toLowerCase().replace(
               / /g,
               "-"
-            )}?id=${property.ID}`
+            )}&id=${property.ID}`
           : ""
       }
       className="card items-center rounded-lg sm:flex h-auto"

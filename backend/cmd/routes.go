@@ -21,6 +21,7 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/buy", handlers.Repo.Buy)
 	mux.Get("/rent", handlers.Repo.Rent)
 	mux.Get("/shortlet", handlers.Repo.Shortlet)
+	mux.Get("/{category}/property", handlers.Repo.SingleProperty)
 	mux.Get("/signup", handlers.Repo.SignUp)
 
 	return mux

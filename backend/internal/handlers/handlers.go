@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/justinas/nosurf"
@@ -122,6 +123,36 @@ func (m *Repository) Shortlet(w http.ResponseWriter, r *http.Request) {
 
 	data := make(map[string]interface{})
 	data["properties"] = properties
+	data["templateData"] = templateData
+
+	out, _ := json.MarshalIndent(data, "", "    ")
+
+	resp := []byte(out)
+	w.Write(resp)
+}
+
+func (m *Repository) SingleProperty(w http.ResponseWriter, r *http.Request) {
+	templateData := &models.TemplateData{}
+
+	templateData.Flash = m.App.Session.PopString(r.Context(), "flash")
+	templateData.Error = m.App.Session.PopString(r.Context(), "error")
+	templateData.Warning = m.App.Session.PopString(r.Context(), "warning")
+	templateData.CSRFToken = nosurf.Token(r)
+
+	// id, _ := strconv.Atoi(r.URL.Query().Get("id"))
+	title := r.URL.Query().Get("title")
+	id := r.URL.Query().Get("id")
+	fmt.Println("ID:", id)
+	fmt.Println("title:", title)
+
+	property, err := m.DB.GetPropertyByID(8)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	data := make(map[string]interface{})
+	data["properties"] = property
 	data["templateData"] = templateData
 
 	out, _ := json.MarshalIndent(data, "", "    ")
