@@ -1,7 +1,8 @@
 // index.tsx
-import React, { FC } from 'react';
-import Head from 'next/head';
-import { SingleProperty } from '@src/components/common/interfaces';
+import React, { FC } from "react";
+import Head from "next/head";
+import { SingleProperty } from "@src/components/common/interfaces";
+import axios from "axios";
 // import SidebarCard from '@src/components/common/properties/sidebarCard';
 // import { formData } from '@src/components/common/properties/sidebarData';
 // import Breadcrumb from '@src/components/common/layouts/breadcrumb';
@@ -14,13 +15,12 @@ interface IProps {
   };
 }
 
-const RentSingle: FC<IProps> = () => {
+const RentSingle: FC<IProps> = ({ data }: any) => {
+  console.log("data:", data);
   return (
     <>
       <Head>
-        <title>Rent | 
-          {/* {property.title} */}
-          </title>
+        <title>Rent |{/* {property.title} */}</title>
         <link rel="icon" href="/favicon.png" />
         <meta content="View all ads of properties that are to be sold" />
       </Head>
@@ -34,7 +34,6 @@ const RentSingle: FC<IProps> = () => {
             {/* <div className="col-span-2">
               <SingleProperty property={property} />
             </div> */}
-
             {/* SideBar  */}
             {/* <div className="">
               {formData.map((d) => (
@@ -50,21 +49,21 @@ const RentSingle: FC<IProps> = () => {
 
 export default RentSingle;
 
-// export async function getServerSideProps({ params }: any) {
-//   const rentSingle = params.rentSingle;
-//   const rentSingleId = rentSingle.slice(rentSingle.length - 24);
+export async function getServerSideProps(context: any) {
+  const { id } = context.query;
+  // const rentSingleId = rentSingle.slice(rentSingle.length - 24);
+  // const res = await axios
+  //   .get(`${process.env.NEXT_PUBLIC_REST_API}/adverts?id=${rentSingleId}`)
+  //   .then((response) => response.data)
+  //   .catch((err) => {
+  //     console.error(err);
+  //   });
 
-//   const properties = await axios
-//     .get(`${process.env.NEXT_PUBLIC_REST_API}/adverts?id=${rentSingleId}`)
-//     .then((response) => response.data)
-//     .catch((err) => {
-//       console.error(err);
-//     });
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_REST_API}/rent/${id}`);
 
-//   return {
-//     props: {
-//       rentSingle,
-//       properties,
-//     },
-//   };
-// }
+  return {
+    props: {
+      data: res.data,
+    },
+  };
+}

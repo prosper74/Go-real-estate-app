@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/justinas/nosurf"
 	"github.com/prosper74/real-estate-app/internal/config"
@@ -139,7 +140,13 @@ func (m *Repository) SingleProperty(w http.ResponseWriter, r *http.Request) {
 	templateData.Warning = m.App.Session.PopString(r.Context(), "warning")
 	templateData.CSRFToken = nosurf.Token(r)
 
-	id, _ := strconv.Atoi(r.URL.Query().Get("id"))
+	urlParams := strings.Split(r.RequestURI, "/")
+	id, err := strconv.Atoi(urlParams[2])
+
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
 
 	property, err := m.DB.GetPropertyByID(id)
 	if err != nil {
@@ -148,7 +155,7 @@ func (m *Repository) SingleProperty(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := make(map[string]interface{})
-	data["properties"] = property
+	data["property"] = property
 	data["templateData"] = templateData
 
 	out, _ := json.MarshalIndent(data, "", "    ")
