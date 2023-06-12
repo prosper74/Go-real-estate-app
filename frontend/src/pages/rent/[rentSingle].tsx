@@ -1,12 +1,12 @@
 import Head from "next/head";
-import {
-  SingleProperty,
-  TemplateData,
-} from "@src/components/common/interfaces";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setTemplateData } from "@src/store/reducers/templateDataReducer";
 import Breadcrumb from "@src/components/common/layouts/breadcrumb";
+import {
+  SingleProperty,
+  TemplateData,
+} from "@src/components/common/interfaces";
 
 interface IProps {
   data: {

@@ -1,7 +1,9 @@
-export const CloseIcon = ({ width, height, fill }) => (
+export const CloseIcon = ({
+  dimensions = "w-6 h-6",
+  fill = "currentColor",
+}) => (
   <svg
-    width={width}
-    height={height}
+    className={dimensions}
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
   >
