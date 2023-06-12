@@ -28,7 +28,7 @@ export interface SingleProperty {
   Price: number;
   Type: string;
   Duration: string;
-  Size: string
+  Size: string;
   City: string;
   State: string;
   Bedroom: number;
@@ -52,18 +52,18 @@ export interface SortOptionProps {
 }
 
 export interface UserProps {
-  ID: number,
-  FirstName: string,
-  LastName: string,
-  Email: string,
-  Password: string,
-  Phone: string,
-  AccessLevel: number,
-  Verified: number,
-  Address: string,
-  Image: string,
-  CreatedAt: string,
-  UpdatedAt: string
+  ID: number;
+  FirstName: string;
+  LastName: string;
+  Email: string;
+  Password: string;
+  Phone: string;
+  AccessLevel: number;
+  Verified: number;
+  Address: string;
+  Image: string;
+  CreatedAt: string;
+  UpdatedAt: string;
 }
 
 export interface IImageUpload {
@@ -79,4 +79,17 @@ export interface ISearchWidget {
   height: string;
   fill: string;
   placeholder: string;
+}
+
+export interface TemplateData {
+  StringMap: string[];
+  IntMap: number[];
+  FloatMap: number[];
+  Data: any;
+  CSRFToken: string;
+  Flash: string;
+  Warning: string;
+  Error: string;
+  Form: any;
+  IsAuthenticated: number;
 }

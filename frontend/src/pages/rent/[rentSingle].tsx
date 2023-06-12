@@ -1,15 +1,21 @@
-import React, { FC } from "react";
 import Head from "next/head";
-import { SingleProperty } from "@src/components/common/interfaces";
+import {
+  SingleProperty,
+  TemplateData,
+} from "@src/components/common/interfaces";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setTemplateData } from "@src/store/reducers/templateDataReducer";
+import Breadcrumb from "@src/components/common/layouts/breadcrumb";
 
 interface IProps {
-  property: SingleProperty;
+  data: {
+    property: SingleProperty;
+    templateData: TemplateData;
+  };
 }
 
-const RentSingle: FC<IProps> = ({ data }: any) => {
+export default function RentSingle({ data }: IProps) {
   const dispatch = useDispatch();
   const property = data.property;
   const templateData = data.templateData;
@@ -26,7 +32,7 @@ const RentSingle: FC<IProps> = ({ data }: any) => {
 
       <main className="px-4 mx-auto my-24 sm:!px-10 lg:!px-32">
         <div className="sm:container xs:px-4 sm:px-6 xl:px-32 mx-auto bg-white">
-          {/* <Breadcrumb category="Rent" property={property.title} /> */}
+          <Breadcrumb category="Rent" property={property.Title} />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-0 sm:gap-6 mt-6">
             Rent
           </div>
@@ -34,9 +40,7 @@ const RentSingle: FC<IProps> = ({ data }: any) => {
       </main>
     </>
   );
-};
-
-export default RentSingle;
+}
 
 export async function getServerSideProps(context: any) {
   const { id } = context.query;
