@@ -85,11 +85,7 @@ const AgentCard: FC<IProps> = ({ agent }) => {
                   height={120}
                   className="w-24 h-24 mt-6 rounded-full object-cover"
                 />
-                {/* <img
-                  src={agent.Image ? agent.Image : "/logo.svg"}
-                  alt={`${agent.FirstName} image`}
-                  className="w-24 h-24 mt-6 rounded-full object-cover"
-                /> */}
+                
                 <div className="my-4">
                   <p className="text-lg text-gray-500 my-2 capitalize">
                     Name: {agent.FirstName} {agent.LastName}
