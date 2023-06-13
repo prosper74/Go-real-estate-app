@@ -1,9 +1,9 @@
 import React, { FC, Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Link from "next/link";
+import Image from "next/image";
 import { UserProps } from "../interfaces";
 import { VerifiedIcon } from "../svgIcons";
-import Image from "next/image";
 
 interface IProps {
   agent: UserProps;
@@ -22,7 +22,7 @@ const AgentCard: FC<IProps> = ({ agent }) => {
 
   return (
     <>
-      <div className="w-full h-32 bg-purple-50 shadow-lg rounded-lg flex flex-col items-center justify-center my-6">
+      <div className="w-full h-32 bg-white shadow-lg rounded-lg flex flex-col items-center justify-center my-6">
         <h4 className="font-medium text-2xl mb-3">
           Interested in this property?
         </h4>
@@ -115,20 +115,19 @@ const AgentCard: FC<IProps> = ({ agent }) => {
                   <Link
                     href={
                       agent.FirstName
-                        ? `/agent/${agent.FirstName
-                            .toLowerCase()
-                            .replace(/ /g, "-")}&id=${agent.ID}`
+                        ? `/agent/${agent.FirstName.toLowerCase().replace(
+                            / /g,
+                            "-"
+                          )}&id=${agent.ID}`
                         : ""
                     }
                   >
-                    <a>
-                      <button
-                        type="button"
-                        className="inline-flex justify-center px-4 py-2 text-base font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                      >
-                        View Agent ads
-                      </button>
-                    </a>
+                    <button
+                      type="button"
+                      className="inline-flex justify-center px-4 py-2 text-base font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                    >
+                      View Agent ads
+                    </button>
                   </Link>
                   <button
                     type="button"

@@ -37,7 +37,7 @@ const SinglePropertyBody: FC<IProps> = ({ property }) => {
         {property.Duration ? `/${property.Duration}` : ''}
       </h3>
 
-      {/* <AgentCard agent={propertyAgent} /> */}
+      <AgentCard agent={propertyAgent} />
 
       <h3 className="text-3xl font-medium">Description</h3>
       <p className="text-lg">{property.Description}</p>
