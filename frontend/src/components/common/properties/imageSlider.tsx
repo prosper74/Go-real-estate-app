@@ -1,4 +1,5 @@
 import { useState, FC } from "react";
+import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useIsXLarge } from "../hooks/mediaQuery";
 import { SingleProperty } from "../interfaces";
@@ -11,7 +12,6 @@ import "swiper/css/thumbs";
 
 // import required modules
 import SwiperCore, { FreeMode, Navigation, Thumbs } from "swiper";
-import Image from "next/image";
 
 interface IProps {
   property: SingleProperty;
@@ -22,6 +22,7 @@ const ImageSlider: FC<IProps> = ({ property }) => {
   console.log("Images", images);
   const isXLarge = useIsXLarge();
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperCore>();
+
   return (
     <>
       <Swiper
@@ -49,8 +50,8 @@ const ImageSlider: FC<IProps> = ({ property }) => {
         ))}
       </Swiper>
 
-      {/* <Swiper
-        onSwiper={setThumbsSwiper}
+      <Swiper
+        // onSwiper={setThumbsSwiper}
         loop={true}
         spaceBetween={5}
         slidesPerView={
@@ -67,15 +68,19 @@ const ImageSlider: FC<IProps> = ({ property }) => {
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper"
       >
-        {images.map((image) => (
-          <SwiperSlide key={image.id}>
-            <img
-              src={image.url}
+        {images.map((image, i) => (
+          <SwiperSlide key={i}>
+            <Image
+              // @ts-ignore
+              src={image}
+              alt="property images"
+              width={128}
+              height={128}
               className="rounded-xl shadow-md md:w-32 md:h-24 w-full h-20 object-cover"
             />
           </SwiperSlide>
         ))}
-      </Swiper> */}
+      </Swiper>
     </>
   );
 };

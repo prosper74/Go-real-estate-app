@@ -43,7 +43,7 @@ export default function RentSingle({ data }: IProps) {
           className="grid grid-cols-1 md:grid-cols-3 gap-0 sm:gap-6 mt-6"
           initial={"offscreen"}
           whileInView={"onscreen"}
-          viewport={{ once: true, amount: 0.5 }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ staggerChildren: 0.5 }}
         >
           {/* main properties  */}
