@@ -26,7 +26,7 @@ export const RelatedPropertiesSlide: FC<IProps> = ({ propertyType }) => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.NEXT_PUBLIC_REST_API}/adverts?type=${propertyType}`)
+      .get(`${process.env.NEXT_PUBLIC_REST_API}/property?type=${propertyType}`)
       .then((response) => {
         setProperties(response.data);
       })
