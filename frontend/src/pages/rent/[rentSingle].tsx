@@ -29,10 +29,12 @@ export default function RentSingle({ data }: IProps) {
   const templateData = data.templateData;
   dispatch(setTemplateData({ templateData }));
 
+  const pageTitle = `Rent | ${property.Title}`
+
   return (
     <>
       <Head>
-        <title>Rent | {property.Title}</title>
+        <title>{pageTitle}</title>
         <link rel="icon" href="/favicon.png" />
         <meta content="View all ads of properties that are to be sold" />
       </Head>

@@ -19,7 +19,6 @@ interface IProps {
 
 const ImageSlider: FC<IProps> = ({ property }) => {
   const images = property.Images;
-  console.log("Images", images);
   const isXLarge = useIsXLarge();
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperCore>();
 
