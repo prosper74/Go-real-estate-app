@@ -102,7 +102,6 @@ export const InspectProperty: FC<IProps> = ({ setIsOpen, property }) => {
           <p className="text-center">
             {property.City}, {property.State}
           </p>
-          <p className="text-center mb-2">ID: {property.ID}</p>
           <div className="bg-white shadow w-full rounded-lg divide-y divide-gray-200">
             {/* Form Fields */}
             <div className="px-5 py-4">
@@ -122,6 +121,7 @@ export const InspectProperty: FC<IProps> = ({ setIsOpen, property }) => {
                     />
                     {errors.name?.message && (
                       <p className="text-red-500 text-sm mt-2">
+                        {/* @ts-ignore */}
                         {errors.name?.message}
                       </p>
                     )}
@@ -140,6 +140,7 @@ export const InspectProperty: FC<IProps> = ({ setIsOpen, property }) => {
                     />
                     {errors.email?.message && (
                       <p className="text-red-500 text-sm mt-2">
+                        {/* @ts-ignore */}
                         {errors.email?.message}
                       </p>
                     )}
@@ -158,6 +159,7 @@ export const InspectProperty: FC<IProps> = ({ setIsOpen, property }) => {
                     />
                     {errors.phone?.message && (
                       <p className="text-red-500 text-sm mt-2">
+                        {/* @ts-ignore */}
                         {errors.phone?.message}
                       </p>
                     )}
@@ -294,6 +296,7 @@ export const RequestProperty: FC<IProps> = ({ setIsOpen }) => {
                     />
                     {errors.name?.message && (
                       <p className="text-red-500 text-sm mt-2">
+                        {/* @ts-ignore */}
                         {errors.name?.message}
                       </p>
                     )}
@@ -313,6 +316,7 @@ export const RequestProperty: FC<IProps> = ({ setIsOpen }) => {
                     />
                     {errors.email?.message && (
                       <p className="text-red-500 text-sm mt-2">
+                        {/* @ts-ignore */}
                         {errors.email?.message}
                       </p>
                     )}
@@ -332,6 +336,7 @@ export const RequestProperty: FC<IProps> = ({ setIsOpen }) => {
                     />
                     {errors.phone?.message && (
                       <p className="text-red-500 text-sm mt-2">
+                        {/* @ts-ignore */}
                         {errors.phone?.message}
                       </p>
                     )}
@@ -518,7 +523,6 @@ export const VerifyProperty: FC<IProps> = ({ setIsOpen, property }) => {
           <p className="text-center">
             {property.City}, {property.State}
           </p>
-          <p className="text-center mb-2">ID: {property.ID}</p>
           <div className="bg-white shadow w-full rounded-lg divide-y divide-gray-200">
             {/* Form Fields */}
             <div className="px-5 py-4">
@@ -538,6 +542,7 @@ export const VerifyProperty: FC<IProps> = ({ setIsOpen, property }) => {
                     />
                     {errors.name?.message && (
                       <p className="text-red-500 text-sm mt-2">
+                        {/* @ts-ignore */}
                         {errors.name?.message}
                       </p>
                     )}
@@ -556,6 +561,7 @@ export const VerifyProperty: FC<IProps> = ({ setIsOpen, property }) => {
                     />
                     {errors.email?.message && (
                       <p className="text-red-500 text-sm mt-2">
+                        {/* @ts-ignore */}
                         {errors.email?.message}
                       </p>
                     )}
@@ -574,6 +580,7 @@ export const VerifyProperty: FC<IProps> = ({ setIsOpen, property }) => {
                     />
                     {errors.phone?.message && (
                       <p className="text-red-500 text-sm mt-2">
+                        {/* @ts-ignore */}
                         {errors.phone?.message}
                       </p>
                     )}

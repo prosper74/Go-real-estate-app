@@ -35,18 +35,19 @@ export default function RentSingle({ data }: IProps) {
       <main className="px-4 mx-auto my-24 sm:!px-10 lg:!px-32">
         <Breadcrumb category="Rent" property={property.Title} />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-0 sm:gap-6 mt-6">
-            {/* main properties  */}
-            <div className="col-span-2">
-              {/* <SingleProperty property={property} /> */}
-            </div>
-
-            {/* SideBar  */}
-            <div className="">
-              {formData.map((d) => (
-                <SidebarCard key={d.id} data={d} property={property} />
-              ))}
-            </div>
+          {/* main properties  */}
+          <div className="col-span-2">
+            Main Properties
+            {/* <SingleProperty property={property} /> */}
           </div>
+
+          {/* SideBar  */}
+          <div className="">
+            {formData.map((d) => (
+              <SidebarCard key={d.id} data={d} property={property} />
+            ))}
+          </div>
+        </div>
       </main>
     </>
   );

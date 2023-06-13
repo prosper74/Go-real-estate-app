@@ -8,7 +8,7 @@ export const formData = [
   },
   {
     id: 2,
-    heading: 'Inspect A Property',
+    heading: 'Inspect Property',
     description: 'Would you like to make a request to inspect this property.',
     button: 'Inspect',
   },
