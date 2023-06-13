@@ -330,11 +330,13 @@ export const SortIcon = ({ width, height, fill }) => {
   );
 };
 
-export const CalendarIcon = ({ width, height, fill }) => {
+export const CalendarIcon = ({
+  dimensions = "w-5 h-5",
+  fill = "currentColor",
+}) => {
   return (
     <svg
-      width={width}
-      height={height}
+      className={dimensions}
       xmlns="http://www.w3.org/2000/svg"
       data-name="Layer 1"
       viewBox="0 0 24 24"

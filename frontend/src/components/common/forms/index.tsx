@@ -49,6 +49,7 @@ const PropertyFormPortal: FC<IProps> = ({
             >
               &#8203;
             </span>
+            
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"

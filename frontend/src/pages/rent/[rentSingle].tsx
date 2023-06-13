@@ -14,6 +14,7 @@ import {
   imageAnimate,
   imageAnimateRight,
 } from "@src/components/common/variants";
+import SinglePropertyBody from "@src/components/common/properties/singleProperty";
 
 interface IProps {
   data: {
@@ -49,7 +50,7 @@ export default function RentSingle({ data }: IProps) {
           {/* main properties  */}
           <motion.div className="col-span-2" variants={imageAnimate}>
             Main Properties
-            {/* <SingleProperty property={property} /> */}
+            <SinglePropertyBody property={property} />
           </motion.div>
 
           {/* SideBar  */}
