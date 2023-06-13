@@ -48,7 +48,7 @@ const SidebarCard: FC<IProps> = ({ data, property }) => {
 
   return (
     <div className="flex justify-center pb-6 sticky top-24">
-      <div className="rounded-lg shadow-md bg-purple-100 max-w-sm">
+      <div className="rounded-lg shadow-md bg-white max-w-sm">
         <div className="p-4">
           <h4 className="text-center text-gray-900 text-2xl font-medium mb-2">
             {data.heading}
@@ -59,7 +59,7 @@ const SidebarCard: FC<IProps> = ({ data, property }) => {
           <div className="flex justify-center my-6">
             <button
               onClick={() => handleModal(data.button)}
-              className="flex justify-center shadow-lg py-2 px-6 mt-3 sm:mt-0 sm:-ml-4 font-heading font-medium tracking-tighter text-xl text-white text-center bg-purple-600 focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 hover:bg-purple-900 rounded-xl"
+              className="flex justify-center shadow-lg py-2 px-6 mt-3 sm:mt-0 sm:-ml-4 font-heading font-medium tracking-tighter text-xl text-white text-center bg-primary rounded-xl"
             >
               {data.button}
             </button>

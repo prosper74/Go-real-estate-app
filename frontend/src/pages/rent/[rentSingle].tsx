@@ -1,5 +1,6 @@
 import Head from "next/head";
 import axios from "axios";
+import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { setTemplateData } from "@src/store/reducers/templateDataReducer";
 import Breadcrumb from "@src/components/common/layouts/breadcrumb";
@@ -9,6 +10,10 @@ import {
   SingleProperty,
   TemplateData,
 } from "@src/components/common/interfaces";
+import {
+  imageAnimate,
+  imageAnimateRight,
+} from "@src/components/common/variants";
 
 interface IProps {
   data: {
@@ -32,23 +37,29 @@ export default function RentSingle({ data }: IProps) {
         <meta content="View all ads of properties that are to be sold" />
       </Head>
 
-      <main className="px-4 mx-auto my-24 sm:!px-10 lg:!px-32">
+      <motion.main className="px-4 mx-auto my-24 sm:!px-10 lg:!px-32">
         <Breadcrumb category="Rent" property={property.Title} />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 sm:gap-6 mt-6">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-0 sm:gap-6 mt-6"
+          initial={"offscreen"}
+          whileInView={"onscreen"}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ staggerChildren: 0.5 }}
+        >
           {/* main properties  */}
-          <div className="col-span-2">
+          <motion.div className="col-span-2" variants={imageAnimate}>
             Main Properties
             {/* <SingleProperty property={property} /> */}
-          </div>
+          </motion.div>
 
           {/* SideBar  */}
-          <div className="">
+          <motion.div variants={imageAnimateRight}>
             {formData.map((d) => (
               <SidebarCard key={d.id} data={d} property={property} />
             ))}
-          </div>
-        </div>
-      </main>
+          </motion.div>
+        </motion.div>
+      </motion.main>
     </>
   );
 }
