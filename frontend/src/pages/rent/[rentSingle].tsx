@@ -3,6 +3,8 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setTemplateData } from "@src/store/reducers/templateDataReducer";
 import Breadcrumb from "@src/components/common/layouts/breadcrumb";
+import { formData } from "@src/components/common/properties/sidebarData";
+import SidebarCard from "@src/components/common/properties/sidebarCard";
 import {
   SingleProperty,
   TemplateData,
@@ -32,7 +34,19 @@ export default function RentSingle({ data }: IProps) {
 
       <main className="px-4 mx-auto my-24 sm:!px-10 lg:!px-32">
         <Breadcrumb category="Rent" property={property.Title} />
-        <div className="my-6">Rent</div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 sm:gap-6 mt-6">
+            {/* main properties  */}
+            <div className="col-span-2">
+              {/* <SingleProperty property={property} /> */}
+            </div>
+
+            {/* SideBar  */}
+            <div className="">
+              {formData.map((d) => (
+                <SidebarCard key={d.id} data={d} property={property} />
+              ))}
+            </div>
+          </div>
       </main>
     </>
   );
