@@ -28,7 +28,6 @@ export default function RentSingle({ data }: IProps) {
   const property = data.property;
   const templateData = data.templateData;
   dispatch(setTemplateData({ templateData }));
-  console.log("property:", property);
 
   return (
     <>
@@ -49,7 +48,6 @@ export default function RentSingle({ data }: IProps) {
         >
           {/* main properties  */}
           <motion.div className="col-span-2" variants={imageAnimate}>
-            Main Properties
             <SinglePropertyBody property={property} />
           </motion.div>
 

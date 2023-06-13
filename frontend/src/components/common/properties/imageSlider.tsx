@@ -1,16 +1,17 @@
-import { useState, FC } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { useIsXLarge } from '../hooks/mediaQuery';
-import { SingleProperty } from '../interfaces';
+import { useState, FC } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { useIsXLarge } from "../hooks/mediaQuery";
+import { SingleProperty } from "../interfaces";
 
 // Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/free-mode';
-import 'swiper/css/navigation';
-import 'swiper/css/thumbs';
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/navigation";
+import "swiper/css/thumbs";
 
 // import required modules
-import SwiperCore, { FreeMode, Navigation, Thumbs } from 'swiper';
+import SwiperCore, { FreeMode, Navigation, Thumbs } from "swiper";
+import Image from "next/image";
 
 interface IProps {
   property: SingleProperty;
@@ -18,6 +19,7 @@ interface IProps {
 
 const ImageSlider: FC<IProps> = ({ property }) => {
   const images = property.Images;
+  console.log("Images", images);
   const isXLarge = useIsXLarge();
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperCore>();
   return (
@@ -30,10 +32,14 @@ const ImageSlider: FC<IProps> = ({ property }) => {
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper2"
       >
-        {images.map((image) => (
-          <SwiperSlide key={image.id} className="relative">
-            <img
-              src={image.url}
+        {images.map((image, i) => (
+          <SwiperSlide key={i} className="relative">
+            <Image
+              // @ts-ignore
+              src={image}
+              alt="property images"
+              width={500}
+              height={500}
               className="mb-2 rounded-xl shadow-md w-full h-127 md:h-128 object-cover"
             />
             <div className="absolute left-0 top-0 z-[100] bg-purple-500 text-white py-1 px-2 rounded-xl">
@@ -42,7 +48,8 @@ const ImageSlider: FC<IProps> = ({ property }) => {
           </SwiperSlide>
         ))}
       </Swiper>
-      <Swiper
+
+      {/* <Swiper
         onSwiper={setThumbsSwiper}
         loop={true}
         spaceBetween={5}
@@ -68,7 +75,7 @@ const ImageSlider: FC<IProps> = ({ property }) => {
             />
           </SwiperSlide>
         ))}
-      </Swiper>
+      </Swiper> */}
     </>
   );
 };

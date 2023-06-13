@@ -1,6 +1,12 @@
 import React, { FC } from "react";
 import { SingleProperty } from "@src/components/common/interfaces";
-import { BedIcon, HomeIcon, ShowerIcon } from "../svgIcons";
+import {
+  BedIcon,
+  HelpIcon,
+  HomeIcon,
+  LocationIcon,
+  ShowerIcon,
+} from "../svgIcons";
 
 interface IProps {
   property: SingleProperty;
@@ -9,6 +15,18 @@ interface IProps {
 export const PropertyMeta: FC<IProps> = ({ property }) => {
   return (
     <>
+      <p className="flex items-center gap-3 mb-4">
+        <span className="flex items-center gap-1">
+          <HelpIcon />
+          {property.Type}
+        </span>
+        |
+        <span className="flex items-center gap-1">
+          <LocationIcon dimensions="w-5 h-5" />
+          {property.City}, {property.State}
+        </span>
+      </p>
+
       <ul className="flex flex-col sm:flex-row items-start sm:items-center my-1 space-x-1 text-base font-normal leading-4 mb-3">
         {property.Bedroom && (
           <li className="flex flex-row items-center gap-1">

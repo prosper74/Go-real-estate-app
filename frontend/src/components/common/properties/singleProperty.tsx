@@ -3,7 +3,6 @@ import ImageSlider from './imageSlider';
 import { PropertyMeta } from './propertyMeta';
 import { timeSince } from '@src/components/common/dateFunction';
 import AgentCard from './agentCard';
-import SingleTab from '@src/components/common/properties/tab/singleTab';
 import { RelatedPropertiesSlide } from './relatedProperties';
 import { SingleProperty } from '../interfaces';
 import { CalendarIcon } from '../svgIcons';
@@ -14,6 +13,7 @@ interface IProps {
 
 const SinglePropertyBody: FC<IProps> = ({ property }) => {
   const propertyAgent = property.User;
+
   return (
     <section className="mb-6">
       {/* Property Image Slide */}
@@ -25,7 +25,7 @@ const SinglePropertyBody: FC<IProps> = ({ property }) => {
       <PropertyMeta property={property} />
       <ul className="flex items-center my-1 space-x-1 text-lg font-normal leading-4 text-coolGray-500">
         <li>
-          <CalendarIcon dimensions='w-6 h-6' fill="#9932cc" />
+          <CalendarIcon dimensions='w-5 h-5' fill="#9932cc" />
         </li>
         <li>
           <span className="font-medium">Added: </span>{' '}
@@ -36,10 +36,14 @@ const SinglePropertyBody: FC<IProps> = ({ property }) => {
         ₦{Number(property.Price).toLocaleString()}
         {property.Duration ? `/${property.Duration}` : ''}
       </h3>
-      <AgentCard agent={propertyAgent} />
-      <SingleTab property={property} />
-      <h3 className="text-3xl font-medium">Related Properties</h3>
-      <RelatedPropertiesSlide propertyType={property.Type} />
+
+      {/* <AgentCard agent={propertyAgent} /> */}
+
+      <h3 className="text-3xl font-medium">Description</h3>
+      <p className="text-lg">{property.Description}</p>
+
+      <h3 className="text-3xl font-medium my-4">Related Properties</h3>
+      {/* <RelatedPropertiesSlide propertyType={property.Type} /> */}
     </section>
   );
 };
