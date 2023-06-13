@@ -13,7 +13,7 @@ interface IProps {
   setIsOpen: (open: boolean) => void;
 }
 
-const schema = z.object({
+const inspectionFormSchema = z.object({
   name: z.string().min(5, { message: 'Name must be at at least 5 characters' }),
   email: z.string().email().nonempty({ message: 'Invalid email' }),
   phone: z.string().regex(/^[0]\d{10}$/, 'Phone number must be 11 digits'),  
@@ -33,7 +33,7 @@ export const InspectProperty: FC<IProps> = ({ setIsOpen, property }) => {
     formState: { errors },
   } = useForm({
     mode: 'onChange',
-    resolver: zodResolver(schema),
+    resolver: zodResolver(inspectionFormSchema),
   });
 
   const onSubmit = handleSubmit((data: any) => {
