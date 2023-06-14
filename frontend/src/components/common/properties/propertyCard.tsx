@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Badge } from "flowbite-react";
 import { HelpIcon, LocationIcon } from "../svgIcons";
 import { SingleProperty } from "../interfaces";
 import { PropertyCardMeta } from "./propertyMeta";
@@ -8,7 +9,7 @@ interface IProps {
   fixed?: boolean;
 }
 
-export default function PropertyCard({ property, fixed=false }: IProps) {
+export default function PropertyCard({ property, fixed = false }: IProps) {
   return (
     <Link
       href={
@@ -23,12 +24,18 @@ export default function PropertyCard({ property, fixed=false }: IProps) {
     >
       <div className="background-effect"></div>
       <img
-        className={`w-full sm:w-[40%] h-[220px] sm:h-full sm:rounded-none sm:rounded-l-lg object-cover ${fixed && "sm:w-full sm:h-[220px]"}`}
+        className={`w-full sm:w-[40%] h-[220px] sm:h-full sm:rounded-none sm:rounded-l-lg object-cover ${
+          fixed && "sm:w-full sm:h-[220px]"
+        }`}
         // @ts-ignore
         src={property.Images[0]}
         alt="Property Image"
       />
       <div className="p-4 md:pr-10">
+        <span className="bg-primary rounded-lg pt-[1px] pb-[3px] px-[8px] text-white italics">
+          {property.Category.Title}
+        </span>
+
         <h3 className="text-xl md:text-2xl font-bold tracking-tight">
           {property.Title}
         </h3>
