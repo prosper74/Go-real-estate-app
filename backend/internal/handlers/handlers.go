@@ -164,6 +164,24 @@ func (m *Repository) SingleProperty(w http.ResponseWriter, r *http.Request) {
 	w.Write(resp)
 }
 
+func (m *Repository) PropertiesRelatedByType(w http.ResponseWriter, r *http.Request) {
+	propertyType := r.URL.Query().Get("type")
+
+	property, err := m.DB.GetPropertyByType(propertyType)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	data := make(map[string]interface{})
+	data["property"] = property
+
+	out, _ := json.MarshalIndent(data, "", "    ")
+
+	resp := []byte(out)
+	w.Write(resp)
+}
+
 func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]interface{})
 	data["CSRFToken"] = nosurf.Token(r)
