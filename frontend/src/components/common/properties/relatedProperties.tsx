@@ -1,19 +1,20 @@
-import React, { FC, useEffect, useState } from 'react';
-import axios from 'axios';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import PropertyCard from './propertyCard';
+import React, { FC, useEffect, useState } from "react";
+import axios from "axios";
+import { Swiper, SwiperSlide } from "swiper/react";
+import PropertyCard from "./propertyCard";
 import {
   useIsLarge,
   useIsXLarge,
-} from '@src/components/common/hooks/mediaQuery';
+} from "@src/components/common/hooks/mediaQuery";
+import { SingleProperty } from "../interfaces";
 
 // Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 // install Swiper modules
-import SwiperCore, { Autoplay, Pagination, Navigation } from 'swiper';
+import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
 
 SwiperCore.use([Pagination, Navigation, Autoplay]);
 
@@ -29,6 +30,7 @@ export const RelatedPropertiesSlide: FC<IProps> = ({ propertyType }) => {
       .get(`${process.env.NEXT_PUBLIC_REST_API}/property?type=${propertyType}`)
       .then((response) => {
         setProperties(response.data);
+        console.log("Response:", response)
       })
       .catch((error) => {
         console.error(error);
@@ -49,11 +51,22 @@ export const RelatedPropertiesSlide: FC<IProps> = ({ propertyType }) => {
           disableOnInteraction: true,
         }}
       >
-        {properties.map((property) => (
-          <SwiperSlide key={property.id} className="my-6">
+        {properties.length > 0 ? (
+          properties.map((property: SingleProperty) => (
+            <SwiperSlide key={property.ID} className="my-6">
+              <PropertyCard property={property} />
+            </SwiperSlide>
+          ))
+        ) : (
+          <SwiperSlide className="my-1">
+            <h3>No Related Properties Item Found</h3>
+          </SwiperSlide>
+        )}
+        {/* {properties.map((property: SingleProperty) => (
+          <SwiperSlide key={property.ID} className="my-6">
             <PropertyCard property={property} />
           </SwiperSlide>
-        ))}
+        ))} */}
       </Swiper>
     </div>
   );

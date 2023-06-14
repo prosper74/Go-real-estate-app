@@ -7,10 +7,19 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/prosper74/real-estate-app/internal/config"
 	"github.com/prosper74/real-estate-app/internal/handlers"
+	"github.com/rs/cors"
 )
 
 func routes(app *config.AppConfig) http.Handler {
 	mux := chi.NewRouter()
+	
+
+	mux.Use(cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:3000"},
+		AllowCredentials: true,
+		// Enable Debugging for testing, consider disabling in production
+		Debug: true,
+	}).Handler)
 
 	// Add all our middlewares here
 	mux.Use(middleware.Recoverer)
