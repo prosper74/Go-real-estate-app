@@ -20,22 +20,29 @@ SwiperCore.use([Pagination, Navigation, Autoplay]);
 
 interface IProps {
   propertyType: string;
+  propertyId: number;
 }
 
-export const RelatedPropertiesSlide: FC<IProps> = ({ propertyType }) => {
+export const RelatedPropertiesSlide: FC<IProps> = ({
+  propertyType,
+  propertyId,
+}) => {
   const [properties, setProperties] = useState<any[]>([]);
 
   useEffect(() => {
     axios
       .get(`${process.env.NEXT_PUBLIC_REST_API}/property?type=${propertyType}`)
       .then((response) => {
-        setProperties(response.data);
-        console.log("Response:", response)
+        setProperties(response.data.properties);
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
+
+  const filteredProperties = properties.filter(
+    (property) => property.ID !== propertyId
+  );
 
   const isLarge = useIsLarge();
   const isXLarge = useIsXLarge();
@@ -44,17 +51,21 @@ export const RelatedPropertiesSlide: FC<IProps> = ({ propertyType }) => {
     <div>
       <Swiper
         slidesPerView={isXLarge ? 3 : isLarge ? 2 : 1}
-        spaceBetween={2}
+        spaceBetween={15}
+        modules={[Pagination, Autoplay]}
         loop={true}
         autoplay={{
-          delay: 4000,
+          delay: 5000,
           disableOnInteraction: true,
         }}
       >
-        {properties.length > 0 ? (
-          properties.map((property: SingleProperty) => (
-            <SwiperSlide key={property.ID} className="my-6">
-              <PropertyCard property={property} />
+        {filteredProperties.length > 0 ? (
+          filteredProperties.map((property: SingleProperty) => (
+            <SwiperSlide
+              key={property.ID}
+              className="my-6 bg-white rounded-lg shadow-lg"
+            >
+              <PropertyCard property={property} fixed={true} />
             </SwiperSlide>
           ))
         ) : (
@@ -62,11 +73,6 @@ export const RelatedPropertiesSlide: FC<IProps> = ({ propertyType }) => {
             <h3>No Related Properties Item Found</h3>
           </SwiperSlide>
         )}
-        {/* {properties.map((property: SingleProperty) => (
-          <SwiperSlide key={property.ID} className="my-6">
-            <PropertyCard property={property} />
-          </SwiperSlide>
-        ))} */}
       </Swiper>
     </div>
   );

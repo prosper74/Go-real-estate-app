@@ -5,9 +5,10 @@ import { PropertyCardMeta } from "./propertyMeta";
 
 interface IProps {
   property: SingleProperty;
+  fixed?: boolean;
 }
 
-export default function PropertyCard({ property }: IProps) {
+export default function PropertyCard({ property, fixed=false }: IProps) {
   return (
     <Link
       href={
@@ -18,11 +19,11 @@ export default function PropertyCard({ property }: IProps) {
             )}&id=${property.ID}`
           : ""
       }
-      className="card items-center rounded-lg sm:flex h-auto"
+      className={`card rounded-lg sm:flex h-auto ${fixed && "sm:flex-col"}`}
     >
       <div className="background-effect"></div>
       <img
-        className="w-full sm:w-[40%] h-[220px] sm:h-full sm:rounded-none sm:rounded-l-lg object-cover"
+        className={`w-full sm:w-[40%] h-[220px] sm:h-full sm:rounded-none sm:rounded-l-lg object-cover ${fixed && "sm:w-full sm:h-[220px]"}`}
         // @ts-ignore
         src={property.Images[0]}
         alt="Property Image"

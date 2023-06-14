@@ -43,7 +43,7 @@ const SinglePropertyBody: FC<IProps> = ({ property }) => {
       <p className="text-lg">{property.Description}</p>
 
       <h3 className="text-3xl font-medium my-6">Related Properties</h3>
-      <RelatedPropertiesSlide propertyType={property.Type} />
+      <RelatedPropertiesSlide propertyType={property.Type} propertyId={property.ID} />
     </section>
   );
 };
