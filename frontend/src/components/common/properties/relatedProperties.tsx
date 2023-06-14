@@ -45,7 +45,7 @@ export const RelatedPropertiesSlide: FC<IProps> = ({ propertyType }) => {
         spaceBetween={2}
         loop={true}
         autoplay={{
-          delay: 3000,
+          delay: 4000,
           disableOnInteraction: true,
         }}
       >
