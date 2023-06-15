@@ -56,7 +56,7 @@ export const PropertyMeta: FC<IProps> = ({ property }) => {
 export const PropertyCardMeta: FC<IProps> = ({ property }) => {
   return (
     <>
-      <ul className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+      <ul className="flex flex-col sm:flex-row items-start sm:items-center my-1 gap-4 text-base font-normal leading-4 mb-3">
         {property.Bedroom && (
           <li className="flex items-center gap-1">
             <BedIcon dimensions="w-5 h-5" />

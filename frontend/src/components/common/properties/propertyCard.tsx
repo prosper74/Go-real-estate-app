@@ -6,9 +6,14 @@ import { PropertyCardMeta } from "./propertyMeta";
 interface IProps {
   property: SingleProperty;
   fixed?: boolean;
+  source?: string;
 }
 
-export default function PropertyCard({ property, fixed = false }: IProps) {
+export default function PropertyCard({
+  property,
+  fixed = false,
+  source = "",
+}: IProps) {
   return (
     <Link
       href={
@@ -50,6 +55,8 @@ export default function PropertyCard({ property, fixed = false }: IProps) {
             {property.City}, {property.State}
           </span>
         </p>
+
+        {source === "home page" && <p className="my-4 hidden lg:block">{property.Description.substring(0, 50)}... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero eligendi nulla dicta tenetur culpa aut ut dolor..</p>}
 
         <PropertyCardMeta property={property} />
 
