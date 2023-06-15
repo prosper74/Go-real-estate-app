@@ -56,7 +56,11 @@ export default function PropertyCard({
           </span>
         </p>
 
-        {source === "home page" && <p className="my-4 hidden lg:block">{property.Description.substring(0, 50)}... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero eligendi nulla dicta tenetur culpa aut ut dolor..</p>}
+        {source === "home page" && (
+          <p className="my-4 hidden lg:block">
+            {property.Description.substring(0, 50)}...
+          </p>
+        )}
 
         <PropertyCardMeta property={property} />
 
