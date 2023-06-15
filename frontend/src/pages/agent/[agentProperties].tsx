@@ -7,12 +7,14 @@ interface IProps {
   agent: UserProps;
 }
 
-export default function AgentProperties({ agent }: IProps) {
-  // const pageTitle = `Agent | ${agent.FirstName} ${agent.LastName}`;
+export default function AgentProperties({ properties }: IProps) {
+  //@ts-ignore
+  const agent = properties[0].User
+  const pageTitle = `Agent | ${agent.FirstName} ${agent.LastName}`;
   return (
     <>
       <Head>
-        {/* <title>{pageTitle}</title> */}
+        <title>{pageTitle}</title>
         <link rel="icon" href="/favicon.png" />
         <meta
           content={`View all ads of properties posted by ${agent.FirstName}`}
@@ -47,12 +49,13 @@ export default function AgentProperties({ agent }: IProps) {
 export async function getServerSideProps(context: any) {
   const { id } = context.query;
 
-  // const res = await axios.get(`${process.env.NEXT_PUBLIC_REST_API}/user/${id}`);
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_REST_API}/user?id=${id}`);
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_REST_API}/user?id=${id}`
+  );
 
   return {
     props: {
-      agent: res.data.properties,
+      properties: res.data.properties,
     },
   };
 }
