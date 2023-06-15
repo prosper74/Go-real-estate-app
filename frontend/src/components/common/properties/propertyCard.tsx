@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Badge } from "flowbite-react";
 import { HelpIcon, LocationIcon } from "../svgIcons";
 import { SingleProperty } from "../interfaces";
 import { PropertyCardMeta } from "./propertyMeta";
