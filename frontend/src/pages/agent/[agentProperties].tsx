@@ -48,11 +48,11 @@ export async function getServerSideProps(context: any) {
   const { id } = context.query;
 
   // const res = await axios.get(`${process.env.NEXT_PUBLIC_REST_API}/user/${id}`);
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_REST_API}/rent/8`);
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_REST_API}/user?id=${id}`);
 
   return {
     props: {
-      agent: res.data,
+      agent: res.data.properties,
     },
   };
 }
