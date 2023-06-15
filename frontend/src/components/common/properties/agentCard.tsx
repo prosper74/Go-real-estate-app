@@ -81,7 +81,7 @@ const AgentCard: FC<IProps> = ({ agent }) => {
                 <Image
                   src={agent.Image ? agent.Image : "/logo.svg"}
                   alt="logo"
-                  width={129}
+                  width={120}
                   height={120}
                   className="w-24 h-24 mt-6 rounded-full object-cover"
                 />
@@ -111,7 +111,7 @@ const AgentCard: FC<IProps> = ({ agent }) => {
                   <Link
                     href={
                       agent.FirstName
-                        ? `/agent/${agent.FirstName.toLowerCase().replace(
+                        ? `/agent/user?name=${agent.FirstName.toLowerCase().replace(
                             / /g,
                             "-"
                           )}&id=${agent.ID}`
