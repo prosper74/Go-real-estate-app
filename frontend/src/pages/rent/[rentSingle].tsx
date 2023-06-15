@@ -29,7 +29,7 @@ export default function RentSingle({ data }: IProps) {
   const templateData = data.templateData;
   dispatch(setTemplateData({ templateData }));
 
-  const pageTitle = `Rent | ${property.Title}`
+  const pageTitle = `${property.Category.Title} | ${property.Title}`
 
   return (
     <>
@@ -40,7 +40,7 @@ export default function RentSingle({ data }: IProps) {
       </Head>
 
       <motion.main className="px-4 mx-auto my-24 sm:!px-10 lg:!px-32">
-        <Breadcrumb category="Rent" property={property.Title} />
+        <Breadcrumb category={property.Category.Title} property={property.Title} />
         <motion.div
           className="grid grid-cols-1 md:grid-cols-3 gap-0 sm:gap-6 mt-6"
           initial={"offscreen"}
