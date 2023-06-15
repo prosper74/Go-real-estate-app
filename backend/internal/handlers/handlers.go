@@ -167,7 +167,7 @@ func (m *Repository) SingleProperty(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) PropertiesRelatedByType(w http.ResponseWriter, r *http.Request) {
 	propertyType := r.URL.Query().Get("type")
 
-	properties, err := m.DB.GetPropertyByType(propertyType)
+	properties, err := m.DB.GetPropertiesByType(propertyType)
 	if err != nil {
 		helpers.ServerError(w, err)
 		return

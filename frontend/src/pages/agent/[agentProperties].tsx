@@ -56,32 +56,3 @@ export async function getServerSideProps(context: any) {
     },
   };
 }
-
-// export async function getServerSideProps({ params }: any) {
-//   const agentProperties = params.agentProperties;
-//   const agentPropertiesId = agentProperties.slice(agentProperties.length - 24);
-
-//   const properties = await axios
-//     .get(
-//       `${process.env.NEXT_PUBLIC_REST_API}/adverts?users_permissions_user=${agentPropertiesId}`
-//     )
-//     .then((response) => response.data)
-//     .catch((err) => {
-//       console.error(err);
-//     });
-
-//   const agent = await axios
-//     .get(`${process.env.NEXT_PUBLIC_REST_API}/users?id=${agentPropertiesId}`)
-//     .then((response) => response.data)
-//     .catch((err) => {
-//       console.error(err);
-//     });
-
-//   return {
-//     props: {
-//       agentProperties,
-//       properties,
-//       agent: agent[0],
-//     },
-//   };
-// }

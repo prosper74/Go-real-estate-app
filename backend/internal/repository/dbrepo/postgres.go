@@ -438,8 +438,8 @@ func (m *postgresDBRepo) GetPropertyByID(id int) (models.Property, error) {
 	return property, nil
 }
 
-// Get a property by type
-func (m *postgresDBRepo) GetPropertyByType(propertyType string) ([]models.Property, error) {
+// Get a properties by property by type
+func (m *postgresDBRepo) GetPropertiesByType(propertyType string) ([]models.Property, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -484,6 +484,78 @@ func (m *postgresDBRepo) GetPropertyByType(propertyType string) ([]models.Proper
 			&property.UpdatedAt,
 			&property.User.ID,
 			&property.User.FirstName,
+			&property.Category.ID,
+			&property.Category.Title,
+		)
+
+		// Convert the array string to a string slice using the function
+		property.Images = helpers.ConvertPostgresArrayToStringSlice(imagesArrayString)
+
+		if err != nil {
+			return properties, err
+		}
+		properties = append(properties, property)
+	}
+
+	if err = rows.Err(); err != nil {
+		return properties, err
+	}
+
+	return properties, nil
+}
+
+// Get a property by type
+func (m *postgresDBRepo) GetUserPropertiesByID(userID string) ([]models.Property, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	var properties []models.Property
+
+	query := `select p.id, p.title, p.description, p.price, p.type, p.duration, p.size, p.city, p.state, p.bedroom, p.bathroom, p.featured, p.status, p.images, p.category_id, p.user_id, p.created_at, p.updated_at,
+	u.id, u.first_name, u.last_name, u.email, u.phone, u.verified, u.image, u.created_at, c.id, c.title
+	from properties p
+	left join users u on (p.user_id = u.id)
+	left join categories c on (p.category_id = c.id)
+	where u.id = $1
+	order by p.created_at asc`
+
+	rows, err := m.DB.QueryContext(ctx, query, userID)
+	if err != nil {
+		return properties, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var property models.Property
+		var imagesArrayString string
+
+		err := rows.Scan(
+			&property.ID,
+			&property.Title,
+			&property.Description,
+			&property.Price,
+			&property.Type,
+			&property.Duration,
+			&property.Size,
+			&property.City,
+			&property.State,
+			&property.Bedroom,
+			&property.Bathroom,
+			&property.Featured,
+			&property.Status,
+			&imagesArrayString,
+			&property.CategoryID,
+			&property.UserID,
+			&property.CreatedAt,
+			&property.UpdatedAt,
+			&property.User.ID,
+			&property.User.FirstName,
+			&property.User.LastName,
+			&property.User.Email,
+			&property.User.Phone,
+			&property.User.Verified,
+			&property.User.Image,
+			&property.User.CreatedAt,
 			&property.Category.ID,
 			&property.Category.Title,
 		)

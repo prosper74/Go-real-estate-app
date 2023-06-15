@@ -11,5 +11,6 @@ type DatabaseRepo interface {
 	AllRentProperties() ([]models.Property, error)
 	AllShortletProperties() ([]models.Property, error)
 	GetPropertyByID(id int) (models.Property, error)
-	GetPropertyByType(propertyType string) ([]models.Property, error)
+	GetPropertiesByType(propertyType string) ([]models.Property, error)
+	GetUserPropertiesByID(userID string) ([]models.Property, error)
 }
