@@ -1,8 +1,13 @@
 import Head from "next/head";
-import { SingleProperty, UserProps } from "@src/components/common/interfaces";
 import axios from "axios";
+import { motion } from "framer-motion";
 import PropertyCard from "@src/components/common/properties/propertyCard";
 import AgentSidebar from "@src/components/common/agent/agentSidebar";
+import { SingleProperty, UserProps } from "@src/components/common/interfaces";
+import {
+  imageAnimate,
+  imageAnimateRight,
+} from "@src/components/common/variants";
 
 interface IProps {
   properties: SingleProperty;
@@ -24,14 +29,23 @@ export default function AgentProperties({ properties }: IProps) {
       </Head>
 
       <main className="px-4 mx-auto my-28 sm:!px-10 lg:!px-32">
-        <div className="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
+        <motion.div
+          className="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 gap-6"
+          initial={"offscreen"}
+          whileInView={"onscreen"}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ staggerChildren: 0.5 }}
+        >
           {/* agent sidebar */}
-          <div>
+          <motion.div variants={imageAnimate}>
             <AgentSidebar agent={agent} totalCount={properties.length} />
-          </div>
+          </motion.div>
 
           {/* Agent Properties  */}
-          <div className="col-span-2 lg:col-span-2 2xl:col-span-3">
+          <motion.div
+            className="col-span-2 lg:col-span-2 2xl:col-span-3"
+            variants={imageAnimateRight}
+          >
             <div className="grid gap-6">
               {properties.map((property: SingleProperty) => (
                 <PropertyCard
@@ -41,8 +55,8 @@ export default function AgentProperties({ properties }: IProps) {
                 />
               ))}
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </main>
     </>
   );
