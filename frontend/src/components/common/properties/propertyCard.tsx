@@ -6,13 +6,13 @@ import { PropertyCardMeta } from "./propertyMeta";
 interface IProps {
   property: SingleProperty;
   fixed?: boolean;
-  source?: string;
+  showDescription?: boolean;
 }
 
 export default function PropertyCard({
   property,
   fixed = false,
-  source = "",
+  showDescription = false,
 }: IProps) {
   return (
     <Link
@@ -56,7 +56,7 @@ export default function PropertyCard({
           </span>
         </p>
 
-        {source === "home page" && (
+        {showDescription && (
           <p className="my-4 hidden lg:block">
             {property.Description.substring(0, 50)}...
           </p>

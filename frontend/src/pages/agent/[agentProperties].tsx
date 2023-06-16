@@ -10,7 +10,7 @@ interface IProps {
 
 export default function AgentProperties({ properties }: IProps) {
   //@ts-ignore
-  const agent = properties[0].User
+  const agent = properties[0].User;
   const pageTitle = `Agent | ${agent.FirstName} ${agent.LastName}`;
   return (
     <>
@@ -22,23 +22,24 @@ export default function AgentProperties({ properties }: IProps) {
         />
       </Head>
 
-      <main className="px-4 mx-auto my-24 sm:!px-10 lg:!px-32">
-        <div className="sm:container xs:px-4 md:px-6 xl:px-32 mx-auto bg-white">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-0 sm:gap-4 mt-6">
-            {/* agent sidebar */}
-            <div>
-              Agent SideBar
-              {/* <AgentSidebar agent={agent} totalCount={properties.length} /> */}
-            </div>
+      <main className="px-4 mx-auto my-28 sm:!px-10 lg:!px-32">
+        <div className="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
+          {/* agent sidebar */}
+          <div>
+            Agent SideBar
+            {/* <AgentSidebar agent={agent} totalCount={properties.length} /> */}
+          </div>
 
-            {/* Agent Properties  */}
-            <div className="col-span-2 sm:col-span-1 lg:col-span-2 2xl:col-span-3">
-              <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 2xl:gap-1 mb-32">
-                {properties.map((property: SingleProperty) => (
-                  <PropertyCard key={property.ID} property={property} fixed={true} />
-                ))}
-                Agent Properties
-              </div>
+          {/* Agent Properties  */}
+          <div className="col-span-2 lg:col-span-2 2xl:col-span-3">
+            <div className="grid gap-6">
+              {properties.map((property: SingleProperty) => (
+                <PropertyCard
+                  key={property.ID}
+                  property={property}
+                  showDescription={true}
+                />
+              ))}
             </div>
           </div>
         </div>
