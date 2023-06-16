@@ -2,6 +2,7 @@ import Head from "next/head";
 import { SingleProperty, UserProps } from "@src/components/common/interfaces";
 import axios from "axios";
 import PropertyCard from "@src/components/common/properties/propertyCard";
+import AgentSidebar from "@src/components/common/agent/agentSidebar";
 
 interface IProps {
   properties: SingleProperty;
@@ -26,8 +27,7 @@ export default function AgentProperties({ properties }: IProps) {
         <div className="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
           {/* agent sidebar */}
           <div>
-            Agent SideBar
-            {/* <AgentSidebar agent={agent} totalCount={properties.length} /> */}
+            <AgentSidebar agent={agent} totalCount={properties.length} />
           </div>
 
           {/* Agent Properties  */}
