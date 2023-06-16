@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { SingleProperty, UserProps } from "@src/components/common/interfaces";
 import axios from "axios";
+import PropertyCard from "@src/components/common/properties/propertyCard";
 
 interface IProps {
   properties: SingleProperty;
@@ -33,9 +34,9 @@ export default function AgentProperties({ properties }: IProps) {
             {/* Agent Properties  */}
             <div className="col-span-2 sm:col-span-1 lg:col-span-2 2xl:col-span-3">
               <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 2xl:gap-1 mb-32">
-                {/* {properties.map((property: singleProperties) => (
-                  <PropertyCard key={property.id} property={property} />
-                ))} */}
+                {properties.map((property: SingleProperty) => (
+                  <PropertyCard key={property.ID} property={property} fixed={true} />
+                ))}
                 Agent Properties
               </div>
             </div>
