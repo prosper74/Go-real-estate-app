@@ -1,12 +1,12 @@
-import React, { FC, useState } from 'react';
-import Link from 'next/link';
-import axios from 'axios';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { useDispatch } from 'react-redux';
-import { setUser } from '@src/store/reducers/userReducer';
-import { setSnackbar } from '@src/store/reducers/feedbackReducer';
+import React, { FC, useState } from "react";
+import Link from "next/link";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { useDispatch } from "react-redux";
+import { setUser } from "@src/store/reducers/userReducer";
+import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import {
   EyeIcon,
   EyeSlashIcon,
@@ -16,7 +16,7 @@ import {
   PadlockOpenIcon,
   HelpIcon,
   UserAddIcon,
-} from '@src/components/common/svgIcons';
+} from "@src/components/common/svgIcons";
 
 interface IProps {
   setIsOpen: (open: boolean) => void;
@@ -25,12 +25,12 @@ interface IProps {
 }
 
 const schema = z.object({
-  email: z.string().email().nonempty({ message: 'Invalid email' }),
+  email: z.string().email().nonempty({ message: "Invalid email" }),
   password: z
     .string()
     .regex(
       /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-      'Password must be atleast 8 characters, and must contain uppercase, lowercase, number and special character'
+      "Password must be atleast 8 characters, and must contain uppercase, lowercase, number and special character"
     ),
 });
 
@@ -41,14 +41,14 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
 
   const navigateForgotPassword = () => {
     const forgotPassword = steps.find(
-      (step: { label: string }) => step.label === 'Forgot Password'
+      (step: { label: string }) => step.label === "Forgot Password"
     );
     setSelectedStep(steps.indexOf(forgotPassword));
   };
 
   const navigateSignup = () => {
     const signUp = steps.find(
-      (step: { label: string }) => step.label === 'Sign Up'
+      (step: { label: string }) => step.label === "Sign Up"
     );
     setSelectedStep(steps.indexOf(signUp));
   };
@@ -58,7 +58,7 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     resolver: zodResolver(schema),
   });
 
@@ -79,7 +79,7 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
         );
         dispatch(
           setSnackbar({
-            status: 'success',
+            status: "success",
             message: ` Welcome Back ${response.data.user.username.toUpperCase()}`,
             open: true,
           })
@@ -89,22 +89,22 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
       })
       .catch((error) => {
         const { message } = error.response.data.message[0].messages[0];
-        if (message === 'Your account email is not confirmed') {
+        if (message === "Your account email is not confirmed") {
           dispatch(
             setSnackbar({
-              status: 'error',
-              message: message + '. Resend Email Confirmation',
+              status: "error",
+              message: message + ". Resend Email Confirmation",
               open: true,
             })
           );
           const resend = steps.find(
             (step: { label: string }) =>
-              step.label === 'Resend Email Confirmation'
+              step.label === "Resend Email Confirmation"
           );
           setSelectedStep(steps.indexOf(resend));
           setLoading(false);
         } else {
-          dispatch(setSnackbar({ status: 'error', message, open: true }));
+          dispatch(setSnackbar({ status: "error", message, open: true }));
           setLoading(false);
         }
       });
@@ -126,7 +126,7 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                   <label
                     htmlFor="email"
                     className={`font-semibold text-base pb-1 block ${
-                      errors.email ? 'text-red-500' : 'text - gray - 600'
+                      errors.email ? "text-red-500" : "text - gray - 600"
                     }`}
                   >
                     Email
@@ -135,10 +135,10 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                     id="email"
                     autoComplete="email"
                     type="text"
-                    {...register('email')}
+                    {...register("email")}
                     className={`focus:outline-gray-700 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
                       errors.email &&
-                      'border-red-500 text-red-500 focus:outline-red-500'
+                      "border-red-500 text-red-500 focus:outline-red-500"
                     }`}
                   />
                   {errors.email?.message && (
@@ -152,7 +152,7 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                   <label
                     htmlFor="password"
                     className={`font-semibold text-base pb-1 block ${
-                      errors.password ? 'text-red-500' : 'text - gray - 600'
+                      errors.password ? "text-red-500" : "text - gray - 600"
                     }`}
                   >
                     Password
@@ -161,11 +161,11 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                     <input
                       id="password"
                       autoComplete="password"
-                      type={showPassword ? 'text' : 'password'}
-                      {...register('password')}
+                      type={showPassword ? "text" : "password"}
+                      {...register("password")}
                       className={`focus:outline-gray-700 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
                         errors.password &&
-                        'border-red-500 text-red-500 focus:outline-red-500'
+                        "border-red-500 text-red-500 focus:outline-red-500"
                       }`}
                     />
                     <div
@@ -193,8 +193,8 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                   disabled={loading}
                   className={`transition duration-200 bg-purple-600 focus:bg-purple-800 focus:shadow-sm focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50 w-full py-2.5 rounded-lg text-lg shadow-sm hover:shadow-md font-semibold text-center flex justify-center items-center ${
                     loading
-                      ? 'hover:bg-purple-300 text-gray-300'
-                      : 'hover:bg-purple-700 text-white'
+                      ? "hover:bg-purple-300 text-gray-300"
+                      : "hover:bg-purple-700 text-white"
                   }`}
                 >
                   {loading ? (
@@ -221,7 +221,7 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                     type="button"
                     className="transition duration-200 border border-gray-200 text-gray-700 w-full py-2.5 rounded-lg text-base shadow-sm hover:shadow-md font-normal text-center flex items-center justify-center"
                   >
-                    <GoogleIcon width="24" height="24" />
+                    <GoogleIcon dimensions="w-6 h-6" />
                     Google
                   </button>
                 </Link>
@@ -232,7 +232,7 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                     type="button"
                     className="transition duration-200 border border-gray-200 text-gray-700 w-full py-2.5 rounded-lg text-base shadow-sm hover:shadow-md font-normal text-center flex items-center justify-center"
                   >
-                    <FacebookIcon width="24" height="24" />
+                    <FacebookIcon dimensions="w-6 h-6" />
                     Facebook
                   </button>
                 </Link>
@@ -251,6 +251,7 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                     <span className="ml-1">Forgot Password</span>
                   </button>
                 </div>
+
                 <div className="text-center sm:text-right whitespace-nowrap">
                   <button className="transition duration-200 mx-5 px-5 py-4 font-normal text-base rounded-lg text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-200 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
                     <HelpIcon />

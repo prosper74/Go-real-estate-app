@@ -99,11 +99,14 @@ export const ForwardArrowAlt = () => {
   );
 };
 
-export const GoogleIcon = ({ width, height }) => {
+export const GoogleIcon = ({
+  dimensions = "w-6 h-6",
+  fill = "currentColor",
+}) => {
   return (
     <svg
-      width={width}
-      height={height}
+      className={dimensions}
+      fill={fill}
       xmlns="http://www.w3.org/2000/svg"
       data-name="Layer 1"
       viewBox="0 0 24 24"
@@ -113,11 +116,14 @@ export const GoogleIcon = ({ width, height }) => {
   );
 };
 
-export const FacebookIcon = ({ width = 19, height = 19 }) => {
+export const FacebookIcon = ({
+  dimensions = "w-6 h-6",
+  fill = "currentColor",
+}) => {
   return (
     <svg
-      width={width}
-      height={height}
+      className={dimensions}
+      fill={fill}
       xmlns="http://www.w3.org/2000/svg"
       data-name="Layer 1"
       viewBox="0 0 24 24"
