@@ -66,6 +66,12 @@ export interface UserProps {
   UpdatedAt: string;
 }
 
+export interface StateUserProps {
+  userId: number;
+  jwt: string;
+  onboarding: boolean;
+}
+
 export interface IImageUpload {
   files: File[];
   onDrop: (acceptedFiles: File[]) => void;

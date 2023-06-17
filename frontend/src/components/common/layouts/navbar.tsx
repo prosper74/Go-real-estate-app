@@ -1,16 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { Navbar, Dropdown, Avatar } from "flowbite-react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import { Navbar, Dropdown, Avatar, Button } from "flowbite-react";
 import { MainMenu } from "./layoutData";
-// import { useSelector, RootStateOrAny } from 'react-redux';
+import { StateUserProps } from "../interfaces";
 // import AuthPortal from '@src/components/auth';
 // import LoginPopupButton from '../buttons/loginPopup';
 
+interface IProps {
+  user: StateUserProps;
+}
+
 export default function Header() {
-  // const user = useSelector((state: RootStateOrAny) => state.user);
+  const user = useSelector((state: IProps) => state.user);
   const [selectedNav, setSelectedNav] = useState("");
   // const [isOpen, setIsOpen] = useState(false);
+
+  console.log("User:", user);
 
   useEffect(() => {
     if (window.location.href.indexOf("/buy") > -1) {
@@ -40,29 +47,34 @@ export default function Header() {
         />
       </Link>
       <div className="flex md:order-2">
-        <Dropdown
-          arrowIcon={false}
-          inline={true}
-          label={
-            <Avatar
-              alt="User settings"
-              img="/logo.svg"
-              rounded={true}
-            />
-          }
-        >
-          <Dropdown.Header>
-            <span className="block text-sm">Bonnie Green</span>
-            <span className="block truncate text-sm font-medium">
-              agent@realestate.com
-            </span>
-          </Dropdown.Header>
-          <Dropdown.Item>Dashboard</Dropdown.Item>
-          <Dropdown.Item>Settings</Dropdown.Item>
-          <Dropdown.Item>Earnings</Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Item>Sign out</Dropdown.Item>
-        </Dropdown>
+        {user.userId < 1 && !user.onboarding ? (
+          <Button color="primary">Get started</Button>
+        ) : (
+          <Dropdown
+            arrowIcon={false}
+            inline={true}
+            label={
+              <Avatar
+                alt="User settings"
+                img="/avatar_icon.webp"
+                rounded={true}
+              />
+            }
+          >
+            <Dropdown.Header>
+              <span className="block text-sm">Bonnie Green</span>
+              <span className="block truncate text-sm font-medium">
+                agent@realestate.com
+              </span>
+            </Dropdown.Header>
+            <Dropdown.Item>Dashboard</Dropdown.Item>
+            <Dropdown.Item>Settings</Dropdown.Item>
+            <Dropdown.Item>Earnings</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item>Sign out</Dropdown.Item>
+          </Dropdown>
+        )}
+
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse className="ml-auto mr-6 ">
