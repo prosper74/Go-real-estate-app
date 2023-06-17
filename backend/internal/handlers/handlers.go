@@ -200,6 +200,16 @@ func (m *Repository) UserProperties(w http.ResponseWriter, r *http.Request) {
 	w.Write(resp)
 }
 
+func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+	data["CSRFToken"] = nosurf.Token(r)
+	// data["users"] = users
+	out, _ := json.MarshalIndent(data, "", "    ")
+
+	resp := []byte(out)
+	w.Write(resp)
+}
+
 func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]interface{})
 	data["CSRFToken"] = nosurf.Token(r)
