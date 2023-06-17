@@ -48,7 +48,12 @@ export default function Header() {
       </Link>
       <div className="flex md:order-2">
         {user.userId < 1 && !user.onboarding ? (
-          <Button color="primary">Get started</Button>
+          <button
+            type="button"
+            className={`transition duration-200 bg-primary text-white w-full px-2 md:px-3 md:py-1.5 rounded-lg shadow-sm hover:shadow-md text-center flex justify-center items-center`}
+          >
+            Get Started
+          </button>
         ) : (
           <Dropdown
             arrowIcon={false}
