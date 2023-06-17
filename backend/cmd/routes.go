@@ -32,6 +32,7 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/{category}/{id}", handlers.Repo.SingleProperty)
 	mux.Get("/property", handlers.Repo.PropertiesRelatedByType)
 	mux.Get("/user", handlers.Repo.UserProperties)
+	mux.Get("/login", handlers.Repo.Login)
 	mux.Get("/signup", handlers.Repo.SignUp)
 
 	return mux
