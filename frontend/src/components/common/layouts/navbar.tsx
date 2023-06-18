@@ -6,7 +6,7 @@ import { Navbar, Dropdown, Avatar } from "flowbite-react";
 import { MainMenu } from "./layoutData";
 import { StateUserProps } from "../interfaces";
 import AuthButton from "../Buttons/authButton";
-// import AuthPortal from '@src/components/auth';
+import AuthPortal from "@src/components/auth";
 
 interface IProps {
   user: StateUserProps;
@@ -16,8 +16,6 @@ export default function Header() {
   const user = useSelector((state: IProps) => state.user);
   const [selectedNav, setSelectedNav] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-
-  console.log("User:", user);
 
   useEffect(() => {
     if (window.location.href.indexOf("/buy") > -1) {
@@ -99,6 +97,9 @@ export default function Header() {
           </ul>
         </Navbar.Collapse>
       </Navbar>
+
+      {/* Auth Modal Popup */}
+      <AuthPortal isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   );
 }
