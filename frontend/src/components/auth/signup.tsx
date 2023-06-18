@@ -246,7 +246,7 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                   onClick={handleBackward}
                   className="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-base rounded-lg text-gray-500hover:text-white hover:bg-gray-200 focus:outline-none focus:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset flex items-center"
                 >
-                  <BackArrowIcon width="22" height="22" />
+                  <BackArrowIcon dimensions="w-5 h-5" />
                   <span className="inline-block ml-1">Login instead</span>
                 </button>
               </div>
