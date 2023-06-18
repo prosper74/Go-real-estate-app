@@ -14,7 +14,7 @@ import { CloseIcon, ForwardArrow } from '../svgIcons';
 import { IImageUpload, StateUserProps } from '../interfaces';
 
 interface IProps {
-  user: StateUserProps;
+  user?: StateUserProps;
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
 }
