@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
-import Lottie from 'react-lottie-player';
+import React, { FC } from "react";
+import Lottie from "react-lottie-player";
 
-import SuccessAnimation from '@src/components/common/success-animation.json';
+import SuccessAnimation from "@src/components/common/success-animation.json";
 
 interface IProps {
   setIsOpen: (open: boolean) => void;
@@ -28,7 +28,7 @@ const Complete: FC<IProps> = ({ setIsOpen }) => {
                 width: 150,
                 height: 150,
                 marginBottom: 10,
-                alignSelf: 'center',
+                alignSelf: "center",
               }}
             />
           </div>
