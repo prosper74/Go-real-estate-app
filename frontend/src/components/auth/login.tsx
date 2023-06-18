@@ -211,6 +211,7 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                 </button>
               </form>
             </div>
+            
             {/* Social Logins */}
             <div className="p-2">
               <div className="grid grid-cols-2 gap-4">
