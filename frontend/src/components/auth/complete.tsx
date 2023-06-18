@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import Lottie from "react-lottie-player";
 
 import SuccessAnimation from "@src/components/common/success-animation.json";
