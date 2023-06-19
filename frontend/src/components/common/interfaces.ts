@@ -64,12 +64,9 @@ export interface UserProps {
   Image: string;
   CreatedAt: string;
   UpdatedAt: string;
-}
-
-export interface StateUserProps {
-  userId: number;
   jwt: string;
   onboarding: boolean;
+  userId: number;
 }
 
 export interface IImageUpload {

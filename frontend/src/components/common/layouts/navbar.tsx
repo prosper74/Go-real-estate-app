@@ -4,12 +4,12 @@ import Image from "next/image";
 import { useSelector } from "react-redux";
 import { Navbar, Dropdown, Avatar } from "flowbite-react";
 import { MainMenu } from "./layoutData";
-import { StateUserProps } from "../interfaces";
+import { UserProps } from "../interfaces";
 import AuthButton from "../Buttons/authButton";
 import AuthPortal from "@src/components/auth";
 
 interface IProps {
-  user: StateUserProps;
+  user: UserProps;
 }
 
 export default function Header() {

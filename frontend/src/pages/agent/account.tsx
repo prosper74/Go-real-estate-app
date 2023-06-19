@@ -1,12 +1,11 @@
 import React, { FC, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useSelector, RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { PageLoader } from '@src/components/common/loader';
-import AccountPortal from '@src/components/common/properties/agent/accountPortal';
 
 const AccountPage: FC = () => {
-  const user = useSelector((state: RootStateOrAny) => state.user);
+  const user = useSelector((state: ) => state.user);
   const router = useRouter();
 
   useEffect(() => {

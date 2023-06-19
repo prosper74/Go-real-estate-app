@@ -11,10 +11,10 @@ import { useDropzone } from 'react-dropzone';
 import { Image } from 'cloudinary-react';
 import { setSnackbar } from '@src/store/reducers/feedbackReducer';
 import { CloseIcon, ForwardArrow } from '../svgIcons';
-import { IImageUpload, StateUserProps } from '../interfaces';
+import { IImageUpload, UserProps } from '../interfaces';
 
 interface IProps {
-  user?: StateUserProps;
+  user?: UserProps;
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
 }
