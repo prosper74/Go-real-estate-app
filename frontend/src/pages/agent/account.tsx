@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { PageLoader } from '@src/components/common/loader';
 import { UserProps } from '@src/components/common/interfaces';
+import AccountPortal from '@src/components/common/agent/accountPortal';
 
 interface IProps {
   user: UserProps;
