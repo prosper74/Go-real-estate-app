@@ -3,9 +3,16 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { PageLoader } from '@src/components/common/loader';
+import { UserProps } from '@src/components/common/interfaces';
+
+interface IProps {
+  user: UserProps;
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
+}
 
 const AccountPage: FC = () => {
-  const user = useSelector((state: ) => state.user);
+  const user = useSelector((state: IProps) => state.user);
   const router = useRouter();
 
   useEffect(() => {
@@ -19,9 +26,9 @@ const AccountPage: FC = () => {
       {user.jwt && user.onboarding ? (
         <>
           <Head>
-            <title>My account | {user.username}</title>
+            <title>My account | {user.FirstName} {user.LastName}</title>
             <link rel="icon" href="/favicon.png" />
-            <meta content={`${user.username} account page`} />
+            <meta content={`${user.FirstName} account page`} />
           </Head>
           <AccountPortal />
         </>
