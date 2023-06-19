@@ -77,7 +77,7 @@ export interface IImageUpload {
 }
 
 export interface ISearchWidget {
-  properties: SingleProperty[];
+  properties?: SingleProperty[];
   width: string;
   height: string;
   fill: string;

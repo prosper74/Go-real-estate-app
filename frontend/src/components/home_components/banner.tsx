@@ -4,11 +4,11 @@ import {
   imageAnimateTop,
   imageAnimateBottom,
 } from "@src/components/common/variants";
-import { singleProperties } from "../common/interfaces";
+import { SingleProperty } from "../common/interfaces";
 import SearchWidget from "../common/searchWidget";
 
 export default function HomeBanner() {
-  const properties: singleProperties = {};
+
   return (
     <section className="bg-purple-100 pb-8 2xl:pb-12 px-4 mx-auto sm:!px-10 lg:!px-32 overflow-hidden">
       <div className="relative rounded-b-10xl">
@@ -18,7 +18,7 @@ export default function HomeBanner() {
               className="w-full md:w-1/2 mb-24 lg:mb-0"
               initial={"offscreen"}
               whileInView={"onscreen"}
-              viewport={{ once: false, amount: 0.5 }}
+              viewport={{ once: false, amount: 0.3 }}
               transition={{ staggerChildren: 0.5 }}
             >
               <motion.p
@@ -45,7 +45,6 @@ export default function HomeBanner() {
               {/* Search widget  */}
               <motion.span variants={imageAnimateBottom}>
                 <SearchWidget
-                  properties={properties}
                   placeholder="Start here..."
                   width={""}
                   height={""}
