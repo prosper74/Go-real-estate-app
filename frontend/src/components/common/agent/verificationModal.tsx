@@ -85,7 +85,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
         },
         {
           headers: {
-            Authorization: `Bearer ${user.jwt}`,
+            Authorization: `Bearer ${user!.jwt}`,
           },
         }
       )
