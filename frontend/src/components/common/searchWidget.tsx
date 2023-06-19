@@ -38,7 +38,7 @@ const SearchWidget: FC<ISearchWidget> = ({
   return (
     <>
       {/* Search Input  */}
-      <div className="relative z-9">
+      <div className="relative z-50">
         <input
           className="w-full p-5 bg-white text-xl text-gray-500 placeholder-gray-500 outline-none rounded-xl shadow-lg"
           type="text"
@@ -60,42 +60,38 @@ const SearchWidget: FC<ISearchWidget> = ({
       {/* Search Results  */}
       <div className="relative">
         {filteredProperties.length != 0 && (
-          <div className="absolute mt-2 p-2 max-h-56 w-full bg-white shadow-lg rounded-xl overflow-hidden overflow-y-auto transition-all duration-200 z-20">
+          <div className="absolute mt-2 p-2 max-h-56 w-full bg-white shadow-lg rounded-xl overflow-hidden overflow-y-auto transition-all duration-200 z-[1000]">
             {filteredProperties.slice(0, 15).map((d: SingleProperty) => (
               <Link
+                key={d.ID}
                 href={
                   d.Title
-                    ? `/${d.Category.Title.toLowerCase()}/${d.Title.toLowerCase().replace(
-                        / /g,
-                        "-"
-                      )}&id=${d.ID}`
-                    : ""
+                  ? `/${d?.Category?.Title.toLowerCase()}/property?title=${d?.Title.toLowerCase().replace(
+                      / /g,
+                      "-"
+                    )}&id=${d.ID}`
+                  : ""
                 }
               >
-                <a>
-                  <div
-                    key={d.ID}
-                    className="my-2 p-3 hover:bg-gray-300 hover:rounded-lg grid grid-cols-4 sm:grid-cols-5"
-                  >
-                    <img
-                      // @ts-ignore
-                      src={d.Images[0]}
-                      alt={d.Title}
-                      className="w-14 h-14 sm:w-16 sm:h-16 rounded-full"
-                    />
-                    <div className="col-span-3 sm:col-span-4">
-                      <p className="font-medium">{d.Title.substring(0, 28)}</p>
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-purple-600 font-bold text-lg">
-                          ₦{Number(d.Price).toLocaleString()}
-                        </h3>
-                        <div className="mr-2 px-4 py-1 bg-purple-600 rounded-xl text-white">
-                          {d.Category.Title}
-                        </div>
+                <div className="my-2 p-3 hover:bg-gray-300 hover:rounded-lg grid grid-cols-4 sm:grid-cols-5">
+                  <img
+                    // @ts-ignore
+                    src={d.Images[0]}
+                    alt={d.Title}
+                    className="w-14 h-14 sm:w-16 sm:h-16 rounded-full"
+                  />
+                  <div className="col-span-3 sm:col-span-4">
+                    <p className="font-medium">{d.Title.substring(0, 28)}</p>
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-purple-600 font-bold text-lg">
+                        ₦{Number(d.Price).toLocaleString()}
+                      </h3>
+                      <div className="mr-2 px-4 py-1 bg-purple-600 rounded-xl text-white">
+                        {d.Category.Title}
                       </div>
                     </div>
                   </div>
-                </a>
+                </div>
               </Link>
             ))}
           </div>

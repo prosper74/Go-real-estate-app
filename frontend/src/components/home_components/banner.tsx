@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import {
   textAnimate,
@@ -7,10 +8,16 @@ import {
 import { SingleProperty } from "../common/interfaces";
 import SearchWidget from "../common/searchWidget";
 
+interface IProps {
+  property: SingleProperty;
+}
+
 export default function HomeBanner() {
+  const stateProperties = useSelector((state: IProps) => state.property);
+  const properties = stateProperties.properties;
 
   return (
-    <section className="bg-purple-100 pb-8 2xl:pb-12 px-4 mx-auto sm:!px-10 lg:!px-32 overflow-hidden">
+    <section className="bg-purple-100 pb-14 md:pb-10 px-4 mx-auto sm:!px-10 lg:!px-32 overflow-hidden">
       <div className="relative rounded-b-10xl">
         <div className="">
           <div className="flex flex-wrap items-center pt-8 pb-16">
@@ -45,6 +52,8 @@ export default function HomeBanner() {
               {/* Search widget  */}
               <motion.span variants={imageAnimateBottom}>
                 <SearchWidget
+                  // @ts-ignore
+                  properties={properties}
                   placeholder="Start here..."
                   width={""}
                   height={""}
