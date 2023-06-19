@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useCallback, useState } from 'react';
+import { FC, Fragment, useCallback, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
