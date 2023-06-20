@@ -9,7 +9,7 @@ import PropertyCard from "@src/components/common/properties/propertyCard";
 import { useDispatch } from "react-redux";
 import { setTemplateData } from "@src/store/reducers/templateDataReducer";
 import { SingleProperty } from "@src/components/common/interfaces";
-// import SearchWidget from "@src/components/common/searchWidget";
+import { PageSearchWidget } from "@src/components/common/searchWidget";
 
 export default function BuyProperties({ data }: any) {
   const dispatch = useDispatch();
@@ -40,14 +40,14 @@ export default function BuyProperties({ data }: any) {
           </motion.h2>
 
           <motion.span variants={imageAnimateBottom}>
-            {/* <SearchWidget
-              @ts-ignore
+            <PageSearchWidget
+              // @ts-ignore
               properties={properties}
               placeholder="Start here..."
               width={""}
               height={""}
               fill={""}
-            /> */}
+            />
           </motion.span>
         </motion.div>
 
