@@ -160,7 +160,7 @@ export const PageSearchWidget: FC<ISearchWidget> = ({
             <PropertyCard key={property.ID} property={property} />
           ))
         ) : (
-          <h4 className="h-52 flex items-center justify-center text-2xl">
+          <h4 className="my-8 text-2xl">
             No Item found
           </h4>
         )}
