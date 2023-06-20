@@ -6,7 +6,7 @@ import {
 } from "@src/components/common/interfaces";
 import Link from "next/link";
 
-const SearchWidget: FC<ISearchWidget> = ({
+export const StandAloneSearchWidget: FC<ISearchWidget> = ({
   properties = [],
   placeholder = "Find your new home",
 }) => {
@@ -101,4 +101,3 @@ const SearchWidget: FC<ISearchWidget> = ({
   );
 };
 
-export default SearchWidget;

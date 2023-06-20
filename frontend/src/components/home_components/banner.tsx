@@ -6,7 +6,7 @@ import {
   imageAnimateBottom,
 } from "@src/components/common/variants";
 import { SingleProperty } from "../common/interfaces";
-import SearchWidget from "../common/searchWidget";
+import { StandAloneSearchWidget } from "../common/searchWidget";
 
 interface IProps {
   property: SingleProperty;
@@ -51,7 +51,7 @@ export default function HomeBanner() {
               </motion.p>
               {/* Search widget  */}
               <motion.span variants={imageAnimateBottom}>
-                <SearchWidget
+                <StandAloneSearchWidget
                   // @ts-ignore
                   properties={properties}
                   placeholder="Start here..."
