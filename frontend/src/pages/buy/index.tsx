@@ -43,7 +43,7 @@ export default function BuyProperties({ data }: any) {
             <PageSearchWidget
               // @ts-ignore
               properties={properties}
-              placeholder="Start here..."
+              placeholder="Search here..."
               width={""}
               height={""}
               fill={""}
@@ -51,7 +51,7 @@ export default function BuyProperties({ data }: any) {
           </motion.span>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {properties.length! >= 1 ? (
             properties.map((property: SingleProperty) => (
               <PropertyCard key={property.ID} property={property} />
@@ -61,7 +61,7 @@ export default function BuyProperties({ data }: any) {
               No Item found
             </h4>
           )}
-        </div>
+        </div> */}
       </section>
     </>
   );
