@@ -3,16 +3,18 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setTemplateData } from "@src/store/reducers/templateDataReducer";
-import { textAnimate } from "@src/components/common/variants";
-import PropertyCard from "@src/components/common/properties/propertyCard";
-import { SingleProperty } from "@src/components/common/interfaces";
+import { PageSearchWidget } from "@src/components/common/searchWidget";
+import {
+  imageAnimateBottom,
+  textAnimate,
+} from "@src/components/common/variants";
 
 export default function RentProperties({ data }: any) {
   const dispatch = useDispatch();
   const properties = data.properties;
   const templateData = data.templateData;
   dispatch(setTemplateData({ templateData }));
-  
+
   return (
     <>
       <Head>
@@ -34,19 +36,18 @@ export default function RentProperties({ data }: any) {
           >
             Rent That <span className="font-extrabold">Dream Home Today</span>
           </motion.h2>
-        </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {properties.length! >= 1 ? (
-            properties.map((property: SingleProperty) => (
-              <PropertyCard key={property.ID} property={property} />
-            ))
-          ) : (
-            <h4 className="h-52 flex items-center justify-center text-2xl">
-              No Item found
-            </h4>
-          )}
-        </div>
+          <motion.span variants={imageAnimateBottom}>
+            <PageSearchWidget
+              // @ts-ignore
+              properties={properties}
+              placeholder="Search here..."
+              width={""}
+              height={""}
+              fill={""}
+            />
+          </motion.span>
+        </motion.div>
       </section>
     </>
   );
