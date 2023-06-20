@@ -1,15 +1,13 @@
 import Head from "next/head";
 import { motion } from "framer-motion";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setTemplateData } from "@src/store/reducers/templateDataReducer";
+import { PageSearchWidget } from "@src/components/common/searchWidget";
 import {
   imageAnimateBottom,
   textAnimate,
 } from "@src/components/common/variants";
-import PropertyCard from "@src/components/common/properties/propertyCard";
-import { useDispatch } from "react-redux";
-import { setTemplateData } from "@src/store/reducers/templateDataReducer";
-import { SingleProperty } from "@src/components/common/interfaces";
-import { PageSearchWidget } from "@src/components/common/searchWidget";
 
 export default function BuyProperties({ data }: any) {
   const dispatch = useDispatch();
@@ -50,18 +48,6 @@ export default function BuyProperties({ data }: any) {
             />
           </motion.span>
         </motion.div>
-
-        {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {properties.length! >= 1 ? (
-            properties.map((property: SingleProperty) => (
-              <PropertyCard key={property.ID} property={property} />
-            ))
-          ) : (
-            <h4 className="h-52 flex items-center justify-center text-2xl">
-              No Item found
-            </h4>
-          )}
-        </div> */}
       </section>
     </>
   );
