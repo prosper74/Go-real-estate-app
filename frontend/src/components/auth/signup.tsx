@@ -1,11 +1,11 @@
-import { FC, useState } from 'react';
-import Link from 'next/link';
-import axios from 'axios';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { useDispatch } from 'react-redux';
-import { setSnackbar } from '@src/store/reducers/feedbackReducer';
+import { FC, useState } from "react";
+import Link from "next/link";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { useDispatch } from "react-redux";
+import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import {
   EyeIcon,
   EyeSlashIcon,
@@ -13,7 +13,7 @@ import {
   BackArrowIcon,
   GoogleIcon,
   FacebookIcon,
-} from '@src/components/common/svgIcons';
+} from "@src/components/common/svgIcons";
 
 interface IProps {
   setIsOpen: (open: boolean) => void;
@@ -22,13 +22,14 @@ interface IProps {
 }
 
 const schema = z.object({
-  name: z.string().min(5, { message: 'Name must be at at least 5 characters' }),
-  email: z.string().email().nonempty({ message: 'Invalid email' }),
+  first_name: z.string().min(5, { message: "Name must be at at least 5 characters" }),
+  last_name: z.string().min(5, { message: "Name must be at at least 5 characters" }),
+  email: z.string().email().nonempty({ message: "Invalid email" }),
   password: z
     .string()
     .regex(
       /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-      'Password must be atleast 8 characters, and must contain uppercase, lowercase, number and special character'
+      "Password must be atleast 8 characters, and must contain uppercase, lowercase, number and special character"
     ),
 });
 
@@ -39,7 +40,7 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
 
   const handleBackward = () => {
     const login = steps.find(
-      (step: { label: string }) => step.label === 'Login'
+      (step: { label: string }) => step.label === "Login"
     );
     setSelectedStep(steps.indexOf(login));
   };
@@ -49,7 +50,7 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     resolver: zodResolver(schema),
   });
 
@@ -64,20 +65,20 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
       .then(() => {
         dispatch(
           setSnackbar({
-            status: 'success',
+            status: "success",
             message: ` Account created, please check your inbox to verify your email`,
             open: true,
           })
         );
         const complete = steps.find(
-          (step: { label: string }) => step.label === 'Complete'
+          (step: { label: string }) => step.label === "Complete"
         );
         setSelectedStep(steps.indexOf(complete));
         setLoading(false);
       })
       .catch((error) => {
         const { message } = error.response.data.message[0].messages[0];
-        dispatch(setSnackbar({ status: 'error', message, open: true }));
+        dispatch(setSnackbar({ status: "error", message, open: true }));
         setLoading(false);
       });
   });
@@ -88,43 +89,73 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
 
   return (
     <>
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col justify-center overflow-y-auto">
         <div className="p-4 xs:p-0 mx-auto md:w-full md:max-w-md">
           <div className="bg-white shadow w-full rounded-lg divide-y divide-gray-200">
             {/* Local Login */}
             <div className="px-5 py-4">
               <form>
-                <div className="mb-5">
-                  <label
-                    htmlFor="name"
-                    className={`font-semibold text-base pb-1 block ${
-                      errors.name ? 'text-red-500' : 'text - gray - 600'
-                    }`}
-                  >
-                    Full name
-                  </label>
-                  <input
-                    id="name"
-                    autoComplete="name"
-                    type="text"
-                    {...register('name')}
-                    className={`focus:outline-gray-700 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
-                      errors.name &&
-                      'border-red-500 text-red-500 focus:outline-red-500'
-                    }`}
-                  />
-                  {errors.name?.message && (
-                    <p className="text-red-500 text-sm mt-2">
-                      {/* @ts-ignore */}
-                      {errors.name?.message}
-                    </p>
-                  )}
+                <div className="mb-3 flex flex-wrap gap-3.5">
+                  <span className="w-full md:w-[48%]">
+                    <label
+                      htmlFor="first_name"
+                      className={`font-semibold text-base pb-1 block ${
+                        errors.first_name ? "text-red-500" : "text - gray - 600"
+                      }`}
+                    >
+                      First name
+                    </label>
+                    <input
+                      id="first_name"
+                      autoComplete="first_name"
+                      type="text"
+                      {...register("first_name")}
+                      className={`focus:outline-gray-700 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
+                        errors.name &&
+                        "border-red-500 text-red-500 focus:outline-red-500"
+                      }`}
+                    />
+                    {errors.first_name?.message && (
+                      <p className="text-red-500 text-sm mt-2">
+                        {/* @ts-ignore */}
+                        {errors.first_name?.message}
+                      </p>
+                    )}
+                  </span>
+
+                  <span className="w-full md:w-[48%]">
+                    <label
+                      htmlFor="last_name"
+                      className={`font-semibold text-base pb-1 block ${
+                        errors.last_name ? "text-red-500" : "text - gray - 600"
+                      }`}
+                    >
+                      Last name
+                    </label>
+                    <input
+                      id="last_name"
+                      autoComplete="last_name"
+                      type="text"
+                      {...register("last_name")}
+                      className={`focus:outline-gray-700 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
+                        errors.last_name &&
+                        "border-red-500 text-red-500 focus:outline-red-500"
+                      }`}
+                    />
+                    {errors.last_name?.message && (
+                      <p className="text-red-500 text-sm mt-2">
+                        {/* @ts-ignore */}
+                        {errors.last_name?.message}
+                      </p>
+                    )}
+                  </span>
                 </div>
-                <div className="mb-5">
+
+                <div className="mb-3">
                   <label
                     htmlFor="email"
                     className={`font-semibold text-base pb-1 block ${
-                      errors.email ? 'text-red-500' : 'text - gray - 600'
+                      errors.email ? "text-red-500" : "text - gray - 600"
                     }`}
                   >
                     Email
@@ -133,10 +164,10 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                     id="email"
                     autoComplete="email"
                     type="text"
-                    {...register('email')}
+                    {...register("email")}
                     className={`focus:outline-gray-700 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
                       errors.email &&
-                      'border-red-500 text-red-500 focus:outline-red-500'
+                      "border-red-500 text-red-500 focus:outline-red-500"
                     }`}
                   />
                   {errors.email?.message && (
@@ -146,11 +177,12 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                     </p>
                   )}
                 </div>
+
                 <div className="mb-5">
                   <label
                     htmlFor="password"
                     className={`font-semibold text-base pb-1 block ${
-                      errors.password ? 'text-red-500' : 'text - gray - 600'
+                      errors.password ? "text-red-500" : "text - gray - 600"
                     }`}
                   >
                     Password
@@ -159,11 +191,11 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                     <input
                       id="password"
                       autoComplete="password"
-                      type={showPassword ? 'text' : 'password'}
-                      {...register('password')}
+                      type={showPassword ? "text" : "password"}
+                      {...register("password")}
                       className={`focus:outline-gray-700 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
                         errors.password &&
-                        'border-red-500 text-red-500 focus:outline-red-500'
+                        "border-red-500 text-red-500 focus:outline-red-500"
                       }`}
                     />
                     <div
@@ -191,8 +223,8 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                   disabled={loading}
                   className={`transition duration-200 bg-purple-600 focus:bg-purple-800 focus:shadow-sm focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50 w-full py-2.5 rounded-lg text-lg shadow-sm hover:shadow-md font-semibold text-center flex justify-center items-center ${
                     loading
-                      ? 'hover:bg-purple-300 text-gray-300'
-                      : 'hover:bg-purple-700 text-white'
+                      ? "hover:bg-purple-300 text-gray-300"
+                      : "hover:bg-purple-700 text-white"
                   }`}
                 >
                   {loading ? (
@@ -209,6 +241,7 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                 </button>
               </form>
             </div>
+            
             {/* Social Logins */}
             <div className="p-2">
               <div className="grid grid-cols-2 gap-4">
