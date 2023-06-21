@@ -16,8 +16,10 @@ require (
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
 	github.com/rs/cors v1.9.0 // indirect
+	github.com/shaj13/go-guardian v1.5.11
 	github.com/shaj13/go-guardian/v2 v2.11.5 // indirect
 	github.com/shaj13/libcache v1.2.1 // indirect
 	golang.org/x/crypto v0.9.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
+	gopkg.in/square/go-jose.v2 v2.5.1 // indirect
 )

@@ -68,7 +68,6 @@ func run() (*driver.DB, error) {
 	inProduction := flag.Bool("production", true, "App is in production")
 	dbSSL := flag.String("dbssl", "disable", "Database ssl settings (disable, prefer, require)")
 
-
 	flag.Parse()
 
 	// setup middlewares
