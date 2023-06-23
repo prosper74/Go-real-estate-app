@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -10,7 +11,6 @@ import (
 	"github.com/justinas/nosurf"
 	"github.com/prosper74/real-estate-app/internal/config"
 	"github.com/prosper74/real-estate-app/internal/driver"
-	"github.com/prosper74/real-estate-app/internal/forms"
 	"github.com/prosper74/real-estate-app/internal/helpers"
 	"github.com/prosper74/real-estate-app/internal/models"
 	"github.com/prosper74/real-estate-app/internal/repository"
@@ -238,7 +238,6 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	templateData.Flash = m.App.Session.PopString(r.Context(), "flash")
 	templateData.Error = m.App.Session.PopString(r.Context(), "error")
 	templateData.Warning = m.App.Session.PopString(r.Context(), "warning")
-	templateData.CSRFToken = nosurf.Token(r)
 
 	if m.App.Session.Exists(r.Context(), "user_id") {
 		templateData.IsAuthenticated = 1
@@ -252,12 +251,6 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	formBody := r.Body
-	formValues := r.FormValue("first_name")
-
-	log.Println("Formbody:", formBody)
-	log.Println("FormVal:", formValues)
-
 	first_name := r.PostFormValue("first_name")
 	last_name := r.PostFormValue("last_name")
 	email := r.PostFormValue("email")
@@ -266,24 +259,25 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("User login details are First name: %s, last name: %s, Email: %s, password: %s, csrf_token: %s", first_name, last_name, email, password, csrf_token)
 
-	form := forms.New(r.PostForm)
+	// Send email notification to customer
+	htmlBody := fmt.Sprintf(`
+	<strong>Verify Your Account</strong><br />
+	<p>Dear %s %s, </p>
+	<p>Welcome to our website.</p>
+	<strong>Kindly click the link below</strong>
+	<a href={{}}>Verify Account</a>
+	<p>We hope to see you soon</p>
+	`, first_name, last_name)
 
-	if !form.Valid() {
-		data["email"] = email
-		data["first_name"] = first_name
-		data["last_name"] = last_name
-		data["email"] = email
-		m.App.Session.Put(r.Context(), "error", "Invalid inputs")
-
-		data["message"] = "Invalid form inputs"
-		data["templateData"] = templateData
-		out, _ := json.MarshalIndent(data, "", "    ")
-
-		resp := []byte(out)
-		w.Write(resp)
-
-		return
+	message := models.MailData{
+		To:       email,
+		From:     "prosperdevstack@gmail.com",
+		Subject:  "Verify Your Email",
+		Content:  htmlBody,
 	}
+
+	m.App.MailChannel <- message
+	// End of emails
 
 	data["message"] = "Successful!!!"
 	// data["users"] = users
