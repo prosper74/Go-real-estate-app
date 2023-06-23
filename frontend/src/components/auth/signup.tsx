@@ -1,10 +1,10 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import {
   EyeIcon,
@@ -43,13 +43,15 @@ const schema = z.object({
 });
 
 const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
-  const stateTemplateData = useSelector((state: IProps) => state.templateData);
+  // const stateTemplateData = useSelector((state: IProps) => state.templateData);
   // @ts-ignore
-  const CSRFToken = stateTemplateData.templateData.CSRFToken;
-  console.log("statetempdata: ", CSRFToken);
+  // const CSRFToken = stateTemplateData.templateData.CSRFToken;
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [token, setToken] = useState("");
+
+  console.log("token: ", token);
 
   const handleBackward = () => {
     const login = steps.find(
@@ -72,11 +74,21 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
     setLoading(true);
 
     axios
-      .post(`${process.env.NEXT_PUBLIC_REST_API}/signup`, data, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+      .post(
+        `${process.env.NEXT_PUBLIC_REST_API}/signup`,
+        {
+          first_name: data.first_name,
+          last_name: data.last_name,
+          email: data.email,
+          password: data.password,
+          csrf_token: token,
         },
-      })
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      )
       .then((response) => {
         console.log("Resp: ", response.data.message);
         dispatch(
@@ -109,6 +121,15 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
   function closeModal() {
     setIsOpen(false);
   }
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.NEXT_PUBLIC_REST_API}/token`)
+      .then((res) => {
+        setToken(res.data.token);
+      })
+      .catch((error) => console.error(error));
+  }, []);
 
   return (
     <>
@@ -237,11 +258,13 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                     </p>
                   )}
                 </div>
+
                 <input
                   type="hidden"
                   {...register("csrf_token")}
-                  value={CSRFToken}
+                  value={token}
                 />
+
                 <button
                   type="button"
                   onClick={onSubmit}
