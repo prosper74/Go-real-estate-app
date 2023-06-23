@@ -44,7 +44,11 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	templateData.Warning = m.App.Session.PopString(r.Context(), "warning")
 	templateData.CSRFToken = nosurf.Token(r)
 
-	properties, err := m.DB.AllFeaturedProperties()
+	if m.App.Session.Exists(r.Context(), "user_id") {
+		templateData.IsAuthenticated = 1
+	}
+
+	properties, err := m.DB.AllProperties()
 	if err != nil {
 		helpers.ServerError(w, err)
 		return

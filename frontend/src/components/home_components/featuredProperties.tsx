@@ -15,17 +15,19 @@ interface IProps {
 }
 
 export default function FeaturedProperties() {
-  const properties = useSelector((state: IProps) => state.property);
+  const stateProperties = useSelector((state: IProps) => state.property);
 
-  const buyProperties = properties.properties!.filter(
+  const properties = stateProperties.properties?.filter((property: SingleProperty) => property.Featured === 1)
+
+  const buyProperties = properties.filter(
     (property: any) => property.Category.Title === "Buy"
   );
 
-  const rentProperties = properties.properties!.filter(
+  const rentProperties = properties.filter(
     (property: any) => property.Category.Title === "Rent"
   );
 
-  const shortletProperties = properties.properties!.filter(
+  const shortletProperties = properties.filter(
     (property: any) => property.Category.Title === "Shortlet"
   );
 
