@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -9,6 +10,7 @@ import (
 	"github.com/justinas/nosurf"
 	"github.com/prosper74/real-estate-app/internal/config"
 	"github.com/prosper74/real-estate-app/internal/driver"
+	"github.com/prosper74/real-estate-app/internal/forms"
 	"github.com/prosper74/real-estate-app/internal/helpers"
 	"github.com/prosper74/real-estate-app/internal/models"
 	"github.com/prosper74/real-estate-app/internal/repository"
@@ -215,8 +217,10 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
-	templateData := &models.TemplateData{}
+	// Clear the token in session
+	_ = m.App.Session.RenewToken(r.Context())
 
+	templateData := &models.TemplateData{}
 	templateData.Flash = m.App.Session.PopString(r.Context(), "flash")
 	templateData.Error = m.App.Session.PopString(r.Context(), "error")
 	templateData.Warning = m.App.Session.PopString(r.Context(), "warning")
@@ -227,7 +231,46 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := make(map[string]interface{})
-	data["templateData"] = templateData
+
+	err := r.ParseForm()
+	if err != nil {
+		m.App.Session.Put(r.Context(), "error", "Can't parse form")
+		return
+	}
+
+	formBody := r.Body
+	formValues := r.FormValue("first_name")
+
+	log.Println("Formbody:", formBody)
+	log.Println("FOrmVal:", formValues)
+
+	first_name := r.PostFormValue("first_name")
+	last_name := r.PostFormValue("last_name")
+	email := r.PostFormValue("email")
+	password := r.PostFormValue("password")
+
+	log.Printf("User login details are First name: %s, last name: %s, Email: %s, password: %s", first_name, last_name, email, password)
+
+	form := forms.New(r.PostForm)
+
+	if !form.Valid() {
+		data["email"] = email
+		data["first_name"] = first_name
+		data["last_name"] = last_name
+		data["email"] = email
+		m.App.Session.Put(r.Context(), "error", "Invalid inputs")
+
+		data["message"] = "Invalid form inputs"
+		data["templateData"] = templateData
+		out, _ := json.MarshalIndent(data, "", "    ")
+
+		resp := []byte(out)
+		w.Write(resp)
+
+		return
+	}
+
+	data["message"] = "Successful!!!"
 	// data["users"] = users
 	out, _ := json.MarshalIndent(data, "", "    ")
 

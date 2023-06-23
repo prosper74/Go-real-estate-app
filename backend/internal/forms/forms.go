@@ -43,8 +43,8 @@ func (f *Form) HasField(field string) bool {
 	return x != ""
 }
 
-// MinLength checks for field minimum length
-func (f *Form) MinLength(field string, minimum int, maximum int) bool {
+// MinMaxLength checks for field minimum length and maximum length
+func (f *Form) MinMaxLength(field string, minimum int, maximum int) bool {
 	x := f.Get(field)
 	if len(x) < minimum {
 		f.Errors.Add(field, fmt.Sprintf("This field must be at least %d characters long", minimum))

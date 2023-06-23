@@ -16,11 +16,14 @@ func routes(app *config.AppConfig) http.Handler {
 	// Add all our middlewares here
 	mux.Use(cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:3000"},
+    AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+    AllowedHeaders:   []string{"Content-Type", "Authorization"},
+    ExposedHeaders:   []string{"Custom-Header"},
 		AllowCredentials: true,
 		// Enable Debugging for testing, consider disabling in production
 		Debug: true,
 	}).Handler)
-	
+
 	mux.Use(middleware.Recoverer)
 	mux.Use(NoSurf)
 	mux.Use(SessionLoad)
@@ -33,7 +36,7 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/property", handlers.Repo.PropertiesRelatedByType)
 	mux.Get("/user", handlers.Repo.UserProperties)
 	mux.Get("/login", handlers.Repo.Login)
-	mux.Get("/signup", handlers.Repo.SignUp)
+	mux.Post("/signup", handlers.Repo.SignUp)
 
 	return mux
 }

@@ -4,7 +4,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import {
   EyeIcon,
@@ -14,16 +14,24 @@ import {
   GoogleIcon,
   FacebookIcon,
 } from "@src/components/common/svgIcons";
+import { TemplateData } from "../common/interfaces";
 
 interface IProps {
   setIsOpen: (open: boolean) => void;
   setSelectedStep: (open: number) => void;
   steps: any;
+  templateData: TemplateData;
 }
 
 const schema = z.object({
-  first_name: z.string().min(5, { message: "Name must be at at least 5 characters" }),
-  last_name: z.string().min(5, { message: "Name must be at at least 5 characters" }),
+  first_name: z
+    .string()
+    .min(3, { message: "Name must be at at least 3 characters" })
+    .max(30, { message: "Maximun 30 characters" }),
+  last_name: z
+    .string()
+    .min(3, { message: "Name must be at at least 3 characters" })
+    .max(30, { message: "Maximun 30 characters" }),
   email: z.string().email().nonempty({ message: "Invalid email" }),
   password: z
     .string()
@@ -31,9 +39,14 @@ const schema = z.object({
       /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
       "Password must be atleast 8 characters, and must contain uppercase, lowercase, number and special character"
     ),
+  csrf_token: z.string(),
 });
 
 const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
+  const stateTemplateData = useSelector((state: IProps) => state.templateData);
+  // @ts-ignore
+  const CSRFToken = stateTemplateData.templateData.CSRFToken;
+  console.log("statetempdata: ", CSRFToken);
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -55,14 +68,17 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
   });
 
   const onSubmit = handleSubmit((data) => {
+    console.log("Data: ", data);
     setLoading(true);
+
     axios
-      .post(`${process.env.NEXT_PUBLIC_REST_API}/auth/local/register`, {
-        username: data.name,
-        email: data.email,
-        password: data.password,
+      .post(`${process.env.NEXT_PUBLIC_REST_API}/signup`, data, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       })
-      .then(() => {
+      .then((response) => {
+        console.log("Resp: ", response.data.message);
         dispatch(
           setSnackbar({
             status: "success",
@@ -77,8 +93,15 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
         setLoading(false);
       })
       .catch((error) => {
-        const { message } = error.response.data.message[0].messages[0];
-        dispatch(setSnackbar({ status: "error", message, open: true }));
+        // const { message } = error.response.data.message[0].messages[0];
+        console.error(error);
+        dispatch(
+          setSnackbar({
+            status: "error",
+            message: "An error occured",
+            open: true,
+          })
+        );
         setLoading(false);
       });
   });
@@ -150,7 +173,6 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                     )}
                   </span>
                 </div>
-
                 <div className="mb-3">
                   <label
                     htmlFor="email"
@@ -177,7 +199,6 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                     </p>
                   )}
                 </div>
-
                 <div className="mb-5">
                   <label
                     htmlFor="password"
@@ -216,7 +237,11 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                     </p>
                   )}
                 </div>
-
+                <input
+                  type="hidden"
+                  {...register("csrf_token")}
+                  value={CSRFToken}
+                />
                 <button
                   type="button"
                   onClick={onSubmit}
@@ -241,7 +266,7 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                 </button>
               </form>
             </div>
-            
+
             {/* Social Logins */}
             <div className="p-2">
               <div className="grid grid-cols-2 gap-4">
