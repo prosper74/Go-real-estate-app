@@ -4,6 +4,7 @@ import "github.com/prosper74/real-estate-app/internal/models"
 
 type DatabaseRepo interface {
 	AllUsers() ([]models.User, error)
+	CheckIfUserEmailExist(email string) (bool, error)
 
 	AllProperties() ([]models.Property, error)
 	AllFeaturedProperties() ([]models.Property, error)

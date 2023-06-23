@@ -259,13 +259,29 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("User login details are First name: %s, last name: %s, Email: %s, password: %s, csrf_token: %s", first_name, last_name, email, password, csrf_token)
 
+	user, err := m.DB.CheckIfUserEmailExist(email)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	if user {
+		log.Println("Email exist")
+		data["error"] = "email exist"
+		out, _ := json.MarshalIndent(data, "", "    ")
+	
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
 	// Send email notification to customer
 	htmlBody := fmt.Sprintf(`
 	<strong>Verify Your Account</strong><br />
 	<p>Dear %s %s, </p>
 	<p>Welcome to our website.</p>
 	<strong>Kindly click the link below</strong>
-	<a href={{}}>Verify Account</a>
+	<a href="http://localhost:3000/verify-email/token", target="_blank">Verify Account</a>
 	<p>We hope to see you soon</p>
 	`, first_name, last_name)
 
@@ -280,7 +296,6 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	// End of emails
 
 	data["message"] = "Successful!!!"
-	// data["users"] = users
 	out, _ := json.MarshalIndent(data, "", "    ")
 
 	resp := []byte(out)

@@ -68,7 +68,7 @@ func sendMessage(m models.MailData) {
 	// Create an email message
 	message := sendinblue.SendSmtpEmail{
 		Sender: &sendinblue.SendSmtpEmailSender{
-			Name:  "Hotel Bookings",
+			Name:  "Real Estate",
 			Email: m.From,
 		},
 		To: []sendinblue.SendSmtpEmailTo{

@@ -43,15 +43,10 @@ const schema = z.object({
 });
 
 const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
-  // const stateTemplateData = useSelector((state: IProps) => state.templateData);
-  // @ts-ignore
-  // const CSRFToken = stateTemplateData.templateData.CSRFToken;
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState("");
-
-  console.log("token: ", token);
 
   const handleBackward = () => {
     const login = steps.find(
@@ -70,7 +65,6 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
   });
 
   const onSubmit = handleSubmit((data) => {
-    console.log("Data: ", data);
     setLoading(true);
 
     axios
@@ -90,19 +84,31 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
         }
       )
       .then((response) => {
-        console.log("Resp: ", response.data.message);
-        dispatch(
-          setSnackbar({
-            status: "success",
-            message: ` Account created, please check your inbox to verify your email`,
-            open: true,
-          })
-        );
-        const complete = steps.find(
-          (step: { label: string }) => step.label === "Complete"
-        );
-        setSelectedStep(steps.indexOf(complete));
-        setLoading(false);
+        console.log("Resp: ", response.data.error);
+
+        if (response.data.error) {
+          dispatch(
+            setSnackbar({
+              status: "error",
+              message: response.data.error,
+              open: true,
+            })
+          );
+          setLoading(false);
+        } else {
+          dispatch(
+            setSnackbar({
+              status: "success",
+              message: ` Account created, please check your inbox to verify your email`,
+              open: true,
+            })
+          );
+          const complete = steps.find(
+            (step: { label: string }) => step.label === "Complete"
+          );
+          setSelectedStep(steps.indexOf(complete));
+          setLoading(false);
+        }
       })
       .catch((error) => {
         // const { message } = error.response.data.message[0].messages[0];
