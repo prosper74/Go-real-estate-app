@@ -12,9 +12,11 @@ require (
 )
 
 require (
+	github.com/antihax/optional v1.0.0 // indirect
 	github.com/friendsofgo/errors v0.9.2 // indirect
 	github.com/golang-jwt/jwt/v5 v5.0.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
+	github.com/sendinblue/APIv3-go-library/v2 v2.1.2 // indirect
 	github.com/volatiletech/authboss/v3 v3.2.2 // indirect
 	golang.org/x/net v0.11.0 // indirect
 	golang.org/x/oauth2 v0.9.0 // indirect
