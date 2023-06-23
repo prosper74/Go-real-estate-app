@@ -39,6 +39,11 @@ func main() {
 
 	// Close database connection when main function finish running and the mail server if mail has finsished sending
 	defer connectedDB.SQL.Close()
+	defer close(app.MailChannel)
+
+	// Listening for mail
+	fmt.Println("Listening for mail...")
+	listenForMail()
 
 	// Set up routes for the API
 	fmt.Printf("Server started at host %s and port %s", host, port)
@@ -72,6 +77,9 @@ func run() (*driver.DB, error) {
 
 	// setup middlewares
 	app.InProduction = *inProduction
+
+	mailChannel := make(chan models.MailData)
+	app.MailChannel = mailChannel
 
 	infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	app.InfoLog = infoLog
