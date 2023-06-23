@@ -211,8 +211,19 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
+	templateData := &models.TemplateData{}
+
+	templateData.Flash = m.App.Session.PopString(r.Context(), "flash")
+	templateData.Error = m.App.Session.PopString(r.Context(), "error")
+	templateData.Warning = m.App.Session.PopString(r.Context(), "warning")
+	templateData.CSRFToken = nosurf.Token(r)
+
+	if m.App.Session.Exists(r.Context(), "user_id") {
+		templateData.IsAuthenticated = 1
+	}
+
 	data := make(map[string]interface{})
-	data["CSRFToken"] = nosurf.Token(r)
+	data["templateData"] = templateData
 	// data["users"] = users
 	out, _ := json.MarshalIndent(data, "", "    ")
 
