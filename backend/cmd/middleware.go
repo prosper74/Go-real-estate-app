@@ -14,10 +14,33 @@ func NoSurf(next http.Handler) http.Handler {
 		HttpOnly: true,
 		Path:     "/",
 		Secure:   app.InProduction,
-		SameSite: http.SameSiteLaxMode,
+		// SameSite: http.SameSiteLaxMode,
 	})
 
-	return csrfHandler
+	return ProtectCSRF(csrfHandler)
+}
+
+func ProtectCSRF(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		d := struct {
+			token string
+		}{}
+		if r.Method == http.MethodPost {
+			if err := r.ParseForm(); err != nil {
+				// Handle parsing error
+				http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+				return
+			}
+
+			if !nosurf.VerifyToken(nosurf.Token(r), d.token) {
+				// Handle invalid CSRF token
+				http.Error(w, "Invalid CSRF Token", http.StatusForbidden)
+				return
+			}
+		}
+
+		next.ServeHTTP(w, r)
+	})
 }
 
 func SessionLoad(next http.Handler) http.Handler {

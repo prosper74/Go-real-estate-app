@@ -66,6 +66,20 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	w.Write(resp)
 }
 
+func (m *Repository) CSRFToken(w http.ResponseWriter, r *http.Request) {
+	token := nosurf.Token(r)
+
+	data := make(map[string]string)
+	data["token"] = token
+
+	log.Println("Data: ", data)
+
+	out, _ := json.MarshalIndent(data, "", "    ")
+
+	resp := []byte(out)
+	w.Write(resp)
+}
+
 func (m *Repository) Buy(w http.ResponseWriter, r *http.Request) {
 	templateData := &models.TemplateData{}
 
@@ -242,14 +256,15 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	formValues := r.FormValue("first_name")
 
 	log.Println("Formbody:", formBody)
-	log.Println("FOrmVal:", formValues)
+	log.Println("FormVal:", formValues)
 
 	first_name := r.PostFormValue("first_name")
 	last_name := r.PostFormValue("last_name")
 	email := r.PostFormValue("email")
 	password := r.PostFormValue("password")
+	csrf_token := r.PostFormValue("csrf_token")
 
-	log.Printf("User login details are First name: %s, last name: %s, Email: %s, password: %s", first_name, last_name, email, password)
+	log.Printf("User login details are First name: %s, last name: %s, Email: %s, password: %s, csrf_token: %s", first_name, last_name, email, password, csrf_token)
 
 	form := forms.New(r.PostForm)
 
