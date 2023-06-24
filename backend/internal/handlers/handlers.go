@@ -281,9 +281,9 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	<p>Dear %s %s, </p>
 	<p>Welcome to our website.</p>
 	<strong>Kindly click the link below</strong>
-	<a href="http://localhost:3000/verify-email/token", target="_blank">Verify Account</a>
+	<a href="http://localhost:3000/verify-email?userid=%d&token=%s", target="_blank">Verify Account</a>
 	<p>We hope to see you soon</p>
-	`, first_name, last_name)
+	`, first_name, last_name, 2, "hkjhdfkshkfds")
 
 	message := models.MailData{
 		To:       email,
