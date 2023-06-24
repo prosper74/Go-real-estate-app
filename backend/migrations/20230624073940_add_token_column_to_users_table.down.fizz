@@ -1,0 +1,2 @@
+drop_column("users", "enabled")
+drop_column("users", "token")
