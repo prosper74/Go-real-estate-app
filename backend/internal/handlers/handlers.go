@@ -5,9 +5,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/joho/godotenv"
 	"github.com/justinas/nosurf"
 	"github.com/prosper74/real-estate-app/internal/config"
 	"github.com/prosper74/real-estate-app/internal/driver"
@@ -234,7 +237,7 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	// Clear the token in session
 	_ = m.App.Session.RenewToken(r.Context())
 
-	user := &models.User{}
+	user := models.User{}
 
 	templateData := &models.TemplateData{}
 	templateData.Flash = m.App.Session.PopString(r.Context(), "flash")
@@ -257,9 +260,6 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	user.LastName = r.PostFormValue("last_name")
 	user.Email = r.PostFormValue("email")
 	user.Password = r.PostFormValue("password")
-	csrf_token := r.PostFormValue("csrf_token")
-
-	log.Printf("User login details are First name: %s, last name: %s, Email: %s, password: %s, csrf_token: %s", user.FirstName, user.LastName, user.Email, user.Password, csrf_token)
 
 	userExist, err := m.DB.CheckIfUserEmailExist(user.Email)
 	if err != nil {
@@ -277,14 +277,20 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	
-
-	jwtToken, err := helpers.GenerateJWTToken(2)
+	newUserID, err := m.DB.InsertUser(user)
 	if err != nil {
 		helpers.ServerError(w, err)
 		return
 	}
-	log.Println("Token:", jwtToken)
+
+	jwtToken, err := helpers.GenerateJWTToken(newUserID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	user.Token = jwtToken
+	m.App.Session.Put(r.Context(), "user", user)
 
 	// Send email notification to customer
 	htmlBody := fmt.Sprintf(`
@@ -294,10 +300,10 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	<strong>Kindly click the link below</strong>
 	<a href="http://localhost:3000/verify-email?userid=%d&token=%s", target="_blank">Verify Account</a>
 	<p>We hope to see you soon</p>
-	`, user.FirstName, user.LastName, 2, "hkjhdfkshkfds")
+	`, user.FirstName, user.LastName, newUserID, jwtToken)
 
 	message := models.MailData{
-		To:      email,
+		To:      user.Email,
 		From:    "prosperdevstack@gmail.com",
 		Subject: "Verify Your Email",
 		Content: htmlBody,
@@ -306,9 +312,91 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	m.App.MailChannel <- message
 	// End of emails
 
-	data["message"] = "Successful!!!"
+	data["message"] = "Successful"
 	out, _ := json.MarshalIndent(data, "", "    ")
 
+	resp := []byte(out)
+	w.Write(resp)
+}
+
+func (m *Repository) VerifyUserEmail(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Error loading .env file")
+	}
+	jwtSecret := os.Getenv("JWTSECRET")
+
+	tokenString := r.URL.Query().Get("token")
+
+	// Parse and verify the JWT token
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		// Provide the secret key used for signing the token
+		return []byte(jwtSecret), nil
+	})
+	if err != nil {
+		// Handle token parsing or verification errors
+		http.Error(w, "Invalid token", http.StatusBadRequest)
+		data["error"] = "Invalid token"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// Check if the token is valid
+	if token.Valid {
+		// Extract the user ID from the token claims
+		userID := token.Claims.(jwt.MapClaims)["sub"].(int)
+		log.Println("UserID: ", userID)
+
+		// Update the user's account status as verified
+		// ...
+	} else {
+		http.Error(w, "Invalid token", http.StatusBadRequest)
+		data["error"] = "Invalid token"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// Handle successful email verification
+	user, ok := m.App.Session.Get(r.Context(), "user").(models.User)
+	if !ok {
+		m.App.Session.Put(r.Context(), "error", "Can't get reservation from session")
+		data["error"] = "Can't get reservation from session"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// Send email notification to customer
+	htmlBody := fmt.Sprintf(`
+	<strong>Successful</strong><br />
+	<p>Hi %s, </p>
+	<h3>Your email has been verified.</h3>
+	<p>You can now login to your account and upload your properties.</p>
+	<strong>Note:<strong>
+	<p>You still need to verify your account to gain more leads. <br />
+	Go to your account dashboard and verify your account by providing the required verification documents.</p>
+	<p>We hope to see you soon</p>
+	`, user.FirstName)
+
+	message := models.MailData{
+		To:      user.Email,
+		From:    "prosperdevstack@gmail.com",
+		Subject: "Verify Your Email",
+		Content: htmlBody,
+	}
+
+	m.App.MailChannel <- message
+	// End of emails
+
+	data["message"] = "Successful"
+	out, _ := json.MarshalIndent(data, "", "    ")
 	resp := []byte(out)
 	w.Write(resp)
 }
