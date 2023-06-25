@@ -276,6 +276,11 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	}
 
 	jwtToken, err := helpers.GenerateJWTToken(2)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+	log.Println("Token:", jwtToken)
 
 	// Send email notification to customer
 	htmlBody := fmt.Sprintf(`

@@ -602,3 +602,22 @@ func (m *postgresDBRepo) GetUserPropertiesByID(userID string) ([]models.Property
 
 	return properties, nil
 }
+
+// Inserts a user into the database
+func (repo *postgresDBRepo) InsertUser(user models.User) (int, error) {
+	// Close this transaction if unable to run this statement within 3 seconds
+	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	var newUserID int
+
+	query := `insert into users (first_name, last_name, email, password, created_at, updated_at) values ($1, $2, $3, $4, $5, $6) returning id`
+
+	err := repo.DB.QueryRowContext(context, query, user.FirstName, user.LastName, user.Email, user.Phone, time.Now(), time.Now()).Scan(&newUserID)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return newUserID, nil
+}
