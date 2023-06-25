@@ -269,11 +269,13 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 		log.Println("Email exist")
 		data["error"] = "email exist"
 		out, _ := json.MarshalIndent(data, "", "    ")
-	
+
 		resp := []byte(out)
 		w.Write(resp)
 		return
 	}
+
+	jwtToken, err := helpers.GenerateJWTToken(2)
 
 	// Send email notification to customer
 	htmlBody := fmt.Sprintf(`
@@ -286,10 +288,10 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	`, first_name, last_name, 2, "hkjhdfkshkfds")
 
 	message := models.MailData{
-		To:       email,
-		From:     "prosperdevstack@gmail.com",
-		Subject:  "Verify Your Email",
-		Content:  htmlBody,
+		To:      email,
+		From:    "prosperdevstack@gmail.com",
+		Subject: "Verify Your Email",
+		Content: htmlBody,
 	}
 
 	m.App.MailChannel <- message

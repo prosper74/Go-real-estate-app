@@ -56,7 +56,7 @@ func ConvertPostgresArrayToStringSlice(arrayString string) []string {
 	return elements
 }
 
-func generateJWTToken(userID int) (string, error) {
+func GenerateJWTToken(userID int) (string, error) {
 	err := godotenv.Load()
 	if err != nil {
 		log.Println("Error loading .env file")
