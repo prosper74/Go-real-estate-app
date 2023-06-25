@@ -16,6 +16,7 @@ type User struct {
 	Verified    int
 	Address     string
 	Image       string
+	Token       string
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }

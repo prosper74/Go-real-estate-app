@@ -6,6 +6,7 @@ import (
 
 	"github.com/prosper74/real-estate-app/internal/helpers"
 	"github.com/prosper74/real-estate-app/internal/models"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // Get all users from the database
@@ -611,9 +612,14 @@ func (repo *postgresDBRepo) InsertUser(user models.User) (int, error) {
 
 	var newUserID int
 
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
+	if err != nil {
+		return 0, err
+	}
+
 	query := `insert into users (first_name, last_name, email, password, created_at, updated_at) values ($1, $2, $3, $4, $5, $6) returning id`
 
-	err := repo.DB.QueryRowContext(context, query, user.FirstName, user.LastName, user.Email, user.Phone, time.Now(), time.Now()).Scan(&newUserID)
+	err = repo.DB.QueryRowContext(context, query, user.FirstName, user.LastName, user.Email, hashedPassword, time.Now(), time.Now()).Scan(&newUserID)
 
 	if err != nil {
 		return 0, err

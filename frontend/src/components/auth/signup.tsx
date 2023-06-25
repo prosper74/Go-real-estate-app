@@ -36,8 +36,8 @@ const schema = z.object({
   password: z
     .string()
     .regex(
-      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-      "Password must be atleast 8 characters, and must contain uppercase, lowercase, number and special character"
+      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,45}$/,
+      "Min 8 characters, max 45 characters, must contain uppercase, lowercase, number and special character"
     ),
   csrf_token: z.string(),
 });

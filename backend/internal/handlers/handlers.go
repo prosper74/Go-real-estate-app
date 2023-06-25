@@ -234,6 +234,8 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	// Clear the token in session
 	_ = m.App.Session.RenewToken(r.Context())
 
+	user := &models.User{}
+
 	templateData := &models.TemplateData{}
 	templateData.Flash = m.App.Session.PopString(r.Context(), "flash")
 	templateData.Error = m.App.Session.PopString(r.Context(), "error")
@@ -251,21 +253,21 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	first_name := r.PostFormValue("first_name")
-	last_name := r.PostFormValue("last_name")
-	email := r.PostFormValue("email")
-	password := r.PostFormValue("password")
+	user.FirstName = r.PostFormValue("first_name")
+	user.LastName = r.PostFormValue("last_name")
+	user.Email = r.PostFormValue("email")
+	user.Password = r.PostFormValue("password")
 	csrf_token := r.PostFormValue("csrf_token")
 
-	log.Printf("User login details are First name: %s, last name: %s, Email: %s, password: %s, csrf_token: %s", first_name, last_name, email, password, csrf_token)
+	log.Printf("User login details are First name: %s, last name: %s, Email: %s, password: %s, csrf_token: %s", user.FirstName, user.LastName, user.Email, user.Password, csrf_token)
 
-	user, err := m.DB.CheckIfUserEmailExist(email)
+	userExist, err := m.DB.CheckIfUserEmailExist(user.Email)
 	if err != nil {
 		helpers.ServerError(w, err)
 		return
 	}
 
-	if user {
+	if userExist {
 		log.Println("Email exist")
 		data["error"] = "email exist"
 		out, _ := json.MarshalIndent(data, "", "    ")
@@ -274,6 +276,8 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 		w.Write(resp)
 		return
 	}
+
+	
 
 	jwtToken, err := helpers.GenerateJWTToken(2)
 	if err != nil {
@@ -290,7 +294,7 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	<strong>Kindly click the link below</strong>
 	<a href="http://localhost:3000/verify-email?userid=%d&token=%s", target="_blank">Verify Account</a>
 	<p>We hope to see you soon</p>
-	`, first_name, last_name, 2, "hkjhdfkshkfds")
+	`, user.FirstName, user.LastName, 2, "hkjhdfkshkfds")
 
 	message := models.MailData{
 		To:      email,
