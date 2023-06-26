@@ -627,3 +627,35 @@ func (repo *postgresDBRepo) InsertUser(user models.User) (int, error) {
 
 	return newUserID, nil
 }
+
+// GetUserByID returns a user by id
+func (repo *postgresDBRepo) GetUserByID(id int) (models.User, error) {
+	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `select id, first_name, last_name, email, phone, access_level, address, image, token, created_at, updated_at
+			from users where id = $1`
+
+	row := repo.DB.QueryRowContext(context, query, id)
+
+	var user models.User
+	err := row.Scan(
+		&user.ID,
+		&user.FirstName,
+		&user.LastName,
+		&user.Email,
+		&user.Phone,
+		&user.AccessLevel,
+		&user.Address,
+		&user.Image,
+		&user.Token,
+		&user.CreatedAt,
+		&user.UpdatedAt,
+	)
+
+	if err != nil {
+		return user, err
+	}
+
+	return user, nil
+}

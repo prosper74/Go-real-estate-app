@@ -333,8 +333,8 @@ func (m *Repository) VerifyUserEmail(w http.ResponseWriter, r *http.Request) {
 	})
 	if err != nil {
 		// Handle token parsing or verification errors
-		http.Error(w, "Invalid token", http.StatusBadRequest)
-		data["error"] = "Invalid token"
+		http.Error(w, "Unable to parse token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Invalid token. Error: %s", err)
 		out, _ := json.MarshalIndent(data, "", "    ")
 		resp := []byte(out)
 		w.Write(resp)
@@ -351,7 +351,7 @@ func (m *Repository) VerifyUserEmail(w http.ResponseWriter, r *http.Request) {
 		// ...
 	} else {
 		http.Error(w, "Invalid token", http.StatusBadRequest)
-		data["error"] = "Invalid token"
+		data["error"] = fmt.Sprintf("Invalid token. Error: %s", err)
 		out, _ := json.MarshalIndent(data, "", "    ")
 		resp := []byte(out)
 		w.Write(resp)
