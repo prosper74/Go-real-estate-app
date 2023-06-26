@@ -659,3 +659,21 @@ func (repo *postgresDBRepo) GetUserByID(id int) (models.User, error) {
 
 	return user, nil
 }
+
+// UpdateUser updates a user in the database
+func (repo *postgresDBRepo) UpdateUserAccessLevel(user models.User) error {
+	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `
+		update users set access_level = $1, updated_at = $2 where id = $3
+	`
+
+	_, err := repo.DB.ExecContext(context, query, user.AccessLevel, time.Now(), user.ID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
