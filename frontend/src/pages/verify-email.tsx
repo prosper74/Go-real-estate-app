@@ -1,19 +1,8 @@
 import Head from "next/head";
 import Link from "next/link";
-import { Timeline, Button } from "flowbite-react";
 import { motion } from "framer-motion";
-import {
-  textAnimate,
-  imageAnimate,
-  imageAnimateTop,
-  imageAnimateBottom,
-} from "@src/components/common/variants";
-import {
-  FacebookIconFilled,
-  ForwardArrowAlt,
-  InstagramIcon,
-  TwitterIcon,
-} from "@src/components/common/svgIcons";
+import { textAnimate, imageAnimate } from "@src/components/common/variants";
+import { ForwardArrowAlt } from "@src/components/common/svgIcons";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -55,11 +44,11 @@ export default function VerifyUserEmail({ queryParams }: any) {
       })
       .catch((error) => {
         // const { message } = error.response.data.message[0].messages[0];
-        console.error(error);
+        console.error(error.response.data);
         dispatch(
           setSnackbar({
             status: "error",
-            message: "An error occured",
+            message: error.response.data,
             open: true,
           })
         );

@@ -240,9 +240,6 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	user := models.User{}
 
 	templateData := &models.TemplateData{}
-	templateData.Flash = m.App.Session.PopString(r.Context(), "flash")
-	templateData.Error = m.App.Session.PopString(r.Context(), "error")
-	templateData.Warning = m.App.Session.PopString(r.Context(), "warning")
 
 	if m.App.Session.Exists(r.Context(), "user_id") {
 		templateData.IsAuthenticated = 1
@@ -271,7 +268,6 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 		log.Println("Email exist")
 		data["error"] = "email exist"
 		out, _ := json.MarshalIndent(data, "", "    ")
-
 		resp := []byte(out)
 		w.Write(resp)
 		return
