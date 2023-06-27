@@ -223,16 +223,6 @@ func (m *Repository) UserProperties(w http.ResponseWriter, r *http.Request) {
 	w.Write(resp)
 }
 
-func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
-	data := make(map[string]interface{})
-	data["CSRFToken"] = nosurf.Token(r)
-	// data["users"] = users
-	out, _ := json.MarshalIndent(data, "", "    ")
-
-	resp := []byte(out)
-	w.Write(resp)
-}
-
 func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	// Clear the token in session
 	_ = m.App.Session.RenewToken(r.Context())
@@ -318,25 +308,38 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) VerifyUserEmail(w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]interface{})
 
-	user, ok := m.App.Session.Get(r.Context(), "user").(models.User)
-	if !ok {
-		m.App.Session.Put(r.Context(), "error", "Can't get user from session")
-		data["error"] = "Can't get user from session"
+	// get the user id and JWT token string from the url request
+	userID, _ := strconv.Atoi(r.URL.Query().Get("userid"))
+	tokenString := r.URL.Query().Get("token")
+
+	log.Printf("User details from url id: %d, token:%s", userID, tokenString)
+
+	user, err := m.DB.GetUserByID(userID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to Get User from database"
 		out, _ := json.MarshalIndent(data, "", "    ")
 		resp := []byte(out)
 		w.Write(resp)
 		return
 	}
 
+	// user, ok := m.App.Session.Get(r.Context(), "user").(models.User)
+	// if !ok {
+	// 	m.App.Session.Put(r.Context(), "error", "Can't get user from session")
+	// 	data["error"] = "Can't get user from session"
+	// 	out, _ := json.MarshalIndent(data, "", "    ")
+	// 	resp := []byte(out)
+	// 	w.Write(resp)
+	// 	return
+	// }
+
 	// Load the env file and get the JWT secret
-	err := godotenv.Load()
+	err = godotenv.Load()
 	if err != nil {
 		log.Println("Error loading .env file")
 	}
 	jwtSecret := os.Getenv("JWTSECRET")
-
-	// get the JWT token string from the url request
-	tokenString := r.URL.Query().Get("token")
 
 	// Parse and verify the JWT token
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
@@ -346,7 +349,7 @@ func (m *Repository) VerifyUserEmail(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// Handle token parsing or verification errors
 		http.Error(w, "Unable to parse token", http.StatusBadRequest)
-		data["error"] = fmt.Sprintf("Invalid token. Error: %s", err)
+		data["error"] = fmt.Sprintf("Unable to parse token. Error: %s", err)
 		out, _ := json.MarshalIndent(data, "", "    ")
 		resp := []byte(out)
 		w.Write(resp)
@@ -356,8 +359,8 @@ func (m *Repository) VerifyUserEmail(w http.ResponseWriter, r *http.Request) {
 	// Check if the token is valid
 	if token.Valid {
 		// Extract the user ID from the token claims
-		user.ID = token.Claims.(jwt.MapClaims)["sub"].(int)
-		log.Println("User: ", user)
+		userIDURL := token.Claims.(jwt.MapClaims)["sub"].(int)
+		log.Println("ReturnedUserIdURL: ", userIDURL)
 
 		// Update the user's account status as verified
 		user.AccessLevel = 2
@@ -405,6 +408,16 @@ func (m *Repository) VerifyUserEmail(w http.ResponseWriter, r *http.Request) {
 
 	data["message"] = "Successful"
 	out, _ := json.MarshalIndent(data, "", "    ")
+	resp := []byte(out)
+	w.Write(resp)
+}
+
+func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+	data["CSRFToken"] = nosurf.Token(r)
+	// data["users"] = users
+	out, _ := json.MarshalIndent(data, "", "    ")
+
 	resp := []byte(out)
 	w.Write(resp)
 }
