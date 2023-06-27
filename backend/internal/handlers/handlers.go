@@ -318,12 +318,24 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) VerifyUserEmail(w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]interface{})
 
+	user, ok := m.App.Session.Get(r.Context(), "user").(models.User)
+	if !ok {
+		m.App.Session.Put(r.Context(), "error", "Can't get user from session")
+		data["error"] = "Can't get user from session"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// Load the env file and get the JWT secret
 	err := godotenv.Load()
 	if err != nil {
 		log.Println("Error loading .env file")
 	}
 	jwtSecret := os.Getenv("JWTSECRET")
 
+	// get the JWT token string from the url request
 	tokenString := r.URL.Query().Get("token")
 
 	// Parse and verify the JWT token
@@ -344,11 +356,21 @@ func (m *Repository) VerifyUserEmail(w http.ResponseWriter, r *http.Request) {
 	// Check if the token is valid
 	if token.Valid {
 		// Extract the user ID from the token claims
-		userID := token.Claims.(jwt.MapClaims)["sub"].(int)
-		log.Println("UserID: ", userID)
+		user.ID = token.Claims.(jwt.MapClaims)["sub"].(int)
+		log.Println("User: ", user)
 
 		// Update the user's account status as verified
-		// ...
+		user.AccessLevel = 2
+		err = m.DB.UpdateUserAccessLevel(user)
+		if err != nil {
+			helpers.ServerError(w, err)
+			data["error"] = "Unable to update user's access level. Please contact support"
+			out, _ := json.MarshalIndent(data, "", "    ")
+			resp := []byte(out)
+			w.Write(resp)
+			return
+		}
+
 	} else {
 		http.Error(w, "Invalid token", http.StatusBadRequest)
 		data["error"] = fmt.Sprintf("Invalid token. Error: %s", err)
@@ -359,16 +381,6 @@ func (m *Repository) VerifyUserEmail(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Handle successful email verification
-	user, ok := m.App.Session.Get(r.Context(), "user").(models.User)
-	if !ok {
-		m.App.Session.Put(r.Context(), "error", "Can't get reservation from session")
-		data["error"] = "Can't get reservation from session"
-		out, _ := json.MarshalIndent(data, "", "    ")
-		resp := []byte(out)
-		w.Write(resp)
-		return
-	}
-
 	// Send email notification to customer
 	htmlBody := fmt.Sprintf(`
 	<strong>Successful</strong><br />
