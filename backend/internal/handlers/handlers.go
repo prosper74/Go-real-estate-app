@@ -324,16 +324,6 @@ func (m *Repository) VerifyUserEmail(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// user, ok := m.App.Session.Get(r.Context(), "user").(models.User)
-	// if !ok {
-	// 	m.App.Session.Put(r.Context(), "error", "Can't get user from session")
-	// 	data["error"] = "Can't get user from session"
-	// 	out, _ := json.MarshalIndent(data, "", "    ")
-	// 	resp := []byte(out)
-	// 	w.Write(resp)
-	// 	return
-	// }
-
 	// Load the env file and get the JWT secret
 	err = godotenv.Load()
 	if err != nil {
