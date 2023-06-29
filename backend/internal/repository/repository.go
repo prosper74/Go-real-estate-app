@@ -8,6 +8,7 @@ type DatabaseRepo interface {
 	InsertUser(user models.User) (int, error) 
 	GetUserByID(id int) (models.User, error)
 	UpdateUserAccessLevel(user models.User) error
+	Authenticate(email, testPassword string) (int, string, error)
 
 	AllProperties() ([]models.Property, error)
 	AllFeaturedProperties() ([]models.Property, error)
