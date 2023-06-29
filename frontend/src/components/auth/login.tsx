@@ -65,48 +65,71 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
   const onSubmit = handleSubmit((data) => {
     setLoading(true);
     axios
-      .post(`${process.env.NEXT_PUBLIC_REST_API}/auth/local`, {
-        identifier: data.email,
-        password: data.password,
-      })
+      .post(
+        `${process.env.NEXT_PUBLIC_REST_API}/login`,
+        {
+          email: data.email,
+          password: data.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      )
       .then((response) => {
-        dispatch(
-          setUser({
-            ...response.data.user,
-            jwt: response.data.jwt,
-            onboarding: true,
-          })
-        );
-        dispatch(
-          setSnackbar({
-            status: "success",
-            message: ` Welcome Back ${response.data.user.username.toUpperCase()}`,
-            open: true,
-          })
-        );
-        setLoading(false);
-        setIsOpen(false);
-      })
-      .catch((error) => {
-        const { message } = error.response.data.message[0].messages[0];
-        if (message === "Your account email is not confirmed") {
+        console.log(response);
+        if (response.data.error) {
           dispatch(
             setSnackbar({
               status: "error",
-              message: message + ". Resend Email Confirmation",
+              message: response.data.error,
               open: true,
             })
           );
-          const resend = steps.find(
-            (step: { label: string }) =>
-              step.label === "Resend Email Confirmation"
-          );
-          setSelectedStep(steps.indexOf(resend));
           setLoading(false);
         } else {
-          dispatch(setSnackbar({ status: "error", message, open: true }));
+          dispatch(
+            setUser({
+              userId: response.data.user,
+              jwt: response.data.jwt,
+              onboarding: true,
+            })
+          );
+          dispatch(
+            setSnackbar({
+              status: "success",
+              message: ` Welcome Back`,
+              open: true,
+            })
+          );
           setLoading(false);
+          setIsOpen(false);
         }
+      })
+      .catch((error) => {
+        console.error(error);
+        // dispatch(setSnackbar({ status: "error", message: error, open: true }));
+        setLoading(false);
+        // const { message } = error.response.data.message[0].messages[0];
+        // if (message === "Your account email is not confirmed") {
+        //   dispatch(
+        //     setSnackbar({
+        //       status: "error",
+        //       message: message + ". Resend Email Confirmation",
+        //       open: true,
+        //     })
+        //   );
+        //   const resend = steps.find(
+        //     (step: { label: string }) =>
+        //       step.label === "Resend Email Confirmation"
+        //   );
+        //   setSelectedStep(steps.indexOf(resend));
+        //   setLoading(false);
+        // } else {
+        //   dispatch(setSnackbar({ status: "error", message, open: true }));
+        //   setLoading(false);
+        // }
       });
   });
 
@@ -211,7 +234,7 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                 </button>
               </form>
             </div>
-            
+
             {/* Social Logins */}
             <div className="p-2">
               <div className="grid grid-cols-2 gap-4">

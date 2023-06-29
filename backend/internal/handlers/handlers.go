@@ -72,13 +72,14 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) CSRFToken(w http.ResponseWriter, r *http.Request) {
 	token := nosurf.Token(r)
 
-	data := make(map[string]string)
-	data["token"] = token
+	// check if user is logged in and get the id from session
+	userID := m.App.Session.GetInt(r.Context(), "user_id")
 
-	log.Println("Data: ", data)
+	data := make(map[string]interface{})
+	data["token"] = token
+	data["user_id"] = userID
 
 	out, _ := json.MarshalIndent(data, "", "    ")
-
 	resp := []byte(out)
 	w.Write(resp)
 }
@@ -432,8 +433,11 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Println("------   Login Okay   ------")
+
 	m.App.Session.Put(r.Context(), "user_id", id)
 	data["message"] = "Login successful"
+	data["user"] = id
 	out, _ := json.MarshalIndent(data, "", "    ")
 	resp := []byte(out)
 	w.Write(resp)
