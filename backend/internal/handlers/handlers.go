@@ -403,9 +403,38 @@ func (m *Repository) VerifyUserEmail(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
+	// Allways renew the token in seesion for login or logout
+	_ = m.App.Session.RenewToken(r.Context())
+
 	data := make(map[string]interface{})
-	data["CSRFToken"] = nosurf.Token(r)
-	// data["users"] = users
+
+	err := r.ParseForm()
+	if err != nil {
+		m.App.Session.Put(r.Context(), "error", "Can't parse form")
+		data["error"] = "Unable to Get User from database"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	email := r.Form.Get("email")
+	password := r.Form.Get("password")
+
+	id, _, err := m.DB.Authenticate(email, password)
+	if err != nil {
+		log.Println(err)
+
+		m.App.Session.Put(r.Context(), "error", "Invalid email/password")
+		http.Redirect(w, r, "/user/login", http.StatusSeeOther)
+
+		return
+	}
+
+	m.App.Session.Put(r.Context(), "user_id", id)
+	m.App.Session.Put(r.Context(), "flash", "Login Successful")
+	http.Redirect(w, r, "/admin/dashboard", http.StatusSeeOther)
+
 	out, _ := json.MarshalIndent(data, "", "    ")
 
 	resp := []byte(out)
