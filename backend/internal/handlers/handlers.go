@@ -425,18 +425,16 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 
-		m.App.Session.Put(r.Context(), "error", "Invalid email/password")
-		http.Redirect(w, r, "/user/login", http.StatusSeeOther)
-
+		data["error"] = "Incorrect username/password"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
 		return
 	}
 
 	m.App.Session.Put(r.Context(), "user_id", id)
-	m.App.Session.Put(r.Context(), "flash", "Login Successful")
-	http.Redirect(w, r, "/admin/dashboard", http.StatusSeeOther)
-
+	data["message"] = "Login successful"
 	out, _ := json.MarshalIndent(data, "", "    ")
-
 	resp := []byte(out)
 	w.Write(resp)
 }

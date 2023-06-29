@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/justinas/nosurf"
@@ -51,8 +52,14 @@ func SessionLoad(next http.Handler) http.Handler {
 func Auth(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if !helpers.IsAuthenticated(r) {
-			session.Put(r.Context(), "error", "User not logged")
+			session.Put(r.Context(), "error", "User not logged in")
 			http.Redirect(w, r, "/", http.StatusSeeOther)
+
+			data := make(map[string]interface{})
+			data["error"] = "User not logged in"
+			out, _ := json.MarshalIndent(data, "", "    ")
+			resp := []byte(out)
+			w.Write(resp)
 			return
 		}
 
