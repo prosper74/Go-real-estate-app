@@ -70,6 +70,8 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) TokensAndUserID(w http.ResponseWriter, r *http.Request) {
+	// load session 
+	_ = m.App.Session.RenewToken(r.Context())
 	token := nosurf.Token(r)
 
 	// check if user is logged in and get the id from session
