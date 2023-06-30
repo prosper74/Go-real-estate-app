@@ -130,7 +130,7 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.NEXT_PUBLIC_REST_API}/token`)
+      .get(`${process.env.NEXT_PUBLIC_REST_API}/token-and-user-id`)
       .then((res) => {
         setToken(res.data.token);
       })

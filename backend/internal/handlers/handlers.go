@@ -74,9 +74,16 @@ func (m *Repository) TokensAndUserID(w http.ResponseWriter, r *http.Request) {
 
 	// check if user is logged in and get the id from session
 	userID := m.App.Session.GetInt(r.Context(), "user_id")
+	userExists := m.App.Session.Exists(r.Context(), "user_id")
+	// if m.App.Session.Exists(r.Context(), "user_id") {
+	// 	templateData.IsAuthenticated = 1
+	// }
+
+	log.Println("user id:", userID)
+	log.Println("User exits: ", userExists)
 
 	// Generate jwt if the user needs to make request to the server
-	jwtToken, err := helpers.GenerateJWTToken(userID)
+	jwtToken, err := helpers.GenerateJWTToken(3)
 	if err != nil {
 		helpers.ServerError(w, err)
 		return
@@ -233,9 +240,6 @@ func (m *Repository) UserProperties(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
-	// Clear the token in session
-	_ = m.App.Session.RenewToken(r.Context())
-
 	user := models.User{}
 
 	templateData := &models.TemplateData{}
@@ -441,4 +445,10 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 	out, _ := json.MarshalIndent(data, "", "    ")
 	resp := []byte(out)
 	w.Write(resp)
+
+	userID := m.App.Session.GetInt(r.Context(), "user_id")
+	userExists := m.App.Session.Exists(r.Context(), "user_id")
+
+	log.Println("user id:", userID)
+	log.Println("User exits: ", userExists)
 }
