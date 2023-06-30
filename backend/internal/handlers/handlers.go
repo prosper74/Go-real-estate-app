@@ -69,14 +69,22 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	w.Write(resp)
 }
 
-func (m *Repository) CSRFToken(w http.ResponseWriter, r *http.Request) {
+func (m *Repository) TokensAndUserID(w http.ResponseWriter, r *http.Request) {
 	token := nosurf.Token(r)
 
 	// check if user is logged in and get the id from session
 	userID := m.App.Session.GetInt(r.Context(), "user_id")
 
+	// Generate jwt if the user needs to make request to the server
+	jwtToken, err := helpers.GenerateJWTToken(userID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
 	data := make(map[string]interface{})
 	data["token"] = token
+	data["jwt_token"] = jwtToken
 	data["user_id"] = userID
 
 	out, _ := json.MarshalIndent(data, "", "    ")

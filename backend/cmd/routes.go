@@ -29,7 +29,7 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Use(SessionLoad)
 
 	mux.Get("/", handlers.Repo.Home)
-	mux.Get("/token", handlers.Repo.CSRFToken)
+	mux.Get("/token", handlers.Repo.TokensAndUserID)
 	mux.Get("/buy", handlers.Repo.Buy)
 	mux.Get("/rent", handlers.Repo.Rent)
 	mux.Get("/shortlet", handlers.Repo.Shortlet)
