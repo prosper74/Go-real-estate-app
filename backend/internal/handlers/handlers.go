@@ -349,10 +349,6 @@ func (m *Repository) VerifyUserEmail(w http.ResponseWriter, r *http.Request) {
 
 	// Check if the token is valid
 	if token.Valid {
-		// Extract the user ID from the token claims
-		userIDURL := token.Claims.(jwt.MapClaims)["sub"].(int)
-		log.Println("ReturnedUserIdURL: ", userIDURL)
-
 		// Update the user's account status as verified
 		user.AccessLevel = 2
 		err = m.DB.UpdateUserAccessLevel(user)
@@ -364,7 +360,6 @@ func (m *Repository) VerifyUserEmail(w http.ResponseWriter, r *http.Request) {
 			w.Write(resp)
 			return
 		}
-
 	} else {
 		http.Error(w, "Invalid token", http.StatusBadRequest)
 		data["error"] = fmt.Sprintf("Invalid token. Error: %s", err)
@@ -374,8 +369,7 @@ func (m *Repository) VerifyUserEmail(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Handle successful email verification
-	// Send email notification to customer
+	// Handle successful email verification, Send email notification to customer
 	htmlBody := fmt.Sprintf(`
 	<strong>Successful</strong><br />
 	<p>Hi %s, </p>
@@ -390,7 +384,7 @@ func (m *Repository) VerifyUserEmail(w http.ResponseWriter, r *http.Request) {
 	message := models.MailData{
 		To:      user.Email,
 		From:    "prosperdevstack@gmail.com",
-		Subject: "Verify Your Email",
+		Subject: "Email Verified",
 		Content: htmlBody,
 	}
 
@@ -432,8 +426,6 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 		w.Write(resp)
 		return
 	}
-
-	log.Println("------   Login Okay   ------")
 
 	m.App.Session.Put(r.Context(), "user_id", id)
 	data["message"] = "Login successful"

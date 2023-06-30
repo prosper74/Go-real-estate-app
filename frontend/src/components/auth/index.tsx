@@ -1,10 +1,10 @@
-import { FC, Fragment, useState } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
-import Login from './login';
-import ForgotPassword from './forgotPassword';
-import Signup from './signup';
-import Complete from './complete';
-import ResendEmailConfirmation from './resendEmailConfirmation';
+import { FC, Fragment, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import Login from "./login";
+import ForgotPassword from "./forgotPassword";
+import Signup from "./signup";
+import Complete from "./complete";
+import ResendEmailConfirmation from "./resendEmailConfirmation";
 
 interface IProps {
   isOpen: boolean;
@@ -15,11 +15,11 @@ const AuthPortal: FC<IProps> = ({ isOpen, setIsOpen }) => {
   const [selectedStep, setSelectedStep] = useState(0);
 
   const steps = [
-    { component: Login, label: 'Login' },
-    { component: ForgotPassword, label: 'Forgot Password' },
-    { component: Signup, label: 'Sign Up' },
-    { component: Complete, label: 'Complete' },
-    { component: ResendEmailConfirmation, label: 'Resend Email Confirmation' },
+    { component: Login, label: "Login" },
+    { component: ForgotPassword, label: "Forgot Password" },
+    { component: Signup, label: "Sign Up" },
+    { component: Complete, label: "Complete" },
+    { component: ResendEmailConfirmation, label: "Resend Email Confirmation" },
   ];
 
   return (
@@ -28,7 +28,7 @@ const AuthPortal: FC<IProps> = ({ isOpen, setIsOpen }) => {
         <Dialog
           as="div"
           className="fixed inset-0 overflow-y-auto z-[2000]"
-          onClose={() => ''}
+          onClose={() => ""}
         >
           <div className="min-h-screen px-4 text-center">
             <Transition.Child
@@ -62,12 +62,12 @@ const AuthPortal: FC<IProps> = ({ isOpen, setIsOpen }) => {
               <div className="inline-block w-full max-w-md p-2 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
                 {steps.map((Step, i) =>
                   selectedStep === i ? (
+                    // @ts-ignore
                     <Step.component
                       setSelectedStep={setSelectedStep}
                       steps={steps}
                       setIsOpen={setIsOpen}
                       key={Step.label}
-                      // location={location}
                     />
                   ) : null
                 )}

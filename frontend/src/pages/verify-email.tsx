@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import { textAnimate, imageAnimate } from "@src/components/common/variants";
 import { ForwardArrowAlt } from "@src/components/common/svgIcons";
@@ -10,6 +11,7 @@ import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import { PageLoader } from "@src/components/common/loader";
 
 export default function VerifyUserEmail({ queryParams }: any) {
+  const router = useRouter();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const { userid, token } = queryParams;
@@ -39,12 +41,11 @@ export default function VerifyUserEmail({ queryParams }: any) {
               open: true,
             })
           );
-          setLoading(false);
+          setLoading(false);          
         }
+        router.push('/');
       })
       .catch((error) => {
-        // const { message } = error.response.data.message[0].messages[0];
-        console.error(error.response.data);
         dispatch(
           setSnackbar({
             status: "error",
@@ -53,6 +54,7 @@ export default function VerifyUserEmail({ queryParams }: any) {
           })
         );
         setLoading(false);
+        router.push('/');
       });
   }, []);
 
