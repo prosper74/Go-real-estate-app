@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Navbar, Dropdown, Avatar } from "flowbite-react";
 import { MainMenu } from "./layoutData";
 import { UserProps } from "../interfaces";
 import AuthButton from "../Buttons/authButton";
 import AuthPortal from "@src/components/auth";
+import { setUser } from "@src/store/reducers/userReducer";
+import Cookies from "js-cookie";
 
 interface IProps {
   user: UserProps;
@@ -14,10 +16,16 @@ interface IProps {
 
 export default function Header() {
   const user = useSelector((state: IProps) => state.user);
+  const dispatch = useDispatch();
   const [selectedNav, setSelectedNav] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const defaultUser = { username: "Guest" };
 
-  console.log("User: ", user)
+  const handleLogout = async () => {
+    setIsOpen(!isOpen);
+    typeof window !== "undefined" && Cookies.remove("user");
+    dispatch(setUser(defaultUser));
+  };
 
   useEffect(() => {
     if (window.location.href.indexOf("/buy") > -1) {
@@ -76,7 +84,7 @@ export default function Header() {
               <Dropdown.Item>Settings</Dropdown.Item>
               <Dropdown.Item>Earnings</Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item>Sign out</Dropdown.Item>
+              <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
             </Dropdown>
           )}
 
