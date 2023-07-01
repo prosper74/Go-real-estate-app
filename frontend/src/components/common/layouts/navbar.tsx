@@ -1,29 +1,23 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSelector } from "react-redux";
 import { Navbar, Dropdown, Avatar } from "flowbite-react";
-import Cookies from "js-cookie";
 import { MainMenu } from "./layoutData";
+import { UserProps } from "../interfaces";
 import AuthButton from "../Buttons/authButton";
 import AuthPortal from "@src/components/auth";
 
-// interface IProps {
-//   user: UserProps;
-// }
+interface IProps {
+  user: UserProps;
+}
 
 export default function Header() {
-  const userId = Cookies.get("userId");
-  const jwt = Cookies.get("jwt");
+  const user = useSelector((state: IProps) => state.user);
   const [selectedNav, setSelectedNav] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log(userId);
-  console.log(jwt);
-
-  const handleLogout = () => {
-    Cookies.remove("userId");
-    Cookies.remove("jwt");
-  };
+  console.log("User: ", user)
 
   useEffect(() => {
     if (window.location.href.indexOf("/buy") > -1) {
@@ -54,7 +48,7 @@ export default function Header() {
           />
         </Link>
         <div className="flex md:order-2">
-          {!userId ? (
+          {!user.jwt && !user.onboarding ? (
             <AuthButton
               isOpen={isOpen}
               setIsOpen={setIsOpen}
@@ -82,7 +76,7 @@ export default function Header() {
               <Dropdown.Item>Settings</Dropdown.Item>
               <Dropdown.Item>Earnings</Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
+              <Dropdown.Item>Sign out</Dropdown.Item>
             </Dropdown>
           )}
 

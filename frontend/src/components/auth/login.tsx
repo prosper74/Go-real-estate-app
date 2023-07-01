@@ -93,6 +93,7 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
             setUser({
               userId: response.data.user,
               jwt: response.data.jwt,
+              onboarding: true,
             })
           );
           dispatch(
