@@ -67,7 +67,7 @@ func GenerateJWTToken(userID int) (string, error) {
 	// Define the claims for the JWT token
 	claims := jwt.MapClaims{
 		"sub": userID,                           // Subject (user ID)
-		"exp": time.Now().Add(time.Hour).Unix(), // Expiration time
+		"exp": time.Now().Add(time.Hour * 24).Unix(), // Expiration time
 		"iat": time.Now().Unix(),                // Issued at time
 	}
 
