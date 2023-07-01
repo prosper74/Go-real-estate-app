@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { Navbar, Dropdown, Avatar } from "flowbite-react";
+import Cookies from "js-cookie";
 import { MainMenu } from "./layoutData";
 import { UserProps } from "../interfaces";
 import AuthButton from "../Buttons/authButton";
@@ -13,6 +14,8 @@ interface IProps {
 }
 
 export default function Header() {
+  const userId = Cookies.get("userId");
+  const jwt = Cookies.get("jwt");
   const user = useSelector((state: IProps) => state.user);
   const [selectedNav, setSelectedNav] = useState("");
   const [isOpen, setIsOpen] = useState(false);

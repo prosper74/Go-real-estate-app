@@ -70,22 +70,16 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) TokensAndUserID(w http.ResponseWriter, r *http.Request) {
-	// load session 
+	// load session
 	_ = m.App.Session.RenewToken(r.Context())
 	token := nosurf.Token(r)
 
-	// check if user is logged in and get the id from session
-	userID := m.App.Session.GetInt(r.Context(), "user_id")
-	userExists := m.App.Session.Exists(r.Context(), "user_id")
-	// if m.App.Session.Exists(r.Context(), "user_id") {
-	// 	templateData.IsAuthenticated = 1
-	// }
+	userId, _ := strconv.Atoi(r.Form.Get("user_id"))
 
-	log.Println("user id:", userID)
-	log.Println("User exits: ", userExists)
+	log.Println("user id:", userId)
 
 	// Generate jwt if the user needs to make request to the server
-	jwtToken, err := helpers.GenerateJWTToken(3)
+	jwtToken, err := helpers.GenerateJWTToken(userId)
 	if err != nil {
 		helpers.ServerError(w, err)
 		return
@@ -94,7 +88,7 @@ func (m *Repository) TokensAndUserID(w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]interface{})
 	data["token"] = token
 	data["jwt_token"] = jwtToken
-	data["user_id"] = userID
+	data["user_id"] = userId
 
 	out, _ := json.MarshalIndent(data, "", "    ")
 	resp := []byte(out)
@@ -441,16 +435,18 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Generate jwt if the user needs to make request to the server
+	jwt, err := helpers.GenerateJWTToken(id)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
 	m.App.Session.Put(r.Context(), "user_id", id)
 	data["message"] = "Login successful"
 	data["user"] = id
+	data["jwt"] = jwt
 	out, _ := json.MarshalIndent(data, "", "    ")
 	resp := []byte(out)
 	w.Write(resp)
-
-	userID := m.App.Session.GetInt(r.Context(), "user_id")
-	userExists := m.App.Session.Exists(r.Context(), "user_id")
-
-	log.Println("user id:", userID)
-	log.Println("User exits: ", userExists)
 }
