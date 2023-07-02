@@ -41,7 +41,7 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/user/logout", handlers.Repo.Logout)
 	mux.Get("/verify-email", handlers.Repo.VerifyUserEmail)
 
-	mux.Route("/admin", func(mux chi.Router) {
+	mux.Route("/auth", func(mux chi.Router) {
 		// Use the Auth middleware
 		mux.Use(Auth)
 		// mux.Get("/dashboard", handlers.Repo.UserDashboard)

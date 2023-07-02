@@ -18,7 +18,7 @@ interface IProps {
 export default function Header() {
   const user = useSelector((state: IProps) => state.user);
   const dispatch = useDispatch();
-  const [fetchedUser, setFetchedUser] = useState<UserProps>()
+  const [fetchedUser, setFetchedUser] = useState<UserProps>();
   const [selectedNav, setSelectedNav] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const defaultUser = { username: "Guest" };
@@ -27,16 +27,21 @@ export default function Header() {
     setIsOpen(!isOpen);
     typeof window !== "undefined" && Cookies.remove("user");
     dispatch(setUser(defaultUser));
+
+    axios
+      .get(`${process.env.NEXT_PUBLIC_REST_API}/user/logout`)
+      .then()
+      .catch((error) => console.error(error));
   };
 
-  useEffect(() => {
-    axios
-    .get(`${process.env.NEXT_PUBLIC_REST_API}/token-and-user-id`)
-    .then((res) => {
-      setToken(res.data.token);
-    })
-    .catch((error) => console.error(error));
-  }, [])
+  // useEffect(() => {
+  //   axios
+  //   .get(`${process.env.NEXT_PUBLIC_REST_API}/auth/dashboard`)
+  //   .then((res) => {
+  //     setFetchedUser(res.data.user);
+  //   })
+  //   .catch((error) => console.error(error));
+  // }, [])
 
   useEffect(() => {
     if (window.location.href.indexOf("/buy") > -1) {
