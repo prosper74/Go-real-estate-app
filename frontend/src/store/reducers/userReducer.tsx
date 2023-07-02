@@ -24,7 +24,7 @@ export const userReducer = createSlice({
         typeof window !== "undefined" && Cookies.remove("user");
       } else {
         typeof window !== "undefined" &&
-          Cookies.set("user", JSON.stringify(action.payload));
+          Cookies.set("user", JSON.stringify(action.payload), { expires: 7 });
       }
 
       newState = action.payload;
