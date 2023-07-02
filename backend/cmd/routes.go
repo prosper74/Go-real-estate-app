@@ -40,5 +40,11 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Post("/signup", handlers.Repo.SignUp)
 	mux.Get("/verify-email", handlers.Repo.VerifyUserEmail)
 
+	mux.Route("/account", func(mux chi.Router) {
+		// Use the Auth middleware
+		mux.Use(Auth)
+		// mux.Get("/dashboard", handlers.Repo.UserDashboard)
+	})
+
 	return mux
 }

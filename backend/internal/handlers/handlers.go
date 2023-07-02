@@ -321,8 +321,6 @@ func (m *Repository) VerifyUserEmail(w http.ResponseWriter, r *http.Request) {
 	userID, _ := strconv.Atoi(r.URL.Query().Get("userid"))
 	tokenString := r.URL.Query().Get("token")
 
-	log.Printf("User details from url id: %d, token:%s", userID, tokenString)
-
 	user, err := m.DB.GetUserByID(userID)
 	if err != nil {
 		helpers.ServerError(w, err)
