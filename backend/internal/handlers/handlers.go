@@ -448,3 +448,29 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 	resp := []byte(out)
 	w.Write(resp)
 }
+
+// Auth handlers
+func (m *Repository) UserDashboard(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+
+	// get the user id and JWT token string from the url request
+	// userID, _ := strconv.Atoi(r.URL.Query().Get("userid"))
+	// tokenString := r.URL.Query().Get("token")
+
+	// user, err := m.DB.GetUserByID(userID)
+	// if err != nil {
+	// 	helpers.ServerError(w, err)
+	// 	data["error"] = "Unable to Get User from database"
+	// 	out, _ := json.MarshalIndent(data, "", "    ")
+	// 	resp := []byte(out)
+	// 	w.Write(resp)
+	// 	return
+	// }
+
+	
+
+	data["message"] = "Successful"
+	out, _ := json.MarshalIndent(data, "", "    ")
+	resp := []byte(out)
+	w.Write(resp)
+}
