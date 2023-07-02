@@ -449,6 +449,18 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 	w.Write(resp)
 }
 
+func (m *Repository) Logout(w http.ResponseWriter, r *http.Request) {
+	_ = m.App.Session.Destroy(r.Context())
+	_ = m.App.Session.RenewToken(r.Context())
+
+	data := make(map[string]interface{})
+
+	data["message"] = "Successful"
+	out, _ := json.MarshalIndent(data, "", "    ")
+	resp := []byte(out)
+	w.Write(resp)
+}
+
 // Auth handlers
 func (m *Repository) UserDashboard(w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]interface{})
