@@ -35,16 +35,19 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/shortlet", handlers.Repo.Shortlet)
 	mux.Get("/{category}/{id}", handlers.Repo.SingleProperty)
 	mux.Get("/property", handlers.Repo.PropertiesRelatedByType)
-	mux.Get("/user", handlers.Repo.UserProperties)	
-	mux.Post("/signup", handlers.Repo.SignUp)
+	mux.Get("/user", handlers.Repo.UserProperties)
 	mux.Post("/login", handlers.Repo.Login)
-	mux.Get("/user/logout", handlers.Repo.Logout)
+	mux.Post("/signup", handlers.Repo.SignUp)
+	mux.Post("/user/logout", handlers.Repo.Logout)
 	mux.Get("/verify-email", handlers.Repo.VerifyUserEmail)
 
-	mux.Route("/auth", func(mux chi.Router) {
+	// user dashboard
+	mux.Get("/auth/dashboard", handlers.Repo.UserDashboard)
+
+	mux.Route("/admin", func(mux chi.Router) {
 		// Use the Auth middleware
 		mux.Use(Auth)
-		// mux.Get("/dashboard", handlers.Repo.UserDashboard)
+		// mux.Get("/dashboard", handlers.Repo.AdminDashboard)
 	})
 
 	return mux

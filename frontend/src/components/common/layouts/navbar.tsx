@@ -27,6 +27,7 @@ export default function Header() {
     setIsOpen(!isOpen);
     typeof window !== "undefined" && Cookies.remove("user");
     dispatch(setUser(defaultUser));
+    setFetchedUser(undefined)
 
     axios
       .get(`${process.env.NEXT_PUBLIC_REST_API}/user/logout`)
@@ -34,14 +35,22 @@ export default function Header() {
       .catch((error) => console.error(error));
   };
 
-  // useEffect(() => {
-  //   axios
-  //   .get(`${process.env.NEXT_PUBLIC_REST_API}/auth/dashboard`)
-  //   .then((res) => {
-  //     setFetchedUser(res.data.user);
-  //   })
-  //   .catch((error) => console.error(error));
-  // }, [])
+  useEffect(() => {
+    if (user.userId) {
+      axios
+      .get(
+        `${process.env.NEXT_PUBLIC_REST_API}/auth/dashboard?id=${user.userId}`
+      )
+      .then((res) => {
+        if (res.data.error) {
+          console.log(res.data.error);
+        } else {
+          setFetchedUser(res.data.user);
+        }
+      })
+      .catch((error) => console.error(error));
+    }    
+  }, [user]);
 
   useEffect(() => {
     if (window.location.href.indexOf("/buy") > -1) {
@@ -91,9 +100,9 @@ export default function Header() {
               }
             >
               <Dropdown.Header>
-                <span className="block text-sm">Bonnie Green</span>
+                <span className="block text-sm">{fetchedUser?.FirstName} {fetchedUser?.LastName}</span>
                 <span className="block truncate text-sm font-medium">
-                  agent@realestate.com
+                {fetchedUser?.Email}
                 </span>
               </Dropdown.Header>
               <Dropdown.Item>Dashboard</Dropdown.Item>
