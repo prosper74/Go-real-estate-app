@@ -105,7 +105,8 @@ export default function Header() {
                 {fetchedUser?.Email}
                 </span>
               </Dropdown.Header>
-              <Dropdown.Item>Dashboard</Dropdown.Item>
+              {/* <Dropdown.Item>Dashboard</Dropdown.Item> */}
+              <Dropdown.Item><Link href="/create-ad">Dashboard</Link></Dropdown.Item>
               <Dropdown.Item><Link href="/create-ad">Create Ad</Link></Dropdown.Item>
               <Dropdown.Item>Support</Dropdown.Item>
               <Dropdown.Divider />

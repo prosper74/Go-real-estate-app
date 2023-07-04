@@ -41,8 +41,8 @@ const CreateAdPage: FC = () => {
         <title>Create New Ad</title>
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <main className="my-24">
-        <div className="sm:container xs:px-4 md:px-6 xl:px-32 mx-auto bg-white">
+      <main className="px-4 mx-auto mt-24 sm:!px-10 lg:!px-32">
+        <div>
           {!user.onboarding && !user.jwt ? (
             <>
               <h3 className="font-bold text-center text-xl mt-24 mb-10">
@@ -74,6 +74,7 @@ const CreateAdPage: FC = () => {
               <h1 className="font-bold text-center text-3xl mt-28 mb-10">
                 Create New Ad
               </h1>
+              {/* @ts-ignore */}
               <CreateAdForm />
             </>
           )}

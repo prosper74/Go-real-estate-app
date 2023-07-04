@@ -9,10 +9,14 @@ import { useDropzone } from 'react-dropzone';
 // @ts-ignore
 import { Image } from 'cloudinary-react';
 import { setSnackbar } from '@src/store/reducers/feedbackReducer';
-import { IImageUpload } from '../interfaces';
+import { IImageUpload, UserProps } from '../interfaces';
 import { ForwardArrow } from '@src/components/common/svgIcons';
 import { locations, propertyType, perPeriod } from '../propertyData';
-import { buyCategory, rentCategory, shortletCategory } from './formCategory';
+
+interface IProps {
+  user: UserProps;
+  acceptedFles: File[];
+}
 
 const schema = z.object({
   images: z.any(),
@@ -38,7 +42,7 @@ const schema = z.object({
 });
 
 export const CreateAdForm: FC<IImageUpload> = () => {
-  const user = useSelector((state: RootStateOrAny) => state.user);
+  const user = useSelector((state: IProps) => state.user);
   const router = useRouter();
   const dispatch = useDispatch();
   const [isCategory, setIsCategory] = useState(false);
@@ -47,7 +51,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
   const [loading, setLoading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
-  const onDrop = useCallback(async (acceptedFiles) => {
+  const onDrop = useCallback(async (acceptedFiles: any) => {
     const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/upload`;
 
     acceptedFiles.forEach(async (acceptedFile: IImageUpload) => {
@@ -92,19 +96,12 @@ export const CreateAdForm: FC<IImageUpload> = () => {
 
   const onSubmit = handleSubmit((data) => {
     setLoading(true);
-    const categorySelected =
-      data.category === 'Buy'
-        ? buyCategory
-        : data.category === 'Rent'
-        ? rentCategory
-        : shortletCategory;
-
     axios
       .post(
         `${process.env.NEXT_PUBLIC_REST_API}/adverts`,
         {
           title: data.title,
-          category: categorySelected,
+          category: data.category,
           state: data.state,
           city: data.city,
           price: data.price,
@@ -208,7 +205,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                         'border-red-500 text-red-500 focus:outline-red-500'
                       }`}
                     >
-                      <option selected>Select a Category</option>
+                      <option defaultValue="">Select a Category</option>
                       <option value="Buy">Buy</option>
                       <option value="Rent">Rent</option>
                       <option value="Shortlet">Shortlet</option>
@@ -237,7 +234,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                         {...register('period')}
                         className="focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full "
                       >
-                        <option selected>Select Period</option>
+                        <option defaultValue="">Select Period</option>
                         {perPeriod.map((location) => (
                           <option key={location.name} value={location.name}>
                             per {location.label}
@@ -262,6 +259,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                         />
                         {errors.name?.message && (
                           <p className="text-red-500 text-sm mt-2">
+                            {/* @ts-ignore */}
                             {errors.name?.message}
                           </p>
                         )}
@@ -280,6 +278,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                         />
                         {errors.city?.message && (
                           <p className="text-red-500 text-sm mt-2">
+                            {/* @ts-ignore */}
                             {errors.city?.message}
                           </p>
                         )}
@@ -398,6 +397,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                         </div>
                         {errors.price?.message && (
                           <p className="text-red-500 text-sm mt-2">
+                            {/* @ts-ignore */}
                             {errors.price?.message}
                           </p>
                         )}
