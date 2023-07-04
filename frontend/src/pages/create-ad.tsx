@@ -1,6 +1,7 @@
 // index.tsx
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Head from "next/head";
+import axios from "axios";
 import { useSelector } from "react-redux";
 import AuthPortal from "@src/components/auth";
 import Link from "next/link";
@@ -14,7 +15,25 @@ interface IProps {
 
 const CreateAdPage: FC = () => {
   const user = useSelector((state: IProps) => state.user);
+  const [fetchedUser, setFetchedUser] = useState<UserProps>();
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (user.userId) {
+      axios
+      .get(
+        `${process.env.NEXT_PUBLIC_REST_API}/auth/dashboard?id=${user.userId}`
+      )
+      .then((res) => {
+        if (res.data.error) {
+          console.log(res.data.error);
+        } else {
+          setFetchedUser(res.data.user);
+        }
+      })
+      .catch((error) => console.error(error));
+    }    
+  }, [user]);
 
   return (
     <>
@@ -36,7 +55,7 @@ const CreateAdPage: FC = () => {
               />
               <AuthPortal isOpen={isOpen} setIsOpen={setIsOpen} />
             </>
-          ) : user.verified === false ? (
+          ) : fetchedUser?.Verified === 0 ? (
             <>
               <h1 className="font-bold text-center text-3xl mt-28 mb-4">
                 Your account is not yet veirifed!
