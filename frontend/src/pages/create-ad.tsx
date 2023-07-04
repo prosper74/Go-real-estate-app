@@ -1,14 +1,19 @@
 // index.tsx
-import React, { FC, useState } from 'react';
-import Head from 'next/head';
-import { RootStateOrAny, useSelector } from 'react-redux';
-import AuthPortal from '@src/components/auth';
-import LoginPopupButton from '@src/components/common/buttons/loginPopup';
-import { CreateAdForm } from '@src/components/common/property_form/createAdForm';
-import Link from 'next/link';
+import React, { FC, useState } from "react";
+import Head from "next/head";
+import { useSelector } from "react-redux";
+import AuthPortal from "@src/components/auth";
+import Link from "next/link";
+import AuthButton from "@src/components/common/Buttons/authButton";
+import { UserProps } from "@src/components/common/interfaces";
+import { CreateAdForm } from "@src/components/common/forms/createAdForm";
+
+interface IProps {
+  user: UserProps;
+}
 
 const CreateAdPage: FC = () => {
-  const user = useSelector((state: RootStateOrAny) => state.user);
+  const user = useSelector((state: IProps) => state.user);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -24,7 +29,7 @@ const CreateAdPage: FC = () => {
               <h3 className="font-bold text-center text-xl mt-24 mb-10">
                 Please login or create an account before you can post an ad
               </h3>
-              <LoginPopupButton
+              <AuthButton
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
                 buttonText="Login"
@@ -50,7 +55,6 @@ const CreateAdPage: FC = () => {
               <h1 className="font-bold text-center text-3xl mt-28 mb-10">
                 Create New Ad
               </h1>
-              {/* @ts-ignore */}
               <CreateAdForm />
             </>
           )}
