@@ -20,14 +20,9 @@ const classNames = (...classes: String[]) => {
 const UserTab: FC = () => {
   const user = useSelector((state: IProps) => state.user);
   const [fetchedUser, setFetchedUser] = useState<UserProps>();
+  const [isVerification, setIsVerification] = useState(false);
   const [verificationModalOpen, setVerificationModalOpen] = useState(false);
-  const [ads, setAds] = useState<any[]>([]);
-  const newAds =
-    ads.length > 0 &&
-    ads[0].sort(
-      (a: { createdAt: string }, b: { createdAt: string }) =>
-        Date.parse(b.createdAt) - Date.parse(a.createdAt)
-    );
+  const [ads, setAds] = useState<any>();
 
   useEffect(() => {
     if (user.userId) {
@@ -43,25 +38,27 @@ const UserTab: FC = () => {
           }
         })
         .catch((error) => console.error(error));
+
+      axios
+        .get(`${process.env.NEXT_PUBLIC_REST_API}/user?id=${user.userId}`)
+        .then((res) => {
+          setAds([res.data.properties]);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
   }, [user]);
 
-  useEffect(() => {
-    axios
-      .get(
-        `${process.env.NEXT_PUBLIC_REST_API}/adverts?users_permissions_user.id=${user.ID}`
-      )
-      .then((res) => {
-        setAds([res.data]);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+  // useEffect(() => {}, []);
+
+  console.log("Ads:", ads);
+  console.log("fetched user:", fetchedUser);
+  console.log("user:", user);
 
   return (
     <>
-      {ads.length < 1 ? (
+      {!fetchedUser ? (
         <PageLoader />
       ) : (
         <div className="w-full py-16">
@@ -143,10 +140,10 @@ const UserTab: FC = () => {
                       )}
                     </div>
 
-                    <AgentSidebar agent={user} totalCount={ads[0].length} />
+                    <AgentSidebar agent={user} totalCount={ads.length} />
                   </div>
 
-                  {ads[0].length! < 1 ? (
+                  {ads.length < 1 ? (
                     <div className="flex flex-col col-span-2 justify-center items-center text-center">
                       <h3 className="font-medium text-lg mb-6">
                         {user.Verified
@@ -175,7 +172,7 @@ const UserTab: FC = () => {
                     </div>
                   ) : (
                     <div className="col-span-2 sm:col-span-1 lg:col-span-2 2xl:col-span-3">
-                      {newAds.map((property: SingleProperty) => (
+                      {ads.map((property: SingleProperty) => (
                         <PropertyCard
                           key={property.ID}
                           property={property}
