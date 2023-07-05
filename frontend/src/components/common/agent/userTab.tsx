@@ -19,8 +19,8 @@ const classNames = (...classes: String[]) => {
 
 const UserTab: FC = () => {
   const user = useSelector((state: IProps) => state.user);
+  const [fetchedUser, setFetchedUser] = useState<UserProps>();
   const [verificationModalOpen, setVerificationModalOpen] = useState(false);
-  const [isVerification, setIsVerification] = useState(false);
   const [ads, setAds] = useState<any[]>([]);
   const newAds =
     ads.length > 0 &&
@@ -30,27 +30,29 @@ const UserTab: FC = () => {
     );
 
   useEffect(() => {
+    if (user.userId) {
+      axios
+        .get(
+          `${process.env.NEXT_PUBLIC_REST_API}/auth/dashboard?id=${user.userId}`
+        )
+        .then((res) => {
+          if (res.data.error) {
+            console.log(res.data.error);
+          } else {
+            setFetchedUser(res.data.user);
+          }
+        })
+        .catch((error) => console.error(error));
+    }
+  }, [user]);
+
+  useEffect(() => {
     axios
       .get(
         `${process.env.NEXT_PUBLIC_REST_API}/adverts?users_permissions_user.id=${user.ID}`
       )
       .then((res) => {
         setAds([res.data]);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(
-        `${process.env.NEXT_PUBLIC_REST_API}/verifications?users_permissions_user.id=${user.ID}`
-      )
-      .then((res) => {
-        res.data[0]?.verifying
-          ? setIsVerification(true)
-          : setIsVerification(false);
       })
       .catch((err) => {
         console.error(err);

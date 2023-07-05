@@ -106,7 +106,7 @@ export default function Header() {
                 </span>
               </Dropdown.Header>
               {/* <Dropdown.Item>Dashboard</Dropdown.Item> */}
-              <Dropdown.Item><Link href="/create-ad">Dashboard</Link></Dropdown.Item>
+              <Dropdown.Item><Link href="/agent/account">Dashboard</Link></Dropdown.Item>
               <Dropdown.Item><Link href="/create-ad">Create Ad</Link></Dropdown.Item>
               <Dropdown.Item>Support</Dropdown.Item>
               <Dropdown.Divider />
