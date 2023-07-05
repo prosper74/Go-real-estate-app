@@ -22,7 +22,7 @@ const UserTab: FC = () => {
   const [fetchedUser, setFetchedUser] = useState<UserProps>();
   const [isVerification, setIsVerification] = useState(false);
   const [verificationModalOpen, setVerificationModalOpen] = useState(false);
-  const [ads, setAds] = useState<any>();
+  const [ads, setAds] = useState([]);
 
   useEffect(() => {
     if (user.userId) {
@@ -42,15 +42,13 @@ const UserTab: FC = () => {
       axios
         .get(`${process.env.NEXT_PUBLIC_REST_API}/user?id=${user.userId}`)
         .then((res) => {
-          setAds([res.data.properties]);
+          setAds(res.data.properties);
         })
         .catch((err) => {
           console.error(err);
         });
     }
   }, [user]);
-
-  // useEffect(() => {}, []);
 
   console.log("Ads:", ads);
   console.log("fetched user:", fetchedUser);
@@ -140,10 +138,13 @@ const UserTab: FC = () => {
                       )}
                     </div>
 
-                    <AgentSidebar agent={user} totalCount={ads.length} />
+                    <AgentSidebar
+                      agent={fetchedUser}
+                      totalCount={!ads ? 0 : ads.length}
+                    />
                   </div>
 
-                  {ads.length < 1 ? (
+                  {!ads ? (
                     <div className="flex flex-col col-span-2 justify-center items-center text-center">
                       <h3 className="font-medium text-lg mb-6">
                         {user.Verified
