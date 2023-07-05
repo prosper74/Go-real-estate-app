@@ -121,7 +121,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="relative z-1000 max-h-8"
+          className="relative z-50 max-h-8"
           onClose={closeModal}
         >
           <Transition.Child
