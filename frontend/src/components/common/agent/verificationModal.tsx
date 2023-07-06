@@ -20,7 +20,7 @@ interface IProps {
 }
 
 const schema = z.object({
-  images: z.string().includes(".png", { message: "Must include png" }),
+  images: z.string(),
   identity: z.string(),
   address: z.string(),
 });
@@ -45,6 +45,8 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
         process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
       );
 
+      console.log("form data: ", formData);
+
       const response = await fetch(url, {
         method: "post",
         body: formData,
@@ -59,7 +61,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
     onDrop,
     // @ts-ignore
     accepts: {
-      "image/*": [".png", ".gif", ".jpeg", ".jpg"],
+      image: [".png", ".gif", ".jpeg", ".jpg"],
     },
     multiple: true,
     maxFiles: 2,
@@ -67,7 +69,11 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
     maxSize: 1000000,
   });
 
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     mode: "onChange",
     resolver: zodResolver(schema),
   });
@@ -236,6 +242,13 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                           </div>
                         </div>
 
+                        {errors.images?.message && (
+                          <p className="text-red-500 text-sm mt-2">
+                            {/* @ts-ignore */}
+                            {errors.images?.message}
+                          </p>
+                        )}
+
                         <div className="flex justify-between mt-4">
                           <button
                             disabled={loading || uploadedFiles.length < 2}
@@ -244,7 +257,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                           >
                             <span className="mr-2">Submit</span>
                             {loading ? (
-                              <div className="border-b-2 border-purple-600 rounded-full animate-spin w-5 h-5 " />
+                              <div className="border-b-2 border-purple-600 rounded-full animate-spin w-5 h-5" />
                             ) : (
                               <ForwardArrow />
                             )}
