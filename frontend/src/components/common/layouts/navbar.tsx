@@ -43,7 +43,7 @@ export default function Header() {
       )
       .then((res) => {
         if (res.data.error) {
-          console.log(res.data.error);
+          console.error(res.data.error);
         } else {
           setFetchedUser(res.data.user);
         }

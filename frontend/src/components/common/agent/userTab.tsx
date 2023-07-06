@@ -32,7 +32,7 @@ const UserTab: FC = () => {
         )
         .then((res) => {
           if (res.data.error) {
-            console.log(res.data.error);
+            console.error(res.data.error);
           } else {
             setFetchedUser(res.data.user);
           }
@@ -49,10 +49,6 @@ const UserTab: FC = () => {
         });
     }
   }, [user]);
-
-  console.log("Ads:", ads);
-  console.log("fetched user:", fetchedUser);
-  console.log("user:", user);
 
   return (
     <>

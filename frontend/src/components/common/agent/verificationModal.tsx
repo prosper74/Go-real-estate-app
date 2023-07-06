@@ -1,17 +1,17 @@
-import { FC, Fragment, useCallback, useState } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
-import axios from 'axios';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
-import { useDropzone } from 'react-dropzone';
+import { FC, Fragment, useCallback, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { useDropzone } from "react-dropzone";
 // @ts-ignore
-import { Image } from 'cloudinary-react';
-import { setSnackbar } from '@src/store/reducers/feedbackReducer';
-import { CloseIcon, ForwardArrow } from '../svgIcons';
-import { IImageUpload, UserProps } from '../interfaces';
+import { Image } from "cloudinary-react";
+import { setSnackbar } from "@src/store/reducers/feedbackReducer";
+import { CloseIcon, ForwardArrow } from "../svgIcons";
+import { IImageUpload, UserProps } from "../interfaces";
 
 interface IProps {
   user?: UserProps;
@@ -20,7 +20,7 @@ interface IProps {
 }
 
 const schema = z.object({
-  images: z.any(),
+  images: z.string().includes(".png", { message: "Must include png" }),
   identity: z.string(),
   address: z.string(),
 });
@@ -38,15 +38,15 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
     acceptedFiles.forEach(async (acceptedFile: IImageUpload) => {
       const formData = new FormData();
       // @ts-ignore
-      formData.append('file', acceptedFile);
+      formData.append("file", acceptedFile);
       formData.append(
-        'upload_preset',
+        "upload_preset",
         // @ts-ignore
         process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
       );
 
       const response = await fetch(url, {
-        method: 'post',
+        method: "post",
         body: formData,
       });
 
@@ -58,7 +58,9 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     // @ts-ignore
-    accepts: 'images/*',
+    accepts: {
+      "image/*": [".png", ".gif", ".jpeg", ".jpg"],
+    },
     multiple: true,
     maxFiles: 2,
     minSize: 0,
@@ -66,7 +68,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
   });
 
   const { register, handleSubmit } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     resolver: zodResolver(schema),
   });
 
@@ -93,18 +95,18 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
         setLoading(false);
         dispatch(
           setSnackbar({
-            status: 'success',
+            status: "success",
             message: ` Documents Submitted Successfully and will be reviewed within 24 hours`,
             open: true,
           })
         );
-        router.push('/agent/account');
+        router.push("/agent/account");
       })
       .catch(() => {
         setLoading(false);
         dispatch(
           setSnackbar({
-            status: 'error',
+            status: "error",
             message: ` There was an error. Please try again later`,
             open: true,
           })
@@ -119,11 +121,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          className="relative z-50 max-h-8"
-          onClose={closeModal}
-        >
+        <Dialog as="div" className="relative z-50 max-h-8" onClose={closeModal}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -174,7 +172,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                           </p>
                           <div>
                             <select
-                              {...register('identity')}
+                              {...register("identity")}
                               className={`focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full `}
                             >
                               <option value="International passport">
@@ -194,7 +192,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                           </p>
                           <div>
                             <select
-                              {...register('address')}
+                              {...register("address")}
                               className="focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full"
                             >
                               <option value="Bank statement">
@@ -212,7 +210,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                             <div
                               {...getRootProps()}
                               className={`h-auto m-3 p-3 border-2 border-dashed border-red-500 cursor-pointer md:text-xl text-center ${
-                                isDragActive && 'border-purple-600'
+                                isDragActive && "border-purple-600"
                               }`}
                             >
                               <input {...getInputProps()} />
