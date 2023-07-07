@@ -1,4 +1,4 @@
-create_table("reviews") {
+create_table("account_verification") {
   t.Column("id", "integer", {primary: true})
   t.Column("identity", "string", {"default": ""})
   t.Column("identity_number", "string", {"default": ""})
