@@ -1,0 +1,9 @@
+create_table("reviews") {
+  t.Column("id", "integer", {primary: true})
+  t.Column("identity", "string", {"default": ""})
+  t.Column("identity_number", "string", {"default": ""})
+  t.Column("identity_image", "string", {"default": ""})
+  t.Column("address", "string", {"default": ""})
+  t.Column("address_image", "string", {"default": ""})
+  t.Column("user_id", "integer", {})
+}
