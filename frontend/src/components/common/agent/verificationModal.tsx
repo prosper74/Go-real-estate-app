@@ -208,12 +208,12 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                             </select>
                           </div>
                           {/* Uploaded Images */}
-                          {uploadedFiles.length >= 3 ? (
+                          {uploadedFiles.length === 3 ? (
                             <h3 className="text-center text-xl font-bold mb-2">
                               You have uploaded Up to three (3) images
                             </h3>
                           ) : (
-                            <div
+                            <p
                               {...getRootProps()}
                               className={`h-auto m-3 p-3 border-2 border-dashed border-red-500 cursor-pointer md:text-xl text-center ${
                                 isDragActive && "border-purple-600"
@@ -221,8 +221,9 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                             >
                               <input {...getInputProps()} />
                               Please, upload images for the document types
-                              selected. Max 3 images and min 2 images
-                            </div>
+                              selected. Max 3 images and min 2 images <br />
+                              Click to add or drag n drop images
+                            </p>
                           )}
                           <div className="flex flex-row justify-center">
                             {uploadedFiles.map((file: IImageUpload) => (
