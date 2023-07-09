@@ -161,7 +161,7 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                       type="text"
                       {...register("first_name")}
                       className={`focus:outline-gray-700 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
-                        errors.name &&
+                        errors.first_name &&
                         "border-red-500 text-red-500 focus:outline-red-500"
                       }`}
                     />

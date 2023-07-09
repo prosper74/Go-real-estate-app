@@ -22,6 +22,10 @@ interface IProps {
 const schema = z.object({
   images: z.string(),
   identity: z.string(),
+  identity_number: z
+    .string()
+    .min(3, { message: "Minimum 3 characters" })
+    .max(40, { message: "Maximun 40 characters" }),
   address: z.string(),
 });
 
@@ -192,8 +196,29 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                               </option>
                             </select>
                           </div>
+
+                          <div>
+                            <input
+                              id="identity_number"
+                              type="text"
+                              autoComplete="identity_number"
+                              placeholder="Enter the identity number"
+                              {...register("identity_number")}
+                              className={`focus:outline-gray-700 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
+                                errors.identity_number &&
+                                "border-red-500 text-red-500 focus:outline-red-500"
+                              }`}
+                            />
+                            {errors.identity_number?.message && (
+                              <p className="text-red-500 text-sm mt-2">
+                                {/* @ts-ignore */}
+                                {errors.identity_number?.message}
+                              </p>
+                            )}
+                          </div>
+
                           {/* Address Verification  */}
-                          <p className="text-base font-medium leading-6 text-gray-900">
+                          <p className="mt-4 text-base font-medium leading-6 text-gray-900">
                             Address verification
                           </p>
                           <div>
@@ -215,8 +240,8 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                           ) : (
                             <p
                               {...getRootProps()}
-                              className={`h-auto m-3 p-3 border-2 border-dashed border-red-500 cursor-pointer md:text-xl text-center ${
-                                isDragActive && "border-purple-600"
+                              className={`h-auto m-3 p-3 border-2 border-dashed border-purple-400 cursor-pointer md:text-xl text-center ${
+                                isDragActive && "border-primary"
                               }`}
                             >
                               <input {...getInputProps()} />
