@@ -8,6 +8,7 @@ import Link from "next/link";
 import AuthButton from "@src/components/common/Buttons/authButton";
 import { UserProps } from "@src/components/common/interfaces";
 import { CreateAdForm } from "@src/components/common/forms/createAdForm";
+import VerificationModal from "@src/components/common/agent/verificationModal";
 
 interface IProps {
   user: UserProps;
@@ -17,6 +18,7 @@ const CreateAdPage: FC = () => {
   const user = useSelector((state: IProps) => state.user);
   const [fetchedUser, setFetchedUser] = useState<UserProps>();
   const [isOpen, setIsOpen] = useState(false);
+  const [verificationModalOpen, setVerificationModalOpen] = useState(false);
 
   useEffect(() => {
     if (user.userId) {
@@ -80,6 +82,11 @@ const CreateAdPage: FC = () => {
             </>
           )}
         </div>
+
+        <VerificationModal
+          isOpen={verificationModalOpen}
+          setIsOpen={setVerificationModalOpen}
+        />
       </main>
     </>
   );
