@@ -65,12 +65,12 @@ const CreateAdPage: FC = () => {
               <h1 className="font-bold text-center text-xl mb-3">
                 Please verify your account to create ads
               </h1>
-              <Link
-                href="/agent/account"
+              <button
+                onClick={() => setVerificationModalOpen(!verificationModalOpen)}
                 className="w-20 mx-auto py-2 transition duration-200 text-white bg-purple-600 focus:bg-purple-800 focus:shadow-sm focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50 rounded-lg text-lg shadow-sm hover:shadow-md font-semibold text-center flex justify-center items-center"
               >
                 Verify
-              </Link>
+              </button>
             </>
           ) : (
             <>
