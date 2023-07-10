@@ -49,8 +49,6 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
         process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
       );
 
-      console.log("form data: ", formData);
-
       const response = await fetch(url, {
         method: "post",
         body: formData,
