@@ -58,6 +58,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
       const data = await response.json();
       // @ts-ignore
       setUploadedIdentityImage([data]);
+      setUploadedAddressImage([data]);
     });
   }, []);
   console.log(uploadedIdentityImage);
@@ -217,7 +218,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                             )}
                           </div>
 
-                          {/* Uploaded Images */}
+                          {/* Uploaded Image */}
                           {uploadedIdentityImage.length === 1 ? (
                             <h3 className="text-center text-xl font-bold mb-2">
                               Your image has been uploaded
