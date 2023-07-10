@@ -60,6 +60,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
       setUploadedIdentityImage([data]);
     });
   }, []);
+  console.log(uploadedIdentityImage);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     // @ts-ignore
@@ -216,25 +217,10 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                             )}
                           </div>
 
-                          {/* Address Verification  */}
-                          <p className="mt-4 text-base font-medium leading-6 text-gray-900">
-                            Address verification
-                          </p>
-                          <div>
-                            <select
-                              {...register("address")}
-                              className="focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full"
-                            >
-                              <option value="Bank statement">
-                                Bank statement
-                              </option>
-                              <option value="Utility bill">Utility bill</option>
-                            </select>
-                          </div>
                           {/* Uploaded Images */}
-                          {uploadedIdentityImage.length === 3 ? (
+                          {uploadedIdentityImage.length === 1 ? (
                             <h3 className="text-center text-xl font-bold mb-2">
-                              You have uploaded Up to three (3) images
+                              Your image has been uploaded
                             </h3>
                           ) : (
                             <p
@@ -244,9 +230,8 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                               }`}
                             >
                               <input {...getInputProps()} />
-                              Please, upload images for the document types
-                              selected. Max 3 images and min 2 images <br />
-                              Click to add or drag n drop images
+                              Upload identity image <br />
+                              Click to add or drag n drop image
                             </p>
                           )}
                           <div className="flex flex-row justify-center">
@@ -265,6 +250,23 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                               </li>
                             ))}
                           </div>
+
+                          {/* Address Verification  */}
+                          <p className="mt-4 text-base font-medium leading-6 text-gray-900">
+                            Address verification
+                          </p>
+                          <div>
+                            <select
+                              {...register("address")}
+                              className="focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full"
+                            >
+                              <option value="Bank statement">
+                                Bank statement
+                              </option>
+                              <option value="Utility bill">Utility bill</option>
+                            </select>
+                          </div>
+
                         </div>
 
                         {errors.images?.message && (
@@ -276,7 +278,9 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
 
                         <div className="flex justify-between mt-4">
                           <button
-                            disabled={loading || uploadedIdentityImage.length < 2}
+                            disabled={
+                              loading || uploadedIdentityImage.length < 2
+                            }
                             className="inline-flex justify-center items-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500"
                             onClick={onSubmit}
                           >
