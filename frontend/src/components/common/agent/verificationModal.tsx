@@ -33,7 +33,8 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
   const user = useSelector((state: IProps) => state.user);
   const router = useRouter();
   const dispatch = useDispatch();
-  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [uploadedIdentityImage, setUploadedIdentityImage] = useState([]);
+  const [uploadedAddressImage, setUploadedAddressImage] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const onDrop = useCallback(async (acceptedFiles: any) => {
@@ -56,7 +57,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
 
       const data = await response.json();
       // @ts-ignore
-      setUploadedFiles((old) => [...old, data]);
+      setUploadedIdentityImage([data]);
     });
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -89,7 +90,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
         {
           identity: data.identity,
           address: data.address,
-          images: uploadedFiles,
+          images: uploadedIdentityImage,
           verifying: true,
           users_permissions_user: user,
         },
@@ -231,7 +232,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                             </select>
                           </div>
                           {/* Uploaded Images */}
-                          {uploadedFiles.length === 3 ? (
+                          {uploadedIdentityImage.length === 3 ? (
                             <h3 className="text-center text-xl font-bold mb-2">
                               You have uploaded Up to three (3) images
                             </h3>
@@ -249,7 +250,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                             </p>
                           )}
                           <div className="flex flex-row justify-center">
-                            {uploadedFiles.map((file: IImageUpload) => (
+                            {uploadedIdentityImage.map((file: IImageUpload) => (
                               <li key={file.public_id} className="mr-1">
                                 <Image
                                   cloudName={
@@ -275,7 +276,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
 
                         <div className="flex justify-between mt-4">
                           <button
-                            disabled={loading || uploadedFiles.length < 2}
+                            disabled={loading || uploadedIdentityImage.length < 2}
                             className="inline-flex justify-center items-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500"
                             onClick={onSubmit}
                           >
