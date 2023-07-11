@@ -246,7 +246,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                             }`}
                           >
                             <input {...getInputProps()} />
-                            Upload identity image <br />
+                            Upload identity and address images <br />
                             Click to add or drag n drop image
                           </p>
                         )}
@@ -277,7 +277,10 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                         <div className="flex justify-between mt-4">
                           <button
                             disabled={
-                              loading || uploadedImages.length < 2 || errors
+                              loading ||
+                              uploadedImages.length < 2 ||
+                              errors.images ||
+                              errors.identity_number
                             }
                             className="inline-flex justify-center items-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500"
                             onClick={onSubmit}
