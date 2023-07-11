@@ -5,10 +5,10 @@ import "github.com/prosper74/real-estate-app/internal/models"
 type DatabaseRepo interface {
 	AllUsers() ([]models.User, error)
 	CheckIfUserEmailExist(email string) (bool, error)
-	InsertUser(user models.User) (int, error) 
+	InsertUser(user models.User) (int, error)
 	GetUserByID(id int) (models.User, error)
 	UpdateUserAccessLevel(user models.User) error
-	Authenticate(email, testPassword string) (int, string, error)
+	Authenticate(email, testPassword string) (int, string, string, error)
 
 	AllProperties() ([]models.Property, error)
 	AllFeaturedProperties() ([]models.Property, error)
