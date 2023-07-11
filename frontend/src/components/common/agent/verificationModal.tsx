@@ -82,7 +82,6 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
 
   const uploadedIdentityImageURL = uploadedImages.length === 2 && uploadedImages[0].url;
   const uploadedAddressImageURL = uploadedImages.length === 2 && uploadedImages[1].url;
-  console.log("uploaded: ", uploadedAddressImageURL);
 
   const onSubmit = handleSubmit((data) => {
     setLoading(true);
@@ -93,8 +92,9 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
         {
           identity: data.identity,
           identity_number: data.identity_number,
+          identity_image: uploadedIdentityImageURL,
           address: data.address,
-          images: uploadedImages,
+          address_image: uploadedAddressImageURL,
           user_id: user?.userId,
         },
         {
