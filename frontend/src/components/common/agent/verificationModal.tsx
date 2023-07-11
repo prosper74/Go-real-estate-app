@@ -33,8 +33,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
   const user = useSelector((state: IProps) => state.user);
   const router = useRouter();
   const dispatch = useDispatch();
-  const [uploadedIdentityImage, setUploadedIdentityImage] = useState([]);
-  const [uploadedAddressImage, setUploadedAddressImage] = useState([]);
+  const [uploadedImages, setUploadedImages] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const onDrop = useCallback(async (acceptedFiles: any) => {
@@ -57,11 +56,10 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
 
       const data = await response.json();
       // @ts-ignore
-      setUploadedIdentityImage([data]);
-      setUploadedAddressImage([data]);
+      setUploadedImages([data]);
     });
   }, []);
-  console.log(uploadedIdentityImage);
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     // @ts-ignore
@@ -91,14 +89,14 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
         `${process.env.NEXT_PUBLIC_REST_API}/verifications`,
         {
           identity: data.identity,
+          identity_number: data.identity_number,
           address: data.address,
-          images: uploadedIdentityImage,
-          verifying: true,
-          users_permissions_user: user,
+          images: uploadedImages,
+          user_id: user?.userId,
         },
         {
           headers: {
-            Authorization: `Bearer ${user!.jwt}`,
+            Authorization: `Bearer ${user?.jwt}`,
           },
         }
       )
@@ -218,40 +216,6 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                             )}
                           </div>
 
-                          {/* Uploaded Image */}
-                          {uploadedIdentityImage.length === 1 ? (
-                            <h3 className="text-center text-xl font-bold mb-2">
-                              Your image has been uploaded
-                            </h3>
-                          ) : (
-                            <p
-                              {...getRootProps()}
-                              className={`h-auto m-3 p-3 border-2 border-dashed border-purple-400 cursor-pointer md:text-xl text-center ${
-                                isDragActive && "border-primary"
-                              }`}
-                            >
-                              <input {...getInputProps()} />
-                              Upload identity image <br />
-                              Click to add or drag n drop image
-                            </p>
-                          )}
-                          <div className="flex flex-row justify-center">
-                            {uploadedIdentityImage.map((file: IImageUpload) => (
-                              <li key={file.public_id} className="mr-1">
-                                <Image
-                                  cloudName={
-                                    process.env.NEXT_PUBLIC_CLOUDINARY_NAME
-                                  }
-                                  publicId={file.public_id}
-                                  width="150"
-                                  height="150"
-                                  crop="scale"
-                                  className="object-cover"
-                                />
-                              </li>
-                            ))}
-                          </div>
-
                           {/* Address Verification  */}
                           <p className="mt-4 text-base font-medium leading-6 text-gray-900">
                             Address verification
@@ -267,7 +231,40 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                               <option value="Utility bill">Utility bill</option>
                             </select>
                           </div>
+                        </div>
 
+                        {/* Upload Images */}
+                        {uploadedImages.length === 2 ? (
+                          <h3 className="text-center text-xl font-bold mb-2">
+                            Your images has been uploaded
+                          </h3>
+                        ) : (
+                          <p
+                            {...getRootProps()}
+                            className={`h-auto m-3 p-3 border-2 border-dashed border-purple-400 cursor-pointer md:text-xl text-center ${
+                              isDragActive && "border-primary"
+                            }`}
+                          >
+                            <input {...getInputProps()} />
+                            Upload identity image <br />
+                            Click to add or drag n drop image
+                          </p>
+                        )}
+                        <div className="flex flex-row justify-center">
+                          {uploadedImages.map((file: IImageUpload) => (
+                            <li key={file.public_id} className="mr-1">
+                              <Image
+                                cloudName={
+                                  process.env.NEXT_PUBLIC_CLOUDINARY_NAME
+                                }
+                                publicId={file.public_id}
+                                width="150"
+                                height="150"
+                                crop="scale"
+                                className="object-cover"
+                              />
+                            </li>
+                          ))}
                         </div>
 
                         {errors.images?.message && (
@@ -280,7 +277,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                         <div className="flex justify-between mt-4">
                           <button
                             disabled={
-                              loading || uploadedIdentityImage.length < 2
+                              loading || uploadedImages.length < 2 || errors
                             }
                             className="inline-flex justify-center items-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500"
                             onClick={onSubmit}
