@@ -20,7 +20,6 @@ interface IProps {
 }
 
 const schema = z.object({
-  images: z.string(),
   identity: z.string(),
   identity_number: z
     .string()
@@ -33,7 +32,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
   const user = useSelector((state: IProps) => state.user);
   const router = useRouter();
   const dispatch = useDispatch();
-  const [uploadedImages, setUploadedImages] = useState([]);
+  const [uploadedImages, setUploadedImages] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
   const onDrop = useCallback(async (acceptedFiles: any) => {
@@ -56,7 +55,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
 
       const data = await response.json();
       // @ts-ignore
-      setUploadedImages([data]);
+      setUploadedImages((old) => [...old, data]);
     });
   }, []);
 
@@ -80,6 +79,10 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
     mode: "onChange",
     resolver: zodResolver(schema),
   });
+
+  const uploadedIdentityImageURL = uploadedImages.length === 2 && uploadedImages[0].url;
+  const uploadedAddressImageURL = uploadedImages.length === 2 && uploadedImages[1].url;
+  console.log("uploaded: ", uploadedAddressImageURL);
 
   const onSubmit = handleSubmit((data) => {
     setLoading(true);
@@ -276,10 +279,10 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
 
                         <div className="flex justify-between mt-4">
                           <button
+                            // @ts-ignore
                             disabled={
                               loading ||
                               uploadedImages.length < 2 ||
-                              errors.images ||
                               errors.identity_number
                             }
                             className="inline-flex justify-center items-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500"
