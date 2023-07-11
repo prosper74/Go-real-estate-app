@@ -680,25 +680,26 @@ func (repo *postgresDBRepo) UpdateUserAccessLevel(user models.User) error {
 }
 
 // Authenticate authenticates a user
-func (repo *postgresDBRepo) Authenticate(email, testPassword string) (int, string, error) {
+func (repo *postgresDBRepo) Authenticate(email, testPassword string) (int, string, string, error) {
 	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	var id int
+	var firstName string
 	var hashedPassword string
 
-	row := repo.DB.QueryRowContext(context, "select id, password from users where email = $1", email)
-	err := row.Scan(&id, &hashedPassword)
+	row := repo.DB.QueryRowContext(context, "select id, first_name, password from users where email = $1", email)
+	err := row.Scan(&id, &firstName, &hashedPassword)
 	if err != nil {
-		return id, "", err
+		return id, "", "", err
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(testPassword))
 	if err == bcrypt.ErrMismatchedHashAndPassword {
-		return 0, "", errors.New("incorrect password")
+		return 0, "", "", errors.New("incorrect password")
 	} else if err != nil {
-		return 0, "", err
+		return 0, "", "", err
 	}
 
-	return id, hashedPassword, nil
+	return id, firstName, hashedPassword, nil
 }

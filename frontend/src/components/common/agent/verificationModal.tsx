@@ -88,7 +88,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
 
     axios
       .post(
-        `${process.env.NEXT_PUBLIC_REST_API}/verifications`,
+        `${process.env.NEXT_PUBLIC_REST_API}/verifications?user_id=${user?.userId}&jwt=${user?.jwt}`,
         {
           identity: data.identity,
           identity_number: data.identity_number,
