@@ -422,7 +422,7 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 	email := r.Form.Get("email")
 	password := r.Form.Get("password")
 
-	id, _, err := m.DB.Authenticate(email, password)
+	id, firstName, _, err := m.DB.Authenticate(email, password)
 	if err != nil {
 		log.Println(err)
 
@@ -443,6 +443,7 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 	m.App.Session.Put(r.Context(), "user_id", id)
 	data["message"] = "Login successful"
 	data["user"] = id
+	data["first_name"] = firstName
 	data["jwt"] = jwt
 	out, _ := json.MarshalIndent(data, "", "    ")
 	resp := []byte(out)
