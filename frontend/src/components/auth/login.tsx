@@ -92,6 +92,7 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
           dispatch(
             setUser({
               userId: response.data.user,
+              userName: response.data.first_name,
               jwt: response.data.jwt,
               onboarding: true,
             })
@@ -99,7 +100,7 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
           dispatch(
             setSnackbar({
               status: "success",
-              message: ` Welcome Back`,
+              message: ` Welcome Back, ${response.data.first_name}`,
               open: true,
             })
           );
@@ -109,27 +110,8 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
       })
       .catch((error) => {
         console.error(error);
-        // dispatch(setSnackbar({ status: "error", message: error, open: true }));
+        dispatch(setSnackbar({ status: "error", message: error, open: true }));
         setLoading(false);
-        // const { message } = error.response.data.message[0].messages[0];
-        // if (message === "Your account email is not confirmed") {
-        //   dispatch(
-        //     setSnackbar({
-        //       status: "error",
-        //       message: message + ". Resend Email Confirmation",
-        //       open: true,
-        //     })
-        //   );
-        //   const resend = steps.find(
-        //     (step: { label: string }) =>
-        //       step.label === "Resend Email Confirmation"
-        //   );
-        //   setSelectedStep(steps.indexOf(resend));
-        //   setLoading(false);
-        // } else {
-        //   dispatch(setSnackbar({ status: "error", message, open: true }));
-        //   setLoading(false);
-        // }
       });
   });
 

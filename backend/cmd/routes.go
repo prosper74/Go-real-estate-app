@@ -35,10 +35,10 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/shortlet", handlers.Repo.Shortlet)
 	mux.Get("/{category}/{id}", handlers.Repo.SingleProperty)
 	mux.Get("/property", handlers.Repo.PropertiesRelatedByType)
-	mux.Get("/user", handlers.Repo.UserProperties)
-	mux.Post("/login", handlers.Repo.Login)
+	mux.Get("/user", handlers.Repo.UserProperties)	
 	mux.Post("/signup", handlers.Repo.SignUp)
-	mux.Post("/user/logout", handlers.Repo.Logout)
+	mux.Post("/login", handlers.Repo.Login)
+	mux.Get("/user/logout", handlers.Repo.Logout)
 	mux.Get("/verify-email", handlers.Repo.VerifyUserEmail)
 
 	// user dashboard
