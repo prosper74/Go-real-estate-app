@@ -1,10 +1,8 @@
-// index.tsx
 import React, { FC, useEffect, useState } from "react";
 import Head from "next/head";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import AuthPortal from "@src/components/auth";
-import Link from "next/link";
 import AuthButton from "@src/components/common/Buttons/authButton";
 import { UserProps } from "@src/components/common/interfaces";
 import { CreateAdForm } from "@src/components/common/forms/createAdForm";
