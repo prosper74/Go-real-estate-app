@@ -20,6 +20,19 @@ type User struct {
 	UpdatedAt    time.Time
 }
 
+// User is the user model
+type AccountVerification struct {
+	ID             int
+	Identity       string
+	IdentityNumber string
+	IdentityImage  string
+	Address        string
+	AddressImage   string
+	UserID         int
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
+}
+
 type Category struct {
 	ID        int
 	Title     string
