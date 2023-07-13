@@ -1,2 +1,0 @@
-add_column("users", "enabled", "integer", {"default": 0})
-add_column("users", "token", "string", {"default": ""})

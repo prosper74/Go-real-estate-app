@@ -16,12 +16,6 @@ This project is a simple hotel booking and reservation project with key features
 - Change or cancel a booking
 - Todo
 
-### Live Website and login details
-
-- url - https://bookings-p.up.railway.app/
-- username/email: test@admin.com
-- password: password
-
 ### Packages used
 
 - [Alex Edwards SCS](https://github.com/alexedwards/scs/v2) package for managing sessions
