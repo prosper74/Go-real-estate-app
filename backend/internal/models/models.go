@@ -6,19 +6,18 @@ import (
 
 // User is the user model
 type User struct {
-	ID          int
-	FirstName   string
-	LastName    string
-	Email       string
-	Password    string
-	Phone       string
-	AccessLevel int
-	Verified    int
-	Address     string
-	Image       string
-	Token       string
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	ID           int
+	FirstName    string
+	LastName     string
+	Email        string
+	Password     string
+	Phone        string
+	AccessLevel  int
+	Verification string
+	Address      string
+	Image        string
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
 }
 
 type Category struct {
