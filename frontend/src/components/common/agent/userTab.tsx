@@ -50,6 +50,10 @@ const UserTab: FC = () => {
     }
   }, [user]);
 
+  if (fetchedUser?.Verified) {
+    
+  }
+
   return (
     <>
       {!fetchedUser ? (

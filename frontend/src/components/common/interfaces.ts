@@ -59,7 +59,7 @@ export interface UserProps {
   Password: string;
   Phone: string;
   AccessLevel: number;
-  Verified: number;
+  Verification: string;
   Address: string;
   Image: string;
   CreatedAt: string;
