@@ -10,6 +10,7 @@ type DatabaseRepo interface {
 	UpdateUserAccessLevel(user models.User) error
 	Authenticate(email, testPassword string) (int, string, string, error)
 	InsertAccountVerification(d models.AccountVerification) error
+	UpdateUserVerification(user models.User) error
 
 	AllProperties() ([]models.Property, error)
 	AllFeaturedProperties() ([]models.Property, error)
