@@ -704,7 +704,7 @@ func (repo *postgresDBRepo) Authenticate(email, testPassword string) (int, strin
 	return id, firstName, hashedPassword, nil
 }
 
-// UpdateUser updates a user in the database
+// InsertAccountVerification inserts a new account verification for a user
 func (repo *postgresDBRepo) InsertAccountVerification(d models.AccountVerification) error {
 	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -712,6 +712,24 @@ func (repo *postgresDBRepo) InsertAccountVerification(d models.AccountVerificati
 	query := `insert into account_verification (identity, identity_number, identity_image, address, address_image, user_id, created_at, updated_at) values ($1, $2, $3, $4, $5, $6, $7, $8)`
 
 	_, err := repo.DB.ExecContext(context, query, d.Identity, d.IdentityNumber, d.IdentityImage, d.Address, d.AddressImage, d.UserID, time.Now(), time.Now())
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// UpdateUserVerification updates a user verification status in the database
+func (repo *postgresDBRepo) UpdateUserVerification(user models.User) error {
+	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `
+		update users set verification = $1, updated_at = $2 where id = $3
+	`
+
+	_, err := repo.DB.ExecContext(context, query, user.Verification, time.Now(), user.ID)
 
 	if err != nil {
 		return err
