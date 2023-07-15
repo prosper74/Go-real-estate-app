@@ -96,9 +96,11 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
           address: data.address,
           address_image: uploadedAddressImageURL,
           user_id: user?.userId,
+          jwt: user?.jwt
         },
         {
           headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
             Authorization: `Bearer ${user?.jwt}`,
           },
         }
