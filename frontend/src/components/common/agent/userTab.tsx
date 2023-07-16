@@ -50,9 +50,7 @@ const UserTab: FC = () => {
     }
   }, [user]);
 
-  if (fetchedUser?.Verified) {
-    
-  }
+  fetchedUser?.Verification === "under_review" ? setIsVerification(true) : setIsVerification(false)
 
   return (
     <>

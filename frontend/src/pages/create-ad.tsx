@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import Head from "next/head";
+import Link from "next/link";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import AuthPortal from "@src/components/auth";
@@ -55,7 +56,7 @@ const CreateAdPage: FC = () => {
               />
               <AuthPortal isOpen={isOpen} setIsOpen={setIsOpen} />
             </>
-          ) : fetchedUser?.Verified === 0 ? (
+          ) : fetchedUser?.Verification === "not_verified" ? (
             <>
               <h1 className="font-bold text-center text-3xl mt-28 mb-4">
                 Your account is not yet veirifed!
@@ -69,6 +70,22 @@ const CreateAdPage: FC = () => {
               >
                 Verify
               </button>
+            </>
+          ) : fetchedUser?.Verification === "under_review" ? (
+            <>
+              <h1 className="font-bold text-center text-3xl mt-28 mb-4">
+                Your account is not yet veirifed!
+              </h1>
+              <h1 className="font-bold text-center text-xl mb-3">
+                You have submitted your verification documents, please allow
+                support 48hrs to verify your account
+              </h1>
+              <Link
+                href="!#"
+                className="w-20 mx-auto py-2 transition duration-200 text-white bg-purple-600 focus:bg-purple-800 focus:shadow-sm focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50 rounded-lg text-lg shadow-sm hover:shadow-md font-semibold text-center flex justify-center items-center"
+              >
+                Contact Support
+              </Link>
             </>
           ) : (
             <>
