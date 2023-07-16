@@ -96,7 +96,7 @@ const AgentCard: FC<IProps> = ({ agent }) => {
                   </p>
                   <p className="text-lg text-gray-500 my-2">
                     Status:{" "}
-                    {agent.Verified ? (
+                    {agent.Verification === "verified" ? (
                       <span>
                         Verified
                         <VerifiedIcon />

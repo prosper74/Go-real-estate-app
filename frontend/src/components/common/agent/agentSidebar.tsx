@@ -27,7 +27,7 @@ const AgentSidebar: FC<IProps> = ({ agent, totalCount }) => {
           </p>
           <p className="my-2">
             Status:{' '}
-            {agent.Verified ? (
+            {agent.Verification === "verified" ? (
               <span>
                 Verified
                 <VerifiedIcon />
