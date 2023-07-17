@@ -418,7 +418,7 @@ func (m *postgresDBRepo) GetPropertyByID(id int) (models.Property, error) {
 	var imagesArrayString string
 
 	query := `select p.id, p.title, p.description, p.price, p.type, p.duration, p.size, p.city, p.state, p.bedroom, p.bathroom, p.featured, p.status, p.images, p.category_id, p.user_id, p.created_at, p.updated_at,
-	u.id, u.first_name, u.last_name, u.email, u.phone, u.verified, u.image, c.id, c.title
+	u.id, u.first_name, u.last_name, u.email, u.phone, u.verification, u.image, c.id, c.title
 	from properties p
 	left join users u on (p.user_id = u.id)
 	left join categories c on (p.category_id = c.id)
@@ -541,7 +541,7 @@ func (m *postgresDBRepo) GetUserPropertiesByID(userID string) ([]models.Property
 	var properties []models.Property
 
 	query := `select p.id, p.title, p.description, p.price, p.type, p.duration, p.size, p.city, p.state, p.bedroom, p.bathroom, p.featured, p.status, p.images, p.category_id, p.user_id, p.created_at, p.updated_at,
-	u.id, u.first_name, u.last_name, u.email, u.phone, u.verified, u.image, u.created_at, c.id, c.title
+	u.id, u.first_name, u.last_name, u.email, u.phone, u.verification, u.image, u.created_at, c.id, c.title
 	from properties p
 	left join users u on (p.user_id = u.id)
 	left join categories c on (p.category_id = c.id)
