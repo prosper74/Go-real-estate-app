@@ -37,8 +37,6 @@ const CreateAdPage: FC = () => {
     }
   }, [user]);
 
-  console.log("User: ", fetchedUser);
-
   return (
     <>
       <Head>
@@ -64,9 +62,12 @@ const CreateAdPage: FC = () => {
               Your account email is not yet veirifed!
             </h1>
             <h1 className="font-bold text-center text-xl mb-3">
-              Please, check your inbox, promotions, or spam folder for the verification email we sent
+              Please, check your inbox, promotions, or spam folder for the
+              verification email we sent
             </h1>
-            <p className="text-center text-xl mb-3">Or click the button below to resend verification email</p>
+            <p className="text-center text-xl mb-3">
+              Or click the button below to resend verification email
+            </p>
             {/* <button
               onClick={handleResendEmailVerification}
               className="w-36 mx-auto py-2 transition duration-200 text-white bg-purple-600 focus:bg-purple-800 focus:shadow-sm focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50 rounded-lg text-lg shadow-sm hover:shadow-md font-semibold text-center flex justify-center items-center"
