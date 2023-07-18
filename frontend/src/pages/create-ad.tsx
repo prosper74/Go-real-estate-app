@@ -8,6 +8,7 @@ import AuthButton from "@src/components/common/Buttons/authButton";
 import { UserProps } from "@src/components/common/interfaces";
 import { CreateAdForm } from "@src/components/common/forms/createAdForm";
 import VerificationModal from "@src/components/common/agent/verificationModal";
+import ResendEmailVerificationButton from "@src/components/common/Buttons/emailVerificationButton";
 
 interface IProps {
   user: UserProps;
@@ -66,12 +67,13 @@ const CreateAdPage: FC = () => {
               Please, check your inbox, promotions, or spam folder for the verification email we sent
             </h1>
             <p className="text-center text-xl mb-3">Or click the button below to resend verification email</p>
-            <button
-              onClick={() => setVerificationModalOpen(!verificationModalOpen)}
+            {/* <button
+              onClick={handleResendEmailVerification}
               className="w-36 mx-auto py-2 transition duration-200 text-white bg-purple-600 focus:bg-purple-800 focus:shadow-sm focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50 rounded-lg text-lg shadow-sm hover:shadow-md font-semibold text-center flex justify-center items-center"
             >
               Resend Email
-            </button>
+            </button> */}
+            <ResendEmailVerificationButton />
           </>
         ) : fetchedUser?.Verification === "not_verified" ? (
           <>
