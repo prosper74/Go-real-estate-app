@@ -2,63 +2,84 @@ import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 
 const ResendEmailVerificationButton: React.FC = () => {
-  const [isDisabled, setIsDisabled] = useState("false");
-  const [countdown, setCountdown] = useState<number>(0);
-  const [storedCountdownString, setStoredCountdownString] = useState("0");
+  const [isDisabled, setIsDisabled] = useState(false);
+  // const [countdown, setCountdown] = useState<number>(0);
 
   const handleResendEmailVerification = () => {
-    setIsDisabled("true");
-    setCountdown(24 * 60 * 60);
-    Cookies.set("resendEmailCountdown", (24 * 60 * 60).toString(), {
-      expires: 1,
-    });
+    setIsDisabled(true);
+    // setCountdown(24 * 60 * 60);
+    // const expirationTime = new Date().getTime() + 24 * 60 * 60 * 1000;
+    // Cookies.set("resendEmailCountdown", (24 * 60 * 60).toString(), {
+    //   expires: new Date(expirationTime),
+    // });
     Cookies.set("isDisabled", "true", { expires: 1 });
   };
 
   useEffect(() => {
-    const storedCountdown = Cookies.get("resendEmailCountdown");
-    if (storedCountdown) {
-      const parsedCountdown = parseInt(storedCountdown);
-      if (!isNaN(parsedCountdown)) {
-        setCountdown(parsedCountdown);
-      }
-    }
+    // const storedCountdown = Cookies.get("resendEmailCountdown");
+    // if (storedCountdown) {
+    //   const parsedCountdown = parseInt(storedCountdown);
+    //   if (!isNaN(parsedCountdown)) {
+    //     setCountdown(parsedCountdown);
+    //   }
+    // }
 
     const storedIsDisabled = Cookies.get("isDisabled");
     if (storedIsDisabled === "true") {
-      setIsDisabled("true");
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
     }
   }, []);
 
-  useEffect(() => {
-    const updateCountdown = setInterval(() => {
-      setCountdown((prevCountdown) => prevCountdown - 1);
-    }, 1000);
+  // useEffect(() => {
+  //   const updateCountdown = setInterval(() => {
+  //     setCountdown((prevCountdown) => prevCountdown - 1);
+  //   }, 1000);
 
-    return () => clearInterval(updateCountdown);
-  }, []);
+  //   return () => clearInterval(updateCountdown);
+  // }, []);
 
-  const hours = Math.floor(countdown / 3600);
-  const minutes = Math.floor((countdown % 3600) / 60);
-  const seconds = countdown % 60;
-  const countdownString = `${hours.toString().padStart(2, "0")}:${minutes
-    .toString()
-    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-  Cookies.set("countdownString", countdownString, { expires: 1 });
+  // useEffect(() => {
+  //   const expirationTime = new Date().getTime() + countdown * 1000;
+  //   Cookies.set("resendEmailCountdown", countdown.toString(), {
+  //     expires: new Date(expirationTime),
+  //   });
+  //   Cookies.set("isDisabled", isDisabled ? "true" : "false", {
+  //     expires: new Date(expirationTime),
+  //   });
 
-  console.log("storeedIsDisable:", isDisabled);
-  console.log("count down:", countdown);
-  console.log("count down string:", Cookies.get("countdownString"));
+  //   if (countdown === 0) {
+  //     setIsDisabled(false);
+  //     Cookies.remove("resendEmailCountdown");
+  //     Cookies.remove("isDisabled");
+  //   }
+  // }, [countdown, isDisabled]);
+
+  // useEffect(() => {
+  //   if (typeof window === "undefined") {
+  //     const storedCountdown = Cookies.get("resendEmailCountdown");
+  //     if (storedCountdown) {
+  //       const parsedCountdown = parseInt(storedCountdown);
+  //       if (!isNaN(parsedCountdown)) {
+  //         setCountdown(parsedCountdown);
+  //         setIsDisabled(true);
+  //       }
+  //     }
+  //   }
+  // }, []);
+
+  // const hours = Math.floor(countdown / 3600);
+  // const minutes = Math.floor((countdown % 3600) / 60);
+  // const seconds = countdown % 60;
+  // const countdownString = `${hours.toString().padStart(2, "0")}:${minutes
+  //   .toString()
+  //   .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 
   return (
     <div>
-      <button
-        onClick={handleResendEmailVerification}
-        disabled={isDisabled === "true"}
-      >
-        {isDisabled === "true"
-          ? `Resend Email Verification in ${Cookies.get("countdownString")}`
-          : "Resend Email Verification"}
+      <button onClick={handleResendEmailVerification} disabled={isDisabled}>
+        {isDisabled ? `Resend Email in 24hrs` : "Resend Email Verification"}
       </button>
     </div>
   );
