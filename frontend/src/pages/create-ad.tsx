@@ -68,12 +68,6 @@ const CreateAdPage: FC = () => {
             <p className="text-center text-xl mb-3">
               Or click the button below to resend verification email
             </p>
-            {/* <button
-              onClick={handleResendEmailVerification}
-              className="w-36 mx-auto py-2 transition duration-200 text-white bg-purple-600 focus:bg-purple-800 focus:shadow-sm focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50 rounded-lg text-lg shadow-sm hover:shadow-md font-semibold text-center flex justify-center items-center"
-            >
-              Resend Email
-            </button> */}
             <ResendEmailVerificationButton inline={false} />
           </>
         ) : fetchedUser?.Verification === "not_verified" ? (
