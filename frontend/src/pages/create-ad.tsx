@@ -74,7 +74,7 @@ const CreateAdPage: FC = () => {
             >
               Resend Email
             </button> */}
-            <ResendEmailVerificationButton />
+            <ResendEmailVerificationButton inline={false} />
           </>
         ) : fetchedUser?.Verification === "not_verified" ? (
           <>
