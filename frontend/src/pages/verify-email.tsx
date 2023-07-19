@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import { PageLoader } from "@src/components/common/loader";
+import ResendEmailVerificationButton from "@src/components/common/Buttons/emailVerificationButton";
 
 export default function VerifyUserEmail({ queryParams }: any) {
   const router = useRouter();
@@ -28,7 +29,9 @@ export default function VerifyUserEmail({ queryParams }: any) {
           dispatch(
             setSnackbar({
               status: "error",
-              message: response.data.error,
+              message: `${response.data.error} ${" "} ${(
+                <ResendEmailVerificationButton inline={true} />
+              )}`,
               open: true,
             })
           );
@@ -41,9 +44,9 @@ export default function VerifyUserEmail({ queryParams }: any) {
               open: true,
             })
           );
-          setLoading(false);          
+          setLoading(false);
         }
-        router.push('/');
+        router.push("/");
       })
       .catch((error) => {
         dispatch(
@@ -54,7 +57,7 @@ export default function VerifyUserEmail({ queryParams }: any) {
           })
         );
         setLoading(false);
-        router.push('/');
+        router.push("/");
       });
   }, []);
 

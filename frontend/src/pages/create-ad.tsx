@@ -49,11 +49,13 @@ const CreateAdPage: FC = () => {
             <h3 className="font-bold text-center text-xl mt-24 mb-10">
               Please login or create an account before you can post an ad
             </h3>
-            <AuthButton
-              isOpen={isOpen}
-              setIsOpen={setIsOpen}
-              buttonText="Login"
-            />
+            <div className="flex justify-center items-center">
+              <AuthButton
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                buttonText="Login"
+              />
+            </div>
             <AuthPortal isOpen={isOpen} setIsOpen={setIsOpen} />
           </>
         ) : fetchedUser?.AccessLevel === 0 ? (
