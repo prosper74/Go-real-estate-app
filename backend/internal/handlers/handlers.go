@@ -314,6 +314,62 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	w.Write(resp)
 }
 
+func (m *Repository) ResendEmailVerification(w http.ResponseWriter, r *http.Request) {
+	user := models.User{}
+
+	data := make(map[string]interface{})
+
+	err := r.ParseForm()
+	if err != nil {
+		m.App.Session.Put(r.Context(), "error", "Can't parse form")
+		return
+	}
+
+	user.ID, _ = strconv.Atoi(r.PostFormValue("user_id"))
+
+	user, err = m.DB.GetUserByID(user.ID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	jwtToken, err := helpers.GenerateJWTToken(user.ID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	user.Token = jwtToken
+	m.App.Session.Put(r.Context(), "user", user)
+
+	// Send email notification to customer
+	htmlBody := fmt.Sprintf(`
+	<strong>Verify Your Email</strong><br />
+	<p>Dear %s %s, </p>
+	<p>Welcome to our website.</p>
+	<strong>Kindly click the link below to verify your email</strong>
+	<a href="http://localhost:3000/verify-email?userid=%d&token=%s", target="_blank">Verify Email</a>
+	<strong>Note that this link will expire in 24 hours and you can only resend another verification after the expiration of this link</strong>
+	<p>We hope to see you soon</p>
+	`, user.FirstName, user.LastName, user.ID, jwtToken)
+
+	message := models.MailData{
+		To:      user.Email,
+		From:    "prosperdevstack@gmail.com",
+		Subject: "Verify Your Email",
+		Content: htmlBody,
+	}
+
+	m.App.MailChannel <- message
+	// End of emails
+
+	data["message"] = "Successful"
+	out, _ := json.MarshalIndent(data, "", "    ")
+
+	resp := []byte(out)
+	w.Write(resp)
+}
+
 func (m *Repository) VerifyUserEmail(w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]interface{})
 
@@ -474,7 +530,7 @@ func (m *Repository) UserDashboard(w http.ResponseWriter, r *http.Request) {
 		resp := []byte(out)
 		w.Write(resp)
 		return
-	}	
+	}
 
 	user, err := m.DB.GetUserByID(userId)
 	if err != nil {
@@ -484,7 +540,7 @@ func (m *Repository) UserDashboard(w http.ResponseWriter, r *http.Request) {
 		resp := []byte(out)
 		w.Write(resp)
 		return
-	}	
+	}
 
 	data["message"] = "Successful"
 	data["user"] = user
