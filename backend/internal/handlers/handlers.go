@@ -412,7 +412,7 @@ func (m *Repository) VerifyUserEmail(w http.ResponseWriter, r *http.Request) {
 	// Check if the token is valid
 	if token.Valid {
 		// Update the user's account status as verified
-		user.AccessLevel = 2
+		user.AccessLevel = 1
 		err = m.DB.UpdateUserAccessLevel(user)
 		if err != nil {
 			helpers.ServerError(w, err)
