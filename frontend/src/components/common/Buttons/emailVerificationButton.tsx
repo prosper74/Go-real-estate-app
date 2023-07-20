@@ -7,7 +7,6 @@ interface IProps {
 
 const ResendEmailVerificationButton: FC<IProps> = ({ inline }) => {
   const [isDisabled, setIsDisabled] = useState(false);
-  // const [countdown, setCountdown] = useState<number>(0);
 
   const handleResendEmailVerification = () => {
     setIsDisabled(true);
