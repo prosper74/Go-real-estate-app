@@ -8,6 +8,7 @@ import VerificationModal from "./verificationModal";
 import PropertyCard from "../properties/propertyCard";
 import { PageLoader } from "../loader";
 import { SingleProperty, UserProps } from "../interfaces";
+import ResendEmailVerificationButton from "../Buttons/emailVerificationButton";
 
 interface IProps {
   user: UserProps;
@@ -58,6 +59,20 @@ const UserTab: FC = () => {
     <>
       {!fetchedUser ? (
         <PageLoader />
+      ) : fetchedUser?.AccessLevel === 0 ? (
+        <div>
+          <h1 className="font-bold text-center text-3xl mt-28 mb-4">
+            Your account email is not yet veirifed!
+          </h1>
+          <h1 className="font-bold text-center text-xl mb-3">
+            Please, check your inbox, promotions, or spam folder for the
+            verification email we sent
+          </h1>
+          <p className="text-center text-xl mb-3">
+            Or click the button below to resend verification email
+          </p>
+          <ResendEmailVerificationButton inline={false} />
+        </div>
       ) : (
         <div className="w-full py-16">
           <Tab.Group>
