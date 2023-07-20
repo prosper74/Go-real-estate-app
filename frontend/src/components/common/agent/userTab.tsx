@@ -62,7 +62,7 @@ const UserTab: FC = () => {
       {!fetchedUser ? (
         <PageLoader />
       ) : fetchedUser?.AccessLevel === 0 ? (
-        <div>
+        <>
           <h1 className="font-bold text-center text-3xl mt-28 mb-4">
             Your account email is not yet veirifed!
           </h1>
@@ -74,7 +74,7 @@ const UserTab: FC = () => {
             Or click the button below to resend verification email
           </p>
           <ResendEmailVerificationButton inline={false} />
-        </div>
+        </>
       ) : (
         <div className="w-full py-16">
           <Tab.Group>
