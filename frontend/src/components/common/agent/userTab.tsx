@@ -122,7 +122,7 @@ const UserTab: FC = () => {
             <Tab.Panels className="mt-2">
               <Tab.Panel
                 className={classNames(
-                  "bg-white rounded-xl py-3",
+                  "bg-white rounded-xl p-4",
                   "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-purple-400 ring-white ring-opacity-60"
                 )}
               >

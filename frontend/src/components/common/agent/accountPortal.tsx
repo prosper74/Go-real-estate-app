@@ -1,12 +1,10 @@
-import React, { FC } from 'react';
-import UserTab from './userTab';
+import React, { FC } from "react";
+import UserTab from "./userTab";
 
 const AccountPortal: FC = () => {
   return (
-    <main className="my-10">
-      <div className="sm:container xs:px-4 md:px-6 xl:px-32 mx-auto">
-        <UserTab />
-      </div>
+    <main className="px-4 mx-auto mt-24 sm:px-10 lg:px-32">
+      <UserTab />
     </main>
   );
 };
