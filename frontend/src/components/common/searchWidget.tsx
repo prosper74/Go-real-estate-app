@@ -134,7 +134,7 @@ export const PageSearchWidget: FC<ISearchWidget> = ({
   return (
     <>
       {/* Search Input  */}
-      <div className="relative z-50 my-4">
+      <div className="relative my-4">
         <input
           className="w-full px-5 py-3 max-w-xs bg-white text-xl text-gray-500 placeholder-gray-500 outline-none rounded-xl shadow-lg"
           type="text"
