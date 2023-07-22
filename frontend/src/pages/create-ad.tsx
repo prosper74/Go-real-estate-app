@@ -5,10 +5,10 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import AuthPortal from "@src/components/auth";
 import AuthButton from "@src/components/common/Buttons/authButton";
-import { UserProps } from "@src/components/common/interfaces";
+import VerificationModal from "@src/components/common/accountVerification";
 import { CreateAdForm } from "@src/components/common/forms/createAdForm";
-import VerificationModal from "@src/components/common/agent/verificationModal";
 import ResendEmailVerificationButton from "@src/components/common/Buttons/emailVerificationButton";
+import { UserProps } from "@src/components/common/interfaces";
 
 interface IProps {
   user: UserProps;
