@@ -76,7 +76,7 @@ const UserTab: FC = () => {
           <ResendEmailVerificationButton inline={false} />
         </>
       ) : (
-        <div className="w-full py-16">
+        <div className="w-full">
           <Tab.Group>
             <Tab.List className="flex p-1 space-x-1 text-lg font-medium bg-purple-100 rounded-xl">
               <Tab
@@ -204,7 +204,7 @@ const UserTab: FC = () => {
               </Tab.Panel>
               <Tab.Panel
                 className={classNames(
-                  "bg-white rounded-xl py-3",
+                  "bg-white rounded-xl p-4",
                   "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-purple-400 ring-white ring-opacity-60"
                 )}
               >
@@ -212,7 +212,7 @@ const UserTab: FC = () => {
               </Tab.Panel>
               <Tab.Panel
                 className={classNames(
-                  "bg-white rounded-xl py-3",
+                  "bg-white rounded-xl p-4",
                   "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-purple-400 ring-white ring-opacity-60"
                 )}
               >
