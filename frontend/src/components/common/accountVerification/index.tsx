@@ -8,7 +8,7 @@ interface IProps {
   setIsOpen: (open: boolean) => void;
 }
 
-const AuthPortal: FC<IProps> = ({ isOpen, setIsOpen }) => {
+const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
   const [selectedStep, setSelectedStep] = useState(0);
 
   const steps = [
@@ -73,4 +73,4 @@ const AuthPortal: FC<IProps> = ({ isOpen, setIsOpen }) => {
   );
 };
 
-export default AuthPortal;
+export default VerificationModal;

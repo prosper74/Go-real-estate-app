@@ -4,11 +4,11 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { Tab } from "@headlessui/react";
 import AgentSidebar from "./agentSidebar";
-import VerificationModal from "./verificationModal";
 import PropertyCard from "../properties/propertyCard";
 import { PageLoader } from "../loader";
 import { SingleProperty, UserProps } from "../interfaces";
 import ResendEmailVerificationButton from "../Buttons/emailVerificationButton";
+import VerificationModal from "../accountVerification";
 
 interface IProps {
   user: UserProps;
