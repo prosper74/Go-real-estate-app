@@ -1,11 +1,11 @@
 import React, { FC, useState } from "react";
 import { SearchIcon, CloseIcon } from "@src/components/common/svgIcons";
+import Link from "next/link";
+import PropertyCard from "./properties/propertyCard";
 import {
   SingleProperty,
   ISearchWidget,
 } from "@src/components/common/interfaces";
-import Link from "next/link";
-import PropertyCard from "./properties/propertyCard";
 
 export const StandAloneSearchWidget: FC<ISearchWidget> = ({
   properties = [],
@@ -160,8 +160,8 @@ export const PageSearchWidget: FC<ISearchWidget> = ({
             <PropertyCard key={property.ID} property={property} />
           ))
         ) : (
-          <h4 className="my-8 text-2xl">
-            No Item found
+          <h4 className="my-6 text-2xl">
+            No properties found
           </h4>
         )}
       </div>
