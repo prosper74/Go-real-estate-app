@@ -52,6 +52,7 @@ export interface SortOptionProps {
 }
 
 export interface UserProps {
+  userName: string;
   ID: number;
   FirstName: string;
   LastName: string;

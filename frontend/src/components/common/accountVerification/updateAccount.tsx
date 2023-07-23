@@ -21,19 +21,16 @@ interface IProps {
 }
 
 const schema = z.object({
-  identity: z.string(),
-  identity_number: z
+  phone: z
     .string()
-    .min(3, { message: "Minimum 3 characters" })
-    .max(40, { message: "Maximun 40 characters" }),
-  address: z.string(),
+    .min(11, { message: "Phone must be 11 numbers" })
+    .max(11, { message: "Phone must be 11 numbers" }),
 });
 
 const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
   const user = useSelector((state: IProps) => state.user);
-  const router = useRouter();
   const dispatch = useDispatch();
-  const [uploadedImages, setUploadedImages] = useState<any[]>([]);
+  const [uploadedImage, setUploadedImage] = useState<any>();
   const [loading, setLoading] = useState(false);
 
   const onDrop = useCallback(async (acceptedFiles: any) => {
@@ -56,7 +53,7 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
 
       const data = await response.json();
       // @ts-ignore
-      setUploadedImages((old) => [...old, data]);
+      setUploadedImage(data);
     });
   }, []);
 
@@ -67,17 +64,10 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
       image: [".png", ".gif", ".jpeg", ".jpg"],
     },
     multiple: true,
-    maxFiles: 2,
+    maxFiles: 1,
     minSize: 0,
     maxSize: 1000000,
   });
-
-  const navigateSignup = () => {
-    const signUp = steps.find(
-      (step: { label: string }) => step.label === "Verify Account"
-    );
-    setSelectedStep(steps.indexOf(signUp));
-  };
 
   const {
     register,
@@ -88,10 +78,7 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
     resolver: zodResolver(schema),
   });
 
-  const uploadedIdentityImageURL =
-    uploadedImages.length === 2 && uploadedImages[0].url;
-  const uploadedAddressImageURL =
-    uploadedImages.length === 2 && uploadedImages[1].url;
+  const uploadedImageURL = uploadedImage && uploadedImage.url;
 
   const onSubmit = handleSubmit((data) => {
     setLoading(true);
@@ -100,11 +87,8 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
       .post(
         `${process.env.NEXT_PUBLIC_REST_API}/verifications?user_id=${user?.userId}&jwt=${user?.jwt}`,
         {
-          identity: data.identity,
-          identity_number: data.identity_number,
-          identity_image: uploadedIdentityImageURL,
-          address: data.address,
-          address_image: uploadedAddressImageURL,
+          image: uploadedImageURL,
+          phone: data.identity_number,
           user_id: user?.userId,
           jwt: user?.jwt,
         },
@@ -120,11 +104,14 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
         dispatch(
           setSnackbar({
             status: "success",
-            message: ` Documents Submitted Successfully and will be reviewed within 24 hours`,
+            message: ` Account Updated`,
             open: true,
           })
         );
-        router.push("/agent/account");
+        const verifyAccount = steps.find(
+          (step: { label: string }) => step.label === "Verify Account"
+        );
+        setSelectedStep(steps.indexOf(verifyAccount));
       })
       .catch(() => {
         setLoading(false);
@@ -143,16 +130,17 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
   }
 
   return (
-    <Dialog.Panel className="w-full max-w-xl max-h-[32rem] transform overflow-auto rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+    <Dialog.Panel className="max-w-2xl max-h-[32rem] transform overflow-auto rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
       <Dialog.Title
         as="h3"
         className="text-lg font-medium leading-6 text-gray-900"
       >
-        Account Verification
+        Update Account Information
       </Dialog.Title>
       <Dialog.Title as="p" className="text-base leading-6 text-gray-900">
-        Please provide valid documents to verify your account. Note all files
-        must be image format (PNG/JPEG). Image size should not exceed 1MB
+        Please provide your image and valid phone number. <br />
+        Note: You can only upload one image (PNG/JPEG), and image size should
+        not exceed 1MB
       </Dialog.Title>
 
       <div className="bg-white shadow w-full rounded-lg divide-y divide-gray-200 mt-3">
@@ -162,107 +150,72 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
             <div className="grid gap-2">
               {/* ID Verification */}
               <p className="text-base font-medium leading-6 text-gray-900">
-                Identity verification
+                Image (Must show your face and your ears clearly)
               </p>
-              <div>
-                <select
-                  {...register("identity")}
-                  className={`focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full `}
-                >
-                  <option value="International passport">
-                    International Passport
-                  </option>
-                  <option value="Drivers licence">Drivers Licence</option>
-                  <option value="ID card">
-                    ID card (Issued by the government)
-                  </option>
-                </select>
-              </div>
-
-              <div>
-                <input
-                  id="identity_number"
-                  type="text"
-                  autoComplete="identity_number"
-                  placeholder="Enter the identity number"
-                  {...register("identity_number")}
-                  className={`focus:outline-gray-700 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
-                    errors.identity_number &&
-                    "border-red-500 text-red-500 focus:outline-red-500"
+              {/* Upload Image */}
+              {uploadedImage ? (
+                <h3 className="text-center text-xl font-bold mb-2">
+                  Your image has been uploaded
+                </h3>
+              ) : (
+                <p
+                  {...getRootProps()}
+                  className={`h-auto my-3 p-3 border-2 border-dashed border-purple-400 cursor-pointer md:text-xl text-center ${
+                    isDragActive && "border-primary"
                   }`}
-                />
-                {errors.identity_number?.message && (
-                  <p className="text-red-500 text-sm mt-2">
-                    {/* @ts-ignore */}
-                    {errors.identity_number?.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Address Verification  */}
-              <p className="mt-4 text-base font-medium leading-6 text-gray-900">
-                Address verification
-              </p>
-              <div>
-                <select
-                  {...register("address")}
-                  className="focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full"
                 >
-                  <option value="Bank statement">Bank statement</option>
-                  <option value="Utility bill">Utility bill</option>
-                </select>
-              </div>
-            </div>
+                  <input {...getInputProps()} />
+                  Upload your image. <br />
+                  Click to add or drag n drop image
+                </p>
+              )}
 
-            {/* Upload Images */}
-            {uploadedImages.length === 2 ? (
-              <h3 className="text-center text-xl font-bold mb-2">
-                Your images has been uploaded
-              </h3>
-            ) : (
-              <p
-                {...getRootProps()}
-                className={`h-auto m-3 p-3 border-2 border-dashed border-purple-400 cursor-pointer md:text-xl text-center ${
-                  isDragActive && "border-primary"
-                }`}
-              >
-                <input {...getInputProps()} />
-                Upload identity and address images <br />
-                Click to add or drag n drop image
-              </p>
-            )}
-            <div className="flex flex-row justify-center">
-              {uploadedImages.map((file: IImageUpload) => (
-                <li key={file.public_id} className="mr-1">
+              <div className="flex flex-row justify-center">
+                {uploadedImage && (
                   <Image
                     cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
-                    publicId={file.public_id}
+                    publicId={uploadedImage.public_id}
                     width="150"
                     height="150"
                     crop="scale"
-                    className="object-cover"
+                    className="rounded-full object-cover"
                   />
-                </li>
-              ))}
-            </div>
+                )}
+              </div>
 
-            {errors.images?.message && (
-              <p className="text-red-500 text-sm mt-2">
-                {/* @ts-ignore */}
-                {errors.images?.message}
+              {/* Phone number */}
+              <p className="mt-4 text-base font-medium leading-6 text-gray-900">
+                Phone Number
               </p>
-            )}
+              <div>
+                <input
+                  id="phone"
+                  type="number"
+                  autoComplete="phone"
+                  placeholder="Enter your valid phone number"
+                  {...register("phone")}
+                  className={`focus:outline-gray-700 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
+                    errors.phone &&
+                    "border-red-500 text-red-500 focus:outline-red-500"
+                  }`}
+                />
+                {errors.phone?.message && (
+                  <p className="text-red-500 text-sm mt-2">
+                    {/* @ts-ignore */}
+                    {errors.phone?.message}
+                  </p>
+                )}
+              </div>
+            </div>
 
             <div className="flex justify-between mt-4">
               <button
                 // @ts-ignore
-                disabled={
-                  loading || uploadedImages.length < 2 || errors.identity_number
-                }
+                disabled={loading || !uploadedImage || errors.phone}
                 className="inline-flex justify-center items-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500"
                 onClick={onSubmit}
               >
-                <span className="mr-2">Submit</span>
+                <span className="mr-2">Submit & Next</span>
                 {loading ? (
                   <div className="border-b-2 border-purple-600 rounded-full animate-spin w-5 h-5" />
                 ) : (

@@ -20,13 +20,15 @@ export default function AccountPage() {
     }
   });
 
+  console.log(user)
+
   return (
     <>
       {user.jwt && user.onboarding ? (
         <>
           <Head>
             <title>
-              My account | {user.FirstName} {user.LastName}
+              My account | {user.userName}
             </title>
             <link rel="icon" href="/favicon.png" />
             <meta content={`${user.FirstName} account page`} />
