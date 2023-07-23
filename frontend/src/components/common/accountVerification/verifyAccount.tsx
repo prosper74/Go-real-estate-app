@@ -131,7 +131,7 @@ const VerifyAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
         dispatch(
           setSnackbar({
             status: "error",
-            message: ` There was an error. Please try again later`,
+            message: ` There was an error. Please contact support`,
             open: true,
           })
         );
@@ -143,7 +143,7 @@ const VerifyAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
   }
 
   return (
-    <Dialog.Panel className="w-full max-w-xl max-h-[32rem] transform overflow-auto rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+    <Dialog.Panel className="max-w-3xl max-h-[32rem] transform overflow-auto rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
       <Dialog.Title
         as="h3"
         className="text-lg font-medium leading-6 text-gray-900"

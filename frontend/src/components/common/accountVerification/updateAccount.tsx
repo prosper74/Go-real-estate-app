@@ -1,4 +1,4 @@
-import { FC, Fragment, useCallback, useState } from "react";
+import { FC, Fragment, useCallback, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -29,6 +29,7 @@ const schema = z.object({
 
 const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
   const user = useSelector((state: IProps) => state.user);
+  const [fetchedUser, setFetchedUser] = useState<UserProps>();
   const dispatch = useDispatch();
   const [uploadedImage, setUploadedImage] = useState<any>();
   const [loading, setLoading] = useState(false);
@@ -118,19 +119,45 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
         dispatch(
           setSnackbar({
             status: "error",
-            message: ` There was an error. Please try again later`,
+            message: ` There was an error. Please contact support`,
             open: true,
           })
         );
       });
   });
 
+  useEffect(() => {
+    if (user?.userId) {
+      axios
+        .get(
+          `${process.env.NEXT_PUBLIC_REST_API}/auth/dashboard?id=${user.userId}`
+        )
+        .then((res) => {
+          if (res.data.error) {
+            console.error(res.data.error);
+          } else {
+            setFetchedUser(res.data.user);
+          }
+        })
+        .catch((error) => console.error(error));
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (fetchedUser?.Phone && fetchedUser?.Image) {
+      const verifyAccount = steps.find(
+        (step: { label: string }) => step.label === "Verify Account"
+      );
+      setSelectedStep(steps.indexOf(verifyAccount));
+    }
+  }, [user]);
+
   function closeModal() {
     setIsOpen(false);
   }
 
   return (
-    <Dialog.Panel className="max-w-2xl max-h-[32rem] transform overflow-auto rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+    <Dialog.Panel className="max-w-3xl max-h-[32rem] transform overflow-auto rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
       <Dialog.Title
         as="h3"
         className="text-lg font-medium leading-6 text-gray-900"
@@ -154,7 +181,7 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
               </p>
               {/* Upload Image */}
               {uploadedImage ? (
-                <h3 className="text-center text-xl font-bold mb-2">
+                <h3 className="text-center text-xl font-semibold text-lime-500 mb-2">
                   Your image has been uploaded
                 </h3>
               ) : (
@@ -211,7 +238,7 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
             <div className="flex justify-between mt-4">
               <button
                 // @ts-ignore
-                disabled={loading || !uploadedImage || errors.phone}
+                disabled={loading || errors.phone || !uploadedImage}
                 className="inline-flex justify-center items-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500"
                 onClick={onSubmit}
               >
@@ -226,6 +253,7 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
           </form>
         </div>
       </div>
+
       <button onClick={closeModal} className="absolute top-2 right-4">
         <CloseIcon dimensions="w-8 h-8" fill="#9333EA" />
       </button>
