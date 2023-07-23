@@ -16,13 +16,17 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
     { component: VerifyAccount, label: "Verify Account" },
   ];
 
+  function closeModal() {
+    setIsOpen(false);
+  }
+
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
           className="fixed inset-0 overflow-y-auto z-[2000]"
-          onClose={() => ""}
+          onClose={closeModal}
         >
           <div className="min-h-screen px-4 text-center">
             <Transition.Child
@@ -53,18 +57,18 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-full max-w-md p-2 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-                {steps.map((Step, i) =>
-                  selectedStep === i ? (
-                    <Step.component
-                      setSelectedStep={setSelectedStep}
-                      steps={steps}
-                      setIsOpen={setIsOpen}
-                      key={Step.label}
-                    />
-                  ) : null
-                )}
-              </div>
+              {/* <div className="inline-block w-full max-w-md p-2 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl"> */}
+              {steps.map((Step, i) =>
+                selectedStep === i ? (
+                  <Step.component
+                    setSelectedStep={setSelectedStep}
+                    steps={steps}
+                    setIsOpen={setIsOpen}
+                    key={Step.label}
+                  />
+                ) : null
+              )}
+              {/* </div> */}
             </Transition.Child>
           </div>
         </Dialog>
