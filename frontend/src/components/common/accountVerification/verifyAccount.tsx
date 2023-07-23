@@ -1,56 +1,82 @@
-import { FC, useEffect, useState } from "react";
-import Link from "next/link";
+import { FC, useCallback, useState } from "react";
+import { Dialog } from "@headlessui/react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { useDropzone } from "react-dropzone";
+// @ts-ignore
+import { Image } from "cloudinary-react";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
-import {
-  EyeIcon,
-  EyeSlashIcon,
-  ForwardArrow,
-  BackArrowIcon,
-  GoogleIcon,
-  FacebookIcon,
-} from "@src/components/common/svgIcons";
+import { ForwardArrow, CloseIcon } from "@src/components/common/svgIcons";
+import { IImageUpload, UserProps } from "../interfaces";
 
 interface IProps {
+  user?: UserProps;
   setIsOpen: (open: boolean) => void;
   setSelectedStep: (open: number) => void;
   steps: any;
 }
 
 const schema = z.object({
-  first_name: z
+  identity: z.string(),
+  identity_number: z
     .string()
-    .min(3, { message: "Name must be at at least 3 characters" })
-    .max(30, { message: "Maximun 30 characters" }),
-  last_name: z
-    .string()
-    .min(3, { message: "Name must be at at least 3 characters" })
-    .max(30, { message: "Maximun 30 characters" }),
-  email: z.string().email().nonempty({ message: "Invalid email" }),
-  password: z
-    .string()
-    .regex(
-      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,45}$/,
-      "Min 8 characters, max 45 characters, must contain uppercase, lowercase, number and special character"
-    ),
-  csrf_token: z.string(),
+    .min(3, { message: "Minimum 3 characters" })
+    .max(40, { message: "Maximun 40 characters" }),
+  address: z.string(),
 });
 
 const VerifyAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
+  const user = useSelector((state: IProps) => state.user);
+  const router = useRouter();
   const dispatch = useDispatch();
-  const [showPassword, setShowPassword] = useState(false);
+  const [uploadedImages, setUploadedImages] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [token, setToken] = useState("");
 
-  const handleBackward = () => {
-    const login = steps.find(
-      (step: { label: string }) => step.label === "Login"
+  const onDrop = useCallback(async (acceptedFiles: any) => {
+    const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/upload`;
+
+    acceptedFiles.forEach(async (acceptedFile: IImageUpload) => {
+      const formData = new FormData();
+      // @ts-ignore
+      formData.append("file", acceptedFile);
+      formData.append(
+        "upload_preset",
+        // @ts-ignore
+        process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+      );
+
+      const response = await fetch(url, {
+        method: "post",
+        body: formData,
+      });
+
+      const data = await response.json();
+      // @ts-ignore
+      setUploadedImages((old) => [...old, data]);
+    });
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    // @ts-ignore
+    accepts: {
+      image: [".png", ".gif", ".jpeg", ".jpg"],
+    },
+    multiple: true,
+    maxFiles: 2,
+    minSize: 0,
+    maxSize: 1000000,
+  });
+
+  const navigateSignup = () => {
+    const signUp = steps.find(
+      (step: { label: string }) => step.label === "Verify Account"
     );
-    setSelectedStep(steps.indexOf(login));
+    setSelectedStep(steps.indexOf(signUp));
   };
 
   const {
@@ -62,63 +88,53 @@ const VerifyAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
     resolver: zodResolver(schema),
   });
 
+  const uploadedIdentityImageURL =
+    uploadedImages.length === 2 && uploadedImages[0].url;
+  const uploadedAddressImageURL =
+    uploadedImages.length === 2 && uploadedImages[1].url;
+
   const onSubmit = handleSubmit((data) => {
     setLoading(true);
 
     axios
       .post(
-        `${process.env.NEXT_PUBLIC_REST_API}/signup`,
+        `${process.env.NEXT_PUBLIC_REST_API}/verifications?user_id=${user?.userId}&jwt=${user?.jwt}`,
         {
-          first_name: data.first_name,
-          last_name: data.last_name,
-          email: data.email,
-          password: data.password,
-          csrf_token: token,
+          identity: data.identity,
+          identity_number: data.identity_number,
+          identity_image: uploadedIdentityImageURL,
+          address: data.address,
+          address_image: uploadedAddressImageURL,
+          user_id: user?.userId,
+          jwt: user?.jwt,
         },
         {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: `Bearer ${user?.jwt}`,
           },
         }
       )
-      .then((response) => {
-        console.log("Resp: ", response.data.error);
-
-        if (response.data.error) {
-          dispatch(
-            setSnackbar({
-              status: "error",
-              message: response.data.error,
-              open: true,
-            })
-          );
-          setLoading(false);
-        } else {
-          dispatch(
-            setSnackbar({
-              status: "success",
-              message: ` Account created, please check your inbox to verify your email`,
-              open: true,
-            })
-          );
-          const complete = steps.find(
-            (step: { label: string }) => step.label === "Complete"
-          );
-          setSelectedStep(steps.indexOf(complete));
-          setLoading(false);
-        }
-      })
-      .catch((error) => {
-        // const { message } = error.response.data.message[0].messages[0];
-        console.error(error);
+      .then(() => {
+        setLoading(false);
         dispatch(
           setSnackbar({
-            status: "error",
-            message: "An error occured",
+            status: "success",
+            message: ` Documents Submitted Successfully and will be reviewed within 24 hours`,
             open: true,
           })
         );
+        router.push("/agent/account");
+      })
+      .catch(() => {
         setLoading(false);
+        dispatch(
+          setSnackbar({
+            status: "error",
+            message: ` There was an error. Please try again later`,
+            open: true,
+          })
+        );
       });
   });
 
@@ -126,227 +142,141 @@ const VerifyAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
     setIsOpen(false);
   }
 
-  useEffect(() => {
-    axios
-      .get(`${process.env.NEXT_PUBLIC_REST_API}/token-and-user-id`)
-      .then((res) => {
-        setToken(res.data.token);
-      })
-      .catch((error) => console.error(error));
-  }, []);
-
   return (
-    <>
-      <div className="flex flex-col justify-center overflow-y-auto">
-        <div className="p-4 xs:p-0 mx-auto md:w-full md:max-w-md">
-          <div className="bg-white shadow w-full rounded-lg divide-y divide-gray-200">
-            {/* Local Login */}
-            <div className="px-5 py-4">
-              <form>
-                <div className="mb-3 flex flex-wrap gap-3.5">
-                  <span className="w-full md:w-[48%]">
-                    <label
-                      htmlFor="first_name"
-                      className={`font-semibold text-base pb-1 block ${
-                        errors.first_name ? "text-red-500" : "text - gray - 600"
-                      }`}
-                    >
-                      First name
-                    </label>
-                    <input
-                      id="first_name"
-                      autoComplete="first_name"
-                      type="text"
-                      {...register("first_name")}
-                      className={`focus:outline-gray-700 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
-                        errors.first_name &&
-                        "border-red-500 text-red-500 focus:outline-red-500"
-                      }`}
-                    />
-                    {errors.first_name?.message && (
-                      <p className="text-red-500 text-sm mt-2">
-                        {/* @ts-ignore */}
-                        {errors.first_name?.message}
-                      </p>
-                    )}
-                  </span>
+    <Dialog.Panel className="w-full max-w-xl max-h-[32rem] transform overflow-auto rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+      <Dialog.Title
+        as="h3"
+        className="text-lg font-medium leading-6 text-gray-900"
+      >
+        Account Verification
+      </Dialog.Title>
+      <Dialog.Title as="p" className="text-base leading-6 text-gray-900">
+        Please provide valid documents to verify your account. Note all files
+        must be image format (PNG/JPEG). Image size should not exceed 1MB
+      </Dialog.Title>
 
-                  <span className="w-full md:w-[48%]">
-                    <label
-                      htmlFor="last_name"
-                      className={`font-semibold text-base pb-1 block ${
-                        errors.last_name ? "text-red-500" : "text - gray - 600"
-                      }`}
-                    >
-                      Last name
-                    </label>
-                    <input
-                      id="last_name"
-                      autoComplete="last_name"
-                      type="text"
-                      {...register("last_name")}
-                      className={`focus:outline-gray-700 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
-                        errors.last_name &&
-                        "border-red-500 text-red-500 focus:outline-red-500"
-                      }`}
-                    />
-                    {errors.last_name?.message && (
-                      <p className="text-red-500 text-sm mt-2">
-                        {/* @ts-ignore */}
-                        {errors.last_name?.message}
-                      </p>
-                    )}
-                  </span>
-                </div>
-                <div className="mb-3">
-                  <label
-                    htmlFor="email"
-                    className={`font-semibold text-base pb-1 block ${
-                      errors.email ? "text-red-500" : "text - gray - 600"
-                    }`}
-                  >
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    autoComplete="email"
-                    type="text"
-                    {...register("email")}
-                    className={`focus:outline-gray-700 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
-                      errors.email &&
-                      "border-red-500 text-red-500 focus:outline-red-500"
-                    }`}
-                  />
-                  {errors.email?.message && (
-                    <p className="text-red-500 text-sm mt-2">
-                      {/* @ts-ignore */}
-                      {errors.email?.message}
-                    </p>
-                  )}
-                </div>
-                <div className="mb-5">
-                  <label
-                    htmlFor="password"
-                    className={`font-semibold text-base pb-1 block ${
-                      errors.password ? "text-red-500" : "text - gray - 600"
-                    }`}
-                  >
-                    Password
-                  </label>
-                  <div className="relative">
-                    <input
-                      id="password"
-                      autoComplete="password"
-                      type={showPassword ? "text" : "password"}
-                      {...register("password")}
-                      className={`focus:outline-gray-700 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
-                        errors.password &&
-                        "border-red-500 text-red-500 focus:outline-red-500"
-                      }`}
-                    />
-                    <div
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute inset-y-0 right-0 pr-3 pt-3 transition duration-200"
-                    >
-                      {showPassword ? (
-                        <EyeSlashIcon width="26" height="26" fill="#9333EA" />
-                      ) : (
-                        <EyeIcon width="26" height="26" fill="#9333EA" />
-                      )}
-                    </div>
-                  </div>
-                  {errors.password?.message && (
-                    <p className="text-red-500 text-sm mt-2">
-                      {/* @ts-ignore */}
-                      {errors.password?.message}
-                    </p>
-                  )}
-                </div>
+      <div className="bg-white shadow w-full rounded-lg divide-y divide-gray-200 mt-3">
+        {/* Form Fields */}
+        <div className="p-2 sm:px-5 sm:py-4">
+          <form>
+            <div className="grid gap-2">
+              {/* ID Verification */}
+              <p className="text-base font-medium leading-6 text-gray-900">
+                Identity verification
+              </p>
+              <div>
+                <select
+                  {...register("identity")}
+                  className={`focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full `}
+                >
+                  <option value="International passport">
+                    International Passport
+                  </option>
+                  <option value="Drivers licence">Drivers Licence</option>
+                  <option value="ID card">
+                    ID card (Issued by the government)
+                  </option>
+                </select>
+              </div>
 
+              <div>
                 <input
-                  type="hidden"
-                  {...register("csrf_token")}
-                  value={token}
-                />
-
-                <button
-                  type="button"
-                  onClick={onSubmit}
-                  disabled={loading}
-                  className={`transition duration-200 bg-purple-600 focus:bg-purple-800 focus:shadow-sm focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50 w-full py-2.5 rounded-lg text-lg shadow-sm hover:shadow-md font-semibold text-center flex justify-center items-center ${
-                    loading
-                      ? "hover:bg-purple-300 text-gray-300"
-                      : "hover:bg-purple-700 text-white"
+                  id="identity_number"
+                  type="text"
+                  autoComplete="identity_number"
+                  placeholder="Enter the identity number"
+                  {...register("identity_number")}
+                  className={`focus:outline-gray-700 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
+                    errors.identity_number &&
+                    "border-red-500 text-red-500 focus:outline-red-500"
                   }`}
-                >
-                  {loading ? (
-                    <div className="flex items-center justify-center">
-                      <span className="mr-2">Submitting</span>
-                      <div className="border-b-2 border-white rounded-full animate-spin w-6 h-6 " />
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-center">
-                      <span className="mr-2">Sign up</span>
-                      <ForwardArrow />
-                    </div>
-                  )}
-                </button>
-              </form>
-            </div>
+                />
+                {errors.identity_number?.message && (
+                  <p className="text-red-500 text-sm mt-2">
+                    {/* @ts-ignore */}
+                    {errors.identity_number?.message}
+                  </p>
+                )}
+              </div>
 
-            {/* Social Logins */}
-            <div className="p-2">
-              <div className="grid grid-cols-2 gap-4">
-                <Link
-                  href={`${process.env.NEXT_PUBLIC_REST_API}/connect/google`}
+              {/* Address Verification  */}
+              <p className="mt-4 text-base font-medium leading-6 text-gray-900">
+                Address verification
+              </p>
+              <div>
+                <select
+                  {...register("address")}
+                  className="focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full"
                 >
-                  <button
-                    type="button"
-                    className="transition duration-200 border border-gray-200 text-gray-700 w-full py-2.5 rounded-lg text-base shadow-sm hover:shadow-md font-normal text-center flex items-center justify-center"
-                  >
-                    <GoogleIcon dimensions="w-6 h-6" />
-                    Google
-                  </button>
-                </Link>
-                <Link
-                  href={`${process.env.NEXT_PUBLIC_REST_API}/connect/facebook`}
-                >
-                  <button
-                    type="button"
-                    className="transition duration-200 border border-gray-200 text-gray-700 w-full py-2.5 rounded-lg text-base shadow-sm hover:shadow-md font-normal text-center flex items-center justify-center"
-                  >
-                    <FacebookIcon dimensions="w-6 h-6" />
-                    Facebook
-                  </button>
-                </Link>
+                  <option value="Bank statement">Bank statement</option>
+                  <option value="Utility bill">Utility bill</option>
+                </select>
               </div>
             </div>
-          </div>
 
-          {/* Login Instead  */}
-          <div className="py-1">
-            <div className="grid grid-cols-2 xs:gap-4 md:gap-32">
-              <div className="text-center sm:text-left whitespace-nowrap">
-                <button
-                  onClick={handleBackward}
-                  className="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-base rounded-lg text-gray-500hover:text-white hover:bg-gray-200 focus:outline-none focus:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset flex items-center"
-                >
-                  <BackArrowIcon dimensions="w-5 h-5" />
-                  <span className="inline-block ml-1">Login instead</span>
-                </button>
-              </div>
-              <button
-                type="button"
-                className="inline-flex justify-center items-center  text-base font-medium text-gray-500 border-transparent rounded-md hover:bg-gray-200"
-                onClick={closeModal}
+            {/* Upload Images */}
+            {uploadedImages.length === 2 ? (
+              <h3 className="text-center text-xl font-bold mb-2">
+                Your images has been uploaded
+              </h3>
+            ) : (
+              <p
+                {...getRootProps()}
+                className={`h-auto m-3 p-3 border-2 border-dashed border-purple-400 cursor-pointer md:text-xl text-center ${
+                  isDragActive && "border-primary"
+                }`}
               >
-                Cancel
+                <input {...getInputProps()} />
+                Upload identity and address images <br />
+                Click to add or drag n drop image
+              </p>
+            )}
+            <div className="flex flex-row justify-center">
+              {uploadedImages.map((file: IImageUpload) => (
+                <li key={file.public_id} className="mr-1">
+                  <Image
+                    cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
+                    publicId={file.public_id}
+                    width="150"
+                    height="150"
+                    crop="scale"
+                    className="object-cover"
+                  />
+                </li>
+              ))}
+            </div>
+
+            {errors.images?.message && (
+              <p className="text-red-500 text-sm mt-2">
+                {/* @ts-ignore */}
+                {errors.images?.message}
+              </p>
+            )}
+
+            <div className="flex justify-between mt-4">
+              <button
+                // @ts-ignore
+                disabled={
+                  loading || uploadedImages.length < 2 || errors.identity_number
+                }
+                className="inline-flex justify-center items-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500"
+                onClick={onSubmit}
+              >
+                <span className="mr-2">Submit</span>
+                {loading ? (
+                  <div className="border-b-2 border-purple-600 rounded-full animate-spin w-5 h-5" />
+                ) : (
+                  <ForwardArrow />
+                )}
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
-    </>
+      <button onClick={closeModal} className="absolute top-2 right-4">
+        <CloseIcon dimensions="w-8 h-8" fill="#9333EA" />
+      </button>
+    </Dialog.Panel>
   );
 };
 

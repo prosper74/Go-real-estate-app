@@ -57,18 +57,18 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              {/* <div className="inline-block w-full max-w-md p-2 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl"> */}
-              {steps.map((Step, i) =>
-                selectedStep === i ? (
-                  <Step.component
-                    setSelectedStep={setSelectedStep}
-                    steps={steps}
-                    setIsOpen={setIsOpen}
-                    key={Step.label}
-                  />
-                ) : null
-              )}
-              {/* </div> */}
+              <div className="inline-block w-full max-w-md p-2 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                {steps.map((Step, i) =>
+                  selectedStep === i ? (
+                    <Step.component
+                      setSelectedStep={setSelectedStep}
+                      steps={steps}
+                      setIsOpen={setIsOpen}
+                      key={Step.label}
+                    />
+                  ) : null
+                )}
+              </div>
             </Transition.Child>
           </div>
         </Dialog>

@@ -10,17 +10,8 @@ import { useDropzone } from "react-dropzone";
 // @ts-ignore
 import { Image } from "cloudinary-react";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
-import {
-  EyeIcon,
-  EyeSlashIcon,
-  ForwardArrow,
-  GoogleIcon,
-  FacebookIcon,
-  PadlockOpenIcon,
-  HelpIcon,
-  UserAddIcon,
-} from "@src/components/common/svgIcons";
-import { UserProps } from "../interfaces";
+import { ForwardArrow, CloseIcon } from "@src/components/common/svgIcons";
+import { IImageUpload, UserProps } from "../interfaces";
 
 interface IProps {
   user?: UserProps;
@@ -80,6 +71,13 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
     minSize: 0,
     maxSize: 1000000,
   });
+
+  const navigateSignup = () => {
+    const signUp = steps.find(
+      (step: { label: string }) => step.label === "Verify Account"
+    );
+    setSelectedStep(steps.indexOf(signUp));
+  };
 
   const {
     register,
