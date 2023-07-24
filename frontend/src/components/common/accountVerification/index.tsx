@@ -2,6 +2,7 @@ import { FC, Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import UpdateAccount from "./updateAccount";
 import VerifyAccount from "./verifyAccount";
+import Complete from "./complete";
 
 interface IProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
   const steps = [
     { component: UpdateAccount, label: "Update Account" },
     { component: VerifyAccount, label: "Verify Account" },
+    { component: Complete, label: "Complete" },
   ];
 
   function closeModal() {

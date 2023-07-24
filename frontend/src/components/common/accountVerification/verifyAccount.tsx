@@ -72,13 +72,6 @@ const VerifyAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
     maxSize: 1000000,
   });
 
-  const navigateSignup = () => {
-    const signUp = steps.find(
-      (step: { label: string }) => step.label === "Verify Account"
-    );
-    setSelectedStep(steps.indexOf(signUp));
-  };
-
   const {
     register,
     handleSubmit,
@@ -124,7 +117,10 @@ const VerifyAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
             open: true,
           })
         );
-        router.push("/agent/account");
+        const Complete = steps.find(
+          (step: { label: string }) => step.label === "Complete"
+        );
+        setSelectedStep(steps.indexOf(Complete));
       })
       .catch(() => {
         setLoading(false);

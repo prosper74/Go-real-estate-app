@@ -1,10 +1,9 @@
-import { FC, Fragment, useCallback, useEffect, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import { FC, useCallback, useEffect, useState } from "react";
+import { Dialog } from "@headlessui/react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
 // @ts-ignore
@@ -109,6 +108,7 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
             open: true,
           })
         );
+        
         const verifyAccount = steps.find(
           (step: { label: string }) => step.label === "Verify Account"
         );
