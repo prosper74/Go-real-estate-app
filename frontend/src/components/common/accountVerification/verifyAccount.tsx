@@ -4,7 +4,6 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
 // @ts-ignore
@@ -26,7 +25,7 @@ const schema = z.object({
   identity_number: z
     .string()
     .min(3, { message: "Minimum 3 characters" })
-    .max(40, { message: "Maximun 40 characters" }),
+    .max(40, { message: "Maximun 35 characters" }),
   address: z.string(),
 });
 
@@ -37,7 +36,6 @@ const VerifyAccount: FC<IProps> = ({
   setIsVerification,
 }) => {
   const user = useSelector((state: IProps) => state.user);
-  const router = useRouter();
   const dispatch = useDispatch();
   const [uploadedImages, setUploadedImages] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);

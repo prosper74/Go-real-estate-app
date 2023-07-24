@@ -5,10 +5,10 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import AuthPortal from "@src/components/auth";
 import AuthButton from "@src/components/common/Buttons/authButton";
-import VerificationModal from "@src/components/common/accountVerification";
 import { CreateAdForm } from "@src/components/common/forms/createAdForm";
 import ResendEmailVerificationButton from "@src/components/common/Buttons/emailVerificationButton";
 import { UserProps } from "@src/components/common/interfaces";
+import VerificationModal from "@src/components/common/accountVerification";
 
 interface IProps {
   user: UserProps;
@@ -18,6 +18,7 @@ const CreateAdPage: FC = () => {
   const user = useSelector((state: IProps) => state.user);
   const [fetchedUser, setFetchedUser] = useState<UserProps>();
   const [isOpen, setIsOpen] = useState(false);
+  const [isVerification, setIsVerification] = useState(false);
   const [verificationModalOpen, setVerificationModalOpen] = useState(false);
 
   useEffect(() => {
@@ -87,7 +88,7 @@ const CreateAdPage: FC = () => {
               Verify
             </button>
           </>
-        ) : fetchedUser?.Verification === "under_review" ? (
+        ) : fetchedUser?.Verification === "under_review" || isVerification ? (
           <>
             <h1 className="font-bold text-center text-3xl mt-28 mb-4">
               Your account is not yet veirifed!
@@ -116,6 +117,7 @@ const CreateAdPage: FC = () => {
         <VerificationModal
           isOpen={verificationModalOpen}
           setIsOpen={setVerificationModalOpen}
+          setIsVerification={setIsVerification}
         />
       </main>
     </>
