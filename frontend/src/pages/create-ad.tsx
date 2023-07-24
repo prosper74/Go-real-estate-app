@@ -38,6 +38,12 @@ const CreateAdPage: FC = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    fetchedUser?.Verification === "under_review"
+      ? setIsVerification(true)
+      : setIsVerification(false);
+  }, [fetchedUser, isVerification]);
+
   return (
     <>
       <Head>
@@ -88,7 +94,7 @@ const CreateAdPage: FC = () => {
               Verify
             </button>
           </>
-        ) : fetchedUser?.Verification === "under_review" || isVerification ? (
+        ) : isVerification ? (
           <>
             <h1 className="font-bold text-center text-3xl mt-28 mb-4">
               Your account is not yet veirifed!
