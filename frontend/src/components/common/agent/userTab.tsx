@@ -224,6 +224,7 @@ const UserTab: FC = () => {
           <VerificationModal
             isOpen={verificationModalOpen}
             setIsOpen={setVerificationModalOpen}
+            setIsVerification={setIsVerification}
           />
         </div>
       )}

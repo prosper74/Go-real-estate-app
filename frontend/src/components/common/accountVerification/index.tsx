@@ -7,9 +7,10 @@ import Complete from "./complete";
 interface IProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
+  setIsVerification: (open: boolean) => void;
 }
 
-const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
+const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen, setIsVerification }) => {
   const [selectedStep, setSelectedStep] = useState(0);
 
   const steps = [
@@ -66,6 +67,7 @@ const VerificationModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
                       setSelectedStep={setSelectedStep}
                       steps={steps}
                       setIsOpen={setIsOpen}
+                      setIsVerification={setIsVerification}
                       key={Step.label}
                     />
                   ) : null

@@ -17,6 +17,7 @@ interface IProps {
   user?: UserProps;
   setIsOpen: (open: boolean) => void;
   setSelectedStep: (open: number) => void;
+  setIsVerification: (open: boolean) => void;
   steps: any;
 }
 
@@ -29,7 +30,12 @@ const schema = z.object({
   address: z.string(),
 });
 
-const VerifyAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
+const VerifyAccount: FC<IProps> = ({
+  setIsOpen,
+  steps,
+  setSelectedStep,
+  setIsVerification,
+}) => {
   const user = useSelector((state: IProps) => state.user);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -117,6 +123,7 @@ const VerifyAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
             open: true,
           })
         );
+        setIsVerification(true);
         const Complete = steps.find(
           (step: { label: string }) => step.label === "Complete"
         );
@@ -269,6 +276,7 @@ const VerifyAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
           </form>
         </div>
       </div>
+
       <button onClick={closeModal} className="absolute top-2 right-4">
         <CloseIcon dimensions="w-8 h-8" fill="#9333EA" />
       </button>

@@ -16,6 +16,7 @@ interface IProps {
   user?: UserProps;
   setIsOpen: (open: boolean) => void;
   setSelectedStep: (open: number) => void;
+  setIsVerification: (open: boolean) => void;
   steps: any;
 }
 
@@ -108,7 +109,7 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
             open: true,
           })
         );
-        
+
         const verifyAccount = steps.find(
           (step: { label: string }) => step.label === "Verify Account"
         );
