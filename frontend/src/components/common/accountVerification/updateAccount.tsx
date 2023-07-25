@@ -243,7 +243,7 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                 className="inline-flex justify-center items-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500"
                 onClick={onSubmit}
               >
-                <span className="mr-2">Submit & Next</span>
+                <span className="mr-2">Submit & Continue</span>
                 {loading ? (
                   <div className="border-b-2 border-purple-600 rounded-full animate-spin w-5 h-5" />
                 ) : (
