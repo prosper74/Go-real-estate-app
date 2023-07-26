@@ -86,7 +86,7 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
 
     axios
       .post(
-        `${process.env.NEXT_PUBLIC_REST_API}/verifications?user_id=${user?.userId}&jwt=${user?.jwt}`,
+        `${process.env.NEXT_PUBLIC_REST_API}/user/update-image-and-phone`,
         {
           image: uploadedImageURL,
           phone: data.identity_number,
@@ -100,20 +100,31 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
           },
         }
       )
-      .then(() => {
+      .then((res) => {
         setLoading(false);
-        dispatch(
-          setSnackbar({
-            status: "success",
-            message: ` Account Updated`,
-            open: true,
-          })
-        );
 
-        const verifyAccount = steps.find(
-          (step: { label: string }) => step.label === "Verify Account"
-        );
-        setSelectedStep(steps.indexOf(verifyAccount));
+        if (res.data.error) {
+          dispatch(
+            setSnackbar({
+              status: "error",
+              message: res.data.error,
+              open: true,
+            })
+          );
+        } else {
+          dispatch(
+            setSnackbar({
+              status: "success",
+              message: ` Account Updated`,
+              open: true,
+            })
+          );
+
+          const verifyAccount = steps.find(
+            (step: { label: string }) => step.label === "Verify Account"
+          );
+          setSelectedStep(steps.indexOf(verifyAccount));
+        }
       })
       .catch(() => {
         setLoading(false);
