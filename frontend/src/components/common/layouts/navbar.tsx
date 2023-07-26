@@ -27,7 +27,7 @@ export default function Header() {
     setIsOpen(!isOpen);
     typeof window !== "undefined" && Cookies.remove("user");
     dispatch(setUser(defaultUser));
-    setFetchedUser(undefined)
+    setFetchedUser(undefined);
 
     axios
       .get(`${process.env.NEXT_PUBLIC_REST_API}/user/logout`)
@@ -38,18 +38,18 @@ export default function Header() {
   useEffect(() => {
     if (user.userId) {
       axios
-      .get(
-        `${process.env.NEXT_PUBLIC_REST_API}/auth/dashboard?id=${user.userId}`
-      )
-      .then((res) => {
-        if (res.data.error) {
-          console.error(res.data.error);
-        } else {
-          setFetchedUser(res.data.user);
-        }
-      })
-      .catch((error) => console.error(error));
-    }    
+        .get(
+          `${process.env.NEXT_PUBLIC_REST_API}/auth/dashboard?id=${user.userId}`
+        )
+        .then((res) => {
+          if (res.data.error) {
+            console.error(res.data.error);
+          } else {
+            setFetchedUser(res.data.user);
+          }
+        })
+        .catch((error) => console.error(error));
+    }
   }, [user]);
 
   useEffect(() => {
@@ -94,20 +94,26 @@ export default function Header() {
               label={
                 <Avatar
                   alt="User settings"
-                  img="/avatar_icon.webp"
+                  img={user?.Image || fetchedUser?.Image || "/avatar_icon.webp"}
                   rounded={true}
                 />
               }
             >
               <Dropdown.Header>
-                <span className="block text-sm">{fetchedUser?.FirstName} {fetchedUser?.LastName}</span>
+                <span className="block text-sm">
+                  {fetchedUser?.FirstName} {fetchedUser?.LastName}
+                </span>
                 <span className="block truncate text-sm font-medium">
-                {fetchedUser?.Email}
+                  {fetchedUser?.Email}
                 </span>
               </Dropdown.Header>
               {/* <Dropdown.Item>Dashboard</Dropdown.Item> */}
-              <Dropdown.Item><Link href="/agent/account">Dashboard</Link></Dropdown.Item>
-              <Dropdown.Item><Link href="/create-ad">Create Ad</Link></Dropdown.Item>
+              <Dropdown.Item>
+                <Link href="/agent/account">Dashboard</Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Link href="/create-ad">Create Ad</Link>
+              </Dropdown.Item>
               <Dropdown.Item>Support</Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
