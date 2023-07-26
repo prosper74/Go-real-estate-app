@@ -20,8 +20,6 @@ export default function AccountPage() {
     }
   });
 
-  console.log(user)
-
   return (
     <>
       {user.jwt && user.onboarding ? (

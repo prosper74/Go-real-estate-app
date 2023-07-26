@@ -9,6 +9,7 @@ import { useDropzone } from "react-dropzone";
 // @ts-ignore
 import { Image } from "cloudinary-react";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
+import { setUser } from "@src/store/reducers/userReducer";
 import { ForwardArrow, CloseIcon } from "@src/components/common/svgIcons";
 import { IImageUpload, UserProps } from "../interfaces";
 
@@ -89,7 +90,7 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
         `${process.env.NEXT_PUBLIC_REST_API}/user/update-image-and-phone`,
         {
           image: uploadedImageURL,
-          phone: data.identity_number,
+          phone: data.phone,
           user_id: user?.userId,
           jwt: user?.jwt,
         },
@@ -112,6 +113,13 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
             })
           );
         } else {
+          dispatch(
+            setUser({
+              ...user,
+              Image: res.data.user.Image,
+              Phone: res.data.user.Phone
+            })
+          );
           dispatch(
             setSnackbar({
               status: "success",
@@ -156,13 +164,13 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
   }, [user]);
 
   useEffect(() => {
-    if (fetchedUser?.Phone && fetchedUser?.Image) {
+    if (fetchedUser?.Phone && fetchedUser?.Image || user?.Phone && user?.Image) {
       const verifyAccount = steps.find(
         (step: { label: string }) => step.label === "Verify Account"
       );
       setSelectedStep(steps.indexOf(verifyAccount));
     }
-  }, [user]);
+  }, [user, fetchedUser]);
 
   function closeModal() {
     setIsOpen(false);
