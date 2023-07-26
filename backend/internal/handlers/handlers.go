@@ -548,3 +548,34 @@ func (m *Repository) UserDashboard(w http.ResponseWriter, r *http.Request) {
 	resp := []byte(out)
 	w.Write(resp)
 }
+
+// Auth handlers
+func (m *Repository) UpdateUserImageAndPhone(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+
+	userId, err := strconv.Atoi(r.URL.Query().Get("id"))
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to Get User id from request"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	user, err := m.DB.GetUserByID(userId)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to Get User from database"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	data["message"] = "Successful"
+	data["user"] = user
+	out, _ := json.MarshalIndent(data, "", "    ")
+	resp := []byte(out)
+	w.Write(resp)
+}
