@@ -85,15 +85,19 @@ const AgentCard: FC<IProps> = ({ agent }) => {
                   height={120}
                   className="w-24 h-24 mt-6 rounded-full object-cover"
                 />
-                
+
                 <div className="my-4">
                   <p className="text-lg text-gray-500 my-2 capitalize">
                     Name: {agent.FirstName} {agent.LastName}
                   </p>
-                  <p className="text-lg text-gray-500 my-2">
-                    Number:{" "}
-                    <a href={`tel:+234${agent.Phone}`}>+234 {agent.Phone}</a>
-                  </p>
+                  {agent?.Phone && (
+                    <p className="text-lg text-gray-500 my-2">
+                      Phone:{" "}
+                      <a href={`tel:+234${agent.Phone.substring(1, 11)}`}>
+                        {agent.Phone}
+                      </a>
+                    </p>
+                  )}
                   <p className="text-lg text-gray-500 my-2">
                     Status:{" "}
                     {agent.Verification === "verified" ? (
