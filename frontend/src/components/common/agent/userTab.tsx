@@ -1,14 +1,18 @@
 import { FC, useEffect, useState } from "react";
 import Link from "next/link";
+import Router from "next/router";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Tab } from "@headlessui/react";
+import Cookies from "js-cookie";
+import { setUser } from "@src/store/reducers/userReducer";
+import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import AgentSidebar from "./agentSidebar";
 import PropertyCard from "../properties/propertyCard";
 import { PageLoader } from "../loader";
-import { SingleProperty, UserProps } from "../interfaces";
 import ResendEmailVerificationButton from "../Buttons/emailVerificationButton";
 import VerificationModal from "../accountVerification";
+import { SingleProperty, UserProps } from "../interfaces";
 
 interface IProps {
   user: UserProps;
@@ -20,10 +24,12 @@ const classNames = (...classes: String[]) => {
 
 const UserTab: FC = () => {
   const user = useSelector((state: IProps) => state.user);
+  const dispatch = useDispatch();
   const [fetchedUser, setFetchedUser] = useState<UserProps>();
   const [isVerification, setIsVerification] = useState(false);
   const [verificationModalOpen, setVerificationModalOpen] = useState(false);
   const [ads, setAds] = useState([]);
+  const defaultUser = { username: "Guest" };
 
   useEffect(() => {
     if (user.userId) {
@@ -47,6 +53,17 @@ const UserTab: FC = () => {
         })
         .catch((err) => {
           console.error(err);
+          typeof window !== "undefined" && Cookies.remove("user");
+          dispatch(setUser(defaultUser));
+          dispatch(
+            setSnackbar({
+              status: "error",
+              message: "There was an error, please login again",
+              open: true,
+            })
+          );
+          setFetchedUser(undefined);
+          Router.push("/");
         });
     }
   }, [user]);

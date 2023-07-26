@@ -1,14 +1,18 @@
 import React, { FC, useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import Router from "next/router";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Cookies from "js-cookie";
+import { setUser } from "@src/store/reducers/userReducer";
+import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import AuthPortal from "@src/components/auth";
 import AuthButton from "@src/components/common/Buttons/authButton";
 import { CreateAdForm } from "@src/components/common/forms/createAdForm";
 import ResendEmailVerificationButton from "@src/components/common/Buttons/emailVerificationButton";
-import { UserProps } from "@src/components/common/interfaces";
 import VerificationModal from "@src/components/common/accountVerification";
+import { UserProps } from "@src/components/common/interfaces";
 
 interface IProps {
   user: UserProps;
@@ -16,6 +20,8 @@ interface IProps {
 
 const CreateAdPage: FC = () => {
   const user = useSelector((state: IProps) => state.user);
+  const defaultUser = { username: "Guest" };
+  const dispatch = useDispatch();
   const [fetchedUser, setFetchedUser] = useState<UserProps>();
   const [isOpen, setIsOpen] = useState(false);
   const [isVerification, setIsVerification] = useState(false);
@@ -34,7 +40,20 @@ const CreateAdPage: FC = () => {
             setFetchedUser(res.data.user);
           }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          console.error(error);
+          typeof window !== "undefined" && Cookies.remove("user");
+          dispatch(setUser(defaultUser));
+          dispatch(
+            setSnackbar({
+              status: "error",
+              message: "There was an error, please login again",
+              open: true,
+            })
+          );
+          setFetchedUser(undefined);
+          Router.push("/");
+        });
     }
   }, [user]);
 

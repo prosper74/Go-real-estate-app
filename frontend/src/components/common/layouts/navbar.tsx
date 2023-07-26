@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Router from "next/router";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { Navbar, Dropdown, Avatar } from "flowbite-react";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import { MainMenu } from "./layoutData";
-import { UserProps } from "../interfaces";
 import AuthButton from "../Buttons/authButton";
 import AuthPortal from "@src/components/auth";
 import { setUser } from "@src/store/reducers/userReducer";
-import Cookies from "js-cookie";
-import axios from "axios";
+import { UserProps } from "../interfaces";
 
 interface IProps {
   user: UserProps;
@@ -48,7 +50,20 @@ export default function Header() {
             setFetchedUser(res.data.user);
           }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          console.error(error);
+          typeof window !== "undefined" && Cookies.remove("user");
+          dispatch(setUser(defaultUser));
+          dispatch(
+            setSnackbar({
+              status: "error",
+              message: "There was an error, please login again",
+              open: true,
+            })
+          );
+          setFetchedUser(undefined);
+          Router.push("/");
+        });
     }
   }, [user]);
 

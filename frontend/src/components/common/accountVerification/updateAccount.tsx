@@ -1,4 +1,6 @@
 import { FC, useCallback, useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import Router from "next/router";
 import { Dialog } from "@headlessui/react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -34,6 +36,7 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
   const dispatch = useDispatch();
   const [uploadedImage, setUploadedImage] = useState<any>();
   const [loading, setLoading] = useState(false);
+  const defaultUser = { username: "Guest" };
 
   const onDrop = useCallback(async (acceptedFiles: any) => {
     const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/upload`;
@@ -117,7 +120,7 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
             setUser({
               ...user,
               Image: res.data.user.Image,
-              Phone: res.data.user.Phone
+              Phone: res.data.user.Phone,
             })
           );
           dispatch(
@@ -159,12 +162,28 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
             setFetchedUser(res.data.user);
           }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          console.error(error);
+          typeof window !== "undefined" && Cookies.remove("user");
+          dispatch(setUser(defaultUser));
+          dispatch(
+            setSnackbar({
+              status: "error",
+              message: "There was an error, please login again",
+              open: true,
+            })
+          );
+          setFetchedUser(undefined);
+          Router.push("/");
+        });
     }
   }, [user]);
 
   useEffect(() => {
-    if (fetchedUser?.Phone && fetchedUser?.Image || user?.Phone && user?.Image) {
+    if (
+      (fetchedUser?.Phone && fetchedUser?.Image) ||
+      (user?.Phone && user?.Image)
+    ) {
       const verifyAccount = steps.find(
         (step: { label: string }) => step.label === "Verify Account"
       );
