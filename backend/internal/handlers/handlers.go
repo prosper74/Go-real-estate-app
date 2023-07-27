@@ -620,6 +620,7 @@ func (m *Repository) InsertAccountVerification(w http.ResponseWriter, r *http.Re
 		return
 	}
 
+	user := models.User{}
 	accountVerification := models.AccountVerification{}
 	data := make(map[string]interface{})
 
@@ -630,6 +631,9 @@ func (m *Repository) InsertAccountVerification(w http.ResponseWriter, r *http.Re
 	accountVerification.Address = r.PostFormValue("address")
 	accountVerification.AddressImage = r.PostFormValue("address_image")
 	jwtToken := r.PostFormValue("jwt")
+
+	user.ID = accountVerification.UserID
+	user.Verification = "under_review"
 
 	// Load the env file and get the JWT secret
 	err = godotenv.Load()
@@ -652,8 +656,18 @@ func (m *Repository) InsertAccountVerification(w http.ResponseWriter, r *http.Re
 	}
 
 	if token.Valid {
-		// Update the user's account status as verified
 		err = m.DB.InsertAccountVerification(accountVerification)
+		if err != nil {
+			helpers.ServerError(w, err)
+			data["error"] = "Unable to create user verification. Please contact support"
+			out, _ := json.MarshalIndent(data, "", "    ")
+			resp := []byte(out)
+			w.Write(resp)
+			return
+		}
+
+		// Update the user's verification status to under_review
+		err = m.DB.UpdateUserVerificationStatus(user)
 		if err != nil {
 			helpers.ServerError(w, err)
 			data["error"] = "Unable to create user verification. Please contact support"
