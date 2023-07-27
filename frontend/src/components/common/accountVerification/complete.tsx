@@ -33,7 +33,9 @@ const Complete: FC<IProps> = ({ setIsOpen }) => {
             />
           </div>
           <p className="text-base font-normal text-center px-4">
-            Your documents are under review
+            Your documents are under review. Your account will be verified if
+            all documents pass our verifications, else we will contact you via
+            email
           </p>
 
           {/* Cancel  */}

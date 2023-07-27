@@ -95,7 +95,7 @@ const VerifyAccount: FC<IProps> = ({
 
     axios
       .post(
-        `${process.env.NEXT_PUBLIC_REST_API}/verifications?user_id=${user?.userId}&jwt=${user?.jwt}`,
+        `${process.env.NEXT_PUBLIC_REST_API}/user/verification`,
         {
           identity: data.identity,
           identity_number: data.identity_number,
@@ -112,20 +112,31 @@ const VerifyAccount: FC<IProps> = ({
           },
         }
       )
-      .then(() => {
+      .then((res) => {
         setLoading(false);
-        dispatch(
-          setSnackbar({
-            status: "success",
-            message: ` Documents Submitted Successfully and will be reviewed within 24 hours`,
-            open: true,
-          })
-        );
-        setIsVerification(true);
-        const Complete = steps.find(
-          (step: { label: string }) => step.label === "Complete"
-        );
-        setSelectedStep(steps.indexOf(Complete));
+
+        if (res.data.error) {
+          dispatch(
+            setSnackbar({
+              status: "error",
+              message: res.data.error,
+              open: true,
+            })
+          );
+        } else {
+          // dispatch(
+          //   setSnackbar({
+          //     status: "success",
+          //     message: ` Documents Submitted Successfully and will be reviewed within 24 hours`,
+          //     open: true,
+          //   })
+          // );
+          setIsVerification(true);
+          const Complete = steps.find(
+            (step: { label: string }) => step.label === "Complete"
+          );
+          setSelectedStep(steps.indexOf(Complete));
+        }
       })
       .catch(() => {
         setLoading(false);
@@ -223,12 +234,12 @@ const VerifyAccount: FC<IProps> = ({
             ) : (
               <p
                 {...getRootProps()}
-                className={`h-auto m-3 p-3 border-2 border-dashed border-purple-400 cursor-pointer md:text-xl text-center ${
+                className={`h-auto m-3 p-3 border-2 border-dashed border-purple-400 cursor-pointer md:text-lg text-center ${
                   isDragActive && "border-primary"
                 }`}
               >
                 <input {...getInputProps()} />
-                Upload identity and address images <br />
+                Upload identity first, then address images <br />
                 Click to add or drag n drop image
               </p>
             )}
