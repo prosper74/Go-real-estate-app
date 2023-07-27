@@ -129,7 +129,9 @@ export default function Header() {
               <Dropdown.Item>
                 <Link href="/create-ad">Create Ad</Link>
               </Dropdown.Item>
-              <Dropdown.Item>Support</Dropdown.Item>
+              <Dropdown.Item>
+                <Link href="/faq">Support</Link>
+              </Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
             </Dropdown>

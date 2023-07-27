@@ -58,7 +58,7 @@ const CreateAdPage: FC = () => {
   }, [user]);
 
   useEffect(() => {
-    user?.Verification || fetchedUser?.Verification === "under_review"
+    fetchedUser?.Verification === "under_review"
       ? setIsVerification(true)
       : setIsVerification(false);
   }, [user, fetchedUser, isVerification]);
@@ -120,11 +120,11 @@ const CreateAdPage: FC = () => {
             </h1>
             <h1 className="font-bold text-center text-xl mb-3">
               You have submitted your verification documents, please allow
-              support 48hrs to verify your account
+              support 24hrs to verify your account
             </h1>
             <Link
-              href="!#"
-              className="w-20 mx-auto py-2 transition duration-200 text-white bg-purple-600 focus:bg-purple-800 focus:shadow-sm focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50 rounded-lg text-lg shadow-sm hover:shadow-md font-semibold text-center flex justify-center items-center"
+              href="/faq"              
+              className="max-w-[11rem] mx-auto py-2 transition duration-200 text-white bg-purple-600 focus:bg-purple-800 focus:shadow-sm focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50 rounded-lg text-lg shadow-sm hover:shadow-md font-semibold text-center flex justify-center items-center"
             >
               Contact Support
             </Link>

@@ -69,10 +69,10 @@ const UserTab: FC = () => {
   }, [user]);
 
   useEffect(() => {
-    user?.Verification || fetchedUser?.Verification === "under_review"
+    fetchedUser?.Verification === "under_review"
       ? setIsVerification(true)
       : setIsVerification(false);
-  }, [user, fetchedUser, isVerification]);
+  }, [fetchedUser, isVerification]);
 
   return (
     <>
@@ -153,7 +153,7 @@ const UserTab: FC = () => {
                         Edit Profile
                       </button>
 
-                      {user.Verification === "verified" ? (
+                      {fetchedUser?.Verification === "verified" ? (
                         <Link href="/create-ad">
                           <button className="inline-flex justify-center rounded-md border border-transparent bg-purple-100 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2">
                             Create Ad
@@ -181,13 +181,13 @@ const UserTab: FC = () => {
                   {!ads ? (
                     <div className="flex flex-col col-span-2 justify-center items-center text-center">
                       <h3 className="font-medium text-lg mb-6">
-                        {user.Verification === "verified"
+                        {fetchedUser?.Verification === "verified"
                           ? "You do not have any ads. Create one"
                           : isVerification
                           ? "You have submitted your verification documents and they are under review. You will be able to create ad once your account is verified"
                           : "Please verify your account, then create new ads"}
                       </h3>
-                      {user.Verification === "verified" ? (
+                      {fetchedUser?.Verification === "verified" ? (
                         <Link
                           href="/create-ad"
                           className="inline-flex justify-center rounded-md border border-transparent bg-purple-300 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2"
@@ -195,15 +195,25 @@ const UserTab: FC = () => {
                           Create Ad
                         </Link>
                       ) : (
-                        <button
-                          disabled={isVerification}
-                          onClick={() =>
-                            setVerificationModalOpen(!verificationModalOpen)
-                          }
-                          className="inline-flex justify-center rounded-md border border-transparent bg-purple-300 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-50"
-                        >
-                          Verify Account
-                        </button>
+                        <>
+                          {isVerification ? (
+                            <Link
+                              href="/faq"
+                              className="inline-flex justify-center rounded-md border border-transparent bg-purple-300 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-50"
+                            >
+                              Contact Support
+                            </Link>
+                          ) : (
+                            <button
+                              onClick={() =>
+                                setVerificationModalOpen(!verificationModalOpen)
+                              }
+                              className="inline-flex justify-center rounded-md border border-transparent bg-purple-300 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-50"
+                            >
+                              Verify Account
+                            </button>
+                          )}
+                        </>
                       )}
                     </div>
                   ) : (
