@@ -12,6 +12,7 @@ type DatabaseRepo interface {
 	UpdateUserImageAndPhone(user models.User) error
 	InsertAccountVerification(d models.AccountVerification) error
 	UpdateUserVerification(user models.User) error
+	UpdateUserVerificationStatus(user models.User) error
 
 	AllProperties() ([]models.Property, error)
 	AllFeaturedProperties() ([]models.Property, error)
