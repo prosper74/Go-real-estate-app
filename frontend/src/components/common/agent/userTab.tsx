@@ -69,10 +69,10 @@ const UserTab: FC = () => {
   }, [user]);
 
   useEffect(() => {
-    fetchedUser?.Verification === "under_review"
+    user?.Verification || fetchedUser?.Verification === "under_review"
       ? setIsVerification(true)
       : setIsVerification(false);
-  }, [fetchedUser, isVerification]);
+  }, [user, fetchedUser, isVerification]);
 
   return (
     <>

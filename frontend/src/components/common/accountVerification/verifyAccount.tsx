@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
 // @ts-ignore
 import { Image } from "cloudinary-react";
+import { setUser } from "@src/store/reducers/userReducer";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import { ForwardArrow, CloseIcon } from "@src/components/common/svgIcons";
 import { IImageUpload, UserProps } from "../interfaces";
@@ -124,13 +125,12 @@ const VerifyAccount: FC<IProps> = ({
             })
           );
         } else {
-          // dispatch(
-          //   setSnackbar({
-          //     status: "success",
-          //     message: ` Documents Submitted Successfully and will be reviewed within 24 hours`,
-          //     open: true,
-          //   })
-          // );
+          dispatch(
+            setUser({
+              ...user,
+              Verification: true,
+            })
+          );
           setIsVerification(true);
           const Complete = steps.find(
             (step: { label: string }) => step.label === "Complete"
