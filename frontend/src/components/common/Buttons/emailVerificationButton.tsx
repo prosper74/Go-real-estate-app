@@ -90,15 +90,6 @@ const ResendEmailVerificationButton: FC<IProps> = ({ inline }) => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   const storedIsDisabled = Cookies.get("isDisabled");
-  //   if (storedIsDisabled === "true") {
-  //     setIsDisabled(true);
-  //   } else {
-  //     setIsDisabled(false);
-  //   }
-  // }, []);
-
   // Function to calculate remaining time for the countdown (in milliseconds)
   const calculateRemainingTime = useCallback((): number => {
     const currentTime = Date.now();
