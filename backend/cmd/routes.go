@@ -42,6 +42,7 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Post("/login", handlers.Repo.Login)
 	mux.Get("/user/logout", handlers.Repo.Logout)
 	mux.Post("/user/update-image-and-phone", handlers.Repo.UpdateUserImageAndPhone)
+	mux.Post("/user/verification", handlers.Repo.InsertAccountVerification)
 
 	// user dashboard
 	mux.Get("/auth/dashboard", handlers.Repo.UserDashboard)
