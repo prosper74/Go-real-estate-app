@@ -755,3 +755,21 @@ func (repo *postgresDBRepo) UpdateUserVerification(user models.User) error {
 
 	return nil
 }
+
+// UpdateUser updates a user in the database
+func (repo *postgresDBRepo) UpdateUserVerificationStatus(user models.User) error {
+	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `
+		update users set verification = $1, updated_at = $2 where id = $3
+	`
+
+	_, err := repo.DB.ExecContext(context, query, user.Verification, time.Now(), user.ID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
