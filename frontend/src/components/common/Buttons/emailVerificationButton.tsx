@@ -1,7 +1,8 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import axios from "axios";
+import Countdown from "react-countdown";
 import { UserProps } from "../interfaces";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 
@@ -14,6 +15,8 @@ const ResendEmailVerificationButton: FC<IProps> = ({ inline }) => {
   const user = useSelector((state: IProps) => state.user);
   const dispatch = useDispatch();
   const [isDisabled, setIsDisabled] = useState(false);
+  const [cookieSetTime, setCookieSetTime] = useState<number | null>(null);
+  const [countdownKey, setCountdownKey] = useState<number>(Date.now());
   const [loading, setLoading] = useState(false);
 
   const handleResendEmailVerification = () => {
@@ -40,9 +43,14 @@ const ResendEmailVerificationButton: FC<IProps> = ({ inline }) => {
           );
           setLoading(false);
         } else {
+          setLoading(false);
           setIsDisabled(true);
           Cookies.set("isDisabled", "true", { expires: 1 });
-          setLoading(false);
+          Cookies.set("cookieSetTime", Date.now().toString(), { expires: 1 });
+          setCookieSetTime(Date.now());
+          // Update the countdown by changing the key
+          setCountdownKey(Date.now());
+
           dispatch(
             setSnackbar({
               status: "success",
@@ -67,12 +75,38 @@ const ResendEmailVerificationButton: FC<IProps> = ({ inline }) => {
 
   useEffect(() => {
     const storedIsDisabled = Cookies.get("isDisabled");
+    const storedCookieSetTime = Cookies.get("cookieSetTime");
+
     if (storedIsDisabled === "true") {
       setIsDisabled(true);
     } else {
       setIsDisabled(false);
     }
+
+    if (storedCookieSetTime) {
+      setCookieSetTime(parseInt(storedCookieSetTime, 10));
+    } else {
+      setCookieSetTime(null);
+    }
   }, []);
+
+  // useEffect(() => {
+  //   const storedIsDisabled = Cookies.get("isDisabled");
+  //   if (storedIsDisabled === "true") {
+  //     setIsDisabled(true);
+  //   } else {
+  //     setIsDisabled(false);
+  //   }
+  // }, []);
+
+  // Function to calculate remaining time for the countdown (in milliseconds)
+  const calculateRemainingTime = useCallback((): number => {
+    const currentTime = Date.now();
+    const countdownDuration = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+    const timeDifference = currentTime - (cookieSetTime || 0);
+    const remainingTime = countdownDuration - timeDifference;
+    return remainingTime > 0 ? remainingTime : 0;
+  }, [cookieSetTime]);
 
   return (
     <div>
@@ -92,7 +126,17 @@ const ResendEmailVerificationButton: FC<IProps> = ({ inline }) => {
           </span>
         ) : (
           <>
-            {isDisabled ? `Resend Email in 24hrs` : "Resend Email Verification"}
+            {isDisabled ? (
+              <span>
+                Resend code in{" "}
+                <Countdown
+                  key={countdownKey}
+                  date={Date.now() + calculateRemainingTime()}
+                />
+              </span>
+            ) : (
+              "Resend Email Verification"
+            )}
           </>
         )}
       </button>
