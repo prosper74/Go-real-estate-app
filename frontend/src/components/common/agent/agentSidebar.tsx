@@ -1,7 +1,8 @@
 import { FC } from "react";
-import { UserProps } from "../interfaces";
+import Image from "next/image";
 import { timeSince } from "../dateFunction";
 import { VerifiedIcon } from "../svgIcons";
+import { UserProps } from "../interfaces";
 
 interface IProps {
   agent: UserProps;
@@ -12,9 +13,11 @@ const AgentSidebar: FC<IProps> = ({ agent, totalCount }) => {
   return (
     <div className="sticky top-20">
       <div className="py-2 px-4 rounded-xl shadow-md bg-white flex flex-col sm:flex-row lg:flex-col items-center justify-evenly gap-1 sm:gap-12 lg:gap-1">
-        <img
+        <Image
           src={agent.Image ? agent.Image : "/logoIcon.svg"}
-          alt="agent image"
+          alt="User avatar"
+          width={224}
+          height={224}
           className="w-56 h-56 mt-6 rounded-full object-cover"
         />
         <div className="my-4 text-lg text-gray-700">
