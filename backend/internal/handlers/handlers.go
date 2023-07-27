@@ -611,3 +611,69 @@ func (m *Repository) UpdateUserImageAndPhone(w http.ResponseWriter, r *http.Requ
 	resp := []byte(out)
 	w.Write(resp)
 }
+
+// InsertAccountVerification inserts new verification for user into the database
+func (m *Repository) InsertAccountVerification(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		m.App.Session.Put(r.Context(), "error", "Can't parse form")
+		return
+	}
+
+	accountVerification := models.AccountVerification{}
+	data := make(map[string]interface{})
+
+	accountVerification.UserID, _ = strconv.Atoi(r.PostFormValue("user_id"))
+	accountVerification.Identity = r.PostFormValue("identity")
+	accountVerification.IdentityNumber = r.PostFormValue("identity_number")
+	accountVerification.IdentityImage = r.PostFormValue("identity_image")
+	accountVerification.Address = r.PostFormValue("address")
+	accountVerification.AddressImage = r.PostFormValue("address_image")
+	jwtToken := r.PostFormValue("jwt")
+
+	// Load the env file and get the JWT secret
+	err = godotenv.Load()
+	if err != nil {
+		log.Println("Error loading .env file")
+	}
+	jwtSecret := os.Getenv("JWTSECRET")
+
+	// Parse and verify the JWT token
+	token, err := jwt.Parse(jwtToken, func(token *jwt.Token) (interface{}, error) {
+		return []byte(jwtSecret), nil
+	})
+	if err != nil {
+		http.Error(w, "Unable to parse token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Unable to parse token. Error: %s", err)
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	if token.Valid {
+		// Update the user's account status as verified
+		err = m.DB.InsertAccountVerification(accountVerification)
+		if err != nil {
+			helpers.ServerError(w, err)
+			data["error"] = "Unable to create user verification. Please contact support"
+			out, _ := json.MarshalIndent(data, "", "    ")
+			resp := []byte(out)
+			w.Write(resp)
+			return
+		}
+	} else {
+		http.Error(w, "Invalid token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Invalid token, please contact support. Error: %s", err)
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	data["message"] = "Successful"
+	data["user_verification"] = accountVerification
+	out, _ := json.MarshalIndent(data, "", "    ")
+	resp := []byte(out)
+	w.Write(resp)
+}
