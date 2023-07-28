@@ -634,6 +634,7 @@ func (m *Repository) InsertAccountVerification(w http.ResponseWriter, r *http.Re
 
 	user.ID = accountVerification.UserID
 	user.Verification = "under_review"
+	user.AccessLevel = 2
 
 	// Load the env file and get the JWT secret
 	err = godotenv.Load()

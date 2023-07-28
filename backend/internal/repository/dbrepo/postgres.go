@@ -762,10 +762,10 @@ func (repo *postgresDBRepo) UpdateUserVerificationStatus(user models.User) error
 	defer cancel()
 
 	query := `
-		update users set verification = $1, updated_at = $2 where id = $3
+		update users set verification = $1, access_level = $2, updated_at = $3 where id = $4
 	`
 
-	_, err := repo.DB.ExecContext(context, query, user.Verification, time.Now(), user.ID)
+	_, err := repo.DB.ExecContext(context, query, user.Verification, user.AccessLevel, time.Now(), user.ID)
 
 	if err != nil {
 		return err
