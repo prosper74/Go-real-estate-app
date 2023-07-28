@@ -40,6 +40,7 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/verify-email", handlers.Repo.VerifyUserEmail)
 	mux.Post("/resend-email", handlers.Repo.ResendEmailVerification)
 	mux.Post("/login", handlers.Repo.Login)
+	mux.Post("/forgot-password", handlers.Repo.SendPasswordResetEmail)
 	mux.Get("/user/logout", handlers.Repo.Logout)
 	mux.Post("/user/update-image-and-phone", handlers.Repo.UpdateUserImageAndPhone)
 	mux.Post("/user/verification", handlers.Repo.InsertAccountVerification)
