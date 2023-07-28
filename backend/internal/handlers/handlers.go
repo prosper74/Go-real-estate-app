@@ -692,3 +692,67 @@ func (m *Repository) InsertAccountVerification(w http.ResponseWriter, r *http.Re
 	resp := []byte(out)
 	w.Write(resp)
 }
+
+// Send email to reset user password
+func (m *Repository) SendPasswordResetEmail(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+
+	err := r.ParseForm()
+	if err != nil {
+		m.App.Session.Put(r.Context(), "error", "Can't parse form")
+		return
+	}
+
+	email := r.PostFormValue("email")
+
+	userExist, user, err := m.DB.CheckIfUserEmailExist(email)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	if !userExist {
+		log.Println("Email does not exist")
+		data["error"] = "email does not exist"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	jwtToken, err := helpers.GenerateJWTToken(user.ID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	user.Token = jwtToken
+	m.App.Session.Put(r.Context(), "user", user)
+
+	// Send email notification to customer
+	htmlBody := fmt.Sprintf(`
+	<strong>Reset Password</strong><br />
+	<p>Dear %s %s, </p>
+	<p>You made a request to reset your password.</p>
+	<strong>Kindly click the link below</strong><br />
+	<a href="http://localhost:3000/verify-email?userid=%d&token=%s", target="_blank">Reset Password</a><br /><br />
+	<strong>Note that this link will expire in 24hrs</strong><br />
+	<p>We hope to see you soon</p>
+	`, user.FirstName, user.LastName, user.ID, jwtToken)
+
+	message := models.MailData{
+		To:      user.Email,
+		From:    "prosperdevstack@gmail.com",
+		Subject: "Reset Your Password",
+		Content: htmlBody,
+	}
+
+	m.App.MailChannel <- message
+	// End of emails
+
+	data["message"] = "Successful"
+	out, _ := json.MarshalIndent(data, "", "    ")
+
+	resp := []byte(out)
+	w.Write(resp)
+}
