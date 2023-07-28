@@ -257,7 +257,7 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	user.Email = r.PostFormValue("email")
 	user.Password = r.PostFormValue("password")
 
-	userExist, err := m.DB.CheckIfUserEmailExist(user.Email)
+	userExist, _, err := m.DB.CheckIfUserEmailExist(user.Email)
 	if err != nil {
 		helpers.ServerError(w, err)
 		return
@@ -549,7 +549,7 @@ func (m *Repository) UserDashboard(w http.ResponseWriter, r *http.Request) {
 	w.Write(resp)
 }
 
-// UpdateUserImageAndPhone handlers 
+// UpdateUserImageAndPhone handlers
 func (m *Repository) UpdateUserImageAndPhone(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {

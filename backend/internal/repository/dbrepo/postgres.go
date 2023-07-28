@@ -54,30 +54,31 @@ func (m *postgresDBRepo) AllUsers() ([]models.User, error) {
 }
 
 // Get all users from the database
-func (m *postgresDBRepo) CheckIfUserEmailExist(email string) (bool, error) {
+func (m *postgresDBRepo) CheckIfUserEmailExist(email string) (bool, models.User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	var numRows int
+	var user models.User
 
 	query := `
 		select
-			count(id)
+			count(id), id, first_name, last_name
 		from
 			users
 		where
 			email = $1`
 
 	row := m.DB.QueryRowContext(ctx, query, email)
-	err := row.Scan(&numRows)
+	err := row.Scan(&numRows, &user.ID, &user.FirstName, &user.LastName)
 	if err != nil {
-		return false, err
+		return false, user, err
 	}
 
 	if numRows == 0 {
-		return false, nil
+		return false, user, nil
 	}
-	return true, nil
+	return true, user, nil
 }
 
 // Get properties
