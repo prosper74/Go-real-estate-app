@@ -806,3 +806,26 @@ func (repo *postgresDBRepo) UpdateUserVerificationStatus(user models.User) error
 
 	return nil
 }
+
+// UpdateUserPassword updates a user password in the database
+func (repo *postgresDBRepo) UpdateUserPassword(user models.User) error {
+	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
+	if err != nil {
+		return err
+	}
+
+	query := `
+		update users set password = $1, updated_at = $2 where id = $3
+	`
+
+	_, err = repo.DB.ExecContext(context, query, hashedPassword, time.Now(), user.ID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
