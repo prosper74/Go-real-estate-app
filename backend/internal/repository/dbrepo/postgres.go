@@ -54,31 +54,31 @@ func (m *postgresDBRepo) AllUsers() ([]models.User, error) {
 }
 
 // Get all users from the database
-func (m *postgresDBRepo) CheckIfUserEmailExist(email string) (bool, models.User, error) {
+func (m *postgresDBRepo) CheckIfUserEmailExist(email string) (bool, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	var numRows int
-	var user models.User
 
 	query := `
 		select
-			count(id), id, first_name, last_name
+			count(id)
 		from
 			users
 		where
 			email = $1`
 
 	row := m.DB.QueryRowContext(ctx, query, email)
-	err := row.Scan(&numRows, &user.ID, &user.FirstName, &user.LastName)
+	err := row.Scan(&numRows)
 	if err != nil {
-		return false, user, err
+		return false, err
 	}
 
 	if numRows == 0 {
-		return false, user, nil
+		return false, nil
 	}
-	return true, user, nil
+
+	return true, nil
 }
 
 // Get properties
@@ -639,6 +639,38 @@ func (repo *postgresDBRepo) GetUserByID(id int) (models.User, error) {
 			from users where id = $1`
 
 	row := repo.DB.QueryRowContext(context, query, id)
+
+	var user models.User
+	err := row.Scan(
+		&user.ID,
+		&user.FirstName,
+		&user.LastName,
+		&user.Email,
+		&user.Phone,
+		&user.AccessLevel,
+		&user.Verification,
+		&user.Address,
+		&user.Image,
+		&user.CreatedAt,
+		&user.UpdatedAt,
+	)
+
+	if err != nil {
+		return user, err
+	}
+
+	return user, nil
+}
+
+// GetUserByID returns a user by email
+func (repo *postgresDBRepo) GetUserByEmail(email string) (models.User, error) {
+	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `select id, first_name, last_name, email, phone, access_level, verification, address, image, created_at, updated_at
+			from users where email = $1`
+
+	row := repo.DB.QueryRowContext(context, query, email)
 
 	var user models.User
 	err := row.Scan(

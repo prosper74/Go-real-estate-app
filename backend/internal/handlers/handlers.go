@@ -257,7 +257,7 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	user.Email = r.PostFormValue("email")
 	user.Password = r.PostFormValue("password")
 
-	userExist, _, err := m.DB.CheckIfUserEmailExist(user.Email)
+	userExist, err := m.DB.CheckIfUserEmailExist(user.Email)
 	if err != nil {
 		helpers.ServerError(w, err)
 		return
@@ -705,7 +705,7 @@ func (m *Repository) SendPasswordResetEmail(w http.ResponseWriter, r *http.Reque
 
 	email := r.PostFormValue("email")
 
-	userExist, user, err := m.DB.CheckIfUserEmailExist(email)
+	userExist, err := m.DB.CheckIfUserEmailExist(email)
 	if err != nil {
 		helpers.ServerError(w, err)
 		return
@@ -720,6 +720,12 @@ func (m *Repository) SendPasswordResetEmail(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
+	user, err := m.DB.GetUserByEmail(email)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
 	jwtToken, err := helpers.GenerateJWTToken(user.ID)
 	if err != nil {
 		helpers.ServerError(w, err)
@@ -729,16 +735,23 @@ func (m *Repository) SendPasswordResetEmail(w http.ResponseWriter, r *http.Reque
 	user.Token = jwtToken
 	m.App.Session.Put(r.Context(), "user", user)
 
-	// Send email notification to customer
+	// Load the env file and get the frontendURL
+	err = godotenv.Load()
+	if err != nil {
+		log.Println("Error loading .env file")
+	}
+	frontendURL := os.Getenv("FRONTEND_URL")
+
+	// Send email notification to user
 	htmlBody := fmt.Sprintf(`
 	<strong>Reset Password</strong><br />
 	<p>Dear %s %s, </p>
 	<p>You made a request to reset your password.</p>
 	<strong>Kindly click the link below</strong><br />
-	<a href="http://localhost:3000/verify-email?userid=%d&token=%s", target="_blank">Reset Password</a><br /><br />
+	<a href="%s/reset-password?userid=%d&token=%s", target="_blank">Reset Password</a><br /><br />
 	<strong>Note that this link will expire in 24hrs</strong><br />
 	<p>We hope to see you soon</p>
-	`, user.FirstName, user.LastName, user.ID, jwtToken)
+	`, user.FirstName, user.LastName, frontendURL, user.ID, jwtToken)
 
 	message := models.MailData{
 		To:      user.Email,
@@ -752,7 +765,6 @@ func (m *Repository) SendPasswordResetEmail(w http.ResponseWriter, r *http.Reque
 
 	data["message"] = "Successful"
 	out, _ := json.MarshalIndent(data, "", "    ")
-
 	resp := []byte(out)
 	w.Write(resp)
 }
