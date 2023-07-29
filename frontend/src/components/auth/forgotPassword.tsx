@@ -1,11 +1,11 @@
-import { FC, useState } from 'react';
-import axios from 'axios';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { useDispatch } from 'react-redux';
-import { setSnackbar } from '@src/store/reducers/feedbackReducer';
-import { ForwardArrow, BackArrowIcon } from '@src/components/common/svgIcons';
+import { FC, useState } from "react";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { useDispatch } from "react-redux";
+import { setSnackbar } from "@src/store/reducers/feedbackReducer";
+import { ForwardArrow, BackArrowIcon } from "@src/components/common/svgIcons";
 
 interface IProps {
   setIsOpen: (open: boolean) => void;
@@ -14,7 +14,7 @@ interface IProps {
 }
 
 const schema = z.object({
-  email: z.string().email().nonempty({ message: 'Invalid email' }),
+  email: z.string().email().nonempty({ message: "Invalid email" }),
 });
 
 const ForgotPassword: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
@@ -23,7 +23,7 @@ const ForgotPassword: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
 
   const navigateLogin = () => {
     const login = steps.find(
-      (step: { label: string }) => step.label === 'Login'
+      (step: { label: string }) => step.label === "Login"
     );
     setSelectedStep(steps.indexOf(login));
   };
@@ -33,30 +33,56 @@ const ForgotPassword: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     resolver: zodResolver(schema),
   });
 
   const onSubmit = handleSubmit((data) => {
     setLoading(true);
     axios
-      .post(`${process.env.NEXT_PUBLIC_REST_API}/auth/forgot-password`, {
-        email: data.email,
+
+      .post(
+        `${process.env.NEXT_PUBLIC_REST_API}/forgot-password`,
+        {
+          email: data.email,
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      )
+      .then((res) => {
+        setLoading(false);
+
+        if (res.data.error) {
+          dispatch(
+            setSnackbar({
+              status: "error",
+              message: res.data.error,
+              open: true,
+            })
+          );
+        } else {
+          dispatch(
+            setSnackbar({
+              status: "success",
+              message: ` Email sent, please check your inbox for instructions to reset your password`,
+              open: true,
+            })
+          );
+          setIsOpen(false);
+        }
       })
-      .then(() => {
+      .catch((error) => {
+        console.error(error);
         dispatch(
           setSnackbar({
-            status: 'success',
-            message: ` Email sent, please check your inbox for instructions to reset your password`,
+            status: "error",
+            message: ` There was an error, please contact support`,
             open: true,
           })
         );
-        setLoading(false);
-        setIsOpen(false);
-      })
-      .catch((error) => {
-        const { message } = error.response.data.message[0].messages[0];
-        dispatch(setSnackbar({ status: 'error', message, open: true }));
         setLoading(false);
       });
   });
@@ -84,7 +110,7 @@ const ForgotPassword: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                   <label
                     htmlFor="email"
                     className={`font-semibold text-base pb-1 block ${
-                      errors.email ? 'text-red-500' : 'text - gray - 600'
+                      errors.email ? "text-red-500" : "text - gray - 600"
                     }`}
                   >
                     Email
@@ -93,10 +119,10 @@ const ForgotPassword: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                     id="email"
                     autoComplete="email"
                     type="text"
-                    {...register('email')}
+                    {...register("email")}
                     className={`focus:outline-gray-700 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
                       errors.email &&
-                      'border-red-500 text-red-500 focus:outline-red-500'
+                      "border-red-500 text-red-500 focus:outline-red-500"
                     }`}
                   />
                   {errors.email?.message && (
@@ -113,8 +139,8 @@ const ForgotPassword: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                   disabled={loading}
                   className={`transition duration-200 bg-purple-600 focus:bg-purple-800 focus:shadow-sm focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50 w-full py-2.5 rounded-lg text-lg shadow-sm hover:shadow-md font-semibold text-center flex justify-center items-center ${
                     loading
-                      ? 'hover:bg-purple-300 text-gray-300'
-                      : 'hover:bg-purple-700 text-white'
+                      ? "hover:bg-purple-300 text-gray-300"
+                      : "hover:bg-purple-700 text-white"
                   }`}
                 >
                   <span className="mr-2">Submit</span>
