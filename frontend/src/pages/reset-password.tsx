@@ -50,7 +50,7 @@ export default function ResetPassword({ queryParams }: any) {
     axios
 
       .post(
-        `${process.env.NEXT_PUBLIC_REST_API}/forgot-password`,
+        `${process.env.NEXT_PUBLIC_REST_API}/reset-password`,
         {
           password: data.password,
           user_id: userid,
@@ -77,7 +77,7 @@ export default function ResetPassword({ queryParams }: any) {
           dispatch(
             setSnackbar({
               status: "success",
-              message: ` Email sent, please check your inbox for instructions to reset your password`,
+              message: ` Please login with your new password`,
               open: true,
             })
           );
