@@ -825,7 +825,7 @@ func (m *Repository) UpdateUserPassword(w http.ResponseWriter, r *http.Request) 
 
 	user, err = m.DB.GetUserByID(user.ID)
 	if err != nil {
-		helpers.ServerError(w, err)		
+		helpers.ServerError(w, err)
 		return
 	}
 
