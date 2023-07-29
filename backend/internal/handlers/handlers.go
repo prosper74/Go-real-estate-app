@@ -768,3 +768,89 @@ func (m *Repository) SendPasswordResetEmail(w http.ResponseWriter, r *http.Reque
 	resp := []byte(out)
 	w.Write(resp)
 }
+
+// Update user password handler
+func (m *Repository) UpdateUserPassword(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+	user := models.User{}
+
+	err := r.ParseForm()
+	if err != nil {
+		m.App.Session.Put(r.Context(), "error", "Can't parse form")
+		return
+	}
+
+	user.ID, _ = strconv.Atoi(r.PostFormValue("user_id"))
+	user.Password = r.PostFormValue("password")
+	user.Token = r.PostFormValue("jwt")
+
+	// Load the env file and get the JWT secret
+	err = godotenv.Load()
+	if err != nil {
+		log.Println("Error loading .env file")
+	}
+	jwtSecret := os.Getenv("JWTSECRET")
+
+	// Parse and verify the JWT token
+	token, err := jwt.Parse(user.Token, func(token *jwt.Token) (interface{}, error) {
+		return []byte(jwtSecret), nil
+	})
+	if err != nil {
+		http.Error(w, "Unable to parse token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Unable to parse token. Error: %s", err)
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	if token.Valid {
+		err = m.DB.UpdateUserPassword(user)
+		if err != nil {
+			helpers.ServerError(w, err)
+			data["error"] = "Unable to update password. Please contact support"
+			out, _ := json.MarshalIndent(data, "", "    ")
+			resp := []byte(out)
+			w.Write(resp)
+			return
+		}
+	} else {
+		http.Error(w, "Invalid token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Invalid token, please contact support. Error: %s", err)
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	user, err = m.DB.GetUserByID(user.ID)
+	if err != nil {
+		helpers.ServerError(w, err)		
+		return
+	}
+
+	// Send email notification to user
+	htmlBody := fmt.Sprintf(`
+	<strong>Password Changed</strong><br />
+	<p>Hi, %s %s </p>
+	<strong>Your password was changed successfully!!!<br />
+	Kindly login to your account with your new password</strong><br />
+	<p>If you did not changed your password and you suspect that your account has been hacked. Please contact our support team immediately</p><br /><br /><br />	
+	<p>Love, from SafeHaven</p>
+	`, user.FirstName, user.LastName)
+
+	message := models.MailData{
+		To:      user.Email,
+		From:    "prosperdevstack@gmail.com",
+		Subject: "Password Changed Successfully",
+		Content: htmlBody,
+	}
+
+	m.App.MailChannel <- message
+	// End of emails
+
+	data["message"] = "Successful"
+	out, _ := json.MarshalIndent(data, "", "    ")
+	resp := []byte(out)
+	w.Write(resp)
+}
