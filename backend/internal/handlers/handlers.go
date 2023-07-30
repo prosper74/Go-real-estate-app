@@ -349,16 +349,23 @@ func (m *Repository) ResendEmailVerification(w http.ResponseWriter, r *http.Requ
 	user.Token = jwtToken
 	m.App.Session.Put(r.Context(), "user", user)
 
+	// Load the env file and get the frontendURL
+	err = godotenv.Load()
+	if err != nil {
+		log.Println("Error loading .env file")
+	}
+	frontendURL := os.Getenv("FRONTEND_URL")
+
 	// Send email notification to customer
 	htmlBody := fmt.Sprintf(`
 	<strong>Verify Your Email</strong><br />
 	<p>Dear %s %s, </p>
 	<p>Welcome to our website.</p>
 	<strong>Kindly click the link below to verify your email</strong>
-	<a href="http://localhost:3000/verify-email?userid=%d&token=%s", target="_blank">Verify Email</a>
+	<a href="%s/verify-email?userid=%d&token=%s", target="_blank">Verify Email</a>
 	<strong>Note that this link will expire in 24 hours and you can only resend another verification after the expiration of this link</strong>
 	<p>We hope to see you soon</p>
-	`, user.FirstName, user.LastName, user.ID, jwtToken)
+	`, user.FirstName, user.LastName, frontendURL, user.ID, jwtToken)
 
 	message := models.MailData{
 		To:      user.Email,
