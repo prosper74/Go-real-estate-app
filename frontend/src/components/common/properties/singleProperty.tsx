@@ -3,7 +3,6 @@ import ImageSlider from "./imageSlider";
 import { PropertyMeta } from "./propertyMeta";
 import { timeSince } from "@src/components/common/dateFunction";
 import AgentCard from "./agentCard";
-import { RelatedPropertiesSlide } from "./relatedProperties";
 import { SingleProperty } from "../interfaces";
 import { CalendarIcon } from "../svgIcons";
 
@@ -40,10 +39,7 @@ const SinglePropertyBody: FC<IProps> = ({ property }) => {
       <AgentCard agent={propertyAgent} />
 
       <h3 className="text-3xl font-medium">Description</h3>
-      <p className="text-lg">{property.Description}</p>
-
-      <h3 className="text-3xl font-medium my-6">Related Properties</h3>
-      <RelatedPropertiesSlide propertyType={property.Type} propertyId={property.ID} />
+      <p className="text-lg">{property.Description}</p>      
     </section>
   );
 };

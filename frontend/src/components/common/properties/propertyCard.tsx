@@ -29,7 +29,7 @@ export default function PropertyCard({
       <div className="background-effect"></div>
       <img
         className={`w-full sm:w-[40%] h-[220px] sm:h-full sm:rounded-none sm:rounded-l-lg object-cover ${
-          fixed && "sm:w-full sm:h-[220px]"
+          fixed && "sm:w-full sm:h-[180px]"
         }`}
         // @ts-ignore
         src={property.Images[0]}

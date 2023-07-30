@@ -15,6 +15,7 @@ import {
   imageAnimateRight,
 } from "@src/components/common/variants";
 import SinglePropertyBody from "@src/components/common/properties/singleProperty";
+import { RelatedPropertiesSlide } from "@src/components/common/properties/relatedProperties";
 
 interface IProps {
   data: {
@@ -23,13 +24,13 @@ interface IProps {
   };
 }
 
-export default function BuySingle ({ data }: IProps) {
+export default function BuySingle({ data }: IProps) {
   const dispatch = useDispatch();
   const property = data.property;
   const templateData = data.templateData;
   dispatch(setTemplateData({ templateData }));
 
-  const pageTitle = `${property.Category.Title} | ${property.Title}`
+  const pageTitle = `${property.Category.Title} | ${property.Title}`;
 
   return (
     <>
@@ -40,7 +41,10 @@ export default function BuySingle ({ data }: IProps) {
       </Head>
 
       <motion.main className="px-4 mx-auto my-24 sm:!px-10 lg:!px-32">
-        <Breadcrumb category={property.Category.Title} property={property.Title} />
+        <Breadcrumb
+          category={property.Category.Title}
+          property={property.Title}
+        />
         <motion.div
           className="grid grid-cols-1 md:grid-cols-3 gap-0 sm:gap-6 mt-6"
           initial={"offscreen"}
@@ -60,10 +64,29 @@ export default function BuySingle ({ data }: IProps) {
             ))}
           </motion.div>
         </motion.div>
+
+        {/* Related properties  */}
+        <motion.div
+          initial={"offscreen"}
+          whileInView={"onscreen"}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ staggerChildren: 0.5 }}
+        >
+          <motion.h3
+            className="text-3xl font-medium mt-16 mb-3"
+            variants={imageAnimateRight}
+          >
+            Related Properties
+          </motion.h3>
+          <RelatedPropertiesSlide
+            propertyType={property.Type}
+            propertyId={property.ID}
+          />
+        </motion.div>
       </motion.main>
     </>
   );
-};
+}
 
 export async function getServerSideProps(context: any) {
   const { id } = context.query;

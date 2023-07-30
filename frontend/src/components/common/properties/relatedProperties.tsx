@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import PropertyCard from "./propertyCard";
 import {
   useIsLarge,
+  useIsMedium,
   useIsXLarge,
 } from "@src/components/common/hooks/mediaQuery";
 import { SingleProperty } from "../interfaces";
@@ -44,13 +45,13 @@ export const RelatedPropertiesSlide: FC<IProps> = ({
     (property) => property.ID !== propertyId
   );
 
+  const isMedium = useIsMedium();
   const isLarge = useIsLarge();
-  const isXLarge = useIsXLarge();
 
   return (
     <div>
       <Swiper
-        slidesPerView={isXLarge ? 3 : isLarge ? 2 : 1}
+        slidesPerView={isLarge ? 3 : isMedium ? 2 : 1}
         spaceBetween={15}
         modules={[Pagination, Autoplay]}
         loop={true}
