@@ -356,7 +356,7 @@ func (m *Repository) ResendEmailVerification(w http.ResponseWriter, r *http.Requ
 	}
 	frontendURL := os.Getenv("FRONTEND_URL")
 
-	// Send email notification to customer
+	// Send email notification to user
 	htmlBody := fmt.Sprintf(`
 	<strong>Verify Your Email</strong><br />
 	<p>Dear %s %s, </p>
@@ -445,7 +445,7 @@ func (m *Repository) VerifyUserEmail(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Handle successful email verification, Send email notification to customer
+	// Handle successful email verification, Send email notification to user
 	htmlBody := fmt.Sprintf(`
 	<strong>Successful</strong><br />
 	<p>Hi %s, </p>
