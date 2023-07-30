@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import MarkdownView from 'react-showdown';
 import ImageSlider from "./imageSlider";
 import { PropertyMeta } from "./propertyMeta";
 import { timeSince } from "@src/components/common/dateFunction";
@@ -38,8 +39,11 @@ const SinglePropertyBody: FC<IProps> = ({ property }) => {
 
       <AgentCard agent={propertyAgent} />
 
-      <h3 className="text-3xl font-medium">Description</h3>
-      <p className="text-lg">{property.Description}</p>      
+      <h3 className="text-3xl font-medium mt-20">Description</h3>
+      <div className="markdown-view">
+        <MarkdownView markdown={property.Description} />
+      </div>
+      {/* <p className="text-lg">{property.Description}</p> */}
     </section>
   );
 };

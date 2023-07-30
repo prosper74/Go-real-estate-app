@@ -100,3 +100,58 @@ body {
   }
 }
 /* End ofCard effect */
+
+/* Markdown styles */
+.markdown-view h3, 
+.markdown-view h4 {
+  margin-top: 1rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  word-wrap: break-word;
+}
+
+.markdown-view p {
+  margin: 1rem 0;
+  font-size: 1.2rem;
+  line-height: 1.7;
+  word-wrap: break-word;
+}
+
+.markdown-view img {
+  margin: 3rem 0;
+  border-radius: 10px;
+}
+
+.markdown-view ul {
+  font-size: 1.2rem;
+  margin-bottom: 0.9rem;
+  word-wrap: break-word;
+  list-style: circle;
+}
+
+.markdown-view ol {
+  font-size: 1.2rem;
+  margin-bottom: 0.9rem;
+  word-wrap: break-word;
+  list-style-type: lower-latin;
+}
+
+.markdown-view li {
+  margin: 1px 0 0 35px;
+  word-wrap: break-word;
+}
+
+.markdown-view pre {
+  margin: 2rem 0;
+  padding: 2rem;
+  background-color: #2b0e3a;
+  color: white;
+  border-radius: 12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.markdown-view a {
+  color: #6633ff;
+  word-wrap: break-word;
+}
