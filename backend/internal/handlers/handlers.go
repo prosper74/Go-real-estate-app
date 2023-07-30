@@ -287,15 +287,22 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	user.Token = jwtToken
 	m.App.Session.Put(r.Context(), "user", user)
 
-	// Send email notification to customer
+	// Load the env file and get the frontendURL
+	err = godotenv.Load()
+	if err != nil {
+		log.Println("Error loading .env file")
+	}
+	frontendURL := os.Getenv("FRONTEND_URL")
+
+	// Send email notification to user
 	htmlBody := fmt.Sprintf(`
 	<strong>Verify Your Account</strong><br />
 	<p>Dear %s %s, </p>
 	<p>Welcome to our website.</p>
 	<strong>Kindly click the link below</strong>
-	<a href="http://localhost:3000/verify-email?userid=%d&token=%s", target="_blank">Verify Account</a>
+	<a href="%s/verify-email?userid=%d&token=%s", target="_blank">Verify Account</a>
 	<p>We hope to see you soon</p>
-	`, user.FirstName, user.LastName, newUserID, jwtToken)
+	`, user.FirstName, user.LastName, frontendURL, newUserID, jwtToken)
 
 	message := models.MailData{
 		To:      user.Email,
