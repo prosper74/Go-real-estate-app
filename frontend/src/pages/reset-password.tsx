@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -97,18 +97,18 @@ export default function ResetPassword({ queryParams }: any) {
       });
   });
 
-  // useEffect(() => {
-  //   if (!userid && !token) {
-  //     dispatch(
-  //       setSnackbar({
-  //         status: "error",
-  //         message: ` No user id or token found. Use the Forgot password form`,
-  //         open: true,
-  //       })
-  //     );
-  //     router.push("/");
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (!userid && !token) {
+      dispatch(
+        setSnackbar({
+          status: "error",
+          message: ` No user id or token found. Use the Forgot password form`,
+          open: true,
+        })
+      );
+      router.push("/");
+    }
+  }, []);
 
   return (
     <>
