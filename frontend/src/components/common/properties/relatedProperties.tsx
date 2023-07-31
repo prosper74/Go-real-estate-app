@@ -5,7 +5,6 @@ import PropertyCard from "./propertyCard";
 import {
   useIsLarge,
   useIsMedium,
-  useIsXLarge,
 } from "@src/components/common/hooks/mediaQuery";
 import { SingleProperty } from "../interfaces";
 
