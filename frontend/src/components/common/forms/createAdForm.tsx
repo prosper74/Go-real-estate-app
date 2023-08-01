@@ -1,17 +1,17 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
-import axios from 'axios';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
-import { useDropzone } from 'react-dropzone';
+import React, { FC, useCallback, useEffect, useState } from "react";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { useDropzone } from "react-dropzone";
 // @ts-ignore
-import { Image } from 'cloudinary-react';
-import { setSnackbar } from '@src/store/reducers/feedbackReducer';
-import { IImageUpload, UserProps } from '../interfaces';
-import { ForwardArrow } from '@src/components/common/svgIcons';
-import { locations, propertyType, perPeriod } from '../propertyData';
+import { Image } from "cloudinary-react";
+import { setSnackbar } from "@src/store/reducers/feedbackReducer";
+import { IImageUpload, UserProps } from "../interfaces";
+import { ForwardArrow } from "@src/components/common/svgIcons";
+import { locations, propertyType, perPeriod } from "../propertyData";
 
 interface IProps {
   user: UserProps;
@@ -24,12 +24,12 @@ const schema = z.object({
   state: z.string(),
   title: z
     .string()
-    .min(5, { message: 'Title must be at at least 10 characters' })
-    .max(50, { message: 'Title must not be more than 40 characters' }),
+    .min(5, { message: "Title must be at at least 10 characters" })
+    .max(50, { message: "Title must not be more than 40 characters" }),
   city: z
     .string()
-    .min(3, { message: 'Min 3 characters' })
-    .max(20, { message: 'Max 20 characters' }),
+    .min(3, { message: "Min 3 characters" })
+    .max(20, { message: "Max 20 characters" }),
   type: z.string(),
   bedroom: z.string(),
   bathroom: z.string(),
@@ -37,7 +37,7 @@ const schema = z.object({
   period: z.string(),
   size: z.string(),
   features: z.string(),
-  price: z.string().min(2, { message: 'Please enter amount' }),
+  price: z.string().min(2, { message: "Please enter amount" }),
   description: z.string().min(1),
 });
 
@@ -46,8 +46,8 @@ export const CreateAdForm: FC<IImageUpload> = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [isCategory, setIsCategory] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedType, setSelectedType] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedType, setSelectedType] = useState("");
   const [loading, setLoading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
@@ -57,15 +57,15 @@ export const CreateAdForm: FC<IImageUpload> = () => {
     acceptedFiles.forEach(async (acceptedFile: IImageUpload) => {
       const formData = new FormData();
       // @ts-ignore
-      formData.append('file', acceptedFile);
+      formData.append("file", acceptedFile);
       formData.append(
-        'upload_preset',
+        "upload_preset",
         // @ts-ignore
         process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
       );
 
       const response = await fetch(url, {
-        method: 'post',
+        method: "post",
         body: formData,
       });
 
@@ -77,7 +77,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     // @ts-ignore
-    accepts: 'images/*',
+    accepts: "images/*",
     multiple: true,
     maxFiles: 4,
     minSize: 0,
@@ -90,7 +90,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     resolver: zodResolver(schema),
   });
 
@@ -98,7 +98,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
     setLoading(true);
     axios
       .post(
-        `${process.env.NEXT_PUBLIC_REST_API}/adverts`,
+        `${process.env.NEXT_PUBLIC_REST_API}/user/create-ad`,
         {
           title: data.title,
           category: data.category,
@@ -106,10 +106,10 @@ export const CreateAdForm: FC<IImageUpload> = () => {
           city: data.city,
           price: data.price,
           type: data.type,
-          bedroom: selectedType === 'Land' ? '' : data.bedroom,
-          bathroom: selectedType === 'Land' ? '' : data.bathroom,
-          sittingroom: selectedType === 'Land' ? '' : data.sittingroom,
-          period: selectedCategory === 'Buy' ? '' : data.period,
+          bedroom: selectedType === "Land" ? "" : data.bedroom,
+          bathroom: selectedType === "Land" ? "" : data.bathroom,
+          sittingroom: selectedType === "Land" ? "" : data.sittingroom,
+          period: selectedCategory === "Buy" ? "" : data.period,
           size: data.size,
           features: data.features,
           description: data.description,
@@ -126,18 +126,18 @@ export const CreateAdForm: FC<IImageUpload> = () => {
         setLoading(false);
         dispatch(
           setSnackbar({
-            status: 'success',
+            status: "success",
             message: ` Property added successfully. Your ad will also be reviewed`,
             open: true,
           })
         );
-        router.push('/agent/account');
+        router.push("/agent/account");
       })
       .catch(() => {
         setLoading(false);
         dispatch(
           setSnackbar({
-            status: 'error',
+            status: "error",
             message: ` There was an error. Please try again later`,
             open: true,
           })
@@ -146,12 +146,12 @@ export const CreateAdForm: FC<IImageUpload> = () => {
   });
 
   useEffect(() => {
-    setSelectedCategory(watch('category'));
-    setSelectedType(watch('type'));
+    setSelectedCategory(watch("category"));
+    setSelectedType(watch("type"));
 
-    selectedCategory === 'Buy' ||
-    selectedCategory === 'Rent' ||
-    selectedCategory === 'Shortlet'
+    selectedCategory === "Buy" ||
+    selectedCategory === "Rent" ||
+    selectedCategory === "Shortlet"
       ? setIsCategory(true)
       : setIsCategory(false);
   });
@@ -161,48 +161,50 @@ export const CreateAdForm: FC<IImageUpload> = () => {
       <div className="flex flex-col justify-center">
         <div className="p-2 xs:p-0 mx-auto md:w-full  relative">
           <div className="bg-white shadow-lg w-full rounded-lg divide-y divide-gray-200">
-            {uploadedFiles.length >= 4 ? (
-              <h3 className="text-center text-xl font-bold mb-2">
-                You have uploaded Up to four images
-              </h3>
-            ) : (
-              <div
-                {...getRootProps()}
-                className={`h-auto m-3 p-3 border-2 border-dashed border-red-500 cursor-pointer md:text-xl text-center ${
-                  isDragActive && 'border-purple-600'
-                }`}
-              >
-                <input {...getInputProps()} />
-                Drag and drop some files here, or click to select files. Min 1
-                image, Max 4 images. Max file size per image is 1mb. PNG/JPEG
-              </div>
-            )}
-
-            <ul className="flex flex-row justify-center">
-              {uploadedFiles.map((file: IImageUpload) => (
-                <li key={file.public_id} className="mr-1">
-                  <Image
-                    cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
-                    publicId={file.public_id}
-                    width="150"
-                    height="150"
-                    crop="scale"
-                  />
-                </li>
-              ))}
-            </ul>
             {/* Form Fields */}
             <div className="px-3 py-4">
+              {/* Uplaod images  */}
+              {uploadedFiles.length >= 4 ? (
+                <h3 className="text-center text-xl font-bold mb-2">
+                  You have uploaded Up to four images
+                </h3>
+              ) : (
+                <div
+                  {...getRootProps()}
+                  className={`h-auto my-3 p-3 border-2 border-dashed border-red-500 rounded-lg cursor-pointer md:text-xl text-center ${
+                    isDragActive && "border-purple-600"
+                  }`}
+                >
+                  <input {...getInputProps()} />
+                  Drag and drop some files here, or click to select files. Min 1
+                  image, Max 4 images. Max file size per image is 1mb. PNG/JPEG
+                </div>
+              )}
+
+              <ul className="flex flex-row justify-center">
+                {uploadedFiles.map((file: IImageUpload) => (
+                  <li key={file.public_id} className="mr-1">
+                    <Image
+                      cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
+                      publicId={file.public_id}
+                      width="150"
+                      height="150"
+                      crop="scale"
+                    />
+                  </li>
+                ))}
+              </ul>
+
               <form>
                 <div className="grid sm:grid-cols-2 gap-2">
                   <div>
                     <select
                       id="category"
                       placeholder="Select Category"
-                      {...register('category')}
+                      {...register("category")}
                       className={`focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full  ${
                         errors.phone &&
-                        'border-red-500 text-red-500 focus:outline-red-500'
+                        "border-red-500 text-red-500 focus:outline-red-500"
                       }`}
                     >
                       <option defaultValue="">Select a Category</option>
@@ -214,10 +216,10 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                   {/* Location */}
                   <div>
                     <select
-                      {...register('state')}
+                      {...register("state")}
                       className={`focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
                         errors.phone &&
-                        'border-red-500 text-red-500 focus:outline-red-500'
+                        "border-red-500 text-red-500 focus:outline-red-500"
                       }`}
                     >
                       {locations.map((location) => (
@@ -228,10 +230,10 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                     </select>
                   </div>
                   {/* Period */}
-                  {selectedCategory !== 'Buy' && (
+                  {selectedCategory !== "Buy" && (
                     <div>
                       <select
-                        {...register('period')}
+                        {...register("period")}
                         className="focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full "
                       >
                         <option defaultValue="">Select Period</option>
@@ -251,10 +253,10 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                           autoComplete="title"
                           placeholder="Property Title"
                           type="text"
-                          {...register('title')}
+                          {...register("title")}
                           className={`focus:outline-purple-600 focus:rounded-lg bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
                             errors.name &&
-                            'border-red-500 text-red-500 focus:outline-red-500'
+                            "border-red-500 text-red-500 focus:outline-red-500"
                           }`}
                         />
                         {errors.name?.message && (
@@ -270,10 +272,10 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                           autoComplete="city"
                           placeholder="City"
                           type="text"
-                          {...register('city')}
+                          {...register("city")}
                           className={`focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
                             errors.city &&
-                            'border-red-500 text-red-500 focus:outline-red-500'
+                            "border-red-500 text-red-500 focus:outline-red-500"
                           }`}
                         />
                         {errors.city?.message && (
@@ -286,10 +288,10 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                       {/* Type */}
                       <div>
                         <select
-                          {...register('type')}
+                          {...register("type")}
                           className={`focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
                             errors.phone &&
-                            'border-red-500 text-red-500 focus:outline-red-500'
+                            "border-red-500 text-red-500 focus:outline-red-500"
                           }`}
                         >
                           {propertyType.map((type) => (
@@ -300,16 +302,16 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                         </select>
                       </div>
                       {/* Bedrooms */}
-                      {selectedType !== 'Land' && (
+                      {selectedType !== "Land" && (
                         <div>
                           <select
-                            {...register('bedroom')}
+                            {...register("bedroom")}
                             className="focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full"
                           >
                             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
                               (d: number) => (
                                 <option key={d} value={d}>
-                                  {d} Bedroom{d > 1 && 's'}
+                                  {d} Bedroom{d > 1 && "s"}
                                 </option>
                               )
                             )}
@@ -317,16 +319,16 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                         </div>
                       )}
                       {/* Bathrooms */}
-                      {selectedType !== 'Land' && (
+                      {selectedType !== "Land" && (
                         <div>
                           <select
-                            {...register('bathroom')}
+                            {...register("bathroom")}
                             className="focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full"
                           >
                             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(
                               (d: number) => (
                                 <option key={d} value={d}>
-                                  {d} Bathroom{d > 1 && 's'}
+                                  {d} Bathroom{d > 1 && "s"}
                                 </option>
                               )
                             )}
@@ -334,15 +336,15 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                         </div>
                       )}
                       {/* Sitting Room */}
-                      {selectedType !== 'Land' && (
+                      {selectedType !== "Land" && (
                         <div>
                           <select
-                            {...register('sittingroom')}
+                            {...register("sittingroom")}
                             className="focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full"
                           >
                             {[0, 1, 2, 3, 4, 5, 6, 7].map((d: number) => (
                               <option key={d} value={d}>
-                                {d} Sitting Room{d > 1 && 's'}
+                                {d} Sitting Room{d > 1 && "s"}
                               </option>
                             ))}
                           </select>
@@ -351,7 +353,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                       {/* size */}
                       <div className="relative rounded-md shadow-sm">
                         <input
-                          {...register('size')}
+                          {...register("size")}
                           type="number"
                           placeholder="Land size"
                           className="focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full"
@@ -363,7 +365,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                       {/* features */}
                       <div className="col-span-2">
                         <textarea
-                          {...register('features')}
+                          {...register("features")}
                           className="focus:outline-purple-600 focus:rounded-lg bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full transition ease-in-out"
                           rows={3}
                           placeholder="Property features. Seperate each feature with the pip | symbol"
@@ -372,7 +374,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                       {/* description */}
                       <div className="col-span-2">
                         <textarea
-                          {...register('description')}
+                          {...register("description")}
                           className="focus:outline-purple-600 focus:rounded-lg bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full transition ease-in-out"
                           id="exampleFormControlTextarea1"
                           rows={3}
@@ -390,9 +392,9 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                             placeholder="1200000"
                             className={`focus:outline-purple-600 pl-7 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
                               errors.price &&
-                              'border-red-500 text-red-500 focus:outline-red-500'
+                              "border-red-500 text-red-500 focus:outline-red-500"
                             }`}
-                            {...register('price')}
+                            {...register("price")}
                           />
                         </div>
                         {errors.price?.message && (
@@ -412,8 +414,8 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                   disabled={loading || !isCategory || uploadedFiles.length < 1}
                   className={`mt-5 transition duration-200 bg-purple-600 focus:bg-purple-800 focus:shadow-sm focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50 w-full py-2.5 rounded-lg text-lg shadow-sm hover:shadow-md font-semibold text-center flex justify-center items-center disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 ${
                     loading
-                      ? 'hover:bg-purple-300 text-gray-300'
-                      : 'hover:bg-purple-700 text-white'
+                      ? "hover:bg-purple-300 text-gray-300"
+                      : "hover:bg-purple-700 text-white"
                   }`}
                 >
                   <span className="mr-2">Submit</span>
