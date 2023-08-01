@@ -9,13 +9,14 @@ import { useDropzone } from "react-dropzone";
 // @ts-ignore
 import { Image } from "cloudinary-react";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
-import { IImageUpload, UserProps } from "../interfaces";
 import { ForwardArrow } from "@src/components/common/svgIcons";
 import { locations, propertyType, perPeriod } from "../propertyData";
+import { IImageUpload, SingleProperty, UserProps } from "../interfaces";
 
 interface IProps {
   user: UserProps;
   acceptedFles: File[];
+  property: SingleProperty;
 }
 
 const schema = z.object({
@@ -101,18 +102,18 @@ export const CreateAdForm: FC<IImageUpload> = () => {
         `${process.env.NEXT_PUBLIC_REST_API}/user/create-ad`,
         {
           title: data.title,
-          category: data.category,
-          state: data.state,
-          city: data.city,
+          description: data.description,
           price: data.price,
           type: data.type,
+          category_id: data.category,
+          state: data.state,
+          city: data.city,
           bedroom: selectedType === "Land" ? "" : data.bedroom,
           bathroom: selectedType === "Land" ? "" : data.bathroom,
           sittingroom: selectedType === "Land" ? "" : data.sittingroom,
           period: selectedCategory === "Buy" ? "" : data.period,
           size: data.size,
           features: data.features,
-          description: data.description,
           images: uploadedFiles,
           users_permissions_user: user,
         },
@@ -208,9 +209,9 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                       }`}
                     >
                       <option defaultValue="">Select a Category</option>
-                      <option value="Buy">Buy</option>
-                      <option value="Rent">Rent</option>
-                      <option value="Shortlet">Shortlet</option>
+                      <option value="1">Buy</option>
+                      <option value="2">Rent</option>
+                      <option value="3">Shortlet</option>
                     </select>
                   </div>
                   {/* Location */}
