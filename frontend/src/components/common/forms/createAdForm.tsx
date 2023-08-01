@@ -376,16 +376,6 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                         </div>
                       </div>
 
-                      {/* features */}
-                      <div className="col-span-2">
-                        <textarea
-                          {...register("features")}
-                          className="focus:outline-purple-600 focus:rounded-lg bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full transition ease-in-out"
-                          rows={3}
-                          placeholder="Property features. Seperate each feature with the pip | symbol"
-                        ></textarea>
-                      </div>
-
                       {/* description */}
                       <div className="col-span-2">
                         <textarea
