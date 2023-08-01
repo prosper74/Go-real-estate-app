@@ -37,7 +37,6 @@ const schema = z.object({
   sittingroom: z.string(),
   period: z.string(),
   size: z.string(),
-  features: z.string(),
   price: z.string().min(2, { message: "Please enter amount" }),
   description: z.string().min(1),
 });
@@ -220,6 +219,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                       <option value="Shortlet">Shortlet</option>
                     </select>
                   </div>
+                  
                   {/* Location */}
                   <div>
                     <select
@@ -236,6 +236,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                       ))}
                     </select>
                   </div>
+
                   {/* Period */}
                   {selectedCategory !== "Buy" && (
                     <div>
