@@ -105,20 +105,26 @@ export const CreateAdForm: FC<IImageUpload> = () => {
           description: data.description,
           price: data.price,
           type: data.type,
-          category_id: data.category,
+          category:
+            data.category === "Buy"
+              ? "1"
+              : data.category === "Shortlet"
+              ? "2"
+              : "3",
           state: data.state,
           city: data.city,
           bedroom: selectedType === "Land" ? "" : data.bedroom,
           bathroom: selectedType === "Land" ? "" : data.bathroom,
-          sittingroom: selectedType === "Land" ? "" : data.sittingroom,
           period: selectedCategory === "Buy" ? "" : data.period,
+          status: "pending",
           size: data.size,
-          features: data.features,
           images: uploadedFiles,
-          users_permissions_user: user,
+          user_id: user.userId,
+          jwt: user.jwt,
         },
         {
           headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
             Authorization: `Bearer ${user.jwt}`,
           },
         }
@@ -209,9 +215,9 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                       }`}
                     >
                       <option defaultValue="">Select a Category</option>
-                      <option value="1">Buy</option>
-                      <option value="2">Rent</option>
-                      <option value="3">Shortlet</option>
+                      <option value="Buy">Buy</option>
+                      <option value="Rent">Rent</option>
+                      <option value="Shortlet">Shortlet</option>
                     </select>
                   </div>
                   {/* Location */}
@@ -267,6 +273,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                           </p>
                         )}
                       </div>
+
                       {/* City */}
                       <div>
                         <input
@@ -286,6 +293,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                           </p>
                         )}
                       </div>
+
                       {/* Type */}
                       <div>
                         <select
@@ -302,6 +310,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                           ))}
                         </select>
                       </div>
+
                       {/* Bedrooms */}
                       {selectedType !== "Land" && (
                         <div>
@@ -319,6 +328,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                           </select>
                         </div>
                       )}
+
                       {/* Bathrooms */}
                       {selectedType !== "Land" && (
                         <div>
@@ -336,6 +346,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                           </select>
                         </div>
                       )}
+
                       {/* Sitting Room */}
                       {selectedType !== "Land" && (
                         <div>
@@ -351,6 +362,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                           </select>
                         </div>
                       )}
+
                       {/* size */}
                       <div className="relative rounded-md shadow-sm">
                         <input
@@ -363,6 +375,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                           <span className="text-gray-500 text-lg">Sqr</span>
                         </div>
                       </div>
+
                       {/* features */}
                       <div className="col-span-2">
                         <textarea
@@ -372,6 +385,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                           placeholder="Property features. Seperate each feature with the pip | symbol"
                         ></textarea>
                       </div>
+
                       {/* description */}
                       <div className="col-span-2">
                         <textarea
@@ -382,6 +396,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                           placeholder="Give brief description about this property"
                         ></textarea>
                       </div>
+                      
                       {/* Price */}
                       <div className="col-span-2">
                         <div className="mt-1 relative rounded-md shadow-sm">
