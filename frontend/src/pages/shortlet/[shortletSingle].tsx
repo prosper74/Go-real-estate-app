@@ -9,11 +9,11 @@ import SidebarCard from "@src/components/common/properties/sidebarCard";
 import {
   SingleProperty,
   TemplateData,
-} from "@src/components/common/interfaces";
+} from "@src/components/common/helpers/interfaces";
 import {
   imageAnimate,
   imageAnimateRight,
-} from "@src/components/common/variants";
+} from "@src/components/common/helpers/variants";
 import SinglePropertyBody from "@src/components/common/properties/singleProperty";
 import { RelatedPropertiesSlide } from "@src/components/common/properties/relatedProperties";
 

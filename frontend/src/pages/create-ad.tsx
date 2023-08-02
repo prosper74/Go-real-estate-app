@@ -12,7 +12,7 @@ import AuthButton from "@src/components/common/Buttons/authButton";
 import { CreateAdForm } from "@src/components/common/forms/createAdForm";
 import ResendEmailVerificationButton from "@src/components/common/Buttons/emailVerificationButton";
 import VerificationModal from "@src/components/common/accountVerification";
-import { UserProps } from "@src/components/common/interfaces";
+import { UserProps } from "@src/components/common/helpers/interfaces";
 
 interface IProps {
   user: UserProps;

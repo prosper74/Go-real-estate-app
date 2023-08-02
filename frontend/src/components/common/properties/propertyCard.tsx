@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { HelpIcon, LocationIcon } from "../svgIcons";
-import { SingleProperty } from "../interfaces";
+import { HelpIcon, LocationIcon } from "../helpers/svgIcons";
+import { SingleProperty } from "../helpers/interfaces";
 import { PropertyCardMeta } from "./propertyMeta";
 
 interface IProps {

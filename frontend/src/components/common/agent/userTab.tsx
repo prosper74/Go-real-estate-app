@@ -9,10 +9,10 @@ import { setUser } from "@src/store/reducers/userReducer";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import AgentSidebar from "./agentSidebar";
 import PropertyCard from "../properties/propertyCard";
-import { PageLoader } from "../loader";
+import { PageLoader } from "../helpers/loader";
 import ResendEmailVerificationButton from "../Buttons/emailVerificationButton";
 import VerificationModal from "../accountVerification";
-import { SingleProperty, UserProps } from "../interfaces";
+import { SingleProperty, UserProps } from "../helpers/interfaces";
 
 interface IProps {
   user: UserProps;

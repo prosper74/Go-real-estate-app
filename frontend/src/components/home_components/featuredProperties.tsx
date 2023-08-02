@@ -1,14 +1,14 @@
 import { Tabs } from "flowbite-react";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
-import { textAnimate, imageAnimate } from "@src/components/common/variants";
+import { textAnimate, imageAnimate } from "@src/components/common/helpers/variants";
 import {
   HomeIconFixed,
   RentIconFixed,
   ShortletIconFixed,
-} from "@src/components/common/svgIcons";
+} from "@src/components/common/helpers/svgIcons";
 import PropertySlider from "@src/components/common/properties/propertiesSlider";
-import { SingleProperty } from "../common/interfaces";
+import { SingleProperty } from "../common/helpers/interfaces";
 
 interface IProps {
   property: SingleProperty;

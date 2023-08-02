@@ -8,7 +8,7 @@ import {
   MainMenu,
   ResourcesMenu,
 } from "./layoutData";
-import { textAnimate } from "../variants";
+import { textAnimate } from "../helpers/variants";
 
 export default function Footer() {
   const [selectedNav, setSelectedNav] = useState("");

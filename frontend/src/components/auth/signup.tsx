@@ -13,8 +13,8 @@ import {
   BackArrowIcon,
   GoogleIcon,
   FacebookIcon,
-} from "@src/components/common/svgIcons";
-import { TemplateData } from "../common/interfaces";
+} from "@src/components/common/helpers/svgIcons";
+import { TemplateData } from "../common/helpers/interfaces";
 
 interface IProps {
   setIsOpen: (open: boolean) => void;

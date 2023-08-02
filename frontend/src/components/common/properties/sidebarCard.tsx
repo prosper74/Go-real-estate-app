@@ -5,7 +5,7 @@ import {
   RequestProperty,
   VerifyProperty,
 } from "../forms/sidebarForms";
-import { SingleProperty } from "../interfaces";
+import { SingleProperty } from "../helpers/interfaces";
 
 interface IProps {
   property: SingleProperty;

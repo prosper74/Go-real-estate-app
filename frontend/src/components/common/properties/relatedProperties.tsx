@@ -6,7 +6,7 @@ import {
   useIsLarge,
   useIsMedium,
 } from "@src/components/common/hooks/mediaQuery";
-import { SingleProperty } from "../interfaces";
+import { SingleProperty } from "../helpers/interfaces";
 
 // Import Swiper styles
 import "swiper/css";

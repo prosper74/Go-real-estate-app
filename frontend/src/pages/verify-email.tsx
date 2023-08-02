@@ -2,13 +2,13 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
-import { textAnimate, imageAnimate } from "@src/components/common/variants";
-import { ForwardArrowAlt } from "@src/components/common/svgIcons";
+import { textAnimate, imageAnimate } from "@src/components/common/helpers/variants";
+import { ForwardArrowAlt } from "@src/components/common/helpers/svgIcons";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
-import { PageLoader } from "@src/components/common/loader";
+import { PageLoader } from "@src/components/common/helpers/loader";
 import ResendEmailVerificationButton from "@src/components/common/Buttons/emailVerificationButton";
 
 export default function VerifyUserEmail({ queryParams }: any) {

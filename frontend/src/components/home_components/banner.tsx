@@ -4,9 +4,9 @@ import {
   textAnimate,
   imageAnimateTop,
   imageAnimateBottom,
-} from "@src/components/common/variants";
-import { SingleProperty } from "../common/interfaces";
-import { StandAloneSearchWidget } from "../common/searchWidget";
+} from "@src/components/common/helpers/variants";
+import { SingleProperty } from "../common/helpers/interfaces";
+import { StandAloneSearchWidget } from "../common/helpers/searchWidget";
 
 interface IProps {
   property: SingleProperty;

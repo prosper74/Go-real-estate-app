@@ -2,8 +2,8 @@ import React, { FC, Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Link from "next/link";
 import Image from "next/image";
-import { UserProps } from "../interfaces";
-import { VerifiedIcon } from "../svgIcons";
+import { UserProps } from "../helpers/interfaces";
+import { VerifiedIcon } from "../helpers/svgIcons";
 
 interface IProps {
   agent: UserProps;

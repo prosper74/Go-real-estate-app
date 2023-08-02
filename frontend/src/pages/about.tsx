@@ -7,13 +7,13 @@ import {
   imageAnimate,
   imageAnimateTop,
   imageAnimateBottom,
-} from "@src/components/common/variants";
+} from "@src/components/common/helpers/variants";
 import {
   FacebookIconFilled,
   ForwardArrowAlt,
   InstagramIcon,
   TwitterIcon,
-} from "@src/components/common/svgIcons";
+} from "@src/components/common/helpers/svgIcons";
 
 export default function AboutUs() {
   return (

@@ -1,6 +1,6 @@
 import { FC, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { SingleProperty } from '../interfaces';
+import { SingleProperty } from '../helpers/interfaces';
 
 interface IProps {
   property: SingleProperty;

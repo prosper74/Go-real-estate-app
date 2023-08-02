@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import axios from "axios";
 import Countdown from "react-countdown";
-import { UserProps } from "../interfaces";
+import { UserProps } from "../helpers/interfaces";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 
 interface IProps {

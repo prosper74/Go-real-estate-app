@@ -1,8 +1,8 @@
 import { FC } from "react";
 import Image from "next/image";
-import { timeSince } from "../dateFunction";
-import { VerifiedIcon } from "../svgIcons";
-import { UserProps } from "../interfaces";
+import { timeSince } from "../helpers/dateFunction";
+import { VerifiedIcon } from "../helpers/svgIcons";
+import { UserProps } from "../helpers/interfaces";
 
 interface IProps {
   agent: UserProps;

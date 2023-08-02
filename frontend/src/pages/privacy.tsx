@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import {
   textAnimate,
   imageAnimate,
-} from "@src/components/common/variants";
-import { ForwardArrowAlt } from "@src/components/common/svgIcons";
+} from "@src/components/common/helpers/variants";
+import { ForwardArrowAlt } from "@src/components/common/helpers/svgIcons";
 
 export default function Privacy() {
   return (

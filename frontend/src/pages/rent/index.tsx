@@ -3,11 +3,11 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setTemplateData } from "@src/store/reducers/templateDataReducer";
-import { PageSearchWidget } from "@src/components/common/searchWidget";
+import { PageSearchWidget } from "@src/components/common/helpers/searchWidget";
 import {
   imageAnimateBottom,
   textAnimate,
-} from "@src/components/common/variants";
+} from "@src/components/common/helpers/variants";
 
 export default function RentProperties({ data }: any) {
   const dispatch = useDispatch();

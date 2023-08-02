@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { Accordion } from "flowbite-react";
 import { motion } from "framer-motion";
-import { textAnimate } from "@src/components/common/variants";
+import { textAnimate } from "@src/components/common/helpers/variants";
 
 export default function FAQ() {
   return (

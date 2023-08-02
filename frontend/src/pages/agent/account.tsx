@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { PageLoader } from "@src/components/common/loader";
-import { UserProps } from "@src/components/common/interfaces";
+import { PageLoader } from "@src/components/common/helpers/loader";
+import { UserProps } from "@src/components/common/helpers/interfaces";
 import AccountPortal from "@src/components/common/agent/accountPortal";
 
 interface IProps {

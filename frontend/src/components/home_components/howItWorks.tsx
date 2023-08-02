@@ -3,7 +3,7 @@ import {
   textAnimate,
   imageAnimateRight,
   imageAnimate,
-} from "@src/components/common/variants";
+} from "@src/components/common/helpers/variants";
 import { HowItWorksData } from "../common/layouts/layoutData";
 
 export default function HowItWorks() {

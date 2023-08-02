@@ -1,11 +1,11 @@
 import React, { FC, useState } from "react";
-import { SearchIcon, CloseIcon } from "@src/components/common/svgIcons";
+import { SearchIcon, CloseIcon } from "@src/components/common/helpers/svgIcons";
 import Link from "next/link";
-import PropertyCard from "./properties/propertyCard";
+import PropertyCard from "../properties/propertyCard";
 import {
   SingleProperty,
   ISearchWidget,
-} from "@src/components/common/interfaces";
+} from "@src/components/common/helpers/interfaces";
 
 export const StandAloneSearchWidget: FC<ISearchWidget> = ({
   properties = [],

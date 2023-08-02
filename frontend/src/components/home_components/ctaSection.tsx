@@ -4,8 +4,8 @@ import {
   imageAnimateTop,
   imageAnimateBottom,
   imageAnimateRight,
-} from "@src/components/common/variants";
-import { AppleIcon, GooglePlayIcon } from "../common/svgIcons";
+} from "@src/components/common/helpers/variants";
+import { AppleIcon, GooglePlayIcon } from "../common/helpers/svgIcons";
 
 export default function CTASection() {
   return (

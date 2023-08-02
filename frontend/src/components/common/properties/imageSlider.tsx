@@ -2,7 +2,7 @@ import { useState, FC } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useIsXLarge } from "../hooks/mediaQuery";
-import { SingleProperty } from "../interfaces";
+import { SingleProperty } from "../helpers/interfaces";
 
 // Import Swiper styles
 import "swiper/css";

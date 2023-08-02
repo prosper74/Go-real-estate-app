@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useDispatch } from 'react-redux';
 import { setSnackbar } from '@src/store/reducers/feedbackReducer';
-import { ForwardArrow, BackArrowIcon } from '@src/components/common/svgIcons';
+import { ForwardArrow, BackArrowIcon } from '@src/components/common/helpers/svgIcons';
 
 interface IProps {
   setIsOpen: (open: boolean) => void;

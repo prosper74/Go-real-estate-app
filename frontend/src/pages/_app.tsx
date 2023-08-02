@@ -6,7 +6,7 @@ import Router from "next/router";
 import { Provider } from "react-redux";
 import configureStore from "@src/store";
 import Layout from "@src/components/common/layouts/layout";
-import { PageLoader } from "@src/components/common/loader";
+import { PageLoader } from "@src/components/common/helpers/loader";
 import { useIsClient } from "@src/components/common/hooks/useIsClient";
 
 const MyApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {

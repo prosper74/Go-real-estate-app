@@ -1,7 +1,7 @@
 import { FC } from "react";
 import Lottie from "react-lottie-player";
 
-import SuccessAnimation from "@src/components/common/success-animation.json";
+import SuccessAnimation from "@src/components/common/helpers/success-animation.json";
 
 interface IProps {
   setIsOpen: (open: boolean) => void;

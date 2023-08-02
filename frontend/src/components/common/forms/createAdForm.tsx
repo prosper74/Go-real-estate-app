@@ -9,9 +9,9 @@ import { useDropzone } from "react-dropzone";
 // @ts-ignore
 import { Image } from "cloudinary-react";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
-import { ForwardArrow } from "@src/components/common/svgIcons";
-import { locations, propertyType, perPeriod } from "../propertyData";
-import { IImageUpload, SingleProperty, UserProps } from "../interfaces";
+import { ForwardArrow } from "@src/components/common/helpers/svgIcons";
+import { locations, propertyType, perPeriod } from "../helpers/propertyData";
+import { IImageUpload, SingleProperty, UserProps } from "../helpers/interfaces";
 
 interface IProps {
   user: UserProps;
@@ -219,7 +219,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                       <option value="Shortlet">Shortlet</option>
                     </select>
                   </div>
-                  
+
                   {/* Location */}
                   <div>
                     <select

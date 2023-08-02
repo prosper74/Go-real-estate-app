@@ -2,10 +2,10 @@ import React, { FC } from "react";
 import MarkdownView from 'react-showdown';
 import ImageSlider from "./imageSlider";
 import { PropertyMeta } from "./propertyMeta";
-import { timeSince } from "@src/components/common/dateFunction";
+import { timeSince } from "@src/components/common/helpers/dateFunction";
 import AgentCard from "./agentCard";
-import { SingleProperty } from "../interfaces";
-import { CalendarIcon } from "../svgIcons";
+import { SingleProperty } from "../helpers/interfaces";
+import { CalendarIcon } from "../helpers/svgIcons";
 
 interface IProps {
   property: SingleProperty;

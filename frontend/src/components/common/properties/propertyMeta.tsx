@@ -1,12 +1,12 @@
 import React, { FC } from "react";
-import { SingleProperty } from "@src/components/common/interfaces";
+import { SingleProperty } from "@src/components/common/helpers/interfaces";
 import {
   BedIcon,
   HelpIcon,
   HomeIcon,
   LocationIcon,
   ShowerIcon,
-} from "../svgIcons";
+} from "../helpers/svgIcons";
 
 interface IProps {
   property: SingleProperty;

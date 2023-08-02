@@ -2,8 +2,8 @@ import Head from "next/head";
 import { Card, Button } from "flowbite-react";
 import { motion } from "framer-motion";
 import { ContactUsLinks } from "@src/components/common/layouts/layoutData";
-import { MessageIcon } from "@src/components/common/svgIcons";
-import { textAnimate, imageAnimate } from "@src/components/common/variants";
+import { MessageIcon } from "@src/components/common/helpers/svgIcons";
+import { textAnimate, imageAnimate } from "@src/components/common/helpers/variants";
 
 export default function ContactUs() {
   return (

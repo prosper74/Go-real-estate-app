@@ -12,8 +12,8 @@ import { useDropzone } from "react-dropzone";
 import { Image } from "cloudinary-react";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import { setUser } from "@src/store/reducers/userReducer";
-import { ForwardArrow, CloseIcon } from "@src/components/common/svgIcons";
-import { IImageUpload, UserProps } from "../interfaces";
+import { ForwardArrow, CloseIcon } from "@src/components/common/helpers/svgIcons";
+import { IImageUpload, UserProps } from "../helpers/interfaces";
 
 interface IProps {
   user?: UserProps;

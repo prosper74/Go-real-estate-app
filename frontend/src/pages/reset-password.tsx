@@ -11,7 +11,7 @@ import {
   EyeIcon,
   EyeSlashIcon,
   ForwardArrow,
-} from "@src/components/common/svgIcons";
+} from "@src/components/common/helpers/svgIcons";
 
 const schema = z
   .object({

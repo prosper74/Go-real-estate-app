@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { SingleProperty } from "../interfaces";
+import { SingleProperty } from "../helpers/interfaces";
 import PropertyCard from "./propertyCard";
 
 // Import Swiper styles

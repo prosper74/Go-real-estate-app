@@ -3,11 +3,11 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import PropertyCard from "@src/components/common/properties/propertyCard";
 import AgentSidebar from "@src/components/common/agent/agentSidebar";
-import { SingleProperty, UserProps } from "@src/components/common/interfaces";
+import { SingleProperty, UserProps } from "@src/components/common/helpers/interfaces";
 import {
   imageAnimate,
   imageAnimateRight,
-} from "@src/components/common/variants";
+} from "@src/components/common/helpers/variants";
 
 interface IProps {
   properties: SingleProperty;

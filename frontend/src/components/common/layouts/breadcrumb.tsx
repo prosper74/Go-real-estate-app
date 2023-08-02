@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
-import { ForwardArrowAlt, HomeAltIcon } from '../svgIcons';
+import { ForwardArrowAlt, HomeAltIcon } from '../helpers/svgIcons';
 
 interface IProps {
   property: string;

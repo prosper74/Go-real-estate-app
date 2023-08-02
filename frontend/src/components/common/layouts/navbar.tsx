@@ -11,7 +11,7 @@ import { MainMenu } from "./layoutData";
 import AuthButton from "../Buttons/authButton";
 import AuthPortal from "@src/components/auth";
 import { setUser } from "@src/store/reducers/userReducer";
-import { UserProps } from "../interfaces";
+import { UserProps } from "../helpers/interfaces";
 
 interface IProps {
   user: UserProps;

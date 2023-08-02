@@ -5,9 +5,9 @@ import { z } from "zod";
 import { useDispatch } from "react-redux";
 import emailjs from "@emailjs/browser";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
-import { CloseIcon, ForwardArrow } from "@src/components/common/svgIcons";
-import { locations, propertyType, priceRange } from "../propertyData";
-import { SingleProperty } from "../interfaces";
+import { CloseIcon, ForwardArrow } from "@src/components/common/helpers/svgIcons";
+import { locations, propertyType, priceRange } from "../helpers/propertyData";
+import { SingleProperty } from "../helpers/interfaces";
 
 interface IProps {
   property: SingleProperty;

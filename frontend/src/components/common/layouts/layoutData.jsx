@@ -5,7 +5,7 @@ import {
   PhoneIcon,
   LocationIcon,
   EmailIcon,
-} from "../svgIcons";
+} from "../helpers/svgIcons";
 
 export const MainMenu = [
   {

@@ -16,7 +16,7 @@ import {
   PadlockOpenIcon,
   HelpIcon,
   UserAddIcon,
-} from "@src/components/common/svgIcons";
+} from "@src/components/common/helpers/svgIcons";
 
 interface IProps {
   setIsOpen: (open: boolean) => void;
