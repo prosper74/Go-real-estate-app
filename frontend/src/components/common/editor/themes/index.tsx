@@ -31,6 +31,7 @@ const baseTheme = {
     underlineStrikethrough: "editor-text-underlineStrikethrough",
     code: "editor-text-code"
   },
+  namespace: "name-space",
   code: "editor-code",
   codeHighlight: {
     atrule: "editor-tokenAttr",
