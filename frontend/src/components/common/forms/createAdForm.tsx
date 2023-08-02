@@ -12,6 +12,7 @@ import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import { ForwardArrow } from "@src/components/common/helpers/svgIcons";
 import { locations, propertyType, perPeriod } from "../helpers/propertyData";
 import { IImageUpload, SingleProperty, UserProps } from "../helpers/interfaces";
+import Editor from "../editor/editor";
 
 interface IProps {
   user: UserProps;
@@ -379,13 +380,15 @@ export const CreateAdForm: FC<IImageUpload> = () => {
 
                       {/* description */}
                       <div className="col-span-2">
-                        <textarea
+                        {/* <textarea
                           {...register("description")}
                           className="focus:outline-purple-600 focus:rounded-lg bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full transition ease-in-out"
                           id="exampleFormControlTextarea1"
                           rows={3}
                           placeholder="Give brief description about this property"
-                        ></textarea>
+                        ></textarea> */}
+
+                        <Editor />
                       </div>
                       
                       {/* Price */}
