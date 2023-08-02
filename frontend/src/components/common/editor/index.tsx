@@ -14,10 +14,10 @@ import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin";
 import { $convertToMarkdownString, TRANSFORMERS } from "@lexical/markdown";
-import ToolbarPlugin from "./plugins/ToolbarPlugin";
+import ToolbarPlugin from "./plugins/toolbarPlugin";
 import BaseTheme from "./themes";
-import ActionsPlugin from "./plugins/actionsPlugin.jsx";
-import CodeHighlightPlugin from "./plugins/CodeHighlightPlugin";
+import ActionsPlugin from "./plugins/actionsPlugin";
+import CodeHighlightPlugin from "./plugins/codeHighlightPlugin";
 
 function Placeholder() {
   return (

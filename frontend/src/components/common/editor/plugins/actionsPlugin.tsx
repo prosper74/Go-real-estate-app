@@ -7,7 +7,7 @@ import {
 } from "@lexical/markdown";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 
-import { PLAYGROUND_TRANSFORMERS } from "./MarkdownTransformers";
+import { PLAYGROUND_TRANSFORMERS } from "./markdownTransformers";
 
 export default function ActionsPlugin(): JSX.Element {
   const [editor] = useLexicalComposerContext();

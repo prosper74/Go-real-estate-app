@@ -8,11 +8,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
 // @ts-ignore
 import { Image } from "cloudinary-react";
+import Editor from "../editor";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import { ForwardArrow } from "@src/components/common/helpers/svgIcons";
 import { locations, propertyType, perPeriod } from "../helpers/propertyData";
 import { IImageUpload, SingleProperty, UserProps } from "../helpers/interfaces";
-import Editor from "../editor/editor";
 
 interface IProps {
   user: UserProps;
