@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { MouseEvent, useCallback } from "react";
 import { $createTextNode, $getRoot } from "lexical";
 import { $createCodeNode, $isCodeNode } from "@lexical/code";
 import {
@@ -12,7 +12,9 @@ import { PLAYGROUND_TRANSFORMERS } from "./markdownTransformers";
 export default function ActionsPlugin(): JSX.Element {
   const [editor] = useLexicalComposerContext();
 
-  const handleMarkdownToggle = useCallback(() => {
+  const handleMarkdownToggle = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    
     editor.update(() => {
       const root = $getRoot();
       const firstChild = root.getFirstChild();
