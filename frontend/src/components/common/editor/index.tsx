@@ -16,7 +16,7 @@ import { $convertToMarkdownString, TRANSFORMERS } from "@lexical/markdown";
 import ToolbarPlugin from "./plugins/toolbarPlugin";
 import BaseTheme from "./themes";
 // import ActionsPlugin from "./plugins/actionsPlugin";
-import CodeHighlightPlugin from "./plugins/codeHighlightPlugin";
+// import CodeHighlightPlugin from "./plugins/codeHighlightPlugin";
 
 interface IProps {
   setOnChange: (onChange: string) => void;
@@ -73,7 +73,7 @@ export default function Editor({ setOnChange }: IProps) {
           <ListPlugin />
           <LinkPlugin />
           <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-          <CodeHighlightPlugin />
+          {/* <CodeHighlightPlugin /> */}
         </div>
         {/* <ActionsPlugin /> */}
       </div>

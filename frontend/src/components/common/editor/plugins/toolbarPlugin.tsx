@@ -95,59 +95,59 @@ function FloatingLinkEditor({ editor }: any) {
     RangeSelection | NodeSelection | GridSelection | null
   >(null);
 
-  // const updateLinkEditor = useCallback(() => {
-  //   const selection = $getSelection();
-  //   if ($isRangeSelection(selection)) {
-  //     const node = getSelectedNode(selection);
-  //     const parent = node.getParent();
-  //     if ($isLinkNode(parent)) {
-  //       setLinkUrl(parent.getURL());
-  //     } else if ($isLinkNode(node)) {
-  //       setLinkUrl(node.getURL());
-  //     } else {
-  //       setLinkUrl("");
-  //     }
-  //   }
-  //   const editorElem = editorRef.current;
-  //   const nativeSelection = window.getSelection();
-  //   const activeElement = document.activeElement;
+  const updateLinkEditor = useCallback(() => {
+    const selection = $getSelection();
+    if ($isRangeSelection(selection)) {
+      const node = getSelectedNode(selection);
+      const parent = node.getParent();
+      if ($isLinkNode(parent)) {
+        setLinkUrl(parent.getURL());
+      } else if ($isLinkNode(node)) {
+        setLinkUrl(node.getURL());
+      } else {
+        setLinkUrl("");
+      }
+    }
+    const editorElem = editorRef.current;
+    const nativeSelection = window.getSelection();
+    const activeElement = document.activeElement;
 
-  //   if (editorElem === null) {
-  //     return;
-  //   }
+    if (editorElem === null) {
+      return;
+    }
 
-  //   const rootElement = editor.getRootElement();
-  //   if (
-  //     selection !== null &&
-  //     !nativeSelection?.isCollapsed &&
-  //     rootElement !== null &&
-  //     rootElement.contains(nativeSelection?.anchorNode)
-  //   ) {
-  //     const domRange = nativeSelection?.getRangeAt(0);
-  //     let rect;
-  //     if (nativeSelection?.anchorNode === rootElement) {
-  //       let inner = rootElement;
-  //       while (inner.firstElementChild != null) {
-  //         inner = inner.firstElementChild;
-  //       }
-  //       rect = inner.getBoundingClientRect();
-  //     } else {
-  //       rect = domRange?.getBoundingClientRect();
-  //     }
+    const rootElement = editor.getRootElement();
+    if (
+      selection !== null &&
+      !nativeSelection?.isCollapsed &&
+      rootElement !== null &&
+      rootElement.contains(nativeSelection?.anchorNode)
+    ) {
+      const domRange = nativeSelection?.getRangeAt(0);
+      let rect;
+      if (nativeSelection?.anchorNode === rootElement) {
+        let inner = rootElement;
+        while (inner.firstElementChild != null) {
+          inner = inner.firstElementChild;
+        }
+        rect = inner.getBoundingClientRect();
+      } else {
+        rect = domRange?.getBoundingClientRect();
+      }
 
-  //     if (!mouseDownRef.current) {
-  //       positionEditorElement(editorElem, rect);
-  //     }
-  //     setLastSelection(selection);
-  //   } else if (!activeElement || activeElement.className !== "link-input") {
-  //     positionEditorElement(editorElem, null);
-  //     setLastSelection(null);
-  //     setEditMode(false);
-  //     setLinkUrl("");
-  //   }
+      if (!mouseDownRef.current) {
+        positionEditorElement(editorElem, rect);
+      }
+      setLastSelection(selection);
+    } else if (!activeElement || activeElement.className !== "link-input") {
+      positionEditorElement(editorElem, null);
+      setLastSelection(null);
+      setEditMode(false);
+      setLinkUrl("");
+    }
 
-  //   return true;
-  // }, [editor]);
+    return true;
+  }, [editor]);
 
   useEffect(() => {
     return mergeRegister(
@@ -327,7 +327,7 @@ function BlockOptionsDropdownList({
   };
 
   const formatSmallHeading = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
+    event.preventDefault();
 
     if (blockType !== "h2") {
       editor.update(() => {
@@ -342,7 +342,7 @@ function BlockOptionsDropdownList({
   };
 
   const formatBulletList = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
+    event.preventDefault();
 
     if (blockType !== "ul") {
       editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND);
@@ -353,7 +353,7 @@ function BlockOptionsDropdownList({
   };
 
   const formatNumberedList = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
+    event.preventDefault();
 
     if (blockType !== "ol") {
       editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND);
@@ -364,7 +364,7 @@ function BlockOptionsDropdownList({
   };
 
   const formatQuote = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
+    event.preventDefault();
 
     if (blockType !== "quote") {
       editor.update(() => {
@@ -379,7 +379,7 @@ function BlockOptionsDropdownList({
   };
 
   const formatCode = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
+    event.preventDefault();
 
     if (blockType !== "code") {
       editor.update(() => {
@@ -444,7 +444,7 @@ export default function ToolbarPlugin() {
   const [showBlockOptionsDropDown, setShowBlockOptionsDropDown] =
     useState(false);
   const [codeLanguage, setCodeLanguage] = useState("");
-  // const [isLink, setIsLink] = useState(false);
+  const [isLink, setIsLink] = useState(false);
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderline, setIsUnderline] = useState(false);
@@ -485,13 +485,13 @@ export default function ToolbarPlugin() {
       setIsCode(selection.hasFormat("code"));
 
       // Update links
-      // const node = getSelectedNode(selection);
-      // const parent = node.getParent();
-      // if ($isLinkNode(parent) || $isLinkNode(node)) {
-      //   setIsLink(true);
-      // } else {
-      //   setIsLink(false);
-      // }
+      const node = getSelectedNode(selection);
+      const parent = node.getParent();
+      if ($isLinkNode(parent) || $isLinkNode(node)) {
+        setIsLink(true);
+      } else {
+        setIsLink(false);
+      }
     }
   }, [editor]);
 
@@ -528,15 +528,18 @@ export default function ToolbarPlugin() {
     [editor, selectedElementKey]
   );
 
-  // const insertLink = useCallback((event: MouseEvent<HTMLButtonElement>) => {
-  //   event.preventDefault()
+  const insertLink = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
 
-  //   if (!isLink) {
-  //     editor.dispatchCommand(TOGGLE_LINK_COMMAND, "https://");
-  //   } else {
-  //     editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
-  //   }
-  // }, [editor, isLink]);
+      if (!isLink) {
+        editor.dispatchCommand(TOGGLE_LINK_COMMAND, "https://");
+      } else {
+        editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
+      }
+    },
+    [editor, isLink]
+  );
 
   return (
     <div className="toolbar" ref={toolbarRef}>
@@ -545,8 +548,8 @@ export default function ToolbarPlugin() {
           <button
             className="toolbar-item block-controls"
             onClick={(event: MouseEvent<HTMLButtonElement>) => {
-              event.preventDefault()
-              setShowBlockOptionsDropDown(!showBlockOptionsDropDown)
+              event.preventDefault();
+              setShowBlockOptionsDropDown(!showBlockOptionsDropDown);
             }}
             aria-label="Formatting Options"
           >
@@ -581,7 +584,7 @@ export default function ToolbarPlugin() {
         <>
           <button
             onClick={(event: MouseEvent<HTMLButtonElement>) => {
-              event.preventDefault()
+              event.preventDefault();
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold");
             }}
             className={"toolbar-item spaced " + (isBold ? "active" : "")}
@@ -591,7 +594,7 @@ export default function ToolbarPlugin() {
           </button>
           <button
             onClick={(event: MouseEvent<HTMLButtonElement>) => {
-              event.preventDefault()
+              event.preventDefault();
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic");
             }}
             className={"toolbar-item spaced " + (isItalic ? "active" : "")}
@@ -600,7 +603,8 @@ export default function ToolbarPlugin() {
             <i className="format italic" />
           </button>
           <button
-            onClick={() => {
+            onClick={(event: MouseEvent<HTMLButtonElement>) => {
+              event.preventDefault();
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline");
             }}
             className={"toolbar-item spaced " + (isUnderline ? "active" : "")}
@@ -610,7 +614,7 @@ export default function ToolbarPlugin() {
           </button>
           <button
             onClick={(event: MouseEvent<HTMLButtonElement>) => {
-              event.preventDefault()
+              event.preventDefault();
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, "strikethrough");
             }}
             className={
