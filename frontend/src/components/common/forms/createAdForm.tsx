@@ -39,7 +39,7 @@ const schema = z.object({
   period: z.string(),
   size: z.string(),
   price: z.string().min(2, { message: "Please enter amount" }),
-  description: z.string().min(1),
+  // description: z.string().min(1),
 });
 
 export const CreateAdForm: FC<IImageUpload> = () => {
@@ -49,8 +49,9 @@ export const CreateAdForm: FC<IImageUpload> = () => {
   const [isCategory, setIsCategory] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedType, setSelectedType] = useState("");
-  const [loading, setLoading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const onDrop = useCallback(async (acceptedFiles: any) => {
     const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/upload`;
@@ -388,9 +389,9 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                           placeholder="Give brief description about this property"
                         ></textarea> */}
 
-                        <Editor />
+                        <Editor setOnChange={setDescription} />
                       </div>
-                      
+
                       {/* Price */}
                       <div className="col-span-2">
                         <div className="mt-1 relative rounded-md shadow-sm">
@@ -421,7 +422,12 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                 <button
                   type="button"
                   onClick={onSubmit}
-                  disabled={loading || !isCategory || uploadedFiles.length < 1}
+                  disabled={
+                    loading ||
+                    !isCategory ||
+                    uploadedFiles.length < 1 ||
+                    description === ""
+                  }
                   className={`mt-5 transition duration-200 bg-purple-600 focus:bg-purple-800 focus:shadow-sm focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50 w-full py-2.5 rounded-lg text-lg shadow-sm hover:shadow-md font-semibold text-center flex justify-center items-center disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 ${
                     loading
                       ? "hover:bg-purple-300 text-gray-300"

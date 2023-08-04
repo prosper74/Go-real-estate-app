@@ -19,6 +19,10 @@ import BaseTheme from "./themes";
 import ActionsPlugin from "./plugins/actionsPlugin";
 import CodeHighlightPlugin from "./plugins/codeHighlightPlugin";
 
+interface IProps {
+  setOnChange: (onChange: string) => void;
+}
+
 function Placeholder() {
   return (
     <div className="editor-placeholder">
@@ -47,18 +51,15 @@ const editorConfig = {
   ],
 };
 
-const onChange = (editorState: any) => {
-  editorState.read(() => {
-    const root = $getRoot();
+export default function Editor({ setOnChange }: IProps) {
+  const onChange = (editorState: any) => {
+    editorState.read(() => {
+      const markdownString = $convertToMarkdownString(TRANSFORMERS);
 
-    const markdownString = $convertToMarkdownString(TRANSFORMERS);
+      setOnChange(markdownString)
+    });
+  };
 
-    console.log("Root: ", root);
-    console.log("String: ", markdownString);
-  });
-};
-
-export default function Editor() {
   return (
     <LexicalComposer initialConfig={editorConfig}>
       <div className="editor-container">
