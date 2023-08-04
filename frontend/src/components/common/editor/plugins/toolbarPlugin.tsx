@@ -1,4 +1,12 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  MouseEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   SELECTION_CHANGE_COMMAND,
   FORMAT_TEXT_COMMAND,
@@ -8,7 +16,7 @@ import {
   $getNodeByKey,
   RangeSelection,
   NodeSelection,
-  GridSelection
+  GridSelection,
 } from "lexical";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
@@ -19,19 +27,19 @@ import {
   INSERT_UNORDERED_LIST_COMMAND,
   REMOVE_LIST_COMMAND,
   $isListNode,
-  ListNode
+  ListNode,
 } from "@lexical/list";
 import { createPortal } from "react-dom";
 import {
   $createHeadingNode,
   $createQuoteNode,
-  $isHeadingNode
+  $isHeadingNode,
 } from "@lexical/rich-text";
 import {
   $createCodeNode,
   $isCodeNode,
   getDefaultCodeLanguage,
-  getCodeLanguages
+  getCodeLanguages,
 } from "@lexical/code";
 
 const LowPriority = 1;
@@ -43,7 +51,7 @@ const supportedBlockTypes = new Set([
   "h1",
   "h2",
   "ul",
-  "ol"
+  "ol",
 ]);
 
 const blockTypeToBlockName = {
@@ -56,7 +64,7 @@ const blockTypeToBlockName = {
   ol: "Numbered List",
   paragraph: "Normal",
   quote: "Quote",
-  ul: "Bulleted List"
+  ul: "Bulleted List",
 };
 
 function Divider() {
@@ -83,61 +91,63 @@ function FloatingLinkEditor({ editor }: any) {
   const mouseDownRef = useRef(false);
   const [linkUrl, setLinkUrl] = useState("");
   const [isEditMode, setEditMode] = useState(false);
-  const [lastSelection, setLastSelection] = useState<RangeSelection | NodeSelection | GridSelection | null>(null);
+  const [lastSelection, setLastSelection] = useState<
+    RangeSelection | NodeSelection | GridSelection | null
+  >(null);
 
-  const updateLinkEditor = useCallback(() => {
-    const selection = $getSelection();
-    if ($isRangeSelection(selection)) {
-      const node = getSelectedNode(selection);
-      const parent = node.getParent();
-      if ($isLinkNode(parent)) {
-        setLinkUrl(parent.getURL());
-      } else if ($isLinkNode(node)) {
-        setLinkUrl(node.getURL());
-      } else {
-        setLinkUrl("");
-      }
-    }
-    const editorElem = editorRef.current;
-    const nativeSelection = window.getSelection();
-    const activeElement = document.activeElement;
+  // const updateLinkEditor = useCallback(() => {
+  //   const selection = $getSelection();
+  //   if ($isRangeSelection(selection)) {
+  //     const node = getSelectedNode(selection);
+  //     const parent = node.getParent();
+  //     if ($isLinkNode(parent)) {
+  //       setLinkUrl(parent.getURL());
+  //     } else if ($isLinkNode(node)) {
+  //       setLinkUrl(node.getURL());
+  //     } else {
+  //       setLinkUrl("");
+  //     }
+  //   }
+  //   const editorElem = editorRef.current;
+  //   const nativeSelection = window.getSelection();
+  //   const activeElement = document.activeElement;
 
-    if (editorElem === null) {
-      return;
-    }
+  //   if (editorElem === null) {
+  //     return;
+  //   }
 
-    const rootElement = editor.getRootElement();
-    if (
-      selection !== null &&
-      !nativeSelection?.isCollapsed &&
-      rootElement !== null &&
-      rootElement.contains(nativeSelection?.anchorNode)
-    ) {
-      const domRange = nativeSelection?.getRangeAt(0);
-      let rect;
-      if (nativeSelection?.anchorNode === rootElement) {
-        let inner = rootElement;
-        while (inner.firstElementChild != null) {
-          inner = inner.firstElementChild;
-        }
-        rect = inner.getBoundingClientRect();
-      } else {
-        rect = domRange?.getBoundingClientRect();
-      }
+  //   const rootElement = editor.getRootElement();
+  //   if (
+  //     selection !== null &&
+  //     !nativeSelection?.isCollapsed &&
+  //     rootElement !== null &&
+  //     rootElement.contains(nativeSelection?.anchorNode)
+  //   ) {
+  //     const domRange = nativeSelection?.getRangeAt(0);
+  //     let rect;
+  //     if (nativeSelection?.anchorNode === rootElement) {
+  //       let inner = rootElement;
+  //       while (inner.firstElementChild != null) {
+  //         inner = inner.firstElementChild;
+  //       }
+  //       rect = inner.getBoundingClientRect();
+  //     } else {
+  //       rect = domRange?.getBoundingClientRect();
+  //     }
 
-      if (!mouseDownRef.current) {
-        positionEditorElement(editorElem, rect);
-      }
-      setLastSelection(selection);
-    } else if (!activeElement || activeElement.className !== "link-input") {
-      positionEditorElement(editorElem, null);
-      setLastSelection(null);
-      setEditMode(false);
-      setLinkUrl("");
-    }
+  //     if (!mouseDownRef.current) {
+  //       positionEditorElement(editorElem, rect);
+  //     }
+  //     setLastSelection(selection);
+  //   } else if (!activeElement || activeElement.className !== "link-input") {
+  //     positionEditorElement(editorElem, null);
+  //     setLastSelection(null);
+  //     setEditMode(false);
+  //     setLinkUrl("");
+  //   }
 
-    return true;
-  }, [editor]);
+  //   return true;
+  // }, [editor]);
 
   useEffect(() => {
     return mergeRegister(
@@ -206,7 +216,8 @@ function FloatingLinkEditor({ editor }: any) {
               role="button"
               tabIndex={0}
               onMouseDown={(event) => event.preventDefault()}
-              onClick={() => {
+              onClick={(event) => {
+                event.preventDefault();
                 setEditMode(true);
               }}
             />
@@ -250,7 +261,7 @@ function BlockOptionsDropdownList({
   editor,
   blockType,
   toolbarRef,
-  setShowBlockOptionsDropDown
+  setShowBlockOptionsDropDown,
 }) {
   const dropDownRef = useRef(null);
 
@@ -285,7 +296,9 @@ function BlockOptionsDropdownList({
     }
   }, [dropDownRef, setShowBlockOptionsDropDown, toolbarRef]);
 
-  const formatParagraph = () => {
+  const formatParagraph = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
     if (blockType !== "paragraph") {
       editor.update(() => {
         const selection = $getSelection();
@@ -298,7 +311,9 @@ function BlockOptionsDropdownList({
     setShowBlockOptionsDropDown(false);
   };
 
-  const formatLargeHeading = () => {
+  const formatLargeHeading = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
     if (blockType !== "h1") {
       editor.update(() => {
         const selection = $getSelection();
@@ -311,7 +326,9 @@ function BlockOptionsDropdownList({
     setShowBlockOptionsDropDown(false);
   };
 
-  const formatSmallHeading = () => {
+  const formatSmallHeading = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+
     if (blockType !== "h2") {
       editor.update(() => {
         const selection = $getSelection();
@@ -324,7 +341,9 @@ function BlockOptionsDropdownList({
     setShowBlockOptionsDropDown(false);
   };
 
-  const formatBulletList = () => {
+  const formatBulletList = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+
     if (blockType !== "ul") {
       editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND);
     } else {
@@ -333,7 +352,9 @@ function BlockOptionsDropdownList({
     setShowBlockOptionsDropDown(false);
   };
 
-  const formatNumberedList = () => {
+  const formatNumberedList = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+
     if (blockType !== "ol") {
       editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND);
     } else {
@@ -342,7 +363,9 @@ function BlockOptionsDropdownList({
     setShowBlockOptionsDropDown(false);
   };
 
-  const formatQuote = () => {
+  const formatQuote = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+
     if (blockType !== "quote") {
       editor.update(() => {
         const selection = $getSelection();
@@ -355,7 +378,9 @@ function BlockOptionsDropdownList({
     setShowBlockOptionsDropDown(false);
   };
 
-  const formatCode = () => {
+  const formatCode = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+
     if (blockType !== "code") {
       editor.update(() => {
         const selection = $getSelection();
@@ -400,11 +425,11 @@ function BlockOptionsDropdownList({
         <span className="text">Quote</span>
         {blockType === "quote" && <span className="active" />}
       </button>
-      <button className="item" onClick={formatCode}>
+      {/* <button className="item" onClick={formatCode}>
         <span className="icon code" />
         <span className="text">Code Block</span>
         {blockType === "code" && <span className="active" />}
-      </button>
+      </button> */}
     </div>
   );
 }
@@ -413,12 +438,13 @@ export default function ToolbarPlugin() {
   const [editor] = useLexicalComposerContext();
   const toolbarRef = useRef(null);
   const [blockType, setBlockType] = useState("paragraph");
-  const [selectedElementKey, setSelectedElementKey] = useState<string | null>(null);
-  const [showBlockOptionsDropDown, setShowBlockOptionsDropDown] = useState(
-    false
+  const [selectedElementKey, setSelectedElementKey] = useState<string | null>(
+    null
   );
+  const [showBlockOptionsDropDown, setShowBlockOptionsDropDown] =
+    useState(false);
   const [codeLanguage, setCodeLanguage] = useState("");
-  const [isLink, setIsLink] = useState(false);
+  // const [isLink, setIsLink] = useState(false);
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderline, setIsUnderline] = useState(false);
@@ -459,13 +485,13 @@ export default function ToolbarPlugin() {
       setIsCode(selection.hasFormat("code"));
 
       // Update links
-      const node = getSelectedNode(selection);
-      const parent = node.getParent();
-      if ($isLinkNode(parent) || $isLinkNode(node)) {
-        setIsLink(true);
-      } else {
-        setIsLink(false);
-      }
+      // const node = getSelectedNode(selection);
+      // const parent = node.getParent();
+      // if ($isLinkNode(parent) || $isLinkNode(node)) {
+      //   setIsLink(true);
+      // } else {
+      //   setIsLink(false);
+      // }
     }
   }, [editor]);
 
@@ -489,7 +515,7 @@ export default function ToolbarPlugin() {
 
   const codeLanguges = useMemo(() => getCodeLanguages(), []);
   const onCodeLanguageSelect = useCallback(
-    (e) => {
+    (e: ChangeEvent<HTMLSelectElement>) => {
       editor.update(() => {
         if (selectedElementKey !== null) {
           const node = $getNodeByKey(selectedElementKey);
@@ -502,13 +528,15 @@ export default function ToolbarPlugin() {
     [editor, selectedElementKey]
   );
 
-  const insertLink = useCallback(() => {
-    if (!isLink) {
-      editor.dispatchCommand(TOGGLE_LINK_COMMAND, "https://");
-    } else {
-      editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
-    }
-  }, [editor, isLink]);
+  // const insertLink = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+  //   event.preventDefault()
+
+  //   if (!isLink) {
+  //     editor.dispatchCommand(TOGGLE_LINK_COMMAND, "https://");
+  //   } else {
+  //     editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
+  //   }
+  // }, [editor, isLink]);
 
   return (
     <div className="toolbar" ref={toolbarRef}>
@@ -516,9 +544,10 @@ export default function ToolbarPlugin() {
         <>
           <button
             className="toolbar-item block-controls"
-            onClick={() =>
+            onClick={(event: MouseEvent<HTMLButtonElement>) => {
+              event.preventDefault()
               setShowBlockOptionsDropDown(!showBlockOptionsDropDown)
-            }
+            }}
             aria-label="Formatting Options"
           >
             <span className={"icon block-type " + blockType} />
@@ -551,7 +580,8 @@ export default function ToolbarPlugin() {
       ) : (
         <>
           <button
-            onClick={() => {
+            onClick={(event: MouseEvent<HTMLButtonElement>) => {
+              event.preventDefault()
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold");
             }}
             className={"toolbar-item spaced " + (isBold ? "active" : "")}
@@ -560,7 +590,8 @@ export default function ToolbarPlugin() {
             <i className="format bold" />
           </button>
           <button
-            onClick={() => {
+            onClick={(event: MouseEvent<HTMLButtonElement>) => {
+              event.preventDefault()
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic");
             }}
             className={"toolbar-item spaced " + (isItalic ? "active" : "")}
@@ -578,7 +609,8 @@ export default function ToolbarPlugin() {
             <i className="format underline" />
           </button>
           <button
-            onClick={() => {
+            onClick={(event: MouseEvent<HTMLButtonElement>) => {
+              event.preventDefault()
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, "strikethrough");
             }}
             className={
@@ -588,16 +620,17 @@ export default function ToolbarPlugin() {
           >
             <i className="format strikethrough" />
           </button>
-          <button
-            onClick={() => {
+          {/* <button
+            onClick={(event: MouseEvent<HTMLButtonElement>) => {
+              event.preventDefault()
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, "code");
             }}
             className={"toolbar-item spaced " + (isCode ? "active" : "")}
             aria-label="Insert Code"
           >
             <i className="format code" />
-          </button>
-          <button
+          </button> */}
+          {/* <button
             onClick={insertLink}
             className={"toolbar-item spaced " + (isLink ? "active" : "")}
             aria-label="Insert Link"
@@ -605,7 +638,7 @@ export default function ToolbarPlugin() {
             <i className="format link" />
           </button>
           {isLink &&
-            createPortal(<FloatingLinkEditor editor={editor} />, document.body)}
+            createPortal(<FloatingLinkEditor editor={editor} />, document.body)} */}
         </>
       )}
     </div>
