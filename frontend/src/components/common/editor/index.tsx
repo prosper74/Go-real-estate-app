@@ -1,4 +1,3 @@
-import { $getRoot } from "lexical";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
@@ -16,7 +15,7 @@ import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPl
 import { $convertToMarkdownString, TRANSFORMERS } from "@lexical/markdown";
 import ToolbarPlugin from "./plugins/toolbarPlugin";
 import BaseTheme from "./themes";
-import ActionsPlugin from "./plugins/actionsPlugin";
+// import ActionsPlugin from "./plugins/actionsPlugin";
 import CodeHighlightPlugin from "./plugins/codeHighlightPlugin";
 
 interface IProps {
@@ -76,7 +75,7 @@ export default function Editor({ setOnChange }: IProps) {
           <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
           <CodeHighlightPlugin />
         </div>
-        <ActionsPlugin />
+        {/* <ActionsPlugin /> */}
       </div>
       <OnChangePlugin onChange={onChange} />
       <HistoryPlugin />
