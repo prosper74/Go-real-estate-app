@@ -42,12 +42,13 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Post("/login", handlers.Repo.Login)
 	mux.Post("/forgot-password", handlers.Repo.SendPasswordResetEmail)
 	mux.Get("/user/logout", handlers.Repo.Logout)
-	mux.Post("/user/update-image-and-phone", handlers.Repo.UpdateUserImageAndPhone)
-	mux.Post("/user/verification", handlers.Repo.InsertAccountVerification)
 	mux.Post("/reset-password", handlers.Repo.UpdateUserPassword)
 
 	// user dashboard
 	mux.Get("/auth/dashboard", handlers.Repo.UserDashboard)
+	mux.Post("/user/update-image-and-phone", handlers.Repo.UpdateUserImageAndPhone)
+	mux.Post("/user/verification", handlers.Repo.InsertAccountVerification)
+	mux.Post("/user/create-ad", handlers.Repo.CreateNewProperty)
 
 	mux.Route("/admin", func(mux chi.Router) {
 		// Use the Auth middleware
