@@ -103,7 +103,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
         `${process.env.NEXT_PUBLIC_REST_API}/user/create-ad`,
         {
           title: data.title,
-          description: data.description,
+          description,
           price: data.price,
           type: data.type,
           category:

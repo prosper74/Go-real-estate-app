@@ -869,7 +869,7 @@ func (m *Repository) UpdateUserPassword(w http.ResponseWriter, r *http.Request) 
 	w.Write(resp)
 }
 
-// Create a new property 
+// Create a new property
 func (m *Repository) CreateNewProperty(w http.ResponseWriter, r *http.Request) {
 	property := models.Property{}
 	data := make(map[string]interface{})
@@ -886,7 +886,12 @@ func (m *Repository) CreateNewProperty(w http.ResponseWriter, r *http.Request) {
 	property.Type = r.PostFormValue("type")
 	property.CategoryID, _ = strconv.Atoi(r.PostFormValue("category"))
 
-	log.Println("------- Property: ", property, "--------")
+	imageURLs := r.PostFormValue("images")
+	images := strings.Split(imageURLs, ",")
+	property.Images = images
+	// property.Images = r.PostFormValue("images")
+
+	log.Println("------- Property: ", property.Images, "--------")
 
 	data["message"] = "Successful"
 	out, _ := json.MarshalIndent(data, "", "    ")
