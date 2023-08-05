@@ -886,6 +886,8 @@ func (m *Repository) CreateNewProperty(w http.ResponseWriter, r *http.Request) {
 	property.Type = r.PostFormValue("type")
 	property.CategoryID, _ = strconv.Atoi(r.PostFormValue("category"))
 
+	log.Println("------- Property: ", property, "--------")
+
 	data["message"] = "Successful"
 	out, _ := json.MarshalIndent(data, "", "    ")
 
