@@ -868,3 +868,27 @@ func (m *Repository) UpdateUserPassword(w http.ResponseWriter, r *http.Request) 
 	resp := []byte(out)
 	w.Write(resp)
 }
+
+// Create a new property 
+func (m *Repository) CreateNewProperty(w http.ResponseWriter, r *http.Request) {
+	property := models.Property{}
+	data := make(map[string]interface{})
+
+	err := r.ParseForm()
+	if err != nil {
+		m.App.Session.Put(r.Context(), "error", "Can't parse form")
+		return
+	}
+
+	property.Title = r.PostFormValue("title")
+	property.Description = r.PostFormValue("description")
+	property.Price = r.PostFormValue("price")
+	property.Type = r.PostFormValue("type")
+	property.CategoryID, _ = strconv.Atoi(r.PostFormValue("category"))
+
+	data["message"] = "Successful"
+	out, _ := json.MarshalIndent(data, "", "    ")
+
+	resp := []byte(out)
+	w.Write(resp)
+}
