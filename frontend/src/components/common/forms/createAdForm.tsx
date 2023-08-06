@@ -118,7 +118,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
           city: data.city,
           bedroom: selectedType === "Land" ? "" : data.bedroom,
           bathroom: selectedType === "Land" ? "" : data.bathroom,
-          period: selectedCategory === "Buy" ? "" : data.period,
+          duration: selectedCategory === "Buy" ? "" : data.period,
           status: "pending",
           size: data.size,
           images: imagesURL,

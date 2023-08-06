@@ -884,8 +884,17 @@ func (m *Repository) CreateNewProperty(w http.ResponseWriter, r *http.Request) {
 	property.Description = r.PostFormValue("description")
 	property.Price = r.PostFormValue("price")
 	property.Type = r.PostFormValue("type")
+	property.State = r.PostFormValue("state")
+	property.City = r.PostFormValue("city")
+	property.Bedroom = r.PostFormValue("bedroom")
+	property.Bathroom = r.PostFormValue("bathroom")
+	property.Duration = r.PostFormValue("duration")
+	property.Status = r.PostFormValue("status")
+	property.Size = r.PostFormValue("size")
+	property.UserID, _ = strconv.Atoi(r.PostFormValue("user_id"))
 	property.CategoryID, _ = strconv.Atoi(r.PostFormValue("category"))
 	property.Images = helpers.ConvertStringToURLSlice(r.PostFormValue("images"))
+	tokenString := r.PostFormValue("jwt")
 	
 	log.Println("------- properties: ", property, "--------")
 
