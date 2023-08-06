@@ -876,7 +876,7 @@ func (m *Repository) CreateNewProperty(w http.ResponseWriter, r *http.Request) {
 
 	err := r.ParseForm()
 	if err != nil {
-		m.App.Session.Put(r.Context(), "error", "Can't parse form")
+		http.Error(w, "Can't parse form", http.StatusBadRequest)
 		return
 	}
 
@@ -884,18 +884,36 @@ func (m *Repository) CreateNewProperty(w http.ResponseWriter, r *http.Request) {
 	property.Description = r.PostFormValue("description")
 	property.Price = r.PostFormValue("price")
 	property.Type = r.PostFormValue("type")
-	property.CategoryID, _ = strconv.Atoi(r.PostFormValue("category"))
 
-	imageURLs := r.PostFormValue("images")
-	images := strings.Split(imageURLs, ",")
-	property.Images = images
-	// property.Images = r.PostFormValue("images")
+	categoryID, err := strconv.Atoi(r.PostFormValue("category"))
+	if err != nil {
+		http.Error(w, "Invalid category ID", http.StatusBadRequest)
+		return
+	}
+	property.CategoryID = categoryID
 
-	log.Println("------- Property: ", property.Images, "--------")
+	if imageURLs := r.FormValue("images"); imageURLs != "" {
+		images := strings.Split(imageURLs, ",")
+		for i := range images {
+			images[i] = strings.TrimSpace(images[i])
+		}
+		property.Images = images
+	}
+
+	// imageURLs := r.PostFormValue("images")
+	// images := strings.Split(imageURLs, ",")
+	// for i := range images {
+	// 	images[i] = strings.TrimSpace(images[i])
+	// }
+	// property.Images = images
+
+	log.Println("------- Property Images: ", property.Images, "--------")
+	fmt.Println("--------------------------------------------------------")
+	log.Println("------- properties: ", property, "--------")
 
 	data["message"] = "Successful"
 	out, _ := json.MarshalIndent(data, "", "    ")
 
-	resp := []byte(out)
-	w.Write(resp)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
 }

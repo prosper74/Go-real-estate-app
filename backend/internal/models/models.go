@@ -41,7 +41,7 @@ type Category struct {
 	UpdatedAt time.Time
 }
 
-// Reservation is the reservation model
+// Property struct
 type Property struct {
 	ID          int
 	Title       string

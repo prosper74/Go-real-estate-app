@@ -50,6 +50,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [uploadedFiles, setUploadedFiles] = useState([]);
+  // const [imagesURLs, setImagesURLs] = useState([]);
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -97,6 +98,8 @@ export const CreateAdForm: FC<IImageUpload> = () => {
   });
 
   const onSubmit = handleSubmit((data) => {
+    const imageURLs = uploadedFiles.map((image) => image.url)
+    console.log("Submitted Uploaded File: ", imageURLs);
     setLoading(true);
     axios
       .post(
@@ -163,6 +166,8 @@ export const CreateAdForm: FC<IImageUpload> = () => {
       ? setIsCategory(true)
       : setIsCategory(false);
   });
+
+  // console.log("Uploaded File: ", uploadedFiles);
 
   return (
     <>
