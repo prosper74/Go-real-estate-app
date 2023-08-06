@@ -98,8 +98,8 @@ export const CreateAdForm: FC<IImageUpload> = () => {
   });
 
   const onSubmit = handleSubmit((data) => {
-    const imageURLs = uploadedFiles.map((image) => image.url)
-    console.log("Submitted Uploaded File: ", imageURLs);
+    const imagesURL = uploadedFiles.map((item: any) => item.url).join(', ')
+    console.log("Submitted Uploaded File: ", imagesURL);
     setLoading(true);
     axios
       .post(
@@ -122,7 +122,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
           period: selectedCategory === "Buy" ? "" : data.period,
           status: "pending",
           size: data.size,
-          images: uploadedFiles,
+          images: imagesURL,
           user_id: user.userId,
           jwt: user.jwt,
         },

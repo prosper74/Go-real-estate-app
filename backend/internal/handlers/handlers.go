@@ -892,22 +892,12 @@ func (m *Repository) CreateNewProperty(w http.ResponseWriter, r *http.Request) {
 	}
 	property.CategoryID = categoryID
 
-	if imageURLs := r.FormValue("images"); imageURLs != "" {
-		images := strings.Split(imageURLs, ",")
-		for i := range images {
-			images[i] = strings.TrimSpace(images[i])
-		}
-		property.Images = images
-	}
+	// Convert comma-separated URLs to slice of strings
+	imageURLs := r.PostFormValue("images")
+	images := strings.Split(imageURLs, ",")
+	property.Images = images
 
-	// imageURLs := r.PostFormValue("images")
-	// images := strings.Split(imageURLs, ",")
-	// for i := range images {
-	// 	images[i] = strings.TrimSpace(images[i])
-	// }
-	// property.Images = images
-
-	log.Println("------- Property Images: ", property.Images, "--------")
+	log.Println("------- Property Images: ", imageURLs, "--------")
 	fmt.Println("--------------------------------------------------------")
 	log.Println("------- properties: ", property, "--------")
 
