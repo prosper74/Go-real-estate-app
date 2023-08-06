@@ -99,7 +99,6 @@ export const CreateAdForm: FC<IImageUpload> = () => {
 
   const onSubmit = handleSubmit((data) => {
     const imagesURL = uploadedFiles.map((item: any) => item.url).join(', ')
-    console.log("Submitted Uploaded File: ", imagesURL);
     setLoading(true);
     axios
       .post(
@@ -166,8 +165,6 @@ export const CreateAdForm: FC<IImageUpload> = () => {
       ? setIsCategory(true)
       : setIsCategory(false);
   });
-
-  // console.log("Uploaded File: ", uploadedFiles);
 
   return (
     <>

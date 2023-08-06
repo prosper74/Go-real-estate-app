@@ -884,21 +884,9 @@ func (m *Repository) CreateNewProperty(w http.ResponseWriter, r *http.Request) {
 	property.Description = r.PostFormValue("description")
 	property.Price = r.PostFormValue("price")
 	property.Type = r.PostFormValue("type")
-
-	categoryID, err := strconv.Atoi(r.PostFormValue("category"))
-	if err != nil {
-		http.Error(w, "Invalid category ID", http.StatusBadRequest)
-		return
-	}
-	property.CategoryID = categoryID
-
-	// Convert comma-separated URLs to slice of strings
-	imageURLs := r.PostFormValue("images")
-	images := strings.Split(imageURLs, ",")
-	property.Images = images
-
-	log.Println("------- Property Images: ", imageURLs, "--------")
-	fmt.Println("--------------------------------------------------------")
+	property.CategoryID, _ = strconv.Atoi(r.PostFormValue("category"))
+	property.Images = helpers.ConvertStringToURLSlice(r.PostFormValue("images"))
+	
 	log.Println("------- properties: ", property, "--------")
 
 	data["message"] = "Successful"

@@ -56,6 +56,18 @@ func ConvertPostgresArrayToStringSlice(arrayString string) []string {
 	return elements
 }
 
+func ConvertStringToURLSlice(imageURLs string) []string {
+	// Split the string into individual URLs
+	images := strings.Split(imageURLs, ",")
+
+	// Trim any leading or trailing whitespace from the URLs
+	for i, imageURL := range images {
+		images[i] = strings.TrimSpace(imageURL)
+	}
+
+	return images
+}
+
 func GenerateJWTToken(userID int) (string, error) {
 	err := godotenv.Load()
 	if err != nil {
