@@ -24,4 +24,5 @@ type DatabaseRepo interface {
 	GetPropertyByID(id int) (models.Property, error)
 	GetPropertiesByType(propertyType string) ([]models.Property, error)
 	GetUserPropertiesByID(userID string) ([]models.Property, error)
+	InsertNewProperty(property models.Property) error
 }
