@@ -829,3 +829,19 @@ func (repo *postgresDBRepo) UpdateUserPassword(user models.User) error {
 
 	return nil
 }
+
+// InsertNewProperty inserts a new property for a user
+func (repo *postgresDBRepo) InsertNewProperty(property models.Property) error {
+	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `insert into properties (title, description, price, type, duration, size, city, state, bedroom, bathroom, status, images, category_id, user_id, created_at, updated_at) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`
+
+	_, err := repo.DB.ExecContext(context, query, property.Title, property.Description, property.Price, property.Type, property.Duration, property.Size, property.City, property.State, property.Bedroom, property.Bathroom, property.Status, property.Images, property.CategoryID, property.UserID, time.Now(), time.Now())
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
