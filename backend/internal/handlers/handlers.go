@@ -919,7 +919,15 @@ func (m *Repository) CreateNewProperty(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if token.Valid {
-		// Perform logic
+		err = m.DB.InsertNewProperty(property)
+		if err != nil {
+			helpers.ServerError(w, err)
+			data["error"] = "Unable to insert a new property. Please contact support"
+			out, _ := json.MarshalIndent(data, "", "    ")
+			resp := []byte(out)
+			w.Write(resp)
+			return
+		}
 	} else {
 		http.Error(w, "Invalid token", http.StatusBadRequest)
 		data["error"] = fmt.Sprintf("Invalid token, please contact support. Error: %s", err)
