@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Tooltip } from "flowbite-react";
 import { HelpIcon, LocationIcon } from "../helpers/svgIcons";
 import { SingleProperty } from "../helpers/interfaces";
 import { PropertyCardMeta } from "./propertyMeta";
@@ -18,7 +19,7 @@ export default function PropertyCard({
     <Link
       href={
         property.Status === "pending"
-          ? ""
+          ? "#!"
           : property.Title
           ? `/${property?.Category?.Title.toLowerCase()}/property?title=${property?.Title.toLowerCase().replace(
               / /g,
@@ -79,9 +80,14 @@ export default function PropertyCard({
         </div>
 
         {property.Status === "pending" && (
-          <span className="bg-primary rounded-lg pt-[1px] pb-[3px] px-[8px] italic text-white">
-            {property.Status}
-          </span>
+          <Tooltip
+            content="Your property is under review and will be live when review is completed by our agent"
+            style="light"
+          >
+            <span className="bg-primary rounded-lg pt-[1px] pb-[3px] px-[8px] italic text-white">
+              Pending
+            </span>
+          </Tooltip>
         )}
       </div>
     </Link>
