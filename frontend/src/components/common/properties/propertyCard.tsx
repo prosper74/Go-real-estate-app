@@ -17,7 +17,9 @@ export default function PropertyCard({
   return (
     <Link
       href={
-        property.Title
+        property.Status === "pending"
+          ? ""
+          : property.Title
           ? `/${property?.Category?.Title.toLowerCase()}/property?title=${property?.Title.toLowerCase().replace(
               / /g,
               "-"
@@ -64,7 +66,7 @@ export default function PropertyCard({
 
         <PropertyCardMeta property={property} />
 
-        <div className="flex items-center justify-between mt-4">
+        <div className="flex items-center justify-between my-4">
           {property.Category.Title === "Buy" ? (
             "Buy for life"
           ) : (
@@ -75,6 +77,12 @@ export default function PropertyCard({
             ₦{Number(property.Price).toLocaleString()}
           </h3>
         </div>
+
+        {property.Status === "pending" && (
+          <span className="bg-primary rounded-lg pt-[1px] pb-[3px] px-[8px] italic text-white">
+            {property.Status}
+          </span>
+        )}
       </div>
     </Link>
   );
