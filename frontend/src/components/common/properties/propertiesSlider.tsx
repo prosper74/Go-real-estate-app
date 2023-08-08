@@ -34,7 +34,7 @@ export default function PropertySlider({ properties }: IProps) {
           ))
         ) : (
           <SwiperSlide >
-            <h4 className="h-52 flex items-center justify-center text-2xl">No Item found</h4>
+            <h4 className="h-32 flex items-center justify-center text-2xl">No Item found</h4>
           </SwiperSlide>
         )}
       </Swiper>
