@@ -56,20 +56,6 @@ func ConvertPostgresArrayToStringSlice(arrayString string) []string {
 	return elements
 }
 
-func ConvertSliceToPostgresArrayString(slice []string) string {
-	// Enclose each element in single quotes
-	quotedElements := make([]string, len(slice))
-	for i, element := range slice {
-		quotedElements[i] = "'" + element + "'"
-	}
-
-	// Join the individual elements with commas
-	joinedString := strings.Join(quotedElements, ",")
-
-	// Enclose the string in curly braces to form the PostgreSQL array representation
-	return "{" + joinedString + "}"
-}
-
 func ConvertStringToURLSlice(imageURLs string) []string {
 	// Split the string into individual URLs
 	images := strings.Split(imageURLs, ",")
