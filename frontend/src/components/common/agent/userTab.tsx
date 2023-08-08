@@ -222,7 +222,7 @@ const UserTab: FC = () => {
                         <PropertyCard
                           key={property.ID}
                           property={property}
-                          showDescription={true}
+                          // showDescription={true}
                         />
                       ))}
                     </div>

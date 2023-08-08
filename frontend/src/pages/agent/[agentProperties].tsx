@@ -51,7 +51,6 @@ export default function AgentProperties({ properties }: IProps) {
                 <PropertyCard
                   key={property.ID}
                   property={property}
-                  showDescription={true}
                 />
               ))}
             </div>

@@ -40,14 +40,7 @@ export const PropertyMeta: FC<IProps> = ({ property }) => {
             <ShowerIcon dimensions="w-5 h-5" />
             {property.Bathroom} Bathroom{Number(property.Bathroom) > 1 && "s"}
           </li>
-        )}
-
-        {property.Size && (
-          <li className="flex flex-row items-center gap-1">
-            <HomeIcon dimensions="w-5 h-5" />
-            {property.Size} sqm
-          </li>
-        )}
+        )}        
       </ul>
     </>
   );
@@ -64,21 +57,14 @@ export const PropertyCardMeta: FC<IProps> = ({ property }) => {
               {property.Bedroom} Bedroom{Number(property.Bedroom) > 1 && "s"}
             </p>
           </li>
-        )}
+        )}   
 
         {property.Bathroom && (
-          <li className="flex items-center gap-1">
+          <li className="flex flex-row items-center gap-1">
             <ShowerIcon dimensions="w-5 h-5" />
             {property.Bathroom} Bathroom{Number(property.Bathroom) > 1 && "s"}
           </li>
-        )}
-
-        {property.Size && (
-          <li className="flex items-center gap-1">
-            <HomeIcon dimensions="w-5 h-5" />
-            {property.Size} sqm
-          </li>
-        )}
+        )}    
       </ul>
     </>
   );

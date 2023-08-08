@@ -5,7 +5,7 @@ import { PropertyMeta } from "./propertyMeta";
 import { timeSince } from "@src/components/common/helpers/dateFunction";
 import AgentCard from "./agentCard";
 import { SingleProperty } from "../helpers/interfaces";
-import { CalendarIcon } from "../helpers/svgIcons";
+import { CalendarIcon, HomeIcon } from "../helpers/svgIcons";
 
 interface IProps {
   property: SingleProperty;
@@ -23,7 +23,13 @@ const SinglePropertyBody: FC<IProps> = ({ property }) => {
       <p className="mt-6 italic">{property.Category.Title}</p>
       <h3 className="font-bold text-2xl md:text-3xl">{property.Title}</h3>
       <PropertyMeta property={property} />
-      <ul className="flex items-center my-1 space-x-1 text-lg font-normal leading-4 text-coolGray-500">
+       {property.Size && (
+          <span className="flex items-center gap-1">
+            <HomeIcon dimensions="w-5 h-5" />
+            {property.Size} sqm
+          </span>
+        )}
+      <ul className="flex items-center my-4 space-x-1 text-lg font-normal leading-4 text-coolGray-500">
         <li>
           <CalendarIcon dimensions="w-5 h-5" fill="#9932cc" />
         </li>
@@ -32,7 +38,7 @@ const SinglePropertyBody: FC<IProps> = ({ property }) => {
           {timeSince(new Date(property.CreatedAt))} ago
         </li>
       </ul>
-      <h3 className="text-purple-600 font-bold text-2xl md:text-4xl my-4">
+      <h3 className="text-purple-600 font-bold text-2xl md:text-4xl mb-4">
         ₦{Number(property.Price).toLocaleString()}
         {property.Duration ? `/${property.Duration}` : ""}
       </h3>
