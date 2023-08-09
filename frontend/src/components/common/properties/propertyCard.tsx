@@ -38,7 +38,7 @@ export default function PropertyCard({
         src={property.Images[0]}
         alt="Property Image"
       />
-      <div className="p-4 md:pr-10">
+      <div className="relative p-4 md:pr-10">
         <span className="bg-primary rounded-lg pt-[1px] pb-[3px] px-[8px] text-white italics">
           {property.Category.Title}
         </span>
@@ -89,6 +89,8 @@ export default function PropertyCard({
             </span>
           </Tooltip>
         )}
+
+        <div className="absolute top-4 right-4">...</div>
       </div>
     </Link>
   );
