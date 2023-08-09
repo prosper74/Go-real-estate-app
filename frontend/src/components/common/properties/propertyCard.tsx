@@ -81,7 +81,7 @@ export default function PropertyCard({
 
         {property.Status === "pending" && (
           <Tooltip
-            content="Your property is under review and will be live when review is completed by our agent"
+            content={`Your property is under review and will be live when review is completed by our agent`}
             style="light"
           >
             <span className="bg-primary rounded-lg pt-[1px] pb-[3px] px-[8px] italic text-white">

@@ -217,7 +217,7 @@ const UserTab: FC = () => {
                       )}
                     </div>
                   ) : (
-                    <div className="col-span-2 sm:col-span-1 lg:col-span-2 2xl:col-span-3">
+                    <div className="col-span-2 sm:col-span-1 lg:col-span-2 2xl:col-span-3 mb-8">
                       {ads.map((property: SingleProperty) => (
                         <PropertyCard
                           key={property.ID}
