@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Tooltip } from "flowbite-react";
+import CardEditButton from "../Buttons/cardEditButton";
 import { HelpIcon, LocationIcon } from "../helpers/svgIcons";
 import { SingleProperty } from "../helpers/interfaces";
 import { PropertyCardMeta } from "./propertyMeta";
@@ -90,7 +91,9 @@ export default function PropertyCard({
           </Tooltip>
         )}
 
-        <div className="absolute top-4 right-4">...</div>
+        <div className="absolute top-4 right-4">
+          <CardEditButton />
+        </div>
       </div>
     </Link>
   );
