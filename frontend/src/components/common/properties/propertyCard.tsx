@@ -16,37 +16,46 @@ export default function PropertyCard({
   fixed = false,
   showDescription = false,
 }: IProps) {
+  const adLink =
+    property.Status === "pending"
+      ? "#!"
+      : property.Title
+      ? `/${property?.Category?.Title.toLowerCase()}/property?title=${property?.Title.toLowerCase().replace(
+          / /g,
+          "-"
+        )}&id=${property.ID}`
+      : "";
+
   return (
-    <Link
-      href={
-        property.Status === "pending"
-          ? "#!"
-          : property.Title
-          ? `/${property?.Category?.Title.toLowerCase()}/property?title=${property?.Title.toLowerCase().replace(
-              / /g,
-              "-"
-            )}&id=${property.ID}`
-          : ""
-      }
-      className={`card rounded-lg sm:flex h-auto ${fixed && "sm:flex-col"}`}
-    >
+    <div className={`card rounded-lg sm:flex h-auto ${fixed && "sm:flex-col"}`}>
       <div className="background-effect"></div>
-      <img
-        className={`w-full sm:w-[40%] h-[220px] sm:h-[250px] sm:rounded-none sm:rounded-l-lg object-cover ${
+
+      <Link
+        href={adLink}
+        className={`w-full sm:w-[40%] h-[180px] sm:h-[250px] sm:rounded-none sm:rounded-l-lg ${
           fixed && "sm:w-full sm:h-[180px]"
         }`}
-        // @ts-ignore
-        src={property.Images[0]}
-        alt="Property Image"
-      />
-      <div className="relative p-4 md:pr-10">
+      >
+        <img
+          className={`w-full h-[180px] sm:h-[250px] sm:rounded-none sm:rounded-l-lg object-cover ${
+            fixed && "sm:w-full sm:h-[180px]"
+          }`}
+          // @ts-ignore
+          src={property.Images[0]}
+          alt="Property Image"
+        />
+      </Link>
+
+      <div className="relative p-4 ">
         <span className="bg-primary rounded-lg pt-[1px] pb-[3px] px-[8px] text-white italics">
           {property.Category.Title}
         </span>
 
-        <h3 className="text-xl md:text-2xl font-bold tracking-tight">
-          {property.Title}
-        </h3>
+        <Link href={adLink}>
+          <h3 className="text-xl md:text-2xl font-bold tracking-tight">
+            {property.Title}
+          </h3>
+        </Link>
 
         <p className="flex items-center gap-3 mb-4">
           <span className="flex items-center gap-1">
@@ -61,14 +70,16 @@ export default function PropertyCard({
         </p>
 
         {showDescription && (
-          <p className="my-4 hidden lg:block">
-            {property.Description.substring(0, 50)}...
-          </p>
+          <Link href={adLink}>
+            <p className="my-4 hidden lg:block">
+              {property.Description.substring(0, 50)}...
+            </p>
+          </Link>
         )}
 
         <PropertyCardMeta property={property} />
 
-        <div className="flex items-center justify-between my-4">
+        <div className="flex items-center justify-between">
           {property.Category.Title === "Buy" ? (
             "Buy for life"
           ) : (
@@ -95,6 +106,6 @@ export default function PropertyCard({
           <CardEditButton />
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
