@@ -95,12 +95,19 @@ func run() (*driver.DB, error) {
 
 	app.Session = session
 
+	// elephantsql connection 
+	// postgresURI := os.Getenv("POSTGRES_URI")
+	// if postgresURI == "" {
+	// 	fmt.Println("Missing .env dependencies, attach the env dependencies in your .env file")
+	// 	os.Exit(1)
+	// }
+
+	// Localhost connection 
 	dbHost := os.Getenv("DB_HOST")
 	dbPort := os.Getenv("DB_PORT")
 	dbName := os.Getenv("DB_NAME")
 	dbUser := os.Getenv("DB_USER")
 	dbPassword := os.Getenv("DB_PASSWORD")
-
 	if dbName == "" || dbUser == "" || dbHost == "" {
 		fmt.Println("Missing .env dependencies, attach the env dependencies in your .env file")
 		os.Exit(1)
