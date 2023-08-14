@@ -1,14 +1,13 @@
 "use client";
 
 import { Dropdown } from "flowbite-react";
-import {
-  HiStop,
-  HiTrash,
-  HiPencilAlt,
-  HiDotsVertical,
-} from "react-icons/hi";
+import { HiStop, HiTrash, HiPencilAlt, HiDotsVertical } from "react-icons/hi";
 
-export default function CardEditButton() {
+interface IProps {
+  propertyID: number;
+}
+
+export default function CardEditButton({ propertyID }: IProps) {
   return (
     <Dropdown
       label

@@ -2,13 +2,15 @@ import Link from "next/link";
 import { Tooltip } from "flowbite-react";
 import CardEditButton from "../Buttons/cardEditButton";
 import { HelpIcon, LocationIcon } from "../helpers/svgIcons";
-import { SingleProperty } from "../helpers/interfaces";
+import { SingleProperty, UserProps } from "../helpers/interfaces";
 import { PropertyCardMeta } from "./propertyMeta";
+import { useSelector } from "react-redux";
 
 interface IProps {
   property: SingleProperty;
   fixed?: boolean;
   showDescription?: boolean;
+  user: UserProps;
 }
 
 export default function PropertyCard({
@@ -16,6 +18,8 @@ export default function PropertyCard({
   fixed = false,
   showDescription = false,
 }: IProps) {
+  const user = useSelector((state: IProps) => state.user);
+
   const adLink =
     property.Status === "pending"
       ? "#!"
@@ -102,9 +106,11 @@ export default function PropertyCard({
           </Tooltip>
         )}
 
-        <div className="absolute top-4 right-4">
-          <CardEditButton />
-        </div>
+        {user.ID === property.UserID && (
+          <div className="absolute top-4 right-4">
+            <CardEditButton propertyID={property.ID} />
+          </div>
+        )}
       </div>
     </div>
   );
