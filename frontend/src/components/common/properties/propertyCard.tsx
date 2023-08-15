@@ -11,7 +11,7 @@ interface IProps {
   property: SingleProperty;
   fixed?: boolean;
   showDescription?: boolean;
-  user: UserProps;
+  user?: UserProps;
 }
 
 export default function PropertyCard({
