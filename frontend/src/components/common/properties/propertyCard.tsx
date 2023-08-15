@@ -1,10 +1,11 @@
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import { useRouter } from 'next/router';
 import { Tooltip } from "flowbite-react";
 import CardEditButton from "../Buttons/cardEditButton";
 import { HelpIcon, LocationIcon } from "../helpers/svgIcons";
 import { SingleProperty, UserProps } from "../helpers/interfaces";
 import { PropertyCardMeta } from "./propertyMeta";
-import { useSelector } from "react-redux";
 
 interface IProps {
   property: SingleProperty;
@@ -18,7 +19,12 @@ export default function PropertyCard({
   fixed = false,
   showDescription = false,
 }: IProps) {
+  const router = useRouter();
   const user = useSelector((state: IProps) => state.user);
+
+  const handleRefresh = () => {
+    router.reload();
+  };
 
   const adLink =
     property.Status === "pending"
@@ -106,9 +112,9 @@ export default function PropertyCard({
           </Tooltip>
         )}
 
-        {user.ID === property.UserID && (
+        {user.userId === property.UserID && (
           <div className="absolute top-4 right-4">
-            <CardEditButton propertyID={property.ID} />
+            <CardEditButton propertyID={property.ID} handleDelete={handleRefresh} />
           </div>
         )}
       </div>
