@@ -9,23 +9,26 @@ interface IProps {
   handleDelete: any;
 }
 
-export default function PopUpModal({ isModalOpen, setIsModalOpen, handleDelete }: IProps) {
+export default function DeleteModal({ isModalOpen, setIsModalOpen, handleDelete }: IProps) {
+
+  function closeModal() {
+    setIsModalOpen(false);
+  }
 
   return (
     <>
-      {/* <Button onClick={() => props.setOpenModal('pop-up')}>Toggle modal</Button> */}
       <Modal
         show={isModalOpen}
         size="md"
         popup
-        onClose={() => setIsModalOpen(false)}
+        onClose={closeModal}
       >
         <Modal.Header />
         <Modal.Body>
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Are you sure you want to delete this product?
+              Are you sure you want to delete this property?
             </h3>
             <div className="flex justify-center gap-4">
               <Button
@@ -36,7 +39,7 @@ export default function PopUpModal({ isModalOpen, setIsModalOpen, handleDelete }
               </Button>
               <Button
                 color="gray"
-                onClick={() => setIsModalOpen(false)}
+                onClick={closeModal}
               >
                 No, cancel
               </Button>
