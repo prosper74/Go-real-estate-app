@@ -39,6 +39,7 @@ export default function CardEditButton({ propertyID, handleDelete }: IProps) {
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
           handleDelete={handleDelete}
+          propertyID={propertyID}
         />
       )}
     </>

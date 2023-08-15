@@ -31,6 +31,17 @@ const UserTab: FC = () => {
   const [ads, setAds] = useState([]);
   const defaultUser = { username: "Guest" };
 
+  const handleDelete = (propertyID: number) => {
+    console.log("ID", propertyID)
+    dispatch(
+      setSnackbar({
+        status: "error",
+        message: "There was an error, please login again",
+        open: true,
+      })
+    );
+  };
+
   useEffect(() => {
     if (user.userId) {
       axios
@@ -66,7 +77,7 @@ const UserTab: FC = () => {
           Router.push("/");
         });
     }
-  }, [user]);
+  }, [user, ads]);
 
   useEffect(() => {
     fetchedUser?.Verification === "under_review"
@@ -222,7 +233,7 @@ const UserTab: FC = () => {
                         <PropertyCard
                           key={property.ID}
                           property={property}
-                          // showDescription={true}
+                          handleDelete={handleDelete}
                         />
                       ))}
                     </div>

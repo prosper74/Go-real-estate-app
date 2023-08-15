@@ -7,22 +7,22 @@ interface IProps {
   isModalOpen: boolean;
   setIsModalOpen: (open: boolean) => void;
   handleDelete: any;
+  propertyID: number;
 }
 
-export default function DeleteModal({ isModalOpen, setIsModalOpen, handleDelete }: IProps) {
-
+export default function DeleteModal({
+  isModalOpen,
+  setIsModalOpen,
+  handleDelete,
+  propertyID,
+}: IProps) {
   function closeModal() {
     setIsModalOpen(false);
   }
 
   return (
     <>
-      <Modal
-        show={isModalOpen}
-        size="md"
-        popup
-        onClose={closeModal}
-      >
+      <Modal show={isModalOpen} size="md" popup onClose={closeModal}>
         <Modal.Header />
         <Modal.Body>
           <div className="text-center">
@@ -33,14 +33,14 @@ export default function DeleteModal({ isModalOpen, setIsModalOpen, handleDelete 
             <div className="flex justify-center gap-4">
               <Button
                 color="failure"
-                onClick={() => handleDelete()}
+                onClick={() => {
+                  closeModal();
+                  handleDelete(propertyID);
+                }}
               >
                 Yes, I'm sure
               </Button>
-              <Button
-                color="gray"
-                onClick={closeModal}
-              >
+              <Button color="gray" onClick={closeModal}>
                 No, cancel
               </Button>
             </div>
