@@ -16,30 +16,58 @@ import { SingleProperty, UserProps } from "../helpers/interfaces";
 
 interface IProps {
   user: UserProps;
+  ads: SingleProperty;
 }
 
 const classNames = (...classes: String[]) => {
   return classes.filter(Boolean).join(" ");
 };
 
-const UserTab: FC = () => {
+const UserTab: FC<IProps> = () => {
   const user = useSelector((state: IProps) => state.user);
   const dispatch = useDispatch();
   const [fetchedUser, setFetchedUser] = useState<UserProps>();
   const [isVerification, setIsVerification] = useState(false);
   const [verificationModalOpen, setVerificationModalOpen] = useState(false);
-  const [ads, setAds] = useState([]);
+  const [ads, setAds] = useState<SingleProperty[]>([]);
   const defaultUser = { username: "Guest" };
 
   const handleDelete = (propertyID: number) => {
-    console.log("ID", propertyID)
-    dispatch(
-      setSnackbar({
-        status: "error",
-        message: "There was an error, please login again",
-        open: true,
+    axios
+      .get(
+        `${process.env.NEXT_PUBLIC_REST_API}/user/properties?user_id=${user.userId}&property_id=${propertyID}&jwt=${user.jwt}`
+      )
+      .then((res) => {
+        if (res.data.error) {
+          dispatch(
+            setSnackbar({
+              status: "error",
+              message: res.data.error,
+              open: true,
+            })
+          );
+        } else {
+          dispatch(
+            setSnackbar({
+              status: "success",
+              message: " Property deleted",
+              open: true,
+            })
+          );
+        }
+        setAds(ads.filter((ad) => ad.ID !== propertyID));
       })
-    );
+      .catch((err) => {
+        console.error(err);
+        dispatch(
+          setSnackbar({
+            status: "error",
+            message:
+              " There was an error deleting item, please contact support",
+            open: true,
+          })
+        );
+      });
   };
 
   useEffect(() => {
