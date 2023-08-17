@@ -66,23 +66,15 @@ export default function BuySingle({ data }: IProps) {
         </motion.div>
 
         {/* Related properties  */}
-        <motion.div
-          initial={"offscreen"}
-          whileInView={"onscreen"}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ staggerChildren: 0.5 }}
-        >
-          <motion.h3
-            className="text-3xl font-medium mt-16 mb-3"
-            variants={imageAnimateRight}
-          >
+        <div>
+          <h3 className="text-3xl font-medium mt-16 mb-3">
             Related Properties
-          </motion.h3>
+          </h3>
           <RelatedPropertiesSlide
             propertyType={property.Type}
             propertyId={property.ID}
           />
-        </motion.div>
+        </div>
       </motion.main>
     </>
   );
