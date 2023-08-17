@@ -66,15 +66,11 @@ export default function BuySingle({ data }: IProps) {
         </motion.div>
 
         {/* Related properties  */}
-        <div>
-          <h3 className="text-3xl font-medium mt-16 mb-3">
-            Related Properties
-          </h3>
-          <RelatedPropertiesSlide
-            propertyType={property.Type}
-            propertyId={property.ID}
-          />
-        </div>
+        <h3 className="text-3xl font-medium mt-16 mb-3">Related Properties</h3>
+        <RelatedPropertiesSlide
+          propertyType={property.Type}
+          propertyId={property.ID}
+        />
       </motion.main>
     </>
   );

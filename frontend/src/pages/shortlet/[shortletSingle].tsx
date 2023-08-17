@@ -66,23 +66,11 @@ export default function ShortletSingle({ data }: IProps) {
         </motion.div>
 
         {/* Related properties  */}
-        <motion.div
-          initial={"offscreen"}
-          whileInView={"onscreen"}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ staggerChildren: 0.5 }}
-        >
-          <motion.h3
-            className="text-3xl font-medium mt-16 mb-3"
-            variants={imageAnimateRight}
-          >
-            Related Properties
-          </motion.h3>
-          <RelatedPropertiesSlide
-            propertyType={property.Type}
-            propertyId={property.ID}
-          />
-        </motion.div>
+        <h3 className="text-3xl font-medium mt-16 mb-3">Related Properties</h3>
+        <RelatedPropertiesSlide
+          propertyType={property.Type}
+          propertyId={property.ID}
+        />
       </motion.main>
     </>
   );
