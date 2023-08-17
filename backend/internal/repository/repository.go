@@ -23,6 +23,6 @@ type DatabaseRepo interface {
 	AllShortletProperties() ([]models.Property, error)
 	GetPropertyByID(id int) (models.Property, error)
 	GetPropertiesByType(propertyType string) ([]models.Property, error)
-	GetUserPropertiesByID(userID string) ([]models.Property, error)
+	GetUserPropertiesByID(userID int) ([]models.Property, error)
 	InsertNewProperty(property models.Property) error
 }

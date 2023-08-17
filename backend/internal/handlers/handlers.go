@@ -9,7 +9,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/go-chi/chi"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/joho/godotenv"
 	"github.com/justinas/nosurf"
@@ -219,7 +218,7 @@ func (m *Repository) PropertiesRelatedByType(w http.ResponseWriter, r *http.Requ
 }
 
 func (m *Repository) UserProperties(w http.ResponseWriter, r *http.Request) {
-	id := r.URL.Query().Get("id")
+	id, _ := strconv.Atoi(r.URL.Query().Get("id"))
 
 	properties, err := m.DB.GetUserPropertiesByID(id)
 	if err != nil {
@@ -946,17 +945,22 @@ func (m *Repository) CreateNewProperty(w http.ResponseWriter, r *http.Request) {
 }
 
 // Delete property
-func (m *Repository) UserDeleteProperty(w http.ResponseWriter, r *http.Request) {
-	property := models.Property{}
-	data := make(map[string]interface{})
+// func (m *Repository) UserDeleteProperty(w http.ResponseWriter, r *http.Request) {
+// 	data := make(map[string]interface{})
 
-	propertyID, _ := strconv.Atoi(chi.URLParam(r, "property_id"))
-	userID, _ := strconv.Atoi(chi.URLParam(r, "user_id"))
-	jwt, _ := chi.URLParam(r, "jwt")
+// 	propertyID, _ := strconv.Atoi(r.URL.Query().Get("property_id"))
+// 	userID, _ := strconv.Atoi(r.URL.Query().Get("user_id"))
+// 	jwt := r.URL.Query().Get("jwt")
 
-	data["message"] = "Successful"
-	out, _ := json.MarshalIndent(data, "", "    ")
+// 	properties, err := m.DB.GetUserPropertiesByID(userID)
+// 	if err != nil {
+// 		helpers.ServerError(w, err)
+// 		return
+// 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(out)
-}
+// 	data["message"] = "Successful"
+// 	out, _ := json.MarshalIndent(data, "", "    ")
+
+// 	w.Header().Set("Content-Type", "application/json")
+// 	w.Write(out)
+// }

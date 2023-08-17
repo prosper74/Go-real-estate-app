@@ -536,7 +536,7 @@ func (m *postgresDBRepo) GetPropertiesByType(propertyType string) ([]models.Prop
 }
 
 // Get a property by type
-func (m *postgresDBRepo) GetUserPropertiesByID(userID string) ([]models.Property, error) {
+func (m *postgresDBRepo) GetUserPropertiesByID(userID int) ([]models.Property, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
