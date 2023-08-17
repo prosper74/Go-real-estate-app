@@ -55,7 +55,7 @@ const UserTab: FC<IProps> = () => {
             })
           );
         }
-        setAds(ads.filter((ad) => ad.ID !== propertyID));
+        setAds(res.data.properties);
       })
       .catch((err) => {
         console.error(err);
@@ -105,7 +105,7 @@ const UserTab: FC<IProps> = () => {
           Router.push("/");
         });
     }
-  }, [user, ads]);
+  }, [user]);
 
   useEffect(() => {
     fetchedUser?.Verification === "under_review"
@@ -182,9 +182,9 @@ const UserTab: FC<IProps> = () => {
                   "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-purple-400 ring-white ring-opacity-60"
                 )}
               >
-                <div className="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 gap-0 sm:gap-4">
+                <div className="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 sm:gap-4">
                   {/* agent sidebar */}
-                  <div>
+                  <div className="mb-6 sm:mb-0">
                     <div className="flex justify-between mb-4">
                       <button
                         className={`inline-flex justify-center rounded-md border border-transparent bg-purple-100 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2`}
@@ -256,7 +256,7 @@ const UserTab: FC<IProps> = () => {
                       )}
                     </div>
                   ) : (
-                    <div className="col-span-2 sm:col-span-1 lg:col-span-2 2xl:col-span-3 mb-8">
+                    <div className="grid gap-4 col-span-2 sm:col-span-1 lg:col-span-2 2xl:col-span-3 mb-8">
                       {ads.map((property: SingleProperty) => (
                         <PropertyCard
                           key={property.ID}

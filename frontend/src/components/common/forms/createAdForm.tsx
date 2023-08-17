@@ -111,7 +111,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
           category:
             data.category === "Buy"
               ? "1"
-              : data.category === "Shortlet"
+              : data.category === "Rent"
               ? "2"
               : "3",
           state: data.state,

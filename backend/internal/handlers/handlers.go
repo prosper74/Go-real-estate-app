@@ -980,6 +980,15 @@ func (m *Repository) UserDeleteProperty(w http.ResponseWriter, r *http.Request) 
 	}
 
 	// Delete the property from database
+	err = m.DB.DeleteProperty(propertyID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to property. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
 
 	// Return new properties
 	properties, err := m.DB.GetUserPropertiesByID(userID)
