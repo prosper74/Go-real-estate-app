@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/go-chi/chi"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/joho/godotenv"
 	"github.com/justinas/nosurf"
@@ -895,7 +896,7 @@ func (m *Repository) CreateNewProperty(w http.ResponseWriter, r *http.Request) {
 	property.CategoryID, _ = strconv.Atoi(r.PostFormValue("category"))
 	property.Images = helpers.ConvertStringToURLSlice(r.PostFormValue("images"))
 	tokenString := r.PostFormValue("jwt")
-	
+
 	log.Println("------- properties: ", property, "--------")
 
 	// Load the env file and get the JWT secret
@@ -936,6 +937,22 @@ func (m *Repository) CreateNewProperty(w http.ResponseWriter, r *http.Request) {
 		w.Write(resp)
 		return
 	}
+
+	data["message"] = "Successful"
+	out, _ := json.MarshalIndent(data, "", "    ")
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
+}
+
+// Delete property
+func (m *Repository) UserDeleteProperty(w http.ResponseWriter, r *http.Request) {
+	property := models.Property{}
+	data := make(map[string]interface{})
+
+	propertyID, _ := strconv.Atoi(chi.URLParam(r, "property_id"))
+	userID, _ := strconv.Atoi(chi.URLParam(r, "user_id"))
+	jwt, _ := chi.URLParam(r, "jwt")
 
 	data["message"] = "Successful"
 	out, _ := json.MarshalIndent(data, "", "    ")
