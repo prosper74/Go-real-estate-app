@@ -846,3 +846,18 @@ func (repo *postgresDBRepo) InsertNewProperty(property models.Property) error {
 
 	return nil
 }
+
+// DeleteProperty deletes properties from DB
+func (m *postgresDBRepo) DeleteProperty(id int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `delete from properties where id = $1`
+
+	_, err := m.DB.ExecContext(ctx, query, id)
+	if err != nil {		
+		return err
+	}
+
+	return nil
+}

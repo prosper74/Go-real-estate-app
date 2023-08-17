@@ -985,7 +985,7 @@ func (m *Repository) UserDeleteProperty(w http.ResponseWriter, r *http.Request) 
 	properties, err := m.DB.GetUserPropertiesByID(userID)
 	if err != nil {
 		helpers.ServerError(w, err)
-		data["error"] = "Unable to insert a new property. Please contact support"
+		data["error"] = "Unable to fetch user properties. Please contact support"
 		out, _ := json.MarshalIndent(data, "", "    ")
 		resp := []byte(out)
 		w.Write(resp)
