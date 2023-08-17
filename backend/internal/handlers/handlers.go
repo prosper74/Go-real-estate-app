@@ -896,8 +896,6 @@ func (m *Repository) CreateNewProperty(w http.ResponseWriter, r *http.Request) {
 	property.Images = helpers.ConvertStringToURLSlice(r.PostFormValue("images"))
 	tokenString := r.PostFormValue("jwt")
 
-	log.Println("------- properties: ", property, "--------")
-
 	// Load the env file and get the JWT secret
 	err = godotenv.Load()
 	if err != nil {
@@ -945,22 +943,59 @@ func (m *Repository) CreateNewProperty(w http.ResponseWriter, r *http.Request) {
 }
 
 // Delete property
-// func (m *Repository) UserDeleteProperty(w http.ResponseWriter, r *http.Request) {
-// 	data := make(map[string]interface{})
+func (m *Repository) UserDeleteProperty(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
 
-// 	propertyID, _ := strconv.Atoi(r.URL.Query().Get("property_id"))
-// 	userID, _ := strconv.Atoi(r.URL.Query().Get("user_id"))
-// 	jwt := r.URL.Query().Get("jwt")
+	propertyID, _ := strconv.Atoi(r.URL.Query().Get("property_id"))
+	userID, _ := strconv.Atoi(r.URL.Query().Get("user_id"))
+	tokenString := r.URL.Query().Get("jwt")
 
-// 	properties, err := m.DB.GetUserPropertiesByID(userID)
-// 	if err != nil {
-// 		helpers.ServerError(w, err)
-// 		return
-// 	}
+	// Load the env file and get the JWT secret
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Error loading .env file")
+	}
+	jwtSecret := os.Getenv("JWTSECRET")
 
-// 	data["message"] = "Successful"
-// 	out, _ := json.MarshalIndent(data, "", "    ")
+	// Parse and verify the JWT token
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(jwtSecret), nil
+	})
+	if err != nil {
+		http.Error(w, "Unable to parse token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Unable to parse token. Error: %s", err)
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
 
-// 	w.Header().Set("Content-Type", "application/json")
-// 	w.Write(out)
-// }
+	if !token.Valid {
+		http.Error(w, "Invalid token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Invalid token, please contact support. Error: %s", err)
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// Delete the property from database
+
+	// Return new properties
+	properties, err := m.DB.GetUserPropertiesByID(userID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to insert a new property. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	data["properties"] = properties
+	data["message"] = "Successful"
+	out, _ := json.MarshalIndent(data, "", "    ")
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
+}
