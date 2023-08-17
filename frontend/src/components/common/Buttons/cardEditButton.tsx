@@ -17,6 +17,7 @@ export default function CardEditButton({ propertyID, handleDelete }: IProps) {
     <>
       <Dropdown
         label
+        placement="left-start"
         renderTrigger={() => (
           <button>
             <HiDotsVertical />

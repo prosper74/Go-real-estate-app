@@ -3,8 +3,8 @@ import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import PropertyCard from "./propertyCard";
 import {
-  useIsLarge,
   useIsMedium,
+  useIsXLarge,
 } from "@src/components/common/hooks/mediaQuery";
 import { SingleProperty } from "../helpers/interfaces";
 
@@ -45,12 +45,12 @@ export const RelatedPropertiesSlide: FC<IProps> = ({
   );
 
   const isMedium = useIsMedium();
-  const isLarge = useIsLarge();
+  const isXLarge = useIsXLarge();
 
   return (
     <div>
       <Swiper
-        slidesPerView={isLarge ? 3 : isMedium ? 2 : 1}
+        slidesPerView={isXLarge ? 3 : isMedium ? 2 : 1}
         spaceBetween={15}
         modules={[Pagination, Autoplay]}
         loop={true}
@@ -65,7 +65,7 @@ export const RelatedPropertiesSlide: FC<IProps> = ({
               key={property.ID}
               className="my-6 bg-white rounded-lg shadow-lg"
             >
-              <PropertyCard property={property} fixed={true} />
+              <PropertyCard property={property} />
             </SwiperSlide>
           ))
         ) : (

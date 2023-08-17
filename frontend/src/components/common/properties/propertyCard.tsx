@@ -2,14 +2,13 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { Tooltip } from "flowbite-react";
 import CardEditButton from "../Buttons/cardEditButton";
-import { HelpIcon, LocationIcon } from "../helpers/svgIcons";
+import { LocationIcon } from "../helpers/svgIcons";
 import { SingleProperty, UserProps } from "../helpers/interfaces";
 import { PropertyCardMeta } from "./propertyMeta";
 
 interface IProps {
   property: SingleProperty;
   fixed?: boolean;
-  showDescription?: boolean;
   user?: UserProps;
   handleDelete?: any;
 }
@@ -17,8 +16,7 @@ interface IProps {
 export default function PropertyCard({
   property,
   fixed = false,
-  showDescription = false,
-  handleDelete
+  handleDelete,
 }: IProps) {
   const user = useSelector((state: IProps) => state.user);
 
@@ -33,18 +31,13 @@ export default function PropertyCard({
       : "";
 
   return (
-    <div className={`card rounded-lg sm:flex h-auto ${fixed && "sm:flex-col"}`}>
-      <div className="background-effect"></div>
+    <div className="card grid grid-cols-1 sm:grid-cols-3 rounded-lg">
+      <div className="background-effect" />
 
-      <Link
-        href={adLink}
-        className={`w-full sm:w-[40%] h-[180px] sm:h-[250px] sm:rounded-none sm:rounded-l-lg ${
-          fixed && "sm:w-full sm:h-[180px]"
-        }`}
-      >
+      <Link href={adLink}>
         <img
-          className={`w-full h-[180px] sm:h-[250px] sm:rounded-none sm:rounded-l-lg object-cover ${
-            fixed && "sm:w-full sm:h-[180px]"
+          className={`w-full h-[160px] sm:h-[210px] sm:rounded-none sm:rounded-l-lg object-cover ${
+            fixed && "sm:h-[180px]"
           }`}
           // @ts-ignore
           src={property.Images[0]}
@@ -52,9 +45,9 @@ export default function PropertyCard({
         />
       </Link>
 
-      <div className="relative p-4 ">
-        <span className="bg-primary rounded-lg pt-[1px] pb-[3px] px-[8px] text-white italics">
-          {property.Category.Title}
+      <div className="relative sm:col-span-2 p-4">
+        <span className="bg-primary rounded-lg py-0.5 px-2 text-white text-center italics">
+          {property.Category.Title} | {property.Type}
         </span>
 
         <Link href={adLink}>
@@ -63,25 +56,10 @@ export default function PropertyCard({
           </h3>
         </Link>
 
-        <p className="flex items-center gap-3 mb-4">
-          <span className="flex items-center gap-1">
-            <HelpIcon />
-            {property.Type}
-          </span>
-          |
-          <span className="flex items-center gap-1">
-            <LocationIcon dimensions="w-5 h-5" />
-            {property.City}, {property.State}
-          </span>
-        </p>
-
-        {showDescription && (
-          <Link href={adLink}>
-            <p className="my-4 hidden lg:block">
-              {property.Description.substring(0, 50)}...
-            </p>
-          </Link>
-        )}
+        <span className="flex items-center gap-1">
+          <LocationIcon dimensions="w-5 h-5" />
+          {property.City}, {property.State}
+        </span>
 
         <PropertyCardMeta property={property} />
 
@@ -110,7 +88,10 @@ export default function PropertyCard({
 
         {user?.userId === property.UserID && (
           <div className="absolute top-4 right-4">
-            <CardEditButton propertyID={property.ID} handleDelete={handleDelete} />
+            <CardEditButton
+              propertyID={property.ID}
+              handleDelete={handleDelete}
+            />
           </div>
         )}
       </div>

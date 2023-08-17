@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
 // @ts-ignore
-import { Image } from "cloudinary-react";
+import cloudinary, { Image } from "cloudinary-react";
 import Editor from "../editor";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import { ForwardArrow } from "@src/components/common/helpers/svgIcons";

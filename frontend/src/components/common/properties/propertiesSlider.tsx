@@ -29,7 +29,7 @@ export default function PropertySlider({ properties }: IProps) {
         {properties.length! >= 1 ? (
           properties.map((d: SingleProperty) => (
             <SwiperSlide key={d.ID}>
-              <PropertyCard property={d} showDescription={true} />
+              <PropertyCard property={d} />
             </SwiperSlide>
           ))
         ) : (
