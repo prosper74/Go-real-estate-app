@@ -5,6 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
+import { Button, Modal } from "flowbite-react";
+import { HiOutlineExclamationCircle, HiTrash } from "react-icons/hi";
 import { useDropzone } from "react-dropzone";
 // @ts-ignore
 import { Image } from "cloudinary-react";
@@ -50,9 +52,9 @@ export const CreateAdForm: FC<IImageUpload> = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [uploadedFiles, setUploadedFiles] = useState([]);
-  // const [imagesURLs, setImagesURLs] = useState([]);
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onDrop = useCallback(async (acceptedFiles: any) => {
     const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/upload`;
@@ -101,7 +103,9 @@ export const CreateAdForm: FC<IImageUpload> = () => {
     const imagesURL = uploadedFiles
       .map((item: any) => item.public_id)
       .join(", ");
+
     setLoading(true);
+
     axios
       .post(
         `${process.env.NEXT_PUBLIC_REST_API}/user/create-ad`,
@@ -168,6 +172,10 @@ export const CreateAdForm: FC<IImageUpload> = () => {
       : setIsCategory(false);
   });
 
+  function closeModal() {
+    setIsModalOpen(false);
+  }
+
   return (
     <>
       <div className="flex flex-col justify-center">
@@ -195,13 +203,20 @@ export const CreateAdForm: FC<IImageUpload> = () => {
 
               <ul className="flex flex-row justify-center">
                 {uploadedFiles.map((file: IImageUpload) => (
-                  <li key={file.public_id} className="mr-1">
+                  <li key={file.public_id} className="mr-1 relative">
                     <Image
                       cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
                       publicId={file.public_id}
                       crop="scale"
                       className="w-[150px] h-[150px]"
                     />
+
+                    <button
+                      className="absolute top-2 right-2 p-1 bg-white rounded-lg"
+                      onClick={() => setIsModalOpen(true)}
+                    >
+                      <HiTrash className="mx-auto h-4 w-4 text-red-600" />
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -449,6 +464,32 @@ export const CreateAdForm: FC<IImageUpload> = () => {
           </div>
         </div>
       </div>
+
+      <Modal show={isModalOpen} size="md" popup onClose={closeModal}>
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              Are you sure you want to remove this image?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button
+                color="failure"
+                // onClick={() => {
+                //   closeModal();
+                //   handleDelete(propertyID);
+                // }}
+              >
+                Yes, I'm sure
+              </Button>
+              <Button color="gray" onClick={closeModal}>
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </>
   );
 };
