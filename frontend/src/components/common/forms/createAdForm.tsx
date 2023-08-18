@@ -172,6 +172,45 @@ export const CreateAdForm: FC<IImageUpload> = () => {
       : setIsCategory(false);
   });
 
+  const handleDelete = (publicId: string) => {
+    const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/image/destroy/${publicId}`;
+
+    console.log("PublicID: ", publicId);
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_CLOUDINARY_KEY}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Image deleted from Cloudinary: ", data);
+        setUploadedFiles(
+          uploadedFiles.filter((file: any) => file.public_id !== publicId)
+        );
+
+        dispatch(
+          setSnackbar({
+            status: "success",
+            message: ` Image has been removed`,
+            open: true,
+          })
+        );
+      })
+      .catch((error) => {
+        console.error("Error deleting image from Cloudinary:", error);
+        dispatch(
+          setSnackbar({
+            status: "error",
+            message: ` Unable to remove image. Please contact support`,
+            open: true,
+          })
+        );
+      });
+  };
+
   function closeModal() {
     setIsModalOpen(false);
   }
@@ -217,6 +256,37 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                     >
                       <HiTrash className="mx-auto h-4 w-4 text-red-600" />
                     </button>
+
+                    <Modal
+                      show={isModalOpen}
+                      size="md"
+                      popup
+                      onClose={closeModal}
+                    >
+                      <Modal.Header />
+                      <Modal.Body>
+                        <div className="text-center">
+                          <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+                          <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                            Are you sure you want to remove this image?
+                          </h3>
+                          <div className="flex justify-center gap-4">
+                            <Button
+                              color="failure"
+                              onClick={() => {
+                                closeModal();
+                                handleDelete(file.public_id);
+                              }}
+                            >
+                              Yes, I'm sure
+                            </Button>
+                            <Button color="gray" onClick={closeModal}>
+                              No, cancel
+                            </Button>
+                          </div>
+                        </div>
+                      </Modal.Body>
+                    </Modal>
                   </li>
                 ))}
               </ul>
@@ -399,14 +469,6 @@ export const CreateAdForm: FC<IImageUpload> = () => {
 
                       {/* description */}
                       <div className="col-span-2">
-                        {/* <textarea
-                          {...register("description")}
-                          className="focus:outline-purple-600 focus:rounded-lg bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full transition ease-in-out"
-                          id="exampleFormControlTextarea1"
-                          rows={3}
-                          placeholder="Give brief description about this property"
-                        ></textarea> */}
-
                         <Editor setOnChange={setDescription} />
                       </div>
 
@@ -464,32 +526,6 @@ export const CreateAdForm: FC<IImageUpload> = () => {
           </div>
         </div>
       </div>
-
-      <Modal show={isModalOpen} size="md" popup onClose={closeModal}>
-        <Modal.Header />
-        <Modal.Body>
-          <div className="text-center">
-            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
-            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Are you sure you want to remove this image?
-            </h3>
-            <div className="flex justify-center gap-4">
-              <Button
-                color="failure"
-                // onClick={() => {
-                //   closeModal();
-                //   handleDelete(propertyID);
-                // }}
-              >
-                Yes, I'm sure
-              </Button>
-              <Button color="gray" onClick={closeModal}>
-                No, cancel
-              </Button>
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
     </>
   );
 };
