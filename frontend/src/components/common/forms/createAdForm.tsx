@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
 // @ts-ignore
-import cloudinary, { Image } from "cloudinary-react";
+import { Image } from "cloudinary-react";
 import Editor from "../editor";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import { ForwardArrow } from "@src/components/common/helpers/svgIcons";
@@ -98,7 +98,9 @@ export const CreateAdForm: FC<IImageUpload> = () => {
   });
 
   const onSubmit = handleSubmit((data) => {
-    const imagesURL = uploadedFiles.map((item: any) => item.url).join(', ')
+    const imagesURL = uploadedFiles
+      .map((item: any) => item.public_id)
+      .join(", ");
     setLoading(true);
     axios
       .post(
@@ -197,9 +199,8 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                     <Image
                       cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
                       publicId={file.public_id}
-                      width="150"
-                      height="150"
                       crop="scale"
+                      className="w-[150px] h-[150px]"
                     />
                   </li>
                 ))}

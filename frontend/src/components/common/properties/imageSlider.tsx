@@ -1,5 +1,6 @@
 import { useState, FC } from "react";
-import Image from "next/image";
+// @ts-ignore
+import { Image } from "cloudinary-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useIsXLarge } from "../hooks/mediaQuery";
 import { SingleProperty } from "../helpers/interfaces";
@@ -35,13 +36,12 @@ const ImageSlider: FC<IProps> = ({ property }) => {
         {images.map((image, i) => (
           <SwiperSlide key={i} className="relative">
             <Image
-              // @ts-ignore
-              src={image}
-              alt="property images"
-              width={500}
-              height={500}
+              cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
+              publicId={image}
+              crop="scale"
               className="mb-2 rounded-xl shadow-md w-full h-127 md:h-128 object-cover"
             />
+
             <div className="absolute left-0 top-0 z-[100] bg-purple-500 text-white py-1 px-2 rounded-xl">
               {images.indexOf(image) + 1}/{images.length}
             </div>
@@ -70,11 +70,9 @@ const ImageSlider: FC<IProps> = ({ property }) => {
         {images.map((image, i) => (
           <SwiperSlide key={i}>
             <Image
-              // @ts-ignore
-              src={image}
-              alt="property images"
-              width={128}
-              height={128}
+              cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
+              publicId={image}
+              crop="scale"
               className="rounded-xl shadow-md md:w-32 md:h-24 w-full h-20 object-cover"
             />
           </SwiperSlide>

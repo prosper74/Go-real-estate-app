@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { Tooltip } from "flowbite-react";
+// @ts-ignore
+import { Image } from "cloudinary-react";
 import CardEditButton from "../Buttons/cardEditButton";
 import { LocationIcon } from "../helpers/svgIcons";
 import { SingleProperty, UserProps } from "../helpers/interfaces";
@@ -35,13 +37,13 @@ export default function PropertyCard({
       <div className="background-effect" />
 
       <Link href={adLink}>
-        <img
+        <Image
+          cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
+          publicId={property.Images[0]}
+          crop="scale"
           className={`w-full h-[160px] sm:h-[210px] sm:rounded-none sm:rounded-l-lg object-cover ${
             fixed && "sm:h-[180px]"
           }`}
-          // @ts-ignore
-          src={property.Images[0]}
-          alt="Property Image"
         />
       </Link>
 
