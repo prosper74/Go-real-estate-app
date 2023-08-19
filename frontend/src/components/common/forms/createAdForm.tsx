@@ -173,20 +173,16 @@ export const CreateAdForm: FC<IImageUpload> = () => {
   });
 
   const handleDelete = (publicId: string) => {
-    const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/image/destroy/${publicId}`;
+    const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/image/destroy`;
 
-    console.log("PublicID: ", publicId);
-
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_CLOUDINARY_KEY}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Image deleted from Cloudinary: ", data);
+    axios
+      .post(url, {
+        public_id: publicId,
+        api_key: process.env.NEXT_PUBLIC_CLOUDINARY_KEY,
+        timestamp: new Date().getTime(),
+      })
+      .then((response) => {
+        console.log("Image deleted from Cloudinary: ", response);
         setUploadedFiles(
           uploadedFiles.filter((file: any) => file.public_id !== publicId)
         );
@@ -240,14 +236,14 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                 </div>
               )}
 
-              <ul className="flex flex-row justify-center">
+              <ul className="flex flex-row justify-center mb-3">
                 {uploadedFiles.map((file: IImageUpload) => (
                   <li key={file.public_id} className="mr-1 relative">
                     <Image
                       cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
                       publicId={file.public_id}
                       crop="scale"
-                      className="w-[150px] h-[150px]"
+                      className="w-[150px] h-[150px] rounded-lg m-1"
                     />
 
                     <button
