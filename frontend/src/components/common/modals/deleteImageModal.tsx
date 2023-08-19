@@ -2,9 +2,10 @@
 
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import crypto from "crypto";
 import { Button, Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { useDispatch } from "react-redux";
 
 interface IProps {
   isModalOpen: boolean;
@@ -13,6 +14,17 @@ interface IProps {
   setUploadedFiles: any;
   publicId: string;
 }
+
+const generateSHA1 = (data: any) => {
+  const hash = crypto.createHash("sha1");
+  hash.update(data);
+  return hash.digest("hex");
+};
+
+const generateSignature = (publicId: string, apiSecret: string | undefined) => {
+  const timestamp = new Date().getTime();
+  return `public_id=${publicId}&timestamp=${timestamp}${apiSecret}`;
+};
 
 export default function DeleteImageModal({
   isModalOpen,
@@ -24,16 +36,23 @@ export default function DeleteImageModal({
   const dispatch = useDispatch();
 
   const handleDelete = () => {
-    const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/image/destroy`;
+    setIsModalOpen(false);
+
+    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
+    const timestamp = new Date().getTime();
+    const apiKey = process.env.NEXT_PUBLIC_CLOUDINARY_KEY;
+    const apiSecret = process.env.NEXT_PUBLIC_CLOUDINARY_SECRET;
+    const signature = generateSHA1(generateSignature(publicId, apiSecret));
+    const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/destroy`;
 
     axios
       .post(url, {
         public_id: publicId,
-        api_key: process.env.NEXT_PUBLIC_CLOUDINARY_KEY,
-        timestamp: new Date().getTime(),
+        signature: signature,
+        api_key: apiKey,
+        timestamp: timestamp,
       })
-      .then((response) => {
-        console.log("Image deleted from Cloudinary: ", response);
+      .then(() => {
         setUploadedFiles(
           uploadedFiles.filter((file: any) => file.public_id !== publicId)
         );
@@ -41,13 +60,12 @@ export default function DeleteImageModal({
         dispatch(
           setSnackbar({
             status: "success",
-            message: ` Image has been removed`,
+            message: ` Image Deleted`,
             open: true,
           })
         );
       })
-      .catch((error) => {
-        console.error("Error deleting image from Cloudinary:", error);
+      .catch(() => {
         dispatch(
           setSnackbar({
             status: "error",
@@ -73,13 +91,7 @@ export default function DeleteImageModal({
               Are you sure you want to remove this image?
             </h3>
             <div className="flex justify-center gap-4">
-              <Button
-                color="failure"
-                onClick={() => {
-                  closeModal();
-                  handleDelete;
-                }}
-              >
+              <Button color="failure" onClick={handleDelete}>
                 Yes, I'm sure
               </Button>
               <Button color="gray" onClick={closeModal}>
