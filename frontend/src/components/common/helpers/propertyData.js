@@ -84,31 +84,31 @@ export const perPeriod = [
     label: 'month',
   },
   {
-    name: 'threeMonths',
+    name: '3 Months',
     label: '3 months',
   },
   {
-    name: 'sixMonths',
+    name: '6 Months',
     label: '6 months',
   },
   {
-    name: 'year',
+    name: '1 year',
     label: 'year',
   },
   {
-    name: 'twoYears',
+    name: '2 Years',
     label: '2 years',
   },
   {
-    name: 'threeYears',
+    name: '3 Years',
     label: '3 years',
   },
   {
-    name: 'fourYears',
+    name: '4 Years',
     label: '4 years',
   },
   {
-    name: 'fiveYears',
+    name: '5 Years',
     label: '5 years',
   },
 ];

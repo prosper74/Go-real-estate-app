@@ -296,7 +296,7 @@ const UserTab: FC<IProps> = () => {
                       )}
                     </div>
                   ) : (
-                    <div className="grid gap-6 col-span-2 sm:col-span-1 lg:col-span-2 2xl:col-span-3 mb-8">
+                    <div className="grid gap-4 col-span-2 sm:col-span-1 lg:col-span-2 2xl:col-span-3 mb-8">
                       {ads.map((property: SingleProperty) => (
                         <span key={property.ID}>
                           <PropertyCard

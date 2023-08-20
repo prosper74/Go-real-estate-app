@@ -257,17 +257,14 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                       className="w-[150px] h-[150px] rounded-lg m-1"
                     />
 
-                    <Tooltip
-                      content={`Delete image`}
-                      style="light"
+                    <button
+                      className="absolute top-2 right-2 p-1 bg-white rounded-lg"
+                      onClick={() => handleDelete(file.public_id)}
                     >
-                      <button
-                        className="absolute top-2 right-2 p-1 bg-white rounded-lg"
-                        onClick={() => handleDelete(file.public_id)}
-                      >
+                      <Tooltip content={`Delete image`} style="light">
                         <HiTrash className="mx-auto h-4 w-4 text-red-600" />
-                      </button>
-                    </Tooltip>
+                      </Tooltip>
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -316,9 +313,9 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                         className="focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full "
                       >
                         <option defaultValue="">Select Period</option>
-                        {perPeriod.map((location) => (
-                          <option key={location.name} value={location.name}>
-                            per {location.label}
+                        {perPeriod.map((period) => (
+                          <option key={period.name} value={period.name}>
+                            per {period.label}
                           </option>
                         ))}
                       </select>
