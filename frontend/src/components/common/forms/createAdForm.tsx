@@ -6,6 +6,7 @@ import * as z from "zod";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import crypto from "crypto";
+import { Tooltip } from "flowbite-react";
 import { HiTrash } from "react-icons/hi";
 import { useDropzone } from "react-dropzone";
 // @ts-ignore
@@ -15,7 +16,6 @@ import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import { ForwardArrow } from "@src/components/common/helpers/svgIcons";
 import { locations, propertyType, perPeriod } from "../helpers/propertyData";
 import { IImageUpload, SingleProperty, UserProps } from "../helpers/interfaces";
-import DeleteImageModal from "../modals/deleteImageModal";
 
 interface IProps {
   user: UserProps;
@@ -66,7 +66,6 @@ export const CreateAdForm: FC<IImageUpload> = () => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onDrop = useCallback(async (acceptedFiles: any) => {
     const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/upload`;
@@ -258,20 +257,17 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                       className="w-[150px] h-[150px] rounded-lg m-1"
                     />
 
-                    <button
-                      className="absolute top-2 right-2 p-1 bg-white rounded-lg"
-                      onClick={() => handleDelete(file.public_id)}
+                    <Tooltip
+                      content={`Delete image`}
+                      style="light"
                     >
-                      <HiTrash className="mx-auto h-4 w-4 text-red-600" />
-
-                      {/* <DeleteImageModal
-                        isModalOpen={isModalOpen}
-                        setIsModalOpen={setIsModalOpen}
-                        uploadedFiles={uploadedFiles}
-                        setUploadedFiles={setUploadedFiles}
-                        publicId={file.public_id}
-                      /> */}
-                    </button>
+                      <button
+                        className="absolute top-2 right-2 p-1 bg-white rounded-lg"
+                        onClick={() => handleDelete(file.public_id)}
+                      >
+                        <HiTrash className="mx-auto h-4 w-4 text-red-600" />
+                      </button>
+                    </Tooltip>
                   </li>
                 ))}
               </ul>
