@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
+import crypto from "crypto";
 import { HiTrash } from "react-icons/hi";
 import { useDropzone } from "react-dropzone";
 // @ts-ignore
@@ -43,6 +44,17 @@ const schema = z.object({
   price: z.string().min(2, { message: "Please enter amount" }),
   // description: z.string().min(1),
 });
+
+const generateSHA1 = (data: any) => {
+  const hash = crypto.createHash("sha1");
+  hash.update(data);
+  return hash.digest("hex");
+};
+
+const generateSignature = (publicId: string, apiSecret: string | undefined) => {
+  const timestamp = new Date().getTime();
+  return `public_id=${publicId}&timestamp=${timestamp}${apiSecret}`;
+};
 
 export const CreateAdForm: FC<IImageUpload> = () => {
   const user = useSelector((state: IProps) => state.user);
@@ -172,6 +184,45 @@ export const CreateAdForm: FC<IImageUpload> = () => {
       : setIsCategory(false);
   });
 
+  const handleDelete = (publicId: string) => {
+    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
+    const timestamp = new Date().getTime();
+    const apiKey = process.env.NEXT_PUBLIC_CLOUDINARY_KEY;
+    const apiSecret = process.env.NEXT_PUBLIC_CLOUDINARY_SECRET;
+    const signature = generateSHA1(generateSignature(publicId, apiSecret));
+    const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/destroy`;
+
+    axios
+      .post(url, {
+        public_id: publicId,
+        signature: signature,
+        api_key: apiKey,
+        timestamp: timestamp,
+      })
+      .then(() => {
+        setUploadedFiles(
+          uploadedFiles.filter((file: any) => file.public_id !== publicId)
+        );
+
+        dispatch(
+          setSnackbar({
+            status: "success",
+            message: ` Image Deleted`,
+            open: true,
+          })
+        );
+      })
+      .catch(() => {
+        dispatch(
+          setSnackbar({
+            status: "error",
+            message: ` Unable to remove image. Please contact support`,
+            open: true,
+          })
+        );
+      });
+  };
+
   return (
     <>
       <div className="flex flex-col justify-center">
@@ -209,18 +260,18 @@ export const CreateAdForm: FC<IImageUpload> = () => {
 
                     <button
                       className="absolute top-2 right-2 p-1 bg-white rounded-lg"
-                      onClick={() => setIsModalOpen(true)}
+                      onClick={() => handleDelete(file.public_id)}
                     >
                       <HiTrash className="mx-auto h-4 w-4 text-red-600" />
-                    </button>
 
-                    <DeleteImageModal
-                      isModalOpen={isModalOpen}
-                      setIsModalOpen={setIsModalOpen}
-                      uploadedFiles={uploadedFiles}
-                      setUploadedFiles={setUploadedFiles}
-                      publicId={file.public_id}
-                    />
+                      {/* <DeleteImageModal
+                        isModalOpen={isModalOpen}
+                        setIsModalOpen={setIsModalOpen}
+                        uploadedFiles={uploadedFiles}
+                        setUploadedFiles={setUploadedFiles}
+                        publicId={file.public_id}
+                      /> */}
+                    </button>
                   </li>
                 ))}
               </ul>

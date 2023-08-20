@@ -59,16 +59,41 @@ const UserTab: FC<IProps> = () => {
             })
           );
         } else {
-          // delete images from cloudinary here
-          console.log("Images: ", images);
+          // delete images from cloudinary
+          images.map((image) => {
+            const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
+            const timestamp = new Date().getTime();
+            const apiKey = process.env.NEXT_PUBLIC_CLOUDINARY_KEY;
+            const apiSecret = process.env.NEXT_PUBLIC_CLOUDINARY_SECRET;
+            const signature = generateSHA1(generateSignature(image, apiSecret));
+            const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/destroy`;
 
-          dispatch(
-            setSnackbar({
-              status: "success",
-              message: " Property deleted",
-              open: true,
-            })
-          );
+            axios
+              .post(url, {
+                public_id: image,
+                signature: signature,
+                api_key: apiKey,
+                timestamp: timestamp,
+              })
+              .then(() => {
+                dispatch(
+                  setSnackbar({
+                    status: "success",
+                    message: ` Property deleted`,
+                    open: true,
+                  })
+                );
+              })
+              .catch(() => {
+                dispatch(
+                  setSnackbar({
+                    status: "error",
+                    message: ` Unable to remove property images. Please contact support`,
+                    open: true,
+                  })
+                );
+              });
+          });
         }
         setAds(res.data.properties);
       })
@@ -274,7 +299,7 @@ const UserTab: FC<IProps> = () => {
                     <div className="grid gap-6 col-span-2 sm:col-span-1 lg:col-span-2 2xl:col-span-3 mb-8">
                       {ads.map((property: SingleProperty) => (
                         <span key={property.ID}>
-                          <PropertyCard                            
+                          <PropertyCard
                             property={property}
                             handleDelete={handleDelete}
                           />

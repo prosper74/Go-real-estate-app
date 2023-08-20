@@ -20,7 +20,6 @@ const generateSHA1 = (data: any) => {
   hash.update(data);
   return hash.digest("hex");
 };
-
 const generateSignature = (publicId: string, apiSecret: string | undefined) => {
   const timestamp = new Date().getTime();
   return `public_id=${publicId}&timestamp=${timestamp}${apiSecret}`;
@@ -34,6 +33,8 @@ export default function DeleteImageModal({
   publicId,
 }: IProps) {
   const dispatch = useDispatch();
+
+  console.log("Public id: ", publicId);
 
   const handleDelete = () => {
     setIsModalOpen(false);
