@@ -2,12 +2,14 @@
 
 import { Button, Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { Image } from "../helpers/interfaces";
 
 interface IProps {
   isModalOpen: boolean;
   setIsModalOpen: (open: boolean) => void;
   handleDelete: any;
   propertyID: number;
+  propertyImages: Image[];
 }
 
 export default function DeleteModal({
@@ -15,6 +17,7 @@ export default function DeleteModal({
   setIsModalOpen,
   handleDelete,
   propertyID,
+  propertyImages,
 }: IProps) {
   function closeModal() {
     setIsModalOpen(false);
@@ -35,7 +38,7 @@ export default function DeleteModal({
                 color="failure"
                 onClick={() => {
                   closeModal();
-                  handleDelete(propertyID);
+                  handleDelete(propertyID, propertyImages);
                 }}
               >
                 Yes, I'm sure

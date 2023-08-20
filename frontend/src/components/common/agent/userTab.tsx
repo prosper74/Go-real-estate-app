@@ -5,6 +5,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Tab } from "@headlessui/react";
 import Cookies from "js-cookie";
+import crypto from "crypto";
 import { setUser } from "@src/store/reducers/userReducer";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import AgentSidebar from "./agentSidebar";
@@ -19,6 +20,17 @@ interface IProps {
   ads: SingleProperty;
 }
 
+const generateSHA1 = (data: any) => {
+  const hash = crypto.createHash("sha1");
+  hash.update(data);
+  return hash.digest("hex");
+};
+
+const generateSignature = (publicId: string, apiSecret: string | undefined) => {
+  const timestamp = new Date().getTime();
+  return `public_id=${publicId}&timestamp=${timestamp}${apiSecret}`;
+};
+
 const classNames = (...classes: String[]) => {
   return classes.filter(Boolean).join(" ");
 };
@@ -32,7 +44,7 @@ const UserTab: FC<IProps> = () => {
   const [ads, setAds] = useState<SingleProperty[]>([]);
   const defaultUser = { username: "Guest" };
 
-  const handleDelete = (propertyID: number) => {
+  const handleDelete = (propertyID: number, images: string[]) => {
     axios
       .get(
         `${process.env.NEXT_PUBLIC_REST_API}/user/properties?user_id=${user.userId}&property_id=${propertyID}&jwt=${user.jwt}`
@@ -47,6 +59,9 @@ const UserTab: FC<IProps> = () => {
             })
           );
         } else {
+          // delete images from cloudinary here
+          console.log("Images: ", images);
+
           dispatch(
             setSnackbar({
               status: "success",
@@ -256,13 +271,14 @@ const UserTab: FC<IProps> = () => {
                       )}
                     </div>
                   ) : (
-                    <div className="grid gap-4 col-span-2 sm:col-span-1 lg:col-span-2 2xl:col-span-3 mb-8">
+                    <div className="grid gap-6 col-span-2 sm:col-span-1 lg:col-span-2 2xl:col-span-3 mb-8">
                       {ads.map((property: SingleProperty) => (
-                        <PropertyCard
-                          key={property.ID}
-                          property={property}
-                          handleDelete={handleDelete}
-                        />
+                        <span key={property.ID}>
+                          <PropertyCard                            
+                            property={property}
+                            handleDelete={handleDelete}
+                          />
+                        </span>
                       ))}
                     </div>
                   )}

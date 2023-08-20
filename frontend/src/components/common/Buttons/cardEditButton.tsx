@@ -4,13 +4,15 @@ import { useState } from "react";
 import { Dropdown } from "flowbite-react";
 import { HiStop, HiTrash, HiPencilAlt, HiDotsVertical } from "react-icons/hi";
 import DeleteModal from "../modals/deleteModal";
+import { Image } from "../helpers/interfaces";
 
 interface IProps {
   propertyID: number;
+  propertyImages: Image[];
   handleDelete: any;
 }
 
-export default function CardEditButton({ propertyID, handleDelete }: IProps) {
+export default function CardEditButton({ propertyID, propertyImages, handleDelete }: IProps) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   return (
@@ -41,6 +43,7 @@ export default function CardEditButton({ propertyID, handleDelete }: IProps) {
           setIsModalOpen={setIsModalOpen}
           handleDelete={handleDelete}
           propertyID={propertyID}
+          propertyImages={propertyImages}
         />
       )}
     </>
