@@ -3,6 +3,9 @@ import Cookies from "js-cookie";
 import Router from "next/router";
 import { Dialog } from "@headlessui/react";
 import axios from "axios";
+import crypto from "crypto";
+import { Tooltip } from "flowbite-react";
+import { HiTrash } from "react-icons/hi";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -12,7 +15,10 @@ import { useDropzone } from "react-dropzone";
 import { Image } from "cloudinary-react";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import { setUser } from "@src/store/reducers/userReducer";
-import { ForwardArrow, CloseIcon } from "@src/components/common/helpers/svgIcons";
+import {
+  ForwardArrow,
+  CloseIcon,
+} from "@src/components/common/helpers/svgIcons";
 import { IImageUpload, UserProps } from "../helpers/interfaces";
 
 interface IProps {
@@ -29,6 +35,17 @@ const schema = z.object({
     .min(11, { message: "Phone must be 11 numbers" })
     .max(11, { message: "Phone must be 11 numbers" }),
 });
+
+const generateSHA1 = (data: any) => {
+  const hash = crypto.createHash("sha1");
+  hash.update(data);
+  return hash.digest("hex");
+};
+
+const generateSignature = (publicId: string, apiSecret: string | undefined) => {
+  const timestamp = new Date().getTime();
+  return `public_id=${publicId}&timestamp=${timestamp}${apiSecret}`;
+};
 
 const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
   const user = useSelector((state: IProps) => state.user);
@@ -149,6 +166,43 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
       });
   });
 
+  const handleDelete = (publicId: string) => {    
+    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
+    const timestamp = new Date().getTime();
+    const apiKey = process.env.NEXT_PUBLIC_CLOUDINARY_KEY;
+    const apiSecret = process.env.NEXT_PUBLIC_CLOUDINARY_SECRET;
+    const signature = generateSHA1(generateSignature(publicId, apiSecret));
+    const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/destroy`;
+
+    axios
+      .post(url, {
+        public_id: publicId,
+        signature: signature,
+        api_key: apiKey,
+        timestamp: timestamp,
+      })
+      .then(() => {
+        setUploadedImage("");
+
+        dispatch(
+          setSnackbar({
+            status: "success",
+            message: ` Image Deleted`,
+            open: true,
+          })
+        );
+      })
+      .catch(() => {
+        dispatch(
+          setSnackbar({
+            status: "error",
+            message: ` Unable to remove image. Please contact support`,
+            open: true,
+          })
+        );
+      });
+  };
+
   useEffect(() => {
     if (user?.userId) {
       axios
@@ -238,14 +292,28 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
 
               <div className="flex flex-row justify-center">
                 {uploadedImage && (
-                  <Image
-                    cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
-                    publicId={uploadedImage.public_id}
-                    width="150"
-                    height="150"
-                    crop="scale"
-                    className="rounded-full object-cover"
-                  />
+                  <span className="relative">
+                    <Image
+                      cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
+                      publicId={uploadedImage.public_id}
+                      width="150"
+                      height="150"
+                      crop="scale"
+                      className="rounded-full object-cover"
+                    />
+
+                    <button
+                      className="absolute top-2 right-2 p-1 bg-white rounded-lg"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        handleDelete(uploadedImage.public_id);
+                      }}
+                    >
+                      <Tooltip content={`Delete image`} style="light">
+                        <HiTrash className="mx-auto h-4 w-4 text-red-600" />
+                      </Tooltip>
+                    </button>
+                  </span>
                 )}
               </div>
 
