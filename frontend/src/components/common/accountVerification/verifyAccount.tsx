@@ -2,6 +2,9 @@ import { FC, useCallback, useState } from "react";
 import { Dialog } from "@headlessui/react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import crypto from "crypto";
+import { Tooltip } from "flowbite-react";
+import { HiTrash } from "react-icons/hi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +13,10 @@ import { useDropzone } from "react-dropzone";
 import { Image } from "cloudinary-react";
 import { setUser } from "@src/store/reducers/userReducer";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
-import { ForwardArrow, CloseIcon } from "@src/components/common/helpers/svgIcons";
+import {
+  ForwardArrow,
+  CloseIcon,
+} from "@src/components/common/helpers/svgIcons";
 import { IImageUpload, UserProps } from "../helpers/interfaces";
 
 interface IProps {
@@ -29,6 +35,17 @@ const schema = z.object({
     .max(40, { message: "Maximun 35 characters" }),
   address: z.string(),
 });
+
+const generateSHA1 = (data: any) => {
+  const hash = crypto.createHash("sha1");
+  hash.update(data);
+  return hash.digest("hex");
+};
+
+const generateSignature = (publicId: string, apiSecret: string | undefined) => {
+  const timestamp = new Date().getTime();
+  return `public_id=${publicId}&timestamp=${timestamp}${apiSecret}`;
+};
 
 const VerifyAccount: FC<IProps> = ({
   setIsOpen,
@@ -150,6 +167,45 @@ const VerifyAccount: FC<IProps> = ({
       });
   });
 
+  const handleDelete = (publicId: string) => {
+    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
+    const timestamp = new Date().getTime();
+    const apiKey = process.env.NEXT_PUBLIC_CLOUDINARY_KEY;
+    const apiSecret = process.env.NEXT_PUBLIC_CLOUDINARY_SECRET;
+    const signature = generateSHA1(generateSignature(publicId, apiSecret));
+    const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/destroy`;
+
+    axios
+      .post(url, {
+        public_id: publicId,
+        signature: signature,
+        api_key: apiKey,
+        timestamp: timestamp,
+      })
+      .then(() => {
+        setUploadedImages(
+          uploadedImages.filter((file: any) => file.public_id !== publicId)
+        );
+
+        dispatch(
+          setSnackbar({
+            status: "success",
+            message: ` Image Deleted`,
+            open: true,
+          })
+        );
+      })
+      .catch(() => {
+        dispatch(
+          setSnackbar({
+            status: "error",
+            message: ` Unable to remove image. Please contact support`,
+            open: true,
+          })
+        );
+      });
+  };
+
   function closeModal() {
     setIsOpen(false);
   }
@@ -245,15 +301,27 @@ const VerifyAccount: FC<IProps> = ({
             )}
             <div className="flex flex-row justify-center">
               {uploadedImages.map((file: IImageUpload) => (
-                <li key={file.public_id} className="mr-1">
+                <li key={file.public_id} className="relative mr-1">
                   <Image
                     cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
                     publicId={file.public_id}
                     width="150"
                     height="150"
                     crop="scale"
-                    className="object-cover"
+                    className="object-cover rounded-lg"
                   />
+
+                  <button
+                    className="absolute top-2 right-2 p-1 bg-white rounded-lg"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      handleDelete(file.public_id);
+                    }}
+                  >
+                    <Tooltip content={`Delete image`} style="light">
+                      <HiTrash className="mx-auto h-4 w-4 text-red-600" />
+                    </Tooltip>
+                  </button>
                 </li>
               ))}
             </div>
