@@ -8,11 +8,17 @@ import { Image } from "../helpers/interfaces";
 
 interface IProps {
   propertyID: number;
+  propertyStatus: string;
   propertyImages: Image[];
   handleDelete: any;
 }
 
-export default function CardEditButton({ propertyID, propertyImages, handleDelete }: IProps) {
+export default function CardEditButton({
+  propertyID,
+  propertyStatus,
+  propertyImages,
+  handleDelete,
+}: IProps) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   return (
@@ -26,10 +32,17 @@ export default function CardEditButton({ propertyID, propertyImages, handleDelet
           </button>
         )}
       >
-        <Dropdown.Item icon={HiPencilAlt}>Edit</Dropdown.Item>
-        <Dropdown.Item icon={HiStop}>Dissable</Dropdown.Item>
         <Dropdown.Item
-          color="red"
+          icon={HiPencilAlt}
+          disabled={propertyStatus === "pending"}
+        >
+          Edit
+        </Dropdown.Item>
+        <Dropdown.Item icon={HiStop} disabled={propertyStatus === "pending"}>
+          Dissable
+        </Dropdown.Item>
+        <Dropdown.Item
+          color="#666"
           icon={HiTrash}
           onClick={() => setIsModalOpen(true)}
         >

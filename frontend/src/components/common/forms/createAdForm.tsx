@@ -254,7 +254,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                       cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
                       publicId={file.public_id}
                       crop="scale"
-                      className="w-[150px] h-[150px] rounded-lg m-1"
+                      className="w-[80px] h-[80px] md:w-[150px] md:h-[150px] object-cover rounded-lg m-1"
                     />
 
                     <button

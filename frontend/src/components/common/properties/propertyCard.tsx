@@ -92,6 +92,7 @@ export default function PropertyCard({
           <div className="absolute top-4 right-4">
             <CardEditButton
               propertyID={property.ID}
+              propertyStatus={property.Status}
               propertyImages={property.Images}
               handleDelete={handleDelete}
             />
