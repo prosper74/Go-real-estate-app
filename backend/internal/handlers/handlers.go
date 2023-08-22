@@ -983,7 +983,7 @@ func (m *Repository) UserDeleteProperty(w http.ResponseWriter, r *http.Request) 
 	err = m.DB.DeleteProperty(propertyID)
 	if err != nil {
 		helpers.ServerError(w, err)
-		data["error"] = "Unable to property. Please contact support"
+		data["error"] = "Unable to delete property. Please contact support"
 		out, _ := json.MarshalIndent(data, "", "    ")
 		resp := []byte(out)
 		w.Write(resp)
@@ -1009,14 +1009,21 @@ func (m *Repository) UserDeleteProperty(w http.ResponseWriter, r *http.Request) 
 	w.Write(out)
 }
 
-// Delete property
+// Update user property status
 func (m *Repository) UserUpdatePropertyStatus(w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]interface{})
+	var statusUpdate string
 
-	// propertyID, _ := strconv.Atoi(r.URL.Query().Get("property_id"))
+	propertyID, _ := strconv.Atoi(r.URL.Query().Get("property_id"))
 	userID, _ := strconv.Atoi(r.URL.Query().Get("user_id"))
-	// properStatus := r.URL.Query().Get("property_status")
+	properStatus := r.URL.Query().Get("property_status")
 	tokenString := r.URL.Query().Get("jwt")
+
+	if properStatus == "enabled" {
+		statusUpdate = "disabled"
+	} else {
+		statusUpdate = "enabled"
+	}
 
 	// Load the env file and get the JWT secret
 	err := godotenv.Load()
@@ -1048,15 +1055,15 @@ func (m *Repository) UserUpdatePropertyStatus(w http.ResponseWriter, r *http.Req
 	}
 
 	// Update the property status in the database
-	// err = m.DB.DeleteProperty(propertyID)
-	// if err != nil {
-	// 	helpers.ServerError(w, err)
-	// 	data["error"] = "Unable to property. Please contact support"
-	// 	out, _ := json.MarshalIndent(data, "", "    ")
-	// 	resp := []byte(out)
-	// 	w.Write(resp)
-	// 	return
-	// }
+	err = m.DB.UserUpdatePropertyStatus(propertyID, statusUpdate)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to update property status. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
 
 	// Return new properties
 	properties, err := m.DB.GetUserPropertiesByID(userID)

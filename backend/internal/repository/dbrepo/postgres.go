@@ -608,7 +608,7 @@ func (m *postgresDBRepo) GetUserPropertiesByID(userID int) ([]models.Property, e
 }
 
 // Inserts a user into the database
-func (repo *postgresDBRepo) InsertUser(user models.User) (int, error) {
+func (m *postgresDBRepo) InsertUser(user models.User) (int, error) {
 	// Close this transaction if unable to run this statement within 3 seconds
 	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -622,7 +622,7 @@ func (repo *postgresDBRepo) InsertUser(user models.User) (int, error) {
 
 	query := `insert into users (first_name, last_name, email, password, created_at, updated_at) values ($1, $2, $3, $4, $5, $6) returning id`
 
-	err = repo.DB.QueryRowContext(context, query, user.FirstName, user.LastName, user.Email, hashedPassword, time.Now(), time.Now()).Scan(&newUserID)
+	err = m.DB.QueryRowContext(context, query, user.FirstName, user.LastName, user.Email, hashedPassword, time.Now(), time.Now()).Scan(&newUserID)
 
 	if err != nil {
 		return 0, err
@@ -632,14 +632,14 @@ func (repo *postgresDBRepo) InsertUser(user models.User) (int, error) {
 }
 
 // GetUserByID returns a user by id
-func (repo *postgresDBRepo) GetUserByID(id int) (models.User, error) {
+func (m *postgresDBRepo) GetUserByID(id int) (models.User, error) {
 	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	query := `select id, first_name, last_name, email, phone, access_level, verification, address, image, created_at, updated_at
 			from users where id = $1`
 
-	row := repo.DB.QueryRowContext(context, query, id)
+	row := m.DB.QueryRowContext(context, query, id)
 
 	var user models.User
 	err := row.Scan(
@@ -664,14 +664,14 @@ func (repo *postgresDBRepo) GetUserByID(id int) (models.User, error) {
 }
 
 // GetUserByID returns a user by email
-func (repo *postgresDBRepo) GetUserByEmail(email string) (models.User, error) {
+func (m *postgresDBRepo) GetUserByEmail(email string) (models.User, error) {
 	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	query := `select id, first_name, last_name, email, phone, access_level, verification, address, image, created_at, updated_at
 			from users where email = $1`
 
-	row := repo.DB.QueryRowContext(context, query, email)
+	row := m.DB.QueryRowContext(context, query, email)
 
 	var user models.User
 	err := row.Scan(
@@ -696,7 +696,7 @@ func (repo *postgresDBRepo) GetUserByEmail(email string) (models.User, error) {
 }
 
 // UpdateUser updates a user in the database
-func (repo *postgresDBRepo) UpdateUserAccessLevel(user models.User) error {
+func (m *postgresDBRepo) UpdateUserAccessLevel(user models.User) error {
 	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -704,7 +704,7 @@ func (repo *postgresDBRepo) UpdateUserAccessLevel(user models.User) error {
 		update users set access_level = $1, updated_at = $2 where id = $3
 	`
 
-	_, err := repo.DB.ExecContext(context, query, user.AccessLevel, time.Now(), user.ID)
+	_, err := m.DB.ExecContext(context, query, user.AccessLevel, time.Now(), user.ID)
 
 	if err != nil {
 		return err
@@ -714,7 +714,7 @@ func (repo *postgresDBRepo) UpdateUserAccessLevel(user models.User) error {
 }
 
 // UpdateUserImageAndPhone updates a user image and phone in the database
-func (repo *postgresDBRepo) UpdateUserImageAndPhone(user models.User) error {
+func (m *postgresDBRepo) UpdateUserImageAndPhone(user models.User) error {
 	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -722,7 +722,7 @@ func (repo *postgresDBRepo) UpdateUserImageAndPhone(user models.User) error {
 		update users set image = $1, phone = $2, updated_at = $3 where id = $4
 	`
 
-	_, err := repo.DB.ExecContext(context, query, user.Image, user.Phone, time.Now(), user.ID)
+	_, err := m.DB.ExecContext(context, query, user.Image, user.Phone, time.Now(), user.ID)
 
 	if err != nil {
 		return err
@@ -732,7 +732,7 @@ func (repo *postgresDBRepo) UpdateUserImageAndPhone(user models.User) error {
 }
 
 // Authenticate authenticates a user
-func (repo *postgresDBRepo) Authenticate(email, testPassword string) (int, string, string, error) {
+func (m *postgresDBRepo) Authenticate(email, testPassword string) (int, string, string, error) {
 	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -740,7 +740,7 @@ func (repo *postgresDBRepo) Authenticate(email, testPassword string) (int, strin
 	var firstName string
 	var hashedPassword string
 
-	row := repo.DB.QueryRowContext(context, "select id, first_name, password from users where email = $1", email)
+	row := m.DB.QueryRowContext(context, "select id, first_name, password from users where email = $1", email)
 	err := row.Scan(&id, &firstName, &hashedPassword)
 	if err != nil {
 		return id, "", "", err
@@ -757,13 +757,13 @@ func (repo *postgresDBRepo) Authenticate(email, testPassword string) (int, strin
 }
 
 // InsertAccountVerification inserts a new account verification for a user
-func (repo *postgresDBRepo) InsertAccountVerification(d models.AccountVerification) error {
+func (m *postgresDBRepo) InsertAccountVerification(d models.AccountVerification) error {
 	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	query := `insert into account_verification (identity, identity_number, identity_image, address, address_image, user_id, created_at, updated_at) values ($1, $2, $3, $4, $5, $6, $7, $8)`
 
-	_, err := repo.DB.ExecContext(context, query, d.Identity, d.IdentityNumber, d.IdentityImage, d.Address, d.AddressImage, d.UserID, time.Now(), time.Now())
+	_, err := m.DB.ExecContext(context, query, d.Identity, d.IdentityNumber, d.IdentityImage, d.Address, d.AddressImage, d.UserID, time.Now(), time.Now())
 
 	if err != nil {
 		return err
@@ -773,7 +773,7 @@ func (repo *postgresDBRepo) InsertAccountVerification(d models.AccountVerificati
 }
 
 // UpdateUserVerification updates a user verification status in the database
-func (repo *postgresDBRepo) UpdateUserVerification(user models.User) error {
+func (m *postgresDBRepo) UpdateUserVerification(user models.User) error {
 	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -781,7 +781,7 @@ func (repo *postgresDBRepo) UpdateUserVerification(user models.User) error {
 		update users set verification = $1, updated_at = $2 where id = $3
 	`
 
-	_, err := repo.DB.ExecContext(context, query, user.Verification, time.Now(), user.ID)
+	_, err := m.DB.ExecContext(context, query, user.Verification, time.Now(), user.ID)
 
 	if err != nil {
 		return err
@@ -791,7 +791,7 @@ func (repo *postgresDBRepo) UpdateUserVerification(user models.User) error {
 }
 
 // UpdateUser updates a user in the database
-func (repo *postgresDBRepo) UpdateUserVerificationStatus(user models.User) error {
+func (m *postgresDBRepo) UpdateUserVerificationStatus(user models.User) error {
 	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -799,7 +799,7 @@ func (repo *postgresDBRepo) UpdateUserVerificationStatus(user models.User) error
 		update users set verification = $1, access_level = $2, updated_at = $3 where id = $4
 	`
 
-	_, err := repo.DB.ExecContext(context, query, user.Verification, user.AccessLevel, time.Now(), user.ID)
+	_, err := m.DB.ExecContext(context, query, user.Verification, user.AccessLevel, time.Now(), user.ID)
 
 	if err != nil {
 		return err
@@ -809,7 +809,7 @@ func (repo *postgresDBRepo) UpdateUserVerificationStatus(user models.User) error
 }
 
 // UpdateUserPassword updates a user password in the database
-func (repo *postgresDBRepo) UpdateUserPassword(user models.User) error {
+func (m *postgresDBRepo) UpdateUserPassword(user models.User) error {
 	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -822,7 +822,7 @@ func (repo *postgresDBRepo) UpdateUserPassword(user models.User) error {
 		update users set password = $1, updated_at = $2 where id = $3
 	`
 
-	_, err = repo.DB.ExecContext(context, query, hashedPassword, time.Now(), user.ID)
+	_, err = m.DB.ExecContext(context, query, hashedPassword, time.Now(), user.ID)
 
 	if err != nil {
 		return err
@@ -832,13 +832,13 @@ func (repo *postgresDBRepo) UpdateUserPassword(user models.User) error {
 }
 
 // InsertNewProperty inserts a new property for a user
-func (repo *postgresDBRepo) InsertNewProperty(property models.Property) error {
+func (m *postgresDBRepo) InsertNewProperty(property models.Property) error {
 	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	query := `insert into properties (title, description, price, type, duration, size, city, state, bedroom, bathroom, status, images, category_id, user_id, created_at, updated_at) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`
 
-	_, err := repo.DB.ExecContext(context, query, property.Title, property.Description, property.Price, property.Type, property.Duration, property.Size, property.City, property.State, property.Bedroom, property.Bathroom, property.Status, property.Images, property.CategoryID, property.UserID, time.Now(), time.Now())
+	_, err := m.DB.ExecContext(context, query, property.Title, property.Description, property.Price, property.Type, property.Duration, property.Size, property.City, property.State, property.Bedroom, property.Bathroom, property.Status, property.Images, property.CategoryID, property.UserID, time.Now(), time.Now())
 
 	if err != nil {
 		return err
@@ -855,6 +855,21 @@ func (m *postgresDBRepo) DeleteProperty(id int) error {
 	query := `delete from properties where id = $1`
 
 	_, err := m.DB.ExecContext(ctx, query, id)
+	if err != nil {		
+		return err
+	}
+
+	return nil
+}
+
+// DeleteProperty deletes properties from DB
+func (m *postgresDBRepo) UserUpdatePropertyStatus(id int, status string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `update properties set status = $1, updated_at = $2 where id = $3`
+
+	_, err := m.DB.ExecContext(ctx, query, status, time.Now(), id)
 	if err != nil {		
 		return err
 	}
