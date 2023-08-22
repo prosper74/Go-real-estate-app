@@ -1013,7 +1013,7 @@ func (m *Repository) UserDeleteProperty(w http.ResponseWriter, r *http.Request) 
 	}
 
 	// Return new rent properties
-	RentProperties, err := m.DB.AllBuyProperties()
+	RentProperties, err := m.DB.AllRentProperties()
 	if err != nil {
 		helpers.ServerError(w, err)
 		data["error"] = "Unable to fetch user properties. Please contact support"
@@ -1024,7 +1024,7 @@ func (m *Repository) UserDeleteProperty(w http.ResponseWriter, r *http.Request) 
 	}
 
 	// Return new rent properties
-	ShortletProperties, err := m.DB.AllBuyProperties()
+	ShortletProperties, err := m.DB.AllShortletProperties()
 	if err != nil {
 		helpers.ServerError(w, err)
 		data["error"] = "Unable to fetch user properties. Please contact support"

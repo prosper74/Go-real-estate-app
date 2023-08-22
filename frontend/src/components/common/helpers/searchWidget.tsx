@@ -2,6 +2,7 @@ import React, { FC, useCallback, useState } from "react";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import crypto from "crypto";
 // @ts-ignore
 import { Image } from "cloudinary-react";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
@@ -17,6 +18,17 @@ interface IProps {
   user?: UserProps;
   properties: SingleProperty;
 }
+
+const generateSHA1 = (data: any) => {
+  const hash = crypto.createHash("sha1");
+  hash.update(data);
+  return hash.digest("hex");
+};
+
+const generateSignature = (publicId: string, apiSecret: string | undefined) => {
+  const timestamp = new Date().getTime();
+  return `public_id=${publicId}&timestamp=${timestamp}${apiSecret}`;
+};
 
 export const StandAloneSearchWidget: FC<ISearchWidget> = ({
   properties = [],
@@ -86,12 +98,6 @@ export const StandAloneSearchWidget: FC<ISearchWidget> = ({
                 }
               >
                 <div className="my-2 p-3 hover:bg-gray-300 hover:rounded-lg grid grid-cols-4 sm:grid-cols-5">
-                  {/* <img
-                    // @ts-ignore
-                    src={d.Images[0]}
-                    alt={d.Title}
-                    className="w-14 h-14 sm:w-16 sm:h-16 rounded-full"
-                  /> */}
                   <Image
                     cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
                     publicId={d.Images[0]}
@@ -145,6 +151,79 @@ export const PageSearchWidget: FC<ISearchWidget> = ({
     }
   };
 
+  const handleDelete = useCallback((propertyID: number, images: string[]) => {
+    axios
+      .get(
+        `${process.env.NEXT_PUBLIC_REST_API}/user/properties?user_id=${user?.userId}&property_id=${propertyID}&jwt=${user?.jwt}`
+      )
+      .then((res) => {
+        if (res.data.error) {
+          dispatch(
+            setSnackbar({
+              status: "error",
+              message: res.data.error,
+              open: true,
+            })
+          );
+        } else {
+          // delete images from cloudinary
+          images.map((image) => {
+            const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
+            const timestamp = new Date().getTime();
+            const apiKey = process.env.NEXT_PUBLIC_CLOUDINARY_KEY;
+            const apiSecret = process.env.NEXT_PUBLIC_CLOUDINARY_SECRET;
+            const signature = generateSHA1(generateSignature(image, apiSecret));
+            const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/destroy`;
+
+            axios
+              .post(url, {
+                public_id: image,
+                signature: signature,
+                api_key: apiKey,
+                timestamp: timestamp,
+              })
+              .then(() => {
+                dispatch(
+                  setSnackbar({
+                    status: "success",
+                    message: ` Property deleted`,
+                    open: true,
+                  })
+                );
+              })
+              .catch(() => {
+                dispatch(
+                  setSnackbar({
+                    status: "error",
+                    message: ` Unable to remove property images. Please contact support`,
+                    open: true,
+                  })
+                );
+              });
+          });
+        }
+
+        setFilteredProperties(
+          window.location.href.indexOf("/buy") > -1
+            ? res.data.buyProperties
+            : window.location.href.indexOf("/rent") > -1
+            ? res.data.rentProperties
+            : res.data.shortletProperties
+        );
+      })
+      .catch((err) => {
+        console.error(err);
+        dispatch(
+          setSnackbar({
+            status: "error",
+            message:
+              " There was an error deleting item, please contact support",
+            open: true,
+          })
+        );
+      });
+  }, []);
+
   const handleStatusUpdate = useCallback(
     (propertyID: number, propertyStatus: string) => {
       axios
@@ -174,7 +253,7 @@ export const PageSearchWidget: FC<ISearchWidget> = ({
               ? res.data.buyProperties
               : window.location.href.indexOf("/rent") > -1
               ? res.data.rentProperties
-              : res.data.shortletPropertie
+              : res.data.shortletProperties
           );
         })
         .catch((err) => {
@@ -226,6 +305,7 @@ export const PageSearchWidget: FC<ISearchWidget> = ({
             <PropertyCard
               key={property.ID}
               property={property}
+              handleDelete={handleDelete}
               handleStatusUpdate={handleStatusUpdate}
             />
           ))

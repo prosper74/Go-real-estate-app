@@ -39,7 +39,6 @@ export default function ShortletProperties({ data }: any) {
 
           <motion.span variants={imageAnimateBottom}>
             <PageSearchWidget
-              // @ts-ignore
               properties={properties}
               placeholder="Search here..."
               width={""}
