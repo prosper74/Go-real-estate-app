@@ -60,6 +60,7 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Post("/user/verification", handlers.Repo.InsertAccountVerification)
 	mux.Post("/user/create-ad", handlers.Repo.CreateNewProperty)
 	mux.Get("/user/properties", handlers.Repo.UserDeleteProperty)
+	mux.Get("/user/update-property-status", handlers.Repo.UserUpdatePropertyStatus)
 
 	mux.Route("/admin", func(mux chi.Router) {
 		// Use the Auth middleware
