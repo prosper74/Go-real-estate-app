@@ -1,5 +1,10 @@
+import { useCallback, useState } from "react";
+import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { SingleProperty } from "../helpers/interfaces";
+import { setSnackbar } from "@src/store/reducers/feedbackReducer";
+import { useIsMedium, useIsXLarge } from "../hooks/mediaQuery";
+import { useDispatch, useSelector } from "react-redux";
+import { SingleProperty, UserProps } from "../helpers/interfaces";
 import PropertyCard from "./propertyCard";
 
 // Import Swiper styles
@@ -9,13 +14,63 @@ import "swiper/css/pagination";
 
 // import required modules
 import { Pagination, Autoplay } from "swiper";
-import { useIsMedium, useIsXLarge } from "../hooks/mediaQuery";
 
 interface IProps {
+  user?: UserProps;
   properties: SingleProperty;
 }
 
 export default function PropertySlider({ properties }: IProps) {
+  const user = useSelector((state: IProps) => state.user);
+  const dispatch = useDispatch();
+  const [newProperties, setNewProperties] =
+    useState<SingleProperty>(properties);
+
+  const handleStatusUpdate = useCallback(
+    (propertyID: number, propertyStatus: string) => {
+      axios
+        .get(
+          `${process.env.NEXT_PUBLIC_REST_API}/user/update-property-status?user_id=${user?.userId}&property_id=${propertyID}&property_status=${propertyStatus}&jwt=${user?.jwt}`
+        )
+        .then((res) => {
+          if (res.data.error) {
+            dispatch(
+              setSnackbar({
+                status: "error",
+                message: res.data.error,
+                open: true,
+              })
+            );
+          } else {
+            dispatch(
+              setSnackbar({
+                status: "success",
+                message: ` Property status updated`,
+                open: true,
+              })
+            );
+          }
+          setNewProperties(
+            properties.filter(
+              (property: SingleProperty) => property.ID !== propertyID
+            )
+          );
+        })
+        .catch((err) => {
+          console.error(err);
+          dispatch(
+            setSnackbar({
+              status: "error",
+              message:
+                " There was an error updating the property item, please contact support",
+              open: true,
+            })
+          );
+        });
+    },
+    [newProperties]
+  );
+
   const isMedium = useIsMedium();
   const isXLarge = useIsXLarge();
 
@@ -31,10 +86,13 @@ export default function PropertySlider({ properties }: IProps) {
         autoplay={{ delay: 5000, disableOnInteraction: true }}
         className="p-12"
       >
-        {properties.length! >= 1 ? (
-          properties.map((d: SingleProperty) => (
+        {newProperties.length! >= 1 ? (
+          newProperties.map((d: SingleProperty) => (
             <SwiperSlide key={d.ID} className="my-3 pr-3">
-              <PropertyCard property={d} />
+              <PropertyCard
+                property={d}
+                handleStatusUpdate={handleStatusUpdate}
+              />
             </SwiperSlide>
           ))
         ) : (

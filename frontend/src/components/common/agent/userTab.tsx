@@ -37,12 +37,12 @@ const classNames = (...classes: String[]) => {
 
 const UserTab: FC<IProps> = () => {
   const user = useSelector((state: IProps) => state.user);
-  const dispatch = useDispatch();
+  const defaultUser = { username: "Guest" };
   const [fetchedUser, setFetchedUser] = useState<UserProps>();
+  const dispatch = useDispatch();  
   const [isVerification, setIsVerification] = useState(false);
   const [verificationModalOpen, setVerificationModalOpen] = useState(false);
-  const [ads, setAds] = useState<SingleProperty[]>([]);
-  const defaultUser = { username: "Guest" };
+  const [ads, setAds] = useState<SingleProperty[]>([]);  
 
   const handleDelete = (propertyID: number, images: string[]) => {
     axios
