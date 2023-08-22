@@ -990,8 +990,8 @@ func (m *Repository) UserDeleteProperty(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	// Return new properties
-	properties, err := m.DB.GetUserPropertiesByID(userID)
+	// Return new user properties
+	AllProperties, err := m.DB.AllProperties()
 	if err != nil {
 		helpers.ServerError(w, err)
 		data["error"] = "Unable to fetch user properties. Please contact support"
@@ -1001,7 +1001,55 @@ func (m *Repository) UserDeleteProperty(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	data["properties"] = properties
+	// Return new buy properties
+	BuyProperties, err := m.DB.AllBuyProperties()
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to fetch user properties. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// Return new rent properties
+	RentProperties, err := m.DB.AllBuyProperties()
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to fetch user properties. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// Return new rent properties
+	ShortletProperties, err := m.DB.AllBuyProperties()
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to fetch user properties. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// Return new user properties
+	userProperties, err := m.DB.GetUserPropertiesByID(userID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to fetch user properties. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	data["allProperties"] = AllProperties
+	data["buyProperties"] = BuyProperties
+	data["rentProperties"] = RentProperties
+	data["shortletProperties"] = ShortletProperties
+	data["userProperties"] = userProperties
 	data["message"] = "Successful"
 	out, _ := json.MarshalIndent(data, "", "    ")
 
@@ -1065,8 +1113,8 @@ func (m *Repository) UserUpdatePropertyStatus(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	// Return new properties
-	properties, err := m.DB.GetUserPropertiesByID(userID)
+	// Return new user properties
+	AllProperties, err := m.DB.AllProperties()
 	if err != nil {
 		helpers.ServerError(w, err)
 		data["error"] = "Unable to fetch user properties. Please contact support"
@@ -1076,7 +1124,55 @@ func (m *Repository) UserUpdatePropertyStatus(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	data["properties"] = properties
+	// Return new buy properties
+	BuyProperties, err := m.DB.AllBuyProperties()
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to fetch user properties. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// Return new rent properties
+	RentProperties, err := m.DB.AllRentProperties()
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to fetch user properties. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// Return new rent properties
+	ShortletProperties, err := m.DB.AllShortletProperties()
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to fetch user properties. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// Return new user properties
+	userProperties, err := m.DB.GetUserPropertiesByID(userID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to fetch user properties. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	data["allProperties"] = AllProperties
+	data["buyProperties"] = BuyProperties
+	data["rentProperties"] = RentProperties
+	data["shortletProperties"] = ShortletProperties
+	data["userProperties"] = userProperties
 	data["message"] = "Successful"
 	out, _ := json.MarshalIndent(data, "", "    ")
 

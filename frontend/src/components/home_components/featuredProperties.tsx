@@ -68,15 +68,15 @@ export default function FeaturedProperties() {
             className="flex justify-center w-full"
           >
             <Tabs.Item className="text-4xl" title="Buy" icon={HomeIconFixed}>
-              <PropertySlider properties={buyProperties} />
+              <PropertySlider properties={buyProperties} tab="buy" />
             </Tabs.Item>
 
             <Tabs.Item active={true} title="Rent" icon={RentIconFixed}>
-              <PropertySlider properties={rentProperties} />
+              <PropertySlider properties={rentProperties} tab="rent" />
             </Tabs.Item>
 
             <Tabs.Item title="Shortlet" icon={ShortletIconFixed}>
-              <PropertySlider properties={shortletProperties} />
+              <PropertySlider properties={shortletProperties} tab="shortlet" />
             </Tabs.Item>
           </Tabs.Group>
         </motion.div>

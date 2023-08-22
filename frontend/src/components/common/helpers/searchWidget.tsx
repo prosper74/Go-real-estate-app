@@ -1,11 +1,20 @@
-import React, { FC, useState } from "react";
-import { SearchIcon, CloseIcon } from "@src/components/common/helpers/svgIcons";
+import React, { FC, useCallback, useState } from "react";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { setSnackbar } from "@src/store/reducers/feedbackReducer";
+import { SearchIcon, CloseIcon } from "@src/components/common/helpers/svgIcons";
 import PropertyCard from "../properties/propertyCard";
 import {
   SingleProperty,
   ISearchWidget,
+  UserProps,
 } from "@src/components/common/helpers/interfaces";
+
+interface IProps {
+  user?: UserProps;
+  properties: SingleProperty;
+}
 
 export const StandAloneSearchWidget: FC<ISearchWidget> = ({
   properties = [],
@@ -108,6 +117,8 @@ export const PageSearchWidget: FC<ISearchWidget> = ({
 }) => {
   const [filteredProperties, setFilteredProperties] = useState(properties);
   const [wordEntered, setWordEntered] = useState("");
+  const user = useSelector((state: IProps) => state.user);
+  const dispatch = useDispatch();
 
   const handleFilter = (e: any) => {
     const searchedWords = e.target.value;
@@ -125,6 +136,53 @@ export const PageSearchWidget: FC<ISearchWidget> = ({
       setFilteredProperties(newFilter);
     }
   };
+
+  const handleStatusUpdate = useCallback(
+    (propertyID: number, propertyStatus: string) => {
+      axios
+        .get(
+          `${process.env.NEXT_PUBLIC_REST_API}/user/update-property-status?user_id=${user?.userId}&property_id=${propertyID}&property_status=${propertyStatus}&jwt=${user?.jwt}`
+        )
+        .then((res) => {
+          if (res.data.error) {
+            dispatch(
+              setSnackbar({
+                status: "error",
+                message: res.data.error,
+                open: true,
+              })
+            );
+          } else {
+            dispatch(
+              setSnackbar({
+                status: "success",
+                message: ` Property status updated`,
+                open: true,
+              })
+            );
+          }
+          setFilteredProperties(
+            window.location.href.indexOf("/buy") > -1
+              ? res.data.buyProperties
+              : window.location.href.indexOf("/rent") > -1
+              ? res.data.rentProperties
+              : res.data.shortletPropertie
+          );
+        })
+        .catch((err) => {
+          console.error(err);
+          dispatch(
+            setSnackbar({
+              status: "error",
+              message:
+                " There was an error updating the property item, please contact support",
+              open: true,
+            })
+          );
+        });
+    },
+    []
+  );
 
   const handleClose = () => {
     setFilteredProperties(properties);
@@ -156,13 +214,15 @@ export const PageSearchWidget: FC<ISearchWidget> = ({
       {/* Search Results  */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-8">
         {filteredProperties.length! >= 1 ? (
-          properties.map((property: SingleProperty) => (
-            <PropertyCard key={property.ID} property={property} />
+          filteredProperties.map((property: SingleProperty) => (
+            <PropertyCard
+              key={property.ID}
+              property={property}
+              handleStatusUpdate={handleStatusUpdate}
+            />
           ))
         ) : (
-          <h4 className="my-6 text-2xl">
-            No properties found
-          </h4>
+          <h4 className="my-6 text-2xl">No properties found</h4>
         )}
       </div>
     </>

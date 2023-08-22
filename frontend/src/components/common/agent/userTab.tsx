@@ -95,7 +95,7 @@ const UserTab: FC<IProps> = () => {
               });
           });
         }
-        setAds(res.data.properties);
+        setAds(res.data.userProperties);
       })
       .catch((err) => {
         console.error(err);
@@ -133,7 +133,7 @@ const UserTab: FC<IProps> = () => {
             })
           );
         }
-        setAds(res.data.properties);
+        setAds(res.data.userProperties);
       })
       .catch((err) => {
         console.error(err);

@@ -18,9 +18,10 @@ import { Pagination, Autoplay } from "swiper";
 interface IProps {
   user?: UserProps;
   properties: SingleProperty;
+  tab?: string;
 }
 
-export default function PropertySlider({ properties }: IProps) {
+export default function PropertySlider({ properties, tab }: IProps) {
   const user = useSelector((state: IProps) => state.user);
   const dispatch = useDispatch();
   const [newProperties, setNewProperties] =
@@ -51,9 +52,11 @@ export default function PropertySlider({ properties }: IProps) {
             );
           }
           setNewProperties(
-            properties.filter(
-              (property: SingleProperty) => property.ID !== propertyID
-            )
+            tab == "buy"
+              ? res.data.buyProperties
+              : tab === "rent"
+              ? res.data.rentProperties
+              : res.data.shortletPropertie
           );
         })
         .catch((err) => {
@@ -68,7 +71,7 @@ export default function PropertySlider({ properties }: IProps) {
           );
         });
     },
-    [newProperties]
+    []
   );
 
   const isMedium = useIsMedium();
