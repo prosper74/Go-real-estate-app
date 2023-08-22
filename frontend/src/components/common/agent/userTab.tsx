@@ -110,6 +110,44 @@ const UserTab: FC<IProps> = () => {
       });
   };
 
+  const handleStatusUpdate = (propertyID: number, propertyStatus: string) => {
+    axios
+      .get(
+        `${process.env.NEXT_PUBLIC_REST_API}/user/update-property-status?user_id=${user.userId}&property_id=${propertyID}&property_status=${propertyStatus}&jwt=${user.jwt}`
+      )
+      .then((res) => {
+        if (res.data.error) {
+          dispatch(
+            setSnackbar({
+              status: "error",
+              message: res.data.error,
+              open: true,
+            })
+          );
+        } else {
+          dispatch(
+            setSnackbar({
+              status: "success",
+              message: ` Property status updated`,
+              open: true,
+            })
+          );
+        }
+        setAds(res.data.properties);
+      })
+      .catch((err) => {
+        console.error(err);
+        dispatch(
+          setSnackbar({
+            status: "error",
+            message:
+              " There was an error updating the property item, please contact support",
+            open: true,
+          })
+        );
+      });
+  };
+
   useEffect(() => {
     if (user.userId) {
       axios
@@ -302,6 +340,7 @@ const UserTab: FC<IProps> = () => {
                           <PropertyCard
                             property={property}
                             handleDelete={handleDelete}
+                            handleStatusUpdate={handleStatusUpdate}
                           />
                         </span>
                       ))}
