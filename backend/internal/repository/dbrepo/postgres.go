@@ -17,7 +17,7 @@ func (m *postgresDBRepo) AllUsers() ([]models.User, error) {
 
 	var users []models.User
 
-	query := `select id, first_name, last_name, email, phone, access_level, verified, address, image, created_at, updated_at from users order by created_at`
+	query := `select id, first_name, last_name, email, phone, access_level, verified, address, image, created_at, updated_at from users order by created_at desc`
 
 	rows, err := m.DB.QueryContext(ctx, query)
 	if err != nil {
@@ -94,7 +94,7 @@ func (m *postgresDBRepo) AllProperties() ([]models.Property, error) {
 	left join users u on (p.user_id = u.id)
 	left join categories c on (p.category_id = c.id)
 	where p.status = 'enabled'
-	order by p.created_at asc`
+	order by p.created_at desc`
 
 	rows, err := m.DB.QueryContext(ctx, query)
 	if err != nil {
@@ -160,7 +160,7 @@ func (m *postgresDBRepo) AllFeaturedProperties() ([]models.Property, error) {
 	left join users u on (p.user_id = u.id)
 	left join categories c on (p.category_id = c.id)
 	where p.featured = 1 and p.status = 'enabled'
-	order by p.created_at asc`
+	order by p.created_at desc`
 
 	rows, err := m.DB.QueryContext(ctx, query)
 	if err != nil {
@@ -226,7 +226,7 @@ func (m *postgresDBRepo) AllBuyProperties() ([]models.Property, error) {
 	left join users u on (p.user_id = u.id)
 	left join categories c on (p.category_id = c.id)
 	where p.category_id = 1 and p.status = 'enabled'
-	order by p.created_at asc`
+	order by p.created_at desc`
 
 	rows, err := m.DB.QueryContext(ctx, query)
 	if err != nil {
@@ -292,7 +292,7 @@ func (m *postgresDBRepo) AllRentProperties() ([]models.Property, error) {
 	left join users u on (p.user_id = u.id)
 	left join categories c on (p.category_id = c.id)
 	where p.category_id = 2 and p.status = 'enabled'
-	order by p.created_at asc`
+	order by p.created_at desc`
 
 	rows, err := m.DB.QueryContext(ctx, query)
 	if err != nil {
@@ -358,7 +358,7 @@ func (m *postgresDBRepo) AllShortletProperties() ([]models.Property, error) {
 	left join users u on (p.user_id = u.id)
 	left join categories c on (p.category_id = c.id)
 	where p.category_id = 3 and p.status = 'enabled'
-	order by p.created_at asc`
+	order by p.created_at desc`
 
 	rows, err := m.DB.QueryContext(ctx, query)
 	if err != nil {
@@ -425,7 +425,7 @@ func (m *postgresDBRepo) GetPropertyByID(id int) (models.Property, error) {
 	left join users u on (p.user_id = u.id)
 	left join categories c on (p.category_id = c.id)
 	where p.id = $1 and p.status = 'enabled'
-	order by p.created_at asc`
+	order by p.created_at desc`
 
 	row := m.DB.QueryRowContext(ctx, query, id)
 
@@ -482,7 +482,7 @@ func (m *postgresDBRepo) GetPropertiesByType(propertyType string) ([]models.Prop
 	left join users u on (p.user_id = u.id)
 	left join categories c on (p.category_id = c.id)
 	where p.type = $1 and p.status = 'enabled'
-	order by p.created_at asc`
+	order by p.created_at desc`
 
 	rows, err := m.DB.QueryContext(ctx, query, propertyType)
 	if err != nil {
@@ -548,7 +548,7 @@ func (m *postgresDBRepo) GetUserPropertiesByID(userID int) ([]models.Property, e
 	left join users u on (p.user_id = u.id)
 	left join categories c on (p.category_id = c.id)
 	where u.id = $1
-	order by p.created_at asc`
+	order by p.created_at desc`
 
 	rows, err := m.DB.QueryContext(ctx, query, userID)
 	if err != nil {
