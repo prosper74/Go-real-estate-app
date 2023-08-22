@@ -5,6 +5,7 @@ import { Dropdown } from "flowbite-react";
 import { HiStop, HiTrash, HiPencilAlt, HiDotsVertical } from "react-icons/hi";
 import DeleteModal from "../modals/deleteModal";
 import { Image } from "../helpers/interfaces";
+import StatusUpdateModal from "../modals/statusUpdateModal";
 
 interface IProps {
   propertyID: number;
@@ -19,7 +20,7 @@ export default function CardEditButton({
   propertyImages,
   handleDelete,
 }: IProps) {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState<string>("");
 
   return (
     <>
@@ -35,25 +36,38 @@ export default function CardEditButton({
         <Dropdown.Item
           icon={HiPencilAlt}
           disabled={propertyStatus === "pending"}
+          onClick={() => setModalOpen("edit")}
         >
           Edit
         </Dropdown.Item>
-        <Dropdown.Item icon={HiStop} disabled={propertyStatus === "pending"}>
+        <Dropdown.Item
+          icon={HiStop}
+          disabled={propertyStatus === "pending"}
+          onClick={() => setModalOpen("status")}
+        >
           Dissable
         </Dropdown.Item>
         <Dropdown.Item
           color="#666"
           icon={HiTrash}
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => setModalOpen("delete")}
         >
           Delete
         </Dropdown.Item>
       </Dropdown>
 
-      {isModalOpen && (
+      {modalOpen === "delete" ? (
         <DeleteModal
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          handleDelete={handleDelete}
+          propertyID={propertyID}
+          propertyImages={propertyImages}
+        />
+      ) : (
+        <StatusUpdateModal
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
           handleDelete={handleDelete}
           propertyID={propertyID}
           propertyImages={propertyImages}

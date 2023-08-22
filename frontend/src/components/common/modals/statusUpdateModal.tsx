@@ -12,7 +12,7 @@ interface IProps {
   propertyImages: Image[];
 }
 
-export default function DeleteModal({
+export default function StatusUpdateModal({
   modalOpen,
   setModalOpen,
   handleDelete,
@@ -25,14 +25,17 @@ export default function DeleteModal({
 
   return (
     <>
-      <Modal show={modalOpen === "delete"} size="md" popup onClose={closeModal}>
+      <Modal show={modalOpen === "status"} size="md" popup onClose={closeModal}>
         <Modal.Header />
         <Modal.Body>
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
-            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Are you sure you want to delete this property?
+            <h3 className="mb-5 text-xl font-normal text-gray-500 dark:text-gray-400">
+              Are you sure you want to Dissabled this item?
             </h3>
+            <p className="mb-5 font-normal text-gray-500 dark:text-gray-400">
+              Dissabling this property will remove it from public view, but you can always enable it again in your dashboard
+            </p>
             <div className="flex justify-center gap-4">
               <Button
                 color="failure"
