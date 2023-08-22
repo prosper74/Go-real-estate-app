@@ -290,7 +290,7 @@ const VerifyAccount: FC<IProps> = ({
             ) : (
               <p
                 {...getRootProps()}
-                className={`h-auto m-3 p-3 border-2 border-dashed border-purple-400 cursor-pointer md:text-lg text-center ${
+                className={`h-auto my-3 p-3 border-2 border-dashed border-purple-400 cursor-pointer md:text-lg text-center rounded-lg ${
                   isDragActive && "border-primary"
                 }`}
               >
