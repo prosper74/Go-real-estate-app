@@ -12,6 +12,7 @@ interface IProps {
   propertyStatus: string;
   propertyImages: Image[];
   handleDelete: any;
+  handleStatusUpdate: any;
 }
 
 export default function CardEditButton({
@@ -19,6 +20,7 @@ export default function CardEditButton({
   propertyStatus,
   propertyImages,
   handleDelete,
+  handleStatusUpdate,
 }: IProps) {
   const [modalOpen, setModalOpen] = useState<string>("");
 
@@ -68,7 +70,7 @@ export default function CardEditButton({
         <StatusUpdateModal
           modalOpen={modalOpen}
           setModalOpen={setModalOpen}
-          handleStatusUpdate={handleDelete}
+          handleStatusUpdate={handleStatusUpdate}
           propertyID={propertyID}
           propertyStatus={propertyStatus}
         />

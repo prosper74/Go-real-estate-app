@@ -41,7 +41,7 @@ export default function StatusUpdateModal({
                 color="failure"
                 onClick={() => {
                   closeModal();
-                  // handleStatusUpdate(propertyID, propertyStatus);
+                  handleStatusUpdate(propertyID, propertyStatus);
                 }}
               >
                 Yes, I'm sure

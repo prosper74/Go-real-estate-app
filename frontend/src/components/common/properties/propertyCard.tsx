@@ -13,12 +13,14 @@ interface IProps {
   fixed?: boolean;
   user?: UserProps;
   handleDelete?: any;
+  handleStatusUpdate?: any;
 }
 
 export default function PropertyCard({
   property,
   fixed = false,
   handleDelete,
+  handleStatusUpdate,
 }: IProps) {
   const user = useSelector((state: IProps) => state.user);
 
@@ -88,6 +90,17 @@ export default function PropertyCard({
           </Tooltip>
         )}
 
+        {property.Status === "disabled" && (
+          <Tooltip
+            content={`Your property is disabled, you can click the options menu and enable it`}
+            style="light"
+          >
+            <span className="bg-primary rounded-lg pt-[1px] pb-[3px] px-[8px] italic text-white">
+              Disabled
+            </span>
+          </Tooltip>
+        )}
+
         {user?.userId === property.UserID && (
           <div className="absolute top-4 right-4">
             <CardEditButton
@@ -95,6 +108,7 @@ export default function PropertyCard({
               propertyStatus={property.Status}
               propertyImages={property.Images}
               handleDelete={handleDelete}
+              handleStatusUpdate={handleStatusUpdate}
             />
           </div>
         )}
