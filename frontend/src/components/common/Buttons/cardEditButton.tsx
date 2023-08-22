@@ -45,7 +45,7 @@ export default function CardEditButton({
           disabled={propertyStatus === "pending"}
           onClick={() => setModalOpen("status")}
         >
-          Dissable
+          {propertyStatus === "disabled" ? "Enable" : "Disable"}
         </Dropdown.Item>
         <Dropdown.Item
           color="#666"
@@ -68,9 +68,9 @@ export default function CardEditButton({
         <StatusUpdateModal
           modalOpen={modalOpen}
           setModalOpen={setModalOpen}
-          handleDelete={handleDelete}
+          handleStatusUpdate={handleDelete}
           propertyID={propertyID}
-          propertyImages={propertyImages}
+          propertyStatus={propertyStatus}
         />
       )}
     </>

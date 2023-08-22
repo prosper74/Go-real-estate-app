@@ -2,22 +2,21 @@
 
 import { Button, Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { Image } from "../helpers/interfaces";
 
 interface IProps {
   modalOpen: string;
   setModalOpen: (open: string) => void;
-  handleDelete: any;
+  handleStatusUpdate: any;
   propertyID: number;
-  propertyImages: Image[];
+  propertyStatus: string;
 }
 
 export default function StatusUpdateModal({
   modalOpen,
   setModalOpen,
-  handleDelete,
+  handleStatusUpdate,
   propertyID,
-  propertyImages,
+  propertyStatus,
 }: IProps) {
   function closeModal() {
     setModalOpen("");
@@ -31,17 +30,18 @@ export default function StatusUpdateModal({
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
             <h3 className="mb-5 text-xl font-normal text-gray-500 dark:text-gray-400">
-              Are you sure you want to Dissabled this item?
+              Are you sure you want to{" "}
+              {propertyStatus === "disabled" ? "Enable" : "Disable"} this item?
             </h3>
             <p className="mb-5 font-normal text-gray-500 dark:text-gray-400">
-              Dissabling this property will remove it from public view, but you can always enable it again in your dashboard
+              {propertyStatus === "disabled" ? "Enabling this property will make it available for public view" : "Disabling this property will remove it from public view, but you can always enable it again in your dashboard"}              
             </p>
             <div className="flex justify-center gap-4">
               <Button
                 color="failure"
                 onClick={() => {
                   closeModal();
-                  handleDelete(propertyID, propertyImages);
+                  // handleStatusUpdate(propertyID, propertyStatus);
                 }}
               >
                 Yes, I'm sure
