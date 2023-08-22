@@ -29,10 +29,11 @@ export default function PropertySlider({ properties }: IProps) {
         modules={[Pagination, Autoplay]}
         loop={true}
         autoplay={{ delay: 5000, disableOnInteraction: true }}
+        className="p-12"
       >
         {properties.length! >= 1 ? (
           properties.map((d: SingleProperty) => (
-            <SwiperSlide key={d.ID} className="my-3 m-2">
+            <SwiperSlide key={d.ID} className="my-3 pr-3">
               <PropertyCard property={d} />
             </SwiperSlide>
           ))
