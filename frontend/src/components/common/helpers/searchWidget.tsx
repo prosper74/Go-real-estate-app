@@ -2,6 +2,8 @@ import React, { FC, useCallback, useState } from "react";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+// @ts-ignore
+import { Image } from "cloudinary-react";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import { SearchIcon, CloseIcon } from "@src/components/common/helpers/svgIcons";
 import PropertyCard from "../properties/propertyCard";
@@ -84,10 +86,16 @@ export const StandAloneSearchWidget: FC<ISearchWidget> = ({
                 }
               >
                 <div className="my-2 p-3 hover:bg-gray-300 hover:rounded-lg grid grid-cols-4 sm:grid-cols-5">
-                  <img
+                  {/* <img
                     // @ts-ignore
                     src={d.Images[0]}
                     alt={d.Title}
+                    className="w-14 h-14 sm:w-16 sm:h-16 rounded-full"
+                  /> */}
+                  <Image
+                    cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
+                    publicId={d.Images[0]}
+                    crop="scale"
                     className="w-14 h-14 sm:w-16 sm:h-16 rounded-full"
                   />
                   <div className="col-span-3 sm:col-span-4">
