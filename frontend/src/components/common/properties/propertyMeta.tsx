@@ -3,7 +3,6 @@ import { SingleProperty } from "@src/components/common/helpers/interfaces";
 import {
   BedIcon,
   HelpIcon,
-  HomeIcon,
   LocationIcon,
   ShowerIcon,
 } from "../helpers/svgIcons";

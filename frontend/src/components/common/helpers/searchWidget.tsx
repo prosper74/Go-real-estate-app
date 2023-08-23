@@ -108,7 +108,7 @@ export const StandAloneSearchWidget: FC<ISearchWidget> = ({
                     <p className="font-medium">{d.Title.substring(0, 28)}</p>
                     <div className="flex items-center justify-between">
                       <h3 className="text-purple-600 font-bold text-lg">
-                        ₦{Number(d.Price).toLocaleString()}
+                        ₦{d.Price}
                       </h3>
                       <div className="mr-2 px-4 py-1 bg-purple-600 rounded-xl text-white">
                         {d.Category.Title}

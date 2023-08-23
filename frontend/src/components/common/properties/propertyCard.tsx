@@ -75,7 +75,7 @@ export default function PropertyCard({
           )}
 
           <h3 className="font-bold text-xl md:text-2xl">
-            ₦{Number(property.Price).toLocaleString()}
+            ₦{property.Price || 0}
           </h3>
         </div>
 

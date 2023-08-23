@@ -41,9 +41,7 @@ const schema = z.object({
   sittingroom: z.string(),
   period: z.string(),
   size: z.string(),
-  price: z.string().min(2, { message: "Please enter amount" }),
 });
-
 
 const generateSHA1 = (data: any) => {
   const hash = crypto.createHash("sha1");
@@ -66,6 +64,14 @@ export const CreateAdForm: FC<IImageUpload> = () => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const [inputPrice, setInputPrice] = useState("");
+
+  const handleInputChange = (event: any) => {
+    const rawValue = event.target.value.replace(/,/g, "");
+    const formattedValue = Number(rawValue).toLocaleString();
+    setInputPrice(formattedValue);
+  };
 
   const onDrop = useCallback(async (acceptedFiles: any) => {
     const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/upload`;
@@ -123,7 +129,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
         {
           title: data.title,
           description,
-          price: data.price,
+          price: inputPrice,
           type: data.type,
           category:
             data.category === "Buy"
@@ -457,13 +463,14 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                             <span className="text-gray-500 text-lg">₦</span>
                           </div>
                           <input
-                            type="number"
+                            type="text"
                             placeholder="1200000"
+                            value={inputPrice}
+                            onChange={handleInputChange}
                             className={`focus:outline-purple-600 pl-7 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
                               errors.price &&
                               "border-red-500 text-red-500 focus:outline-red-500"
                             }`}
-                            {...register("price")}
                           />
                         </div>
                         {errors.price?.message && (
@@ -484,7 +491,9 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                     loading ||
                     !isCategory ||
                     uploadedFiles.length < 1 ||
-                    description === ""
+                    description === "" ||
+                    inputPrice.replace(/[^0-9]/g, "").length < 3 ||
+                    inputPrice.trim().startsWith("0")
                   }
                   className={`mt-5 transition duration-200 bg-purple-600 focus:bg-purple-800 focus:shadow-sm focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50 w-full py-2.5 rounded-lg text-lg shadow-sm hover:shadow-md font-semibold text-center flex justify-center items-center disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 ${
                     loading

@@ -39,7 +39,7 @@ const SinglePropertyBody: FC<IProps> = ({ property }) => {
         </li>
       </ul>
       <h3 className="text-purple-600 font-bold text-2xl md:text-4xl mb-4">
-        ₦{Number(property.Price).toLocaleString()}
+        ₦{property.Price}
         {property.Duration ? `/${property.Duration}` : ""}
       </h3>
 
