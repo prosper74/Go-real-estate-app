@@ -129,10 +129,10 @@ export const PageSearchWidget: FC<ISearchWidget> = ({
   properties = [],
   placeholder = "Find your new home",
 }) => {
-  const [filteredProperties, setFilteredProperties] = useState(properties);
-  const [wordEntered, setWordEntered] = useState("");
   const user = useSelector((state: IProps) => state.user);
   const dispatch = useDispatch();
+  const [filteredProperties, setFilteredProperties] = useState(properties);
+  const [wordEntered, setWordEntered] = useState("");
 
   const handleFilter = (e: any) => {
     const searchedWords = e.target.value;

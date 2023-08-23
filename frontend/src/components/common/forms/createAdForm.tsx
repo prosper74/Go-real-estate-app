@@ -42,8 +42,8 @@ const schema = z.object({
   period: z.string(),
   size: z.string(),
   price: z.string().min(2, { message: "Please enter amount" }),
-  // description: z.string().min(1),
 });
+
 
 const generateSHA1 = (data: any) => {
   const hash = crypto.createHash("sha1");
