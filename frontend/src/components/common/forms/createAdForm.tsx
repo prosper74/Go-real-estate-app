@@ -64,7 +64,6 @@ export const CreateAdForm: FC<IImageUpload> = () => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
-
   const [inputPrice, setInputPrice] = useState("");
 
   const handleInputChange = (event: any) => {
@@ -318,7 +317,6 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                         {...register("period")}
                         className="focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full "
                       >
-                        <option defaultValue="">Select Period</option>
                         {perPeriod.map((period) => (
                           <option key={period.name} value={period.name}>
                             per {period.label}

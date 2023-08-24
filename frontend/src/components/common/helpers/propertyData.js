@@ -72,6 +72,10 @@ export const priceRange = [
 
 export const perPeriod = [
   {
+    name: 'year',
+    label: 'year',
+  },
+  {
     name: 'day',
     label: 'day',
   },
@@ -90,11 +94,7 @@ export const perPeriod = [
   {
     name: '6 Months',
     label: '6 months',
-  },
-  {
-    name: '1 year',
-    label: 'year',
-  },
+  },  
   {
     name: '2 Years',
     label: '2 years',
