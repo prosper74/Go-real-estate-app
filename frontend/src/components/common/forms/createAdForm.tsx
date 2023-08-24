@@ -293,6 +293,26 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                     </select>
                   </div>
 
+                  {/* Title */}
+                  <div>
+                    <input
+                      autoComplete="title"
+                      placeholder="Property Title"
+                      type="text"
+                      {...register("title")}
+                      className={`focus:outline-purple-600 focus:rounded-lg bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
+                        errors.name &&
+                        "border-red-500 text-red-500 focus:outline-red-500"
+                      }`}
+                    />
+                    {errors.name?.message && (
+                      <p className="text-red-500 text-sm mt-2">
+                        {/* @ts-ignore */}
+                        {errors.name?.message}
+                      </p>
+                    )}
+                  </div>
+
                   {/* Location */}
                   <div>
                     <select
@@ -327,26 +347,6 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                   )}
                   {isCategory && (
                     <>
-                      {/* Title */}
-                      <div>
-                        <input
-                          autoComplete="title"
-                          placeholder="Property Title"
-                          type="text"
-                          {...register("title")}
-                          className={`focus:outline-purple-600 focus:rounded-lg bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
-                            errors.name &&
-                            "border-red-500 text-red-500 focus:outline-red-500"
-                          }`}
-                        />
-                        {errors.name?.message && (
-                          <p className="text-red-500 text-sm mt-2">
-                            {/* @ts-ignore */}
-                            {errors.name?.message}
-                          </p>
-                        )}
-                      </div>
-
                       {/* City */}
                       <div>
                         <input
