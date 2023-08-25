@@ -22,7 +22,7 @@ import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 SwiperCore.use([Pagination, Navigation, Autoplay]);
 
 interface IProps {
-  user: UserProps;
+  user?: UserProps;
   propertyType: string;
   propertyId: number;
 }
