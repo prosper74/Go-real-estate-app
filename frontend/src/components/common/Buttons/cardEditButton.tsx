@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Dropdown } from "flowbite-react";
 import { HiStop, HiTrash, HiPencilAlt, HiDotsVertical } from "react-icons/hi";
 import DeleteModal from "../modals/deleteModal";
-import { Image } from "../helpers/interfaces";
 import StatusUpdateModal from "../modals/statusUpdateModal";
+import { Image } from "../helpers/interfaces";
 
 interface IProps {
   propertyID: number;
@@ -38,9 +39,12 @@ export default function CardEditButton({
         <Dropdown.Item
           icon={HiPencilAlt}
           disabled={propertyStatus === "pending"}
-          onClick={() => setModalOpen("edit")}
         >
-          Edit
+          <Link
+            href={`/agent/edit-ad?status=${propertyStatus}&id=${propertyID}`}
+          >
+            Edit
+          </Link>
         </Dropdown.Item>
         <Dropdown.Item
           icon={HiStop}

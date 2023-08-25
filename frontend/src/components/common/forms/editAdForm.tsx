@@ -70,6 +70,8 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
   const [loading, setLoading] = useState(false);
   const [inputPrice, setInputPrice] = useState("");
 
+  console.log("Images: ", uploadedFiles);
+
   const handleInputChange = (event: any) => {
     const rawValue = event.target.value.replace(/,/g, "");
     const formattedValue = Number(rawValue).toLocaleString();
@@ -96,10 +98,10 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
 
       const data = await response.json();
       // @ts-ignore
-      setUploadedFiles((old) => [...old, data]);
+      setUploadedFiles((old) => [...old, data.public_id]);
     });
   }, []);
-  
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     // @ts-ignore
@@ -122,7 +124,7 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
 
   const onSubmit = handleSubmit((data) => {
     const imagesURL = uploadedFiles!
-      .map((item: any) => item.public_id)
+      .map((item: any) => item)
       .join(", ");
 
     setLoading(true);
@@ -146,7 +148,6 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
           bedroom: selectedType === "Land" ? "" : data.bedroom,
           bathroom: selectedType === "Land" ? "" : data.bathroom,
           duration: selectedCategory === "Buy" ? "" : data.period,
-          status: "pending",
           size: data.size,
           images: imagesURL,
           user_id: user?.userId,
@@ -210,7 +211,7 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
       })
       .then(() => {
         setUploadedFiles(
-          uploadedFiles!.filter((file: any) => file.public_id !== publicId)
+          uploadedFiles!.filter((file: any) => file !== publicId)
         );
 
         dispatch(
@@ -259,17 +260,17 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
 
               <ul className="flex flex-row justify-center mb-3">
                 {uploadedFiles!.map((file: any) => (
-                  <li key={file.public_id} className="mr-1 relative">
+                  <li key={file} className="mr-1 relative">
                     <Image
                       cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
-                      publicId={file.public_id}
+                      publicId={file}
                       crop="scale"
                       className="w-[80px] h-[80px] md:w-[150px] md:h-[150px] object-cover rounded-lg m-1"
                     />
 
                     <button
                       className="absolute top-2 right-2 p-1 bg-white rounded-lg"
-                      onClick={() => handleDelete(file.public_id)}
+                      onClick={() => handleDelete(file)}
                     >
                       <Tooltip content={`Delete image`} style="light">
                         <HiTrash className="mx-auto h-4 w-4 text-red-600" />
