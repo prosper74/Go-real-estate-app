@@ -23,8 +23,6 @@ export default function VerifyUserEmail({ queryParams }: any) {
         `${process.env.NEXT_PUBLIC_REST_API}/verify-email?userid=${userid}&token=${token}`
       )
       .then((response) => {
-        console.log("Resp: ", response.data.error);
-
         if (response.data.error) {
           dispatch(
             setSnackbar({
