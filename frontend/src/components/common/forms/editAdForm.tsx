@@ -14,7 +14,12 @@ import { Image } from "cloudinary-react";
 import Editor from "../editor";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import { ForwardArrow } from "@src/components/common/helpers/svgIcons";
-import { locations, propertyType, perPeriod } from "../helpers/propertyData";
+import {
+  locations,
+  propertyType,
+  perPeriod,
+  categories,
+} from "../helpers/propertyData";
 import { IImageUpload, SingleProperty, UserProps } from "../helpers/interfaces";
 
 interface IProps {
@@ -70,8 +75,6 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
   const [loading, setLoading] = useState(false);
   const [inputPrice, setInputPrice] = useState("");
 
-  console.log("Images: ", uploadedFiles);
-
   const handleInputChange = (event: any) => {
     const rawValue = event.target.value.replace(/,/g, "");
     const formattedValue = Number(rawValue).toLocaleString();
@@ -123,9 +126,7 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
   });
 
   const onSubmit = handleSubmit((data) => {
-    const imagesURL = uploadedFiles!
-      .map((item: any) => item)
-      .join(", ");
+    const imagesURL = uploadedFiles!.map((item: any) => item).join(", ");
 
     setLoading(true);
 
@@ -233,6 +234,10 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
       });
   };
 
+  const otherCategories = categories.filter(
+    (category) => category.name !== property?.Category.Title
+  );
+
   return (
     <>
       <div className="flex flex-col justify-center">
@@ -259,8 +264,8 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
               )}
 
               <ul className="flex flex-row justify-center mb-3">
-                {uploadedFiles!.map((file: any) => (
-                  <li key={file} className="mr-1 relative">
+                {uploadedFiles!.map((file: any, i) => (
+                  <li key={i} className="mr-1 relative">
                     <Image
                       cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
                       publicId={file}
@@ -292,10 +297,12 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
                         "border-red-500 text-red-500 focus:outline-red-500"
                       }`}
                     >
-                      <option defaultValue="">Select a Category</option>
-                      <option value="Buy">Buy</option>
-                      <option value="Rent">Rent</option>
-                      <option value="Shortlet">Shortlet</option>
+                      <option defaultValue="">
+                        {property?.Category.Title}
+                      </option>
+                      {otherCategories.map((category, i) => (
+                        <option key={i} value={category.name}>{category.name}</option>
+                      ))}
                     </select>
                   </div>
 
@@ -303,6 +310,7 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
                   <div>
                     <input
                       autoComplete="title"
+                      value={property?.Title}
                       placeholder="Property Title"
                       type="text"
                       {...register("title")}
@@ -328,8 +336,9 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
                         "border-red-500 text-red-500 focus:outline-red-500"
                       }`}
                     >
-                      {locations.map((location) => (
-                        <option key={location.name} value={location.name}>
+                      <option defaultValue="">{property?.State}</option>
+                      {locations.map((location, i) => (
+                        <option key={i} value={location.name}>
                           {location.name}
                         </option>
                       ))}
@@ -343,8 +352,9 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
                         {...register("period")}
                         className="focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full "
                       >
-                        {perPeriod.map((period) => (
-                          <option key={period.name} value={period.name}>
+                        <option defaultValue="">{property?.Duration}</option>
+                        {perPeriod.map((period, i) => (
+                          <option key={i} value={period.name}>
                             per {period.label}
                           </option>
                         ))}
@@ -357,6 +367,7 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
                       <div>
                         <input
                           autoComplete="city"
+                          value={property?.City}
                           placeholder="City"
                           type="text"
                           {...register("city")}
@@ -382,8 +393,9 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
                             "border-red-500 text-red-500 focus:outline-red-500"
                           }`}
                         >
-                          {propertyType.map((type) => (
-                            <option key={type.name} value={type.name}>
+                          <option defaultValue="">{property?.Type}</option>
+                          {propertyType.map((type, i) => (
+                            <option key={i} value={type.name}>
                               {type.name}
                             </option>
                           ))}
@@ -397,6 +409,7 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
                             {...register("bedroom")}
                             className="focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full"
                           >
+                            <option defaultValue="">{property?.Bedroom}</option>
                             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
                               (d: number) => (
                                 <option key={d} value={d}>
@@ -415,6 +428,9 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
                             {...register("bathroom")}
                             className="focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full"
                           >
+                            <option defaultValue="">
+                              {property?.Bathroom}
+                            </option>
                             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(
                               (d: number) => (
                                 <option key={d} value={d}>
@@ -447,6 +463,7 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
                         <input
                           {...register("size")}
                           type="number"
+                          value={property?.Size}
                           placeholder="Land size"
                           className="focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full"
                         />
@@ -469,7 +486,7 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
                           <input
                             type="text"
                             placeholder="1200000"
-                            value={inputPrice}
+                            value={property?.Price || inputPrice}
                             onChange={handleInputChange}
                             className={`focus:outline-purple-600 pl-7 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
                               errors.price &&

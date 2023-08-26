@@ -112,3 +112,15 @@ export const perPeriod = [
     label: '5 years',
   },
 ];
+
+export const categories = [
+  {
+    name: 'Buy',
+  },
+  {
+    name: 'Rent',
+  },
+  {
+    name: 'Shortlet',
+  },
+];

@@ -73,9 +73,7 @@ export default function Editor({ setOnChange }: IProps) {
           <ListPlugin />
           <LinkPlugin />
           <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-          {/* <CodeHighlightPlugin /> */}
         </div>
-        {/* <ActionsPlugin /> */}
       </div>
       <OnChangePlugin onChange={onChange} />
       <HistoryPlugin />
