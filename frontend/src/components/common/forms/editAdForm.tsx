@@ -36,20 +36,11 @@ const schema = z.object({
   images: z.any(),
   category: z.string(),
   state: z.string(),
-  title: z
-    .string()
-    .min(5, { message: "Title must be at at least 10 characters" })
-    .max(50, { message: "Title must not be more than 40 characters" }),
-  city: z
-    .string()
-    .min(3, { message: "Min 3 characters" })
-    .max(20, { message: "Max 20 characters" }),
   type: z.string(),
   bedroom: z.string(),
   bathroom: z.string(),
   sittingroom: z.string(),
   period: z.string(),
-  size: z.string(),
 });
 
 const generateSHA1 = (data: any) => {
@@ -73,9 +64,14 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
   const [uploadedFiles, setUploadedFiles] = useState(property?.Images);
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
-  const [inputPrice, setInputPrice] = useState("");
+  const [inputPrice, setInputPrice] = useState(property?.Price);
+  const [inputValues, setInputValues] = useState({
+    title: property?.Title,
+    city: property?.City,
+    size: property?.Size,
+  });
 
-  const handleInputChange = (event: any) => {
+  const handlePriceInputChange = (event: any) => {
     const rawValue = event.target.value.replace(/,/g, "");
     const formattedValue = Number(rawValue).toLocaleString();
     setInputPrice(formattedValue);
@@ -119,6 +115,7 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
     register,
     watch,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     mode: "onChange",
@@ -132,10 +129,10 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
 
     axios
       .post(
-        `${process.env.NEXT_PUBLIC_REST_API}/user/create-ad`,
+        `${process.env.NEXT_PUBLIC_REST_API}/user/update-ad`,
         {
-          title: data.title,
-          description,
+          title: inputValues.title,
+          description: description || property?.Description,
           price: inputPrice,
           type: data.type,
           category:
@@ -145,11 +142,11 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
               ? "2"
               : "3",
           state: data.state,
-          city: data.city,
+          city: inputValues.city,
           bedroom: selectedType === "Land" ? "" : data.bedroom,
           bathroom: selectedType === "Land" ? "" : data.bathroom,
           duration: selectedCategory === "Buy" ? "" : data.period,
-          size: data.size,
+          size: inputValues.size,
           images: imagesURL,
           user_id: user?.userId,
           jwt: user?.jwt,
@@ -301,7 +298,9 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
                         {property?.Category.Title}
                       </option>
                       {otherCategories.map((category, i) => (
-                        <option key={i} value={category.name}>{category.name}</option>
+                        <option key={i} value={category.name}>
+                          {category.name}
+                        </option>
                       ))}
                     </select>
                   </div>
@@ -309,15 +308,21 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
                   {/* Title */}
                   <div>
                     <input
-                      autoComplete="title"
-                      value={property?.Title}
-                      placeholder="Property Title"
                       type="text"
-                      {...register("title")}
+                      autoComplete="title"
+                      value={inputValues.title}
+                      onChange={(e) =>
+                        setInputValues({
+                          ...inputValues,
+                          title: e.target.value,
+                        })
+                      }
+                      // {...register("title")}
                       className={`focus:outline-purple-600 focus:rounded-lg bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
                         errors.name &&
                         "border-red-500 text-red-500 focus:outline-red-500"
                       }`}
+                      required
                     />
                     {errors.name?.message && (
                       <p className="text-red-500 text-sm mt-2">
@@ -366,15 +371,21 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
                       {/* City */}
                       <div>
                         <input
-                          autoComplete="city"
-                          value={property?.City}
-                          placeholder="City"
                           type="text"
-                          {...register("city")}
+                          autoComplete="city"
+                          value={inputValues.city}
+                          onChange={(e) =>
+                            setInputValues({
+                              ...inputValues,
+                              city: e.target.value,
+                            })
+                          }
+                          // {...register("city")}
                           className={`focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
                             errors.city &&
                             "border-red-500 text-red-500 focus:outline-red-500"
                           }`}
+                          required
                         />
                         {errors.city?.message && (
                           <p className="text-red-500 text-sm mt-2">
@@ -463,8 +474,13 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
                         <input
                           {...register("size")}
                           type="number"
-                          value={property?.Size}
-                          placeholder="Land size"
+                          value={inputValues.size}
+                          onChange={(e) =>
+                            setInputValues({
+                              ...inputValues,
+                              size: e.target.value,
+                            })
+                          }
                           className="focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full"
                         />
                         <div className="absolute top-2 right-10 flex items-center pointer-events-none">
@@ -486,20 +502,14 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
                           <input
                             type="text"
                             placeholder="1200000"
-                            value={property?.Price || inputPrice}
-                            onChange={handleInputChange}
+                            value={inputPrice}
+                            onChange={handlePriceInputChange}
                             className={`focus:outline-purple-600 pl-7 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
                               errors.price &&
                               "border-red-500 text-red-500 focus:outline-red-500"
                             }`}
                           />
                         </div>
-                        {errors.price?.message && (
-                          <p className="text-red-500 text-sm mt-2">
-                            {/* @ts-ignore */}
-                            {errors.price?.message}
-                          </p>
-                        )}
                       </div>
                     </>
                   )}
@@ -513,8 +523,8 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
                     !isCategory ||
                     uploadedFiles!.length < 1 ||
                     description === "" ||
-                    inputPrice.replace(/[^0-9]/g, "").length < 3 ||
-                    inputPrice.trim().startsWith("0")
+                    inputPrice!.replace(/[^0-9]/g, "").length < 3 ||
+                    inputPrice!.trim().startsWith("0")
                   }
                   className={`mt-5 transition duration-200 bg-purple-600 focus:bg-purple-800 focus:shadow-sm focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50 w-full py-2.5 rounded-lg text-lg shadow-sm hover:shadow-md font-semibold text-center flex justify-center items-center disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 ${
                     loading

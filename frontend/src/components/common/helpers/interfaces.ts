@@ -25,7 +25,7 @@ export interface SingleProperty {
   ID: number;
   Title: string;
   Description: string;
-  Price: number;
+  Price: string;
   Type: string;
   Duration: string;
   Size: string;
