@@ -490,7 +490,7 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
 
                       {/* description */}
                       <div className="col-span-2">
-                        <Editor setOnChange={setDescription} />
+                        <Editor setOnChange={setDescription} placeholder="Leave this field blank if you want to use the existing description" />
                       </div>
 
                       {/* Price */}

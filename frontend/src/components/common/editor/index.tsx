@@ -20,14 +20,7 @@ import BaseTheme from "./themes";
 
 interface IProps {
   setOnChange: (onChange: string) => void;
-}
-
-function Placeholder() {
-  return (
-    <div className="editor-placeholder">
-      Write a brief description about your property...
-    </div>
-  );
+  placeholder: string;
 }
 
 const editorConfig = {
@@ -50,7 +43,16 @@ const editorConfig = {
   ],
 };
 
-export default function Editor({ setOnChange }: IProps) {
+export default function Editor({ setOnChange, placeholder }: IProps) {
+
+  const Placeholder = () => {
+    return (
+      <div className="editor-placeholder">
+        {placeholder}
+      </div>
+    );
+  }
+
   const onChange = (editorState: any) => {
     editorState.read(() => {
       const markdownString = $convertToMarkdownString(TRANSFORMERS);

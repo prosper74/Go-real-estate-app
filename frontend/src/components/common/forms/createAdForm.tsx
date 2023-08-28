@@ -451,7 +451,10 @@ export const CreateAdForm: FC<IImageUpload> = () => {
 
                       {/* description */}
                       <div className="col-span-2">
-                        <Editor setOnChange={setDescription} />
+                        <Editor
+                          setOnChange={setDescription}
+                          placeholder="Write a brief description about your property..."
+                        />
                       </div>
 
                       {/* Price */}
