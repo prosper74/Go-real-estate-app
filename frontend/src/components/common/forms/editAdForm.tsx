@@ -115,7 +115,6 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
     register,
     watch,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm({
     mode: "onChange",

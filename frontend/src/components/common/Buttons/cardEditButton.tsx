@@ -40,7 +40,6 @@ export default function CardEditButton({
           <>
             <Dropdown.Item
               icon={HiPencilAlt}
-              disabled={propertyStatus === "pending"}
             >
               <Link
                 href={`/agent/edit-ad?status=${propertyStatus}&id=${propertyID}`}
@@ -51,7 +50,6 @@ export default function CardEditButton({
 
             <Dropdown.Item
               icon={HiStop}
-              disabled={propertyStatus === "pending"}
               onClick={() => setModalOpen("status")}
             >
               {propertyStatus === "disabled" ? "Enable" : "Disable"}
@@ -60,7 +58,6 @@ export default function CardEditButton({
         )}
 
         <Dropdown.Item
-          color="#666"
           icon={HiTrash}
           onClick={() => setModalOpen("delete")}
         >
