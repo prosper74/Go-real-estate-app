@@ -521,11 +521,10 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
                     loading ||
                     !isCategory ||
                     uploadedFiles!.length < 1 ||
-                    description === "" ||
                     inputPrice!.replace(/[^0-9]/g, "").length < 3 ||
                     inputPrice!.trim().startsWith("0")
                   }
-                  className={`mt-5 transition duration-200 bg-purple-600 focus:bg-purple-800 focus:shadow-sm focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50 w-full py-2.5 rounded-lg text-lg shadow-sm hover:shadow-md font-semibold text-center flex justify-center items-center disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 ${
+                  className={`mt-5 transition duration-200 bg-purple-600 w-full py-2.5 rounded-lg text-lg shadow-sm hover:shadow-md font-semibold text-center flex justify-center items-center disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 ${
                     loading
                       ? "hover:bg-purple-300 text-gray-300"
                       : "hover:bg-purple-700 text-white"
