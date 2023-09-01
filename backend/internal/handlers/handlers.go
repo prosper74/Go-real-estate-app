@@ -1060,21 +1060,31 @@ func (m *Repository) UserDeleteProperty(w http.ResponseWriter, r *http.Request) 
 // Update user property
 func (m *Repository) UserUpdateProperty(w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]interface{})
-	var statusUpdate string
-
-	propertyID, _ := strconv.Atoi(r.URL.Query().Get("property_id"))
-	userID, _ := strconv.Atoi(r.URL.Query().Get("user_id"))
-	properStatus := r.URL.Query().Get("property_status")
-	tokenString := r.URL.Query().Get("jwt")
-
-	if properStatus == "enabled" {
-		statusUpdate = "disabled"
-	} else {
-		statusUpdate = "enabled"
+	property := models.Property{}
+	
+	err := r.ParseForm()
+	if err != nil {
+		http.Error(w, "Can't parse form", http.StatusBadRequest)
+		return
 	}
 
+	property.Title = r.PostFormValue("title")
+	property.Description = r.PostFormValue("description")
+	property.Price = r.PostFormValue("price")
+	property.Type = r.PostFormValue("type")
+	property.State = r.PostFormValue("state")
+	property.City = r.PostFormValue("city")
+	property.Bedroom = r.PostFormValue("bedroom")
+	property.Bathroom = r.PostFormValue("bathroom")
+	property.Duration = r.PostFormValue("duration")
+	property.Size = r.PostFormValue("size")
+	property.UserID, _ = strconv.Atoi(r.PostFormValue("user_id"))
+	property.CategoryID, _ = strconv.Atoi(r.PostFormValue("category"))
+	property.Images = helpers.ConvertStringToURLSlice(r.PostFormValue("images"))
+	tokenString := r.PostFormValue("jwt")
+
 	// Load the env file and get the JWT secret
-	err := godotenv.Load()
+	err = godotenv.Load()
 	if err != nil {
 		log.Println("Error loading .env file")
 	}
@@ -1102,77 +1112,29 @@ func (m *Repository) UserUpdateProperty(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	// Update the property status in the database
-	err = m.DB.UserUpdatePropertyStatus(propertyID, statusUpdate)
-	if err != nil {
-		helpers.ServerError(w, err)
-		data["error"] = "Unable to update property status. Please contact support"
-		out, _ := json.MarshalIndent(data, "", "    ")
-		resp := []byte(out)
-		w.Write(resp)
-		return
-	}
+	// Update the property in the database
+	// err = m.DB.UserUpdatePropertyStatus(property)
+	// if err != nil {
+	// 	helpers.ServerError(w, err)
+	// 	data["error"] = "Unable to update property. Please contact support"
+	// 	out, _ := json.MarshalIndent(data, "", "    ")
+	// 	resp := []byte(out)
+	// 	w.Write(resp)
+	// 	return
+	// }
 
 	// Return new user properties
-	AllProperties, err := m.DB.AllProperties()
-	if err != nil {
-		helpers.ServerError(w, err)
-		data["error"] = "Unable to fetch user properties. Please contact support"
-		out, _ := json.MarshalIndent(data, "", "    ")
-		resp := []byte(out)
-		w.Write(resp)
-		return
-	}
+	// AllProperties, err := m.DB.AllProperties()
+	// if err != nil {
+	// 	helpers.ServerError(w, err)
+	// 	data["error"] = "Unable to fetch user properties. Please contact support"
+	// 	out, _ := json.MarshalIndent(data, "", "    ")
+	// 	resp := []byte(out)
+	// 	w.Write(resp)
+	// 	return
+	// }
 
-	// Return new buy properties
-	BuyProperties, err := m.DB.AllBuyProperties()
-	if err != nil {
-		helpers.ServerError(w, err)
-		data["error"] = "Unable to fetch user properties. Please contact support"
-		out, _ := json.MarshalIndent(data, "", "    ")
-		resp := []byte(out)
-		w.Write(resp)
-		return
-	}
-
-	// Return new rent properties
-	RentProperties, err := m.DB.AllRentProperties()
-	if err != nil {
-		helpers.ServerError(w, err)
-		data["error"] = "Unable to fetch user properties. Please contact support"
-		out, _ := json.MarshalIndent(data, "", "    ")
-		resp := []byte(out)
-		w.Write(resp)
-		return
-	}
-
-	// Return new rent properties
-	ShortletProperties, err := m.DB.AllShortletProperties()
-	if err != nil {
-		helpers.ServerError(w, err)
-		data["error"] = "Unable to fetch user properties. Please contact support"
-		out, _ := json.MarshalIndent(data, "", "    ")
-		resp := []byte(out)
-		w.Write(resp)
-		return
-	}
-
-	// Return new user properties
-	userProperties, err := m.DB.GetUserPropertiesByID(userID)
-	if err != nil {
-		helpers.ServerError(w, err)
-		data["error"] = "Unable to fetch user properties. Please contact support"
-		out, _ := json.MarshalIndent(data, "", "    ")
-		resp := []byte(out)
-		w.Write(resp)
-		return
-	}
-
-	data["allProperties"] = AllProperties
-	data["buyProperties"] = BuyProperties
-	data["rentProperties"] = RentProperties
-	data["shortletProperties"] = ShortletProperties
-	data["userProperties"] = userProperties
+	// data["allProperties"] = AllProperties	
 	data["message"] = "Successful"
 	out, _ := json.MarshalIndent(data, "", "    ")
 

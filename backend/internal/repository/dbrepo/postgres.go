@@ -862,7 +862,7 @@ func (m *postgresDBRepo) DeleteProperty(id int) error {
 	return nil
 }
 
-// DeleteProperty deletes properties from DB
+// Update property status in the db
 func (m *postgresDBRepo) UserUpdatePropertyStatus(id int, status string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
