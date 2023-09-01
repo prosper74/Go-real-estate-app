@@ -862,6 +862,21 @@ func (m *postgresDBRepo) DeleteProperty(id int) error {
 	return nil
 }
 
+// Update a property in the
+func (m *postgresDBRepo) UserUpdateProperty(id int, status string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `update properties set status = $1, updated_at = $2 where id = $3`
+
+	_, err := m.DB.ExecContext(ctx, query, status, time.Now(), id)
+	if err != nil {		
+		return err
+	}
+
+	return nil
+}
+
 // Update property status in the db
 func (m *postgresDBRepo) UserUpdatePropertyStatus(id int, status string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
