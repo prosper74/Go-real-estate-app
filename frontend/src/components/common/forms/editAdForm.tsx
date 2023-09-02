@@ -130,6 +130,7 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
       .post(
         `${process.env.NEXT_PUBLIC_REST_API}/user/update-ad`,
         {
+          id: property?.ID,
           title: inputValues.title,
           description: description || property?.Description,
           price: inputPrice,

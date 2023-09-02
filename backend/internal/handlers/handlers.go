@@ -1068,6 +1068,7 @@ func (m *Repository) UserUpdateProperty(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
+	property.ID, _ = strconv.Atoi(r.PostFormValue("id"))
 	property.Title = r.PostFormValue("title")
 	property.Description = r.PostFormValue("description")
 	property.Price = r.PostFormValue("price")
@@ -1113,15 +1114,15 @@ func (m *Repository) UserUpdateProperty(w http.ResponseWriter, r *http.Request) 
 	}
 
 	// Update the property in the database
-	// err = m.DB.UserUpdatePropertyStatus(property)
-	// if err != nil {
-	// 	helpers.ServerError(w, err)
-	// 	data["error"] = "Unable to update property. Please contact support"
-	// 	out, _ := json.MarshalIndent(data, "", "    ")
-	// 	resp := []byte(out)
-	// 	w.Write(resp)
-	// 	return
-	// }
+	err = m.DB.UserUpdateProperty(property)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to update property. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
 
 	// Return new user properties
 	// AllProperties, err := m.DB.AllProperties()
