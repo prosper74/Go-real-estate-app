@@ -863,13 +863,15 @@ func (m *postgresDBRepo) DeleteProperty(id int) error {
 }
 
 // Update a property in the
-func (m *postgresDBRepo) UserUpdateProperty(id int, status string) error {
+func (m *postgresDBRepo) UserUpdateProperty(property models.Property) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := `update properties set status = $1, updated_at = $2 where id = $3`
+	query := `update properties set title = $1, description = $2, price = $3, type = $4, duration = $5, size = $6, city = $7, state = $8, bedroom = $9, bathroom = $10, images = $11, category_id = $12, updated_at = $13 
+	where id = $14 and user_id = $15`
 
-	_, err := m.DB.ExecContext(ctx, query, status, time.Now(), id)
+	_, err := m.DB.ExecContext(ctx, query, property.Title, property.Description, property.Price,property.Type, property.Duration, property.Size, property.City, property.State, property.Bedroom, property.Bathroom, property.Images, property.CategoryID, time.Now(), property.ID, property.UserID)
+	
 	if err != nil {		
 		return err
 	}
