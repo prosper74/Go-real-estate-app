@@ -49,7 +49,6 @@ const SinglePropertyBody: FC<IProps> = ({ property }) => {
       <div className="markdown-view">
         <MarkdownView markdown={property.Description} />
       </div>
-      {/* <p className="text-lg">{property.Description}</p> */}
     </section>
   );
 };
