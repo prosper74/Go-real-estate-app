@@ -112,7 +112,7 @@ body {
 }
 
 .markdown-view p {
-  margin: 1rem 0;
+  margin: .5rem 0;
   font-size: 1.2rem;
   line-height: 1.7;
   word-wrap: break-word;
