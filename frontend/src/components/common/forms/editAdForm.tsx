@@ -163,11 +163,11 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
         dispatch(
           setSnackbar({
             status: "success",
-            message: ` Property added successfully. Your ad will also be reviewed`,
+            message: ` Property updated`,
             open: true,
           })
         );
-        router.push("/agent/account");
+        router.back();
       })
       .catch(() => {
         setLoading(false);
@@ -490,7 +490,10 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
 
                       {/* description */}
                       <div className="col-span-2">
-                        <Editor setOnChange={setDescription} placeholder="Leave this field blank if you want to use the existing description" />
+                        <Editor
+                          setOnChange={setDescription}
+                          placeholder="Leave this field blank if you want to use the existing description"
+                        />
                       </div>
 
                       {/* Price */}
