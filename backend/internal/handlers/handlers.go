@@ -1123,19 +1123,7 @@ func (m *Repository) UserUpdateProperty(w http.ResponseWriter, r *http.Request) 
 		w.Write(resp)
 		return
 	}
-
-	// Return new user properties
-	// AllProperties, err := m.DB.AllProperties()
-	// if err != nil {
-	// 	helpers.ServerError(w, err)
-	// 	data["error"] = "Unable to fetch user properties. Please contact support"
-	// 	out, _ := json.MarshalIndent(data, "", "    ")
-	// 	resp := []byte(out)
-	// 	w.Write(resp)
-	// 	return
-	// }
-
-	// data["allProperties"] = AllProperties	
+	
 	data["message"] = "Successful"
 	out, _ := json.MarshalIndent(data, "", "    ")
 
