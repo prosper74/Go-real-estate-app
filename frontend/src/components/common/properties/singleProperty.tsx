@@ -4,7 +4,7 @@ import { PropertyMeta } from "./propertyMeta";
 import { timeSince } from "@src/components/common/helpers/dateFunction";
 import AgentCard from "./agentCard";
 import { SingleProperty } from "../helpers/interfaces";
-import { CalendarIcon, HomeIcon } from "../helpers/svgIcons";
+import { CalendarIcon, FavouriteIcon, HomeIcon } from "../helpers/svgIcons";
 import DescriptionTab from "./descriptionTab";
 
 interface IProps {
@@ -20,7 +20,13 @@ const SinglePropertyBody: FC<IProps> = ({ property }) => {
       <ImageSlider property={property} />
 
       {/* Property Name  */}
-      <p className="mt-6 italic">{property.Category.Title}</p>
+      <div className="flex justify-between items-center my-3 ">
+        <p className="italic">{property.Category.Title}</p>
+        <span>
+          <FavouriteIcon dimensions="w-8 h-8" fill="#9932cc" outline="none" />
+        </span>
+      </div>
+
       <h3 className="font-bold text-2xl md:text-3xl">{property.Title}</h3>
       <PropertyMeta property={property} />
       {property.Size && (
