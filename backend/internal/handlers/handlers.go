@@ -1253,3 +1253,28 @@ func (m *Repository) UserUpdatePropertyStatus(w http.ResponseWriter, r *http.Req
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(out)
 }
+
+// Get all the favourites of a property
+func (m *Repository) GetPropertyFavourites(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+	// var statusUpdate string
+
+	// propertyID, _ := strconv.Atoi(r.URL.Query().Get("id"))
+
+	// fetch favourites from the database
+	// err = m.DB.UserUpdatePropertyStatus(propertyID, statusUpdate)
+	// if err != nil {
+	// 	helpers.ServerError(w, err)
+	// 	data["error"] = "Unable to update property status. Please contact support"
+	// 	out, _ := json.MarshalIndent(data, "", "    ")
+	// 	resp := []byte(out)
+	// 	w.Write(resp)
+	// 	return
+	// }
+
+	data["message"] = "Successful"
+	out, _ := json.MarshalIndent(data, "", "    ")
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
+}
