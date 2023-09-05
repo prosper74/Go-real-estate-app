@@ -4,8 +4,9 @@ import { PropertyMeta } from "./propertyMeta";
 import { timeSince } from "@src/components/common/helpers/dateFunction";
 import AgentCard from "./agentCard";
 import { SingleProperty } from "../helpers/interfaces";
-import { CalendarIcon, FavouriteIcon, HomeIcon } from "../helpers/svgIcons";
+import { CalendarIcon, HomeIcon } from "../helpers/svgIcons";
 import DescriptionTab from "./descriptionTab";
+import FavouriteButton from "../Buttons/favouriteButton";
 
 interface IProps {
   property: SingleProperty;
@@ -22,10 +23,7 @@ const SinglePropertyBody: FC<IProps> = ({ property }) => {
       {/* Property Name  */}
       <div className="flex justify-between items-center my-3 ">
         <p className="italic">{property.Category.Title}</p>
-        <div className="relative">
-          <FavouriteIcon dimensions="w-10 h-10" fill="#9932cc" outline="none" />
-          <span className="absolute top-0 right-0 w-4 h-4 rounded-full bg-primary flex items-center justify-center text-white text-[0.6rem] p-1">10</span>
-        </div>
+        <FavouriteButton property={property} />
       </div>
 
       <h3 className="font-bold text-2xl md:text-3xl">{property.Title}</h3>
