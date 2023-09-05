@@ -22,8 +22,8 @@ const AgentCard: FC<IProps> = ({ agent }) => {
 
   return (
     <>
-      <div className="w-full h-32 bg-white shadow-lg rounded-lg flex flex-col items-center justify-center my-6">
-        <h4 className="font-medium text-2xl mb-3">
+      <div className="w-full h-32 bg-white shadow-lg rounded-lg flex flex-col items-center justify-center my-6 p-3">
+        <h4 className="font-medium text-center text-2xl mb-3">
           Interested in this property?
         </h4>
         <button
