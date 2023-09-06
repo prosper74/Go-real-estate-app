@@ -70,9 +70,11 @@ type Favourite struct {
 	ID         int
 	UserID     int
 	PropertyID int
+	User       User
 	Property   Property
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
+	Count      int
 }
 
 // Review holds users reviews
