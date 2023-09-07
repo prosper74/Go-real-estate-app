@@ -18,25 +18,25 @@ Postgres
 ### Packages used
 
 #### Go
-- [Alex Edwards SCS](https://github.com/alexedwards/scs/v2) - package for managing sessions
-- [Chi router](https://github.com/go-chi/chi/v5)
-- [Justinas nosurf](https://github.com/justinas/nosurf)
-- [JackC PGX](https://github.com/jackc/pgx/v5) - pgx is a pure Go driver and toolkit for PostgreSQL.
-- [SendinBlue](https://github.com/sendinblue/APIv3-go-library/v2) - Used for sending mails.
-- [Go JWT](https://github.com/golang-jwt/jwt/v5) - For JWT authentications.
+- [Alex Edwards SCS](https://github.com/alexedwards/scs/v2){:target="_blank"} - package for managing sessions
+- [Chi router](https://github.com/go-chi/chi/v5){:target="_blank"}
+- [Justinas nosurf](https://github.com/justinas/nosurf){:target="_blank"}
+- [JackC PGX](https://github.com/jackc/pgx/v5){:target="_blank"} - pgx is a pure Go driver and toolkit for PostgreSQL.
+- [SendinBlue](https://github.com/sendinblue/APIv3-go-library/v2){:target="_blank"} - Used for sending mails.
+- [Go JWT](https://github.com/golang-jwt/jwt/v5){:target="_blank"} - For JWT authentications.
 
 #### Next JS
-- [TypeScript](https://www.typescriptlang.org) - For type checking
-- [React Redux](https://react-redux.js.org) - For state management
-- [Tailwind CSS](https://tailwindcss.com/docs/installation) - For styling
-- [HeadlessUI](https://headlessui.com/) - Tailwind CSS Plugin
-- [FlowBite](https://www.flowbite-react.com) - Tailwind CSS Plugin
-- [React Lexical](https://lexical.dev/docs/getting-started/react#video-tutorials) - Rich text editor
-- [React hook form and zod](https://react-hook-form.com) - Forms and form validations
-- [Cloudinary](https://www.npmjs.com/package/cloudinary-react) - To store images
-- [Framer Motion](https://www.framer.com/motion/?utm_source=motion-readme-docs) - For animations
-- [React Showdown](https://www.npmjs.com/package/react-showdown) - For reading markdown
-- [Swiper js](https://swiperjs.com/react) - For sliders
+- [TypeScript](https://www.typescriptlang.org){:target="_blank"} - For type checking
+- [React Redux](https://react-redux.js.org){:target="_blank"} - For state management
+- [Tailwind CSS](https://tailwindcss.com/docs/installation){:target="_blank"} - For styling
+- [HeadlessUI](https://headlessui.com/){:target="_blank"} - Tailwind CSS Plugin
+- [FlowBite](https://www.flowbite-react.com){:target="_blank"} - Tailwind CSS Plugin
+- [React Lexical](https://lexical.dev/docs/getting-started/react#video-tutorials){:target="_blank"} - Rich text editor
+- [React hook form and zod](https://react-hook-form.com){:target="_blank"} - Forms and form validations
+- [Cloudinary](https://www.npmjs.com/package/cloudinary-react){:target="_blank"} - To store images
+- [Framer Motion](https://www.framer.com/motion/?utm_source=motion-readme-docs){:target="_blank"} - For animations
+- [React Showdown](https://www.npmjs.com/package/react-showdown){:target="_blank"} - For reading markdown
+- [Swiper js](https://swiperjs.com/react){:target="_blank"} - For sliders
 
 ### Note:
 
