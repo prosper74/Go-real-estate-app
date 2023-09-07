@@ -2,6 +2,8 @@
 
 This is a fullstack real estate app, built with Go version 1.19 and NextJs
 
+https://github.com/prosper74/Go-real-estate-app/assets/67523206/9ec3fdaf-4cea-49ff-ab9e-07dcb87e04cd
+
 This project is a simple real estate app project which aims to connect people with properties directly. It has some key features like;
 
 - Authentication
