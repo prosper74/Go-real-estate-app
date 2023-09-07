@@ -894,6 +894,22 @@ func (m *postgresDBRepo) UserUpdatePropertyStatus(id int, status string) error {
 	return nil
 }
 
+// InsertNewProperty inserts a new property for a user
+func (m *postgresDBRepo) InsertNewFavourite(favourite models.Favourite) error {
+	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `insert into favourites (property_id, user_id, created_at, updated_at) values ($1, $2, $3, $4)`
+
+	_, err := m.DB.ExecContext(context, query, favourite.PropertyID, favourite.UserID, time.Now(), time.Now())
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // Get favourites for a property
 func (m *postgresDBRepo) PropertyFavourites(propertyID int) ([]models.Favourite, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)

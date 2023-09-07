@@ -16,8 +16,8 @@ import VerificationModal from "../accountVerification";
 import { SingleProperty, UserProps } from "../helpers/interfaces";
 
 interface IProps {
-  user: UserProps;
-  ads: SingleProperty;
+  user?: UserProps;
+  ads?: SingleProperty;
 }
 
 const generateSHA1 = (data: any) => {
@@ -47,7 +47,7 @@ const UserTab: FC<IProps> = () => {
   const handleDelete = (propertyID: number, images: string[]) => {
     axios
       .get(
-        `${process.env.NEXT_PUBLIC_REST_API}/user/properties?user_id=${user.userId}&property_id=${propertyID}&jwt=${user.jwt}`
+        `${process.env.NEXT_PUBLIC_REST_API}/user/properties?user_id=${user?.userId}&property_id=${propertyID}&jwt=${user?.jwt}`
       )
       .then((res) => {
         if (res.data.error) {
@@ -113,7 +113,7 @@ const UserTab: FC<IProps> = () => {
   const handleStatusUpdate = (propertyID: number, propertyStatus: string) => {
     axios
       .get(
-        `${process.env.NEXT_PUBLIC_REST_API}/user/update-property-status?user_id=${user.userId}&property_id=${propertyID}&property_status=${propertyStatus}&jwt=${user.jwt}`
+        `${process.env.NEXT_PUBLIC_REST_API}/user/update-property-status?user_id=${user?.userId}&property_id=${propertyID}&property_status=${propertyStatus}&jwt=${user?.jwt}`
       )
       .then((res) => {
         if (res.data.error) {
@@ -149,10 +149,10 @@ const UserTab: FC<IProps> = () => {
   };
 
   useEffect(() => {
-    if (user.userId) {
+    if (user?.userId) {
       axios
         .get(
-          `${process.env.NEXT_PUBLIC_REST_API}/auth/dashboard?id=${user.userId}`
+          `${process.env.NEXT_PUBLIC_REST_API}/auth/dashboard?id=${user?.userId}`
         )
         .then((res) => {
           if (res.data.error) {

@@ -1,0 +1,1 @@
+add_index("favourites", "property_id", {"unique": true})

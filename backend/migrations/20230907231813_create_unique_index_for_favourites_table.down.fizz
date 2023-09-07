@@ -1,0 +1,1 @@
+drop_index("favourites", "favourites_property_id_idx")
