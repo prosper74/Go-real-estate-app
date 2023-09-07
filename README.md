@@ -18,25 +18,25 @@ Postgres
 ### Packages used
 
 #### Go
-- [Alex Edwards SCS](https://github.com/alexedwards/scs/v2){:target="_blank"} - package for managing sessions
-- [Chi router](https://github.com/go-chi/chi/v5){:target="_blank"}
-- [Justinas nosurf](https://github.com/justinas/nosurf){:target="_blank"}
-- [JackC PGX](https://github.com/jackc/pgx/v5){:target="_blank"} - pgx is a pure Go driver and toolkit for PostgreSQL.
-- [SendinBlue](https://github.com/sendinblue/APIv3-go-library/v2){:target="_blank"} - Used for sending mails.
-- [Go JWT](https://github.com/golang-jwt/jwt/v5){:target="_blank"} - For JWT authentications.
+- <a href="https://github.com/alexedwards/scs" target="_blank">Alex Edwards SCS</a> - For managing sessions
+- <a href="https://github.com/go-chi/chi" target="_blank">Chi router</a> - For create routes
+- <a href="https://github.com/justinas/nosurf" target="_blank">Justinas nosurf</a> - Cross-Site Request Forgery
+- <a href="https://github.com/jackc/pgx" target="_blank">JackC PGX</a> - PGX is a pure Go driver and toolkit for PostgreSQL.
+- <a href="https://github.com/sendinblue/APIv3-go-library" target="_blank">SendinBlue</a> Used for sending mails.
+- <a href="https://github.com/golang-jwt/jwt" target="_blank">Go JWT</a> - For JWT authentications.
 
 #### Next JS
-- [TypeScript](https://www.typescriptlang.org){:target="_blank"} - For type checking
-- [React Redux](https://react-redux.js.org){:target="_blank"} - For state management
-- [Tailwind CSS](https://tailwindcss.com/docs/installation){:target="_blank"} - For styling
-- [HeadlessUI](https://headlessui.com/){:target="_blank"} - Tailwind CSS Plugin
-- [FlowBite](https://www.flowbite-react.com){:target="_blank"} - Tailwind CSS Plugin
-- [React Lexical](https://lexical.dev/docs/getting-started/react#video-tutorials){:target="_blank"} - Rich text editor
-- [React hook form and zod](https://react-hook-form.com){:target="_blank"} - Forms and form validations
-- [Cloudinary](https://www.npmjs.com/package/cloudinary-react){:target="_blank"} - To store images
-- [Framer Motion](https://www.framer.com/motion/?utm_source=motion-readme-docs){:target="_blank"} - For animations
-- [React Showdown](https://www.npmjs.com/package/react-showdown){:target="_blank"} - For reading markdown
-- [Swiper js](https://swiperjs.com/react){:target="_blank"} - For sliders
+- <a href="https://www.typescriptlang.org" target="_blank">TypeScript</a> - For type checking
+- <a href="https://react-redux.js.org" target="_blank">React Redux</a> - For state management
+- <a href="https://tailwindcss.com/docs/installation" target="_blank">Tailwind CSS</a> - For styling
+- <a href="https://headlessui.com" target="_blank">HeadlessUI</a> - Tailwind CSS Plugin
+- <a href="https://www.flowbite-react.com" target="_blank">Tailwind CSS</a> - Tailwind CSS Plugin
+- <a href="https://lexical.dev/docs/getting-started/react#video-tutorials" target="_blank">React Lexical</a> - Rich text editor
+- <a href="https://react-hook-form.com" target="_blank">React hook form and zod</a> - Forms and form validations
+- <a href="https://www.npmjs.com/package/cloudinary-react" target="_blank">Cloudinary React</a> - To store images
+- <a href="https://www.framer.com/motion/?utm_source=motion-readme-docs" target="_blank">Framer Motion</a> - For animations
+- <a href="https://www.npmjs.com/package/react-showdown" target="_blank">React Showdown</a> - For reading markdown
+- <a href="https://swiperjs.com/react" target="_blank">Swiper js</a> - For sliders
 
 ### Note:
 
