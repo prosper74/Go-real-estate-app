@@ -2,7 +2,7 @@
 
 This is a fullstack real estate app, built with Go version 1.19 and NextJs
 
-This project is a simple real estate app project with key features like;
+This project is a simple real estate app project which aims to connect people with properties directly. It has some key features like;
 
 - Authentication
 - Agents create, update and delete their properties
@@ -12,14 +12,31 @@ This project is a simple real estate app project with key features like;
 - Showcase the properties
 - Notifification system
 
+### Database used
+Postgres
+
 ### Packages used
 
 #### Go
-- [Alex Edwards SCS](https://github.com/alexedwards/scs/v2) package for managing sessions
+- [Alex Edwards SCS](https://github.com/alexedwards/scs/v2) - package for managing sessions
 - [Chi router](https://github.com/go-chi/chi/v5)
 - [Justinas nosurf](https://github.com/justinas/nosurf)
-- [JackC PGX](https://github.com/jackc/pgx/v5) pgx is a pure Go driver and toolkit for PostgreSQL.
-- [Go Simple Mail](https://github.com/xhit/go-simple-mail) Used for sending mails.
+- [JackC PGX](https://github.com/jackc/pgx/v5) - pgx is a pure Go driver and toolkit for PostgreSQL.
+- [SendinBlue](https://github.com/sendinblue/APIv3-go-library/v2) - Used for sending mails.
+- [Go JWT](https://github.com/golang-jwt/jwt/v5) - For JWT authentications.
+
+#### Next JS
+- [TypeScript](https://www.typescriptlang.org) - For type checking
+- [React Redux](https://react-redux.js.org) - For state management
+- [Tailwind CSS](https://tailwindcss.com/docs/installation) - For styling
+- [HeadlessUI](https://headlessui.com/) - Tailwind CSS Plugin
+- [FlowBite](https://www.flowbite-react.com) - Tailwind CSS Plugin
+- [React Lexical](https://lexical.dev/docs/getting-started/react#video-tutorials) - Rich text editor
+- [React hook form and zod](https://react-hook-form.com) - Forms and form validations
+- [Cloudinary](https://www.npmjs.com/package/cloudinary-react) - To store images
+- [Framer Motion](https://www.framer.com/motion/?utm_source=motion-readme-docs) - For animations
+- [React Showdown](https://www.npmjs.com/package/react-showdown) - For reading markdown
+- [Swiper js](https://swiperjs.com/react) - For sliders
 
 ### Note:
 
@@ -37,13 +54,13 @@ This project is a simple real estate app project with key features like;
 
 ### Run the server
 
-- Manual: `go run cmd/web/main.go cmd/web/middleware.go cmd/web/routes.go cmd/web/sendMail.go`
-- Batch:  
+- Manually: `go run cmd/web/main.go cmd/web/middleware.go cmd/web/routes.go cmd/web/sendMail.go`
+- Batch (Please use the linux method even on windows, as it works pretty well):  
 **On Windows** - create a `run.bat` file in the root directory of the project and paste the below code
 
   ```
-  go build -o bookings cmd/web/*.go
-  ./bookings.exe
+  go build -o out cmd/web/*.go
+  ./out.exe
   ```
 
   Then run `run.bat` in the terminal
@@ -53,17 +70,11 @@ This project is a simple real estate app project with key features like;
   ```
   #!/bin/bash
 
-  go build -o booking cmd/web/*.go
-  ./bookings
+  go build -o out cmd/web/*.go
+  ./out <pass your flag dependencies here>
   ```
 
   Run `chmod +x run.sh` then run `./run.sh` in the terminal
-
-### The test file
-
-- To output test in hmtl format run `go test -coverprofile=coverage.out && go tool cover -html=coverage.out`
-- To know the percentage coverage run `go test -cover`
-- Run test for the entire project `go test -v ./...`
 
 ### Soda migration
 
