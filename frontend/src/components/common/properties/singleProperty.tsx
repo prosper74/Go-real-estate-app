@@ -3,16 +3,19 @@ import ImageSlider from "./imageSlider";
 import { PropertyMeta } from "./propertyMeta";
 import { timeSince } from "@src/components/common/helpers/dateFunction";
 import AgentCard from "./agentCard";
-import { SingleProperty } from "../helpers/interfaces";
+import { SingleProperty, UserProps } from "../helpers/interfaces";
 import { CalendarIcon, HomeIcon } from "../helpers/svgIcons";
 import DescriptionTab from "./descriptionTab";
 import FavouriteButton from "../Buttons/favouriteButton";
+import { useSelector } from "react-redux";
 
 interface IProps {
   property: SingleProperty;
+  user?: UserProps;
 }
 
 const SinglePropertyBody: FC<IProps> = ({ property }) => {
+  const user = useSelector((state: IProps) => state.user);
   const propertyAgent = property.User;
 
   return (
@@ -23,7 +26,9 @@ const SinglePropertyBody: FC<IProps> = ({ property }) => {
       {/* Property Name  */}
       <div className="flex justify-between items-center my-3 ">
         <p className="italic">{property.Category.Title}</p>
-        <FavouriteButton property={property} />
+        {user?.userId !== property.UserID && (
+          <FavouriteButton property={property} />
+        )}
       </div>
 
       <h3 className="font-bold text-2xl md:text-3xl">{property.Title}</h3>

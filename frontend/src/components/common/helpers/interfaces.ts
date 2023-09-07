@@ -97,3 +97,14 @@ export interface TemplateData {
   Form: any;
   IsAuthenticated: number;
 }
+
+export interface FavouriteProps {
+  ID: number;
+  UserID: number;
+  PropertyID: number;
+  User: UserProps;
+  Property: SingleProperty;
+  CreatedAt: string;
+  UpdatedAt: string;
+  Count: number;
+}
