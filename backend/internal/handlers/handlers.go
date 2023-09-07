@@ -1260,21 +1260,19 @@ func (m *Repository) GetPropertyFavourites(w http.ResponseWriter, r *http.Reques
 
 	propertyID, _ := strconv.Atoi(r.URL.Query().Get("id"))
 
-	log.Println("---", propertyID, "----")
-
 	// fetch favourites from the database
-	// favourites, err := m.DB.PropertyFavourites(propertyID)
-	// if err != nil {
-	// 	helpers.ServerError(w, err)
-	// 	data["error"] = "Unable to update property status. Please contact support"
-	// 	out, _ := json.MarshalIndent(data, "", "    ")
-	// 	resp := []byte(out)
-	// 	w.Write(resp)
-	// 	return
-	// }
+	favourites, err := m.DB.PropertyFavourites(propertyID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to update property status. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
 
 	data["message"] = "Successful"
-	// data["favourites"] = favourites
+	data["favourites"] = favourites
 	out, _ := json.MarshalIndent(data, "", "    ")
 
 	w.Header().Set("Content-Type", "application/json")

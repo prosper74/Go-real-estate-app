@@ -893,3 +893,59 @@ func (m *postgresDBRepo) UserUpdatePropertyStatus(id int, status string) error {
 
 	return nil
 }
+
+// Get favourites for a property
+func (m *postgresDBRepo) PropertyFavourites(propertyID int) ([]models.Favourite, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	var favourites []models.Favourite
+
+	query := `select f.id, f.property_id, f.user_id, f.created_at, f.updated_at,
+	u.id, p.id, p.title, p.price, p.images, p.category_id, (select count(*) as total_count from favourites)
+	from favourites f
+	left join users u on (f.user_id = u.id)
+	left join properties p on (f.property_id = p.id)
+	where f.property_id = $1
+	order by f.created_at desc`
+
+	rows, err := m.DB.QueryContext(ctx, query, propertyID)
+	if err != nil {
+		return favourites, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var favourite models.Favourite
+		var imagesArrayString string
+
+		err := rows.Scan(
+			&favourite.ID,
+			&favourite.PropertyID,
+			&favourite.UserID,
+			&favourite.CreatedAt,
+			&favourite.UpdatedAt,
+			&favourite.User.ID,
+			&favourite.Property.ID,
+			&favourite.Property.Title,
+			&favourite.Property.Price,
+			&imagesArrayString,
+			&favourite.Property.CategoryID,
+			&favourite.Count,
+		)
+
+		// Convert the array string to a string slice using the function
+		favourite.Property.Images = helpers.ConvertPostgresArrayToStringSlice(imagesArrayString)
+
+		if err != nil {
+			return favourites, err
+		}
+		favourites = append(favourites, favourite)
+	}
+
+	if err = rows.Err(); err != nil {
+		return favourites, err
+	}
+
+	return favourites, nil
+}
