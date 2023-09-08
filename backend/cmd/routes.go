@@ -64,6 +64,7 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/user/update-property-status", handlers.Repo.UserUpdatePropertyStatus)
 	mux.Post("/user/update-ad", handlers.Repo.UserUpdateProperty)
 	mux.Post("/user/add-favourite", handlers.Repo.UserAddFavourite)
+	mux.Post("/user/remove-favourite", handlers.Repo.UserRemoveFavourite)
 
 	mux.Route("/admin", func(mux chi.Router) {
 		// Use the Auth middleware

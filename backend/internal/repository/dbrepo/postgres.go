@@ -965,3 +965,19 @@ func (m *postgresDBRepo) PropertyFavourites(propertyID int) ([]models.Favourite,
 
 	return favourites, nil
 }
+
+// InsertNewProperty inserts a new property for a user
+func (m *postgresDBRepo) DeleteFavourite(favourite models.Favourite) error {
+	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `delete from favourites where property_id = $1 and user_id = $2`
+
+	_, err := m.DB.ExecContext(context, query, favourite.PropertyID, favourite.UserID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
