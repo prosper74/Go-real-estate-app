@@ -25,7 +25,7 @@ export default function PropertyCard({
   const user = useSelector((state: IProps) => state.user);
 
   const adLink =
-    property.Status === "pending"
+    property.Status === "pending" || property.Status === "disabled"
       ? "#!"
       : property.Title
       ? `/${property?.Category?.Title.toLowerCase()}/property?title=${property?.Title.toLowerCase().replace(
