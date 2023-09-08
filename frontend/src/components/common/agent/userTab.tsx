@@ -341,6 +341,7 @@ const UserTab: FC<IProps> = () => {
                             property={property}
                             handleDelete={handleDelete}
                             handleStatusUpdate={handleStatusUpdate}
+                            isUserDashboard={true}
                           />
                         </span>
                       ))}
