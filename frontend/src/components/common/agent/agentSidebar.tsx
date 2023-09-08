@@ -5,7 +5,7 @@ import { VerifiedIcon } from "../helpers/svgIcons";
 import { UserProps } from "../helpers/interfaces";
 
 interface IProps {
-  agent: UserProps;
+  agent?: UserProps;
   totalCount?: number;
 }
 
@@ -14,7 +14,7 @@ const AgentSidebar: FC<IProps> = ({ agent, totalCount }) => {
     <div className="sticky top-20">
       <div className="py-2 px-4 rounded-xl shadow-md bg-white flex flex-col sm:flex-row lg:flex-col items-center justify-evenly gap-1 sm:gap-12 lg:gap-1">
         <Image
-          src={agent.Image ? agent.Image : "/logoIcon.svg"}
+          src={agent?.Image ? agent?.Image : "/logoIcon.svg"}
           alt="User avatar"
           width={224}
           height={224}
@@ -22,23 +22,23 @@ const AgentSidebar: FC<IProps> = ({ agent, totalCount }) => {
         />
         <div className="my-4 text-lg text-gray-700">
           <p className="my-2 capitalize">
-            Name: {agent.FirstName} {agent.LastName}
+            Name: {agent?.FirstName} {agent?.LastName}
           </p>
-          {agent.Phone && (
+          {agent?.Phone && (
             <p className="my-2">
               Phone:{" "}
-              <a href={`tel:+234${agent.Phone.substring(1, 11)}`}>
-                {agent.Phone}
+              <a href={`tel:+234${agent?.Phone.substring(1, 11)}`}>
+                {agent?.Phone}
               </a>
             </p>
           )}
 
           <p className="my-2">
-            Joined: {timeSince(new Date(agent.CreatedAt))} ago
+            Joined: {timeSince(new Date(agent!.CreatedAt))} ago
           </p>
           <p className="my-2">
             Status:{" "}
-            {agent.Verification === "verified" ? (
+            {agent?.Verification === "verified" ? (
               <span>
                 Verified
                 <VerifiedIcon />
