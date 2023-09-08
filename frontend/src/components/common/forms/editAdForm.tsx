@@ -518,29 +518,40 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
                   )}
                 </div>
 
-                <button
-                  type="button"
-                  onClick={onSubmit}
-                  disabled={
-                    loading ||
-                    !isCategory ||
-                    uploadedFiles!.length < 1 ||
-                    inputPrice!.replace(/[^0-9]/g, "").length < 3 ||
-                    inputPrice!.trim().startsWith("0")
-                  }
-                  className={`mt-5 transition duration-200 bg-purple-600 w-full py-2.5 rounded-lg text-lg shadow-sm hover:shadow-md font-semibold text-center flex justify-center items-center disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 ${
-                    loading
-                      ? "hover:bg-purple-300 text-gray-300"
-                      : "hover:bg-purple-700 text-white"
-                  }`}
-                >
-                  <span className="mr-2">Submit</span>
-                  {loading ? (
-                    <div className="border-b-2 border-purple-600 rounded-full animate-spin w-6 h-6 " />
-                  ) : (
-                    <ForwardArrow />
-                  )}
-                </button>
+                <div className="mt-5 flex items-center justify-between gap-4">
+                  <button
+                    type="button"
+                    onClick={() => router.back()}
+                    disabled={loading}
+                    className="transition duration-200 bg-gray-400 px-3 py-2.5 rounded-lg text-lg shadow-lg hover:shadow-md font-semibold text-center"
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={onSubmit}
+                    disabled={
+                      loading ||
+                      !isCategory ||
+                      uploadedFiles!.length < 1 ||
+                      inputPrice!.replace(/[^0-9]/g, "").length < 3 ||
+                      inputPrice!.trim().startsWith("0")
+                    }
+                    className={`transition duration-200 bg-purple-600 px-3 py-2.5 rounded-lg text-lg shadow-sm hover:shadow-md font-semibold text-center flex justify-center items-center disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 ${
+                      loading
+                        ? "hover:bg-purple-300 text-gray-300"
+                        : "hover:bg-purple-700 text-white"
+                    }`}
+                  >
+                    <span className="mr-2">Submit</span>
+                    {loading ? (
+                      <div className="border-b-2 border-purple-600 rounded-full animate-spin w-6 h-6 " />
+                    ) : (
+                      <ForwardArrow />
+                    )}
+                  </button>
+                </div>
               </form>
             </div>
           </div>
