@@ -36,31 +36,23 @@ export default function CardEditButton({
           </button>
         )}
       >
-        {propertyStatus !== "pending" && (
-          <>
-            <Dropdown.Item
-              icon={HiPencilAlt}
+        {propertyStatus === "enabled" && (
+          <Dropdown.Item icon={HiPencilAlt}>
+            <Link
+              href={`/agent/edit-ad?status=${propertyStatus}&id=${propertyID}`}
             >
-              <Link
-                href={`/agent/edit-ad?status=${propertyStatus}&id=${propertyID}`}
-              >
-                Edit
-              </Link>
-            </Dropdown.Item>
-
-            <Dropdown.Item
-              icon={HiStop}
-              onClick={() => setModalOpen("status")}
-            >
-              {propertyStatus === "disabled" ? "Enable" : "Disable"}
-            </Dropdown.Item>
-          </>
+              Edit
+            </Link>
+          </Dropdown.Item>
         )}
 
-        <Dropdown.Item
-          icon={HiTrash}
-          onClick={() => setModalOpen("delete")}
-        >
+        {propertyStatus !== "pending" && (
+          <Dropdown.Item icon={HiStop} onClick={() => setModalOpen("status")}>
+            {propertyStatus === "disabled" ? "Enable" : "Disable"}
+          </Dropdown.Item>
+        )}
+
+        <Dropdown.Item icon={HiTrash} onClick={() => setModalOpen("delete")}>
           Delete
         </Dropdown.Item>
       </Dropdown>
