@@ -12,7 +12,7 @@ import { PageLoader } from "../helpers/loader";
 import ResendEmailVerificationButton from "../Buttons/emailVerificationButton";
 import VerificationModal from "../accountVerification";
 import { SingleProperty, UserProps } from "../helpers/interfaces";
-import UserFavourites from "./UserFavourites";
+import UserFavourites from "./userFavourites";
 
 interface IProps {
   user?: UserProps;

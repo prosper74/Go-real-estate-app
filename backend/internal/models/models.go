@@ -74,7 +74,6 @@ type Favourite struct {
 	Property   Property
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
-	Count      int
 }
 
 // Review holds users reviews

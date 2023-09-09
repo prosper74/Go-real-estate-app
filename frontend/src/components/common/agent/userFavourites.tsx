@@ -54,7 +54,7 @@ const UserFavourites: FC<IProps> = () => {
   return (
     <>
       {favourites === null ? (
-        <h3 className="font-medium text-lg mb-6">
+        <h3 className="font-medium text-lg text-center my-6">
           You do not have any favourites.
         </h3>
       ) : (

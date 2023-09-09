@@ -106,5 +106,4 @@ export interface FavouriteProps {
   Property: SingleProperty;
   CreatedAt: string;
   UpdatedAt: string;
-  Count: number;
 }

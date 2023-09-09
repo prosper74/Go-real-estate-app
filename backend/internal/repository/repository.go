@@ -31,5 +31,6 @@ type DatabaseRepo interface {
 
 	InsertNewFavourite(favourite models.Favourite) error
 	PropertyFavourites(propertyID int) ([]models.Favourite, error)
+	GetUserFavourites(userID int) ([]models.Favourite, error)
 	DeleteFavourite(favourite models.Favourite) error
 }
