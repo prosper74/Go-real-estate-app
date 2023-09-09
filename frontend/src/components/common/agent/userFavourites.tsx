@@ -3,7 +3,7 @@ import Link from "next/link";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import AgentSidebar from "./agentSidebar";
-import PropertyCard from "../properties/propertyCard";
+import FavouritesCard from "../properties/favouritesCard";
 import {
   FavouriteProps,
   SingleProperty,
@@ -49,25 +49,21 @@ const UserFavourites: FC<IProps> = () => {
       });
   }, []);
 
-  console.log("favourites: ", favourites)
+  console.log("favourites: ", favourites);
 
   return (
     <>
       {favourites === null ? (
         <h3 className="font-medium text-lg text-center my-6">
-          You do not have any favourites.
+          You do not have any favourites. Add some
         </h3>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          favourites here
-          {/* {favourites.map((property: SingleProperty) => (
-            <span key={property.ID}>
-              <PropertyCard
-                property={property}
-                isUserDashboard={true}
-              />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 my-4">
+          {favourites?.map((favorite: FavouriteProps) => (
+            <span key={favorite.ID}>
+              <FavouritesCard singleFavourite={favorite} />
             </span>
-          ))} */}
+          ))}
         </div>
       )}
     </>

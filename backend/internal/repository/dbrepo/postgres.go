@@ -973,7 +973,7 @@ func (m *postgresDBRepo) GetUserFavourites(userID int) ([]models.Favourite, erro
 	var favourites []models.Favourite
 
 	query := `select f.id, f.property_id, f.user_id, f.created_at, f.updated_at,
-	u.id, p.id, p.title, p.price, p.images, p.category_id
+	u.id, p.id, p.title, p.price, p.bedroom, p.bathroom, p.type, p.city, p.state, p.images, p.category_id
 	from favourites f
 	left join users u on (f.user_id = u.id)
 	left join properties p on (f.property_id = p.id)
@@ -1000,6 +1000,11 @@ func (m *postgresDBRepo) GetUserFavourites(userID int) ([]models.Favourite, erro
 			&favourite.Property.ID,
 			&favourite.Property.Title,
 			&favourite.Property.Price,
+			&favourite.Property.Bedroom,
+			&favourite.Property.Bathroom,
+			&favourite.Property.Type,
+			&favourite.Property.City,
+			&favourite.Property.State,
 			&imagesArrayString,
 			&favourite.Property.CategoryID,
 		)
