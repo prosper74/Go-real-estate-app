@@ -12,6 +12,7 @@ import { PageLoader } from "../helpers/loader";
 import ResendEmailVerificationButton from "../Buttons/emailVerificationButton";
 import VerificationModal from "../accountVerification";
 import { SingleProperty, UserProps } from "../helpers/interfaces";
+import UserFavourites from "./UserFavourites";
 
 interface IProps {
   user?: UserProps;
@@ -282,7 +283,7 @@ const UserTab: FC<IProps> = () => {
                   "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-purple-400 ring-white ring-opacity-60"
                 )}
               >
-                Favourites
+                <UserFavourites />
               </Tab.Panel>
             </Tab.Panels>
           </Tab.Group>

@@ -1414,3 +1414,28 @@ func (m *Repository) GetPropertyFavourites(w http.ResponseWriter, r *http.Reques
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(out)
 }
+
+// Get all the favourites of a property
+func (m *Repository) UserFavourites(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+
+	propertyID, _ := strconv.Atoi(r.URL.Query().Get("id"))
+
+	// fetch favourites from the database
+	favourites, err := m.DB.PropertyFavourites(propertyID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to get property favourites. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	data["message"] = "Successful"
+	data["favourites"] = favourites
+	out, _ := json.MarshalIndent(data, "", "    ")
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
+}
