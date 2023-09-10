@@ -1,30 +1,26 @@
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Tooltip } from "flowbite-react";
-import axios from "axios";
-import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import { HiTrash } from "react-icons/hi";
 // @ts-ignore
 import { Image } from "cloudinary-react";
-import { FavouriteIcon, LocationIcon } from "../helpers/svgIcons";
-import {
-  FavouriteProps,
-  SingleProperty,
-  UserProps,
-} from "../helpers/interfaces";
+import { LocationIcon } from "../helpers/svgIcons";
+import { FavouriteProps, UserProps } from "../helpers/interfaces";
 import { PropertyCardMeta } from "./propertyMeta";
 
 interface IProps {
   user?: UserProps;
-  singleFavourite?: FavouriteProps;
+  favourite?: FavouriteProps;
   fixed?: boolean;
+  handleRemoveFavourite?: any;
 }
 
-export default function FavouritesCard({ singleFavourite, fixed = false }: IProps) {
+export default function FavouritesCard({
+  favourite,
+  handleRemoveFavourite,
+  fixed = false,
+}: IProps) {
   const user = useSelector((state: IProps) => state.user);
-  const dispatch = useDispatch();
-  const [favourite, setFavourite] = useState(singleFavourite);
 
   const category =
     favourite?.Property.CategoryID === 1
@@ -80,7 +76,10 @@ export default function FavouritesCard({ singleFavourite, fixed = false }: IProp
         </div>
 
         {user?.userId === favourite?.UserID && (
-          <button className="absolute top-4 right-4">
+          <button
+            className="absolute top-4 right-4"
+            onClick={() => handleRemoveFavourite(favourite?.Property.ID)}
+          >
             <Tooltip content={"Remove from favourites"} style="light">
               <HiTrash size={25} />
             </Tooltip>

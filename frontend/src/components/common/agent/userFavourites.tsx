@@ -1,14 +1,8 @@
 import { FC, useEffect, useState } from "react";
-import Link from "next/link";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import AgentSidebar from "./agentSidebar";
 import FavouritesCard from "../properties/favouritesCard";
-import {
-  FavouriteProps,
-  SingleProperty,
-  UserProps,
-} from "../helpers/interfaces";
+import { FavouriteProps, UserProps } from "../helpers/interfaces";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 
 interface IProps {
@@ -20,6 +14,54 @@ const UserFavourites: FC<IProps> = () => {
   const user = useSelector((state: IProps) => state.user);
   const dispatch = useDispatch();
   const [favourites, setFavourites] = useState<FavouriteProps[]>();
+
+  const handleRemoveFavourite = (propertyID: number) => {
+    axios
+      .post(
+        `${process.env.NEXT_PUBLIC_REST_API}/user/remove-favourite`,
+        {
+          property_id: propertyID,
+          user_id: user?.userId,
+          jwt: user?.jwt,
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: `Bearer ${user?.jwt}`,
+          },
+        }
+      )
+      .then((res) => {
+        if (res.data.error) {
+          dispatch(
+            setSnackbar({
+              status: "error",
+              message: ` ${res.data.error}`,
+              open: true,
+            })
+          );
+        } else {
+          dispatch(
+            setSnackbar({
+              status: "success",
+              message: ` Property Removed from favourites`,
+              open: true,
+            })
+          );
+
+          setFavourites(res.data.user_favourites);
+        }
+      })
+      .catch(() => {
+        dispatch(
+          setSnackbar({
+            status: "error",
+            message: ` There was an error. Please try again later`,
+            open: true,
+          })
+        );
+      });
+  };
 
   useEffect(() => {
     axios
@@ -61,7 +103,10 @@ const UserFavourites: FC<IProps> = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 my-4">
           {favourites?.map((favorite: FavouriteProps) => (
             <span key={favorite.ID}>
-              <FavouritesCard singleFavourite={favorite} />
+              <FavouritesCard
+                favourite={favorite}
+                handleRemoveFavourite={handleRemoveFavourite}
+              />
             </span>
           ))}
         </div>
