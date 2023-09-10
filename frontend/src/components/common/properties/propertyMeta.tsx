@@ -8,7 +8,7 @@ import {
 } from "../helpers/svgIcons";
 
 interface IProps {
-  property: SingleProperty;
+  property?: SingleProperty;
 }
 
 export const PropertyMeta: FC<IProps> = ({ property }) => {
@@ -17,27 +17,27 @@ export const PropertyMeta: FC<IProps> = ({ property }) => {
       <p className="flex items-center gap-3 mb-4">
         <span className="flex items-center gap-1">
           <HelpIcon />
-          {property.Type}
+          {property?.Type}
         </span>
         |
         <span className="flex items-center gap-1">
           <LocationIcon dimensions="w-5 h-5" />
-          {property.City}, {property.State}
+          {property?.City}, {property?.State}
         </span>
       </p>
 
       <ul className="flex flex-col sm:flex-row items-start sm:items-center my-1 gap-4 text-base font-normal leading-4 mb-3">
-        {property.Bedroom && (
+        {property?.Bedroom && (
           <li className="flex flex-row items-center gap-1">
             <BedIcon dimensions="w-5 h-5" />
-            {property.Bedroom} Bedroom{Number(property.Bedroom) > 1 && "s"}
+            {property?.Bedroom} Bedroom{Number(property?.Bedroom) > 1 && "s"}
           </li>
         )}
 
-        {property.Bathroom && (
+        {property?.Bathroom && (
           <li className="flex flex-row items-center gap-1">
             <ShowerIcon dimensions="w-5 h-5" />
-            {property.Bathroom} Bathroom{Number(property.Bathroom) > 1 && "s"}
+            {property?.Bathroom} Bathroom{Number(property?.Bathroom) > 1 && "s"}
           </li>
         )}        
       </ul>
@@ -49,19 +49,19 @@ export const PropertyCardMeta: FC<IProps> = ({ property }) => {
   return (
     <>
       <ul className="flex flex-col sm:flex-row items-start sm:items-center my-1 gap-4 text-base font-normal leading-4 mb-3">
-        {property.Bedroom && (
+        {property?.Bedroom && (
           <li className="flex items-center gap-1">
             <BedIcon dimensions="w-5 h-5" />
             <p>
-              {property.Bedroom} Bedroom{Number(property.Bedroom) > 1 && "s"}
+              {property?.Bedroom} Bedroom{Number(property?.Bedroom) > 1 && "s"}
             </p>
           </li>
         )}   
 
-        {property.Bathroom && (
+        {property?.Bathroom && (
           <li className="flex flex-row items-center gap-1">
             <ShowerIcon dimensions="w-5 h-5" />
-            {property.Bathroom} Bathroom{Number(property.Bathroom) > 1 && "s"}
+            {property?.Bathroom} Bathroom{Number(property?.Bathroom) > 1 && "s"}
           </li>
         )}    
       </ul>

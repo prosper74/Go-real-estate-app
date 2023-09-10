@@ -28,4 +28,9 @@ type DatabaseRepo interface {
 	DeleteProperty(id int) error
 	UserUpdateProperty(property models.Property) error
 	UserUpdatePropertyStatus(id int, status string) error
+
+	InsertNewFavourite(favourite models.Favourite) error
+	PropertyFavourites(propertyID int) ([]models.Favourite, error)
+	GetUserFavourites(userID int) ([]models.Favourite, error)
+	DeleteFavourite(favourite models.Favourite) error
 }

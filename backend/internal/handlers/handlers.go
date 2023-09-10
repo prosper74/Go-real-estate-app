@@ -1061,7 +1061,7 @@ func (m *Repository) UserDeleteProperty(w http.ResponseWriter, r *http.Request) 
 func (m *Repository) UserUpdateProperty(w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]interface{})
 	property := models.Property{}
-	
+
 	err := r.ParseForm()
 	if err != nil {
 		http.Error(w, "Can't parse form", http.StatusBadRequest)
@@ -1123,7 +1123,7 @@ func (m *Repository) UserUpdateProperty(w http.ResponseWriter, r *http.Request) 
 		w.Write(resp)
 		return
 	}
-	
+
 	data["message"] = "Successful"
 	out, _ := json.MarshalIndent(data, "", "    ")
 
@@ -1248,6 +1248,234 @@ func (m *Repository) UserUpdatePropertyStatus(w http.ResponseWriter, r *http.Req
 	data["shortletProperties"] = ShortletProperties
 	data["userProperties"] = userProperties
 	data["message"] = "Successful"
+	out, _ := json.MarshalIndent(data, "", "    ")
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
+}
+
+// Update user property status
+func (m *Repository) UserAddFavourite(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+	favourite := models.Favourite{}
+
+	favourite.PropertyID, _ = strconv.Atoi(r.PostFormValue("property_id"))
+	favourite.UserID, _ = strconv.Atoi(r.PostFormValue("user_id"))
+	tokenString := r.PostFormValue("jwt")
+
+	// Load the env file and get the JWT secret
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Error loading .env file")
+	}
+	jwtSecret := os.Getenv("JWTSECRET")
+
+	// Parse and verify the JWT token
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(jwtSecret), nil
+	})
+	if err != nil {
+		http.Error(w, "Unable to parse token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Unable to parse token. Error: %s", err)
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	if !token.Valid {
+		http.Error(w, "Invalid token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Invalid token, please contact support. Error: %s", err)
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// Add favourite to database
+	err = m.DB.InsertNewFavourite(favourite)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to insert favourite. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// fetch favourites from the database
+	favourites, err := m.DB.PropertyFavourites(favourite.PropertyID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to get property favourites. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	data["favourites"] = favourites
+	data["message"] = "Successful"
+	out, _ := json.MarshalIndent(data, "", "    ")
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
+}
+
+// Update user property status
+func (m *Repository) UserRemoveFavourite(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+	favourite := models.Favourite{}
+
+	favourite.PropertyID, _ = strconv.Atoi(r.PostFormValue("property_id"))
+	favourite.UserID, _ = strconv.Atoi(r.PostFormValue("user_id"))
+	tokenString := r.PostFormValue("jwt")
+
+	// Load the env file and get the JWT secret
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Error loading .env file")
+	}
+	jwtSecret := os.Getenv("JWTSECRET")
+
+	// Parse and verify the JWT token
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(jwtSecret), nil
+	})
+	if err != nil {
+		http.Error(w, "Unable to parse token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Unable to parse token. Error: %s", err)
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	if !token.Valid {
+		http.Error(w, "Invalid token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Invalid token, please contact support. Error: %s", err)
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// Add favourite to database
+	err = m.DB.DeleteFavourite(favourite)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to delete favourite. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// fetch favourites from the database
+	favourites, err := m.DB.PropertyFavourites(favourite.PropertyID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to get property favourites. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// fetch user favourites from the database
+	userFavourites, err := m.DB.GetUserFavourites(favourite.UserID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to get user favourites. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	data["favourites"] = favourites
+	data["user_favourites"] = userFavourites
+	data["message"] = "Successful"
+	out, _ := json.MarshalIndent(data, "", "    ")
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
+}
+
+// Get all the favourites of a property
+func (m *Repository) GetPropertyFavourites(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+
+	propertyID, _ := strconv.Atoi(r.URL.Query().Get("id"))
+
+	// fetch favourites from the database
+	favourites, err := m.DB.PropertyFavourites(propertyID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to get property favourites. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	data["message"] = "Successful"
+	data["favourites"] = favourites
+	out, _ := json.MarshalIndent(data, "", "    ")
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
+}
+
+// Get all the favourites of a user
+func (m *Repository) UserFavourites(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+
+	userID, _ := strconv.Atoi(r.URL.Query().Get("user_id"))
+	tokenString := r.URL.Query().Get("jwt")
+
+	// Load the env file and get the JWT secret
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Error loading .env file")
+	}
+	jwtSecret := os.Getenv("JWTSECRET")
+
+	// Parse and verify the JWT token
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(jwtSecret), nil
+	})
+	if err != nil {
+		http.Error(w, "Unable to parse token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Unable to parse token. Error: %s", err)
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	if !token.Valid {
+		http.Error(w, "Invalid token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Invalid token, please contact support. Error: %s", err)
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// fetch favourites from the database
+	favourites, err := m.DB.GetUserFavourites(userID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to get user favourites. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	data["message"] = "Successful"
+	data["favourites"] = favourites
 	out, _ := json.MarshalIndent(data, "", "    ")
 
 	w.Header().Set("Content-Type", "application/json")

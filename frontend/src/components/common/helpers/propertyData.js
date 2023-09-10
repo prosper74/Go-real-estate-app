@@ -72,19 +72,19 @@ export const priceRange = [
 
 export const perPeriod = [
   {
-    name: 'year',
+    name: '1 year',
     label: 'year',
   },
   {
-    name: 'day',
+    name: '1 day',
     label: 'day',
   },
   {
-    name: 'week',
+    name: '1 week',
     label: 'week',
   },
   {
-    name: 'month',
+    name: '1 month',
     label: 'month',
   },
   {

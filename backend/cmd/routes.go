@@ -51,8 +51,9 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Post("/resend-email", handlers.Repo.ResendEmailVerification)
 	mux.Post("/login", handlers.Repo.Login)
 	mux.Post("/forgot-password", handlers.Repo.SendPasswordResetEmail)
-	mux.Get("/user/logout", handlers.Repo.Logout)
+	mux.Get("/user/logout", handlers.Repo.Logout)	
 	mux.Post("/reset-password", handlers.Repo.UpdateUserPassword)
+	mux.Get("/favourites", handlers.Repo.GetPropertyFavourites)
 
 	// user dashboard
 	mux.Get("/auth/dashboard", handlers.Repo.UserDashboard)
@@ -62,6 +63,9 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/user/properties", handlers.Repo.UserDeleteProperty)
 	mux.Get("/user/update-property-status", handlers.Repo.UserUpdatePropertyStatus)
 	mux.Post("/user/update-ad", handlers.Repo.UserUpdateProperty)
+	mux.Post("/user/add-favourite", handlers.Repo.UserAddFavourite)
+	mux.Post("/user/remove-favourite", handlers.Repo.UserRemoveFavourite)
+	mux.Get("/user/favourites", handlers.Repo.UserFavourites)
 
 	mux.Route("/admin", func(mux chi.Router) {
 		// Use the Auth middleware

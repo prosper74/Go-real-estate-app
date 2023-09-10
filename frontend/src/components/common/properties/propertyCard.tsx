@@ -1,12 +1,19 @@
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Tooltip } from "flowbite-react";
 // @ts-ignore
 import { Image } from "cloudinary-react";
 import CardEditButton from "../Buttons/cardEditButton";
-import { LocationIcon } from "../helpers/svgIcons";
-import { SingleProperty, UserProps } from "../helpers/interfaces";
+import { FavouriteIcon, LocationIcon } from "../helpers/svgIcons";
+import {
+  FavouriteProps,
+  SingleProperty,
+  UserProps,
+} from "../helpers/interfaces";
 import { PropertyCardMeta } from "./propertyMeta";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 
 interface IProps {
   property: SingleProperty;
@@ -14,6 +21,7 @@ interface IProps {
   user?: UserProps;
   handleDelete?: any;
   handleStatusUpdate?: any;
+  isUserDashboard?: boolean;
 }
 
 export default function PropertyCard({
@@ -21,11 +29,40 @@ export default function PropertyCard({
   fixed = false,
   handleDelete,
   handleStatusUpdate,
+  isUserDashboard = false,
 }: IProps) {
   const user = useSelector((state: IProps) => state.user);
+  const dispatch = useDispatch();
+  const [favourites, setFavourites] = useState<FavouriteProps[]>();
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.NEXT_PUBLIC_REST_API}/favourites?id=${property?.ID}`)
+      .then((response) => {
+        if (response.data.error) {
+          dispatch(
+            setSnackbar({
+              status: "error",
+              message: response.data.error,
+              open: true,
+            })
+          );
+        }
+        setFavourites(response.data.favourites);
+      })
+      .catch((error) => {
+        dispatch(
+          setSnackbar({
+            status: "error",
+            message: error.response.data,
+            open: true,
+          })
+        );
+      });
+  }, []);
 
   const adLink =
-    property.Status === "pending"
+    property.Status === "pending" || property.Status === "disabled"
       ? "#!"
       : property.Title
       ? `/${property?.Category?.Title.toLowerCase()}/property?title=${property?.Title.toLowerCase().replace(
@@ -65,7 +102,15 @@ export default function PropertyCard({
           {property.City}, {property.State}
         </span>
 
-        <PropertyCardMeta property={property} />
+        {isUserDashboard ? (
+          <p className="my-1.5 flex items-center gap-1">
+            <FavouriteIcon dimensions="w-5 h-5" fill="currentColor" />
+            {favourites === null ? 0 : favourites?.length}{" "}
+            {favourites?.length === 1 ? "person" : "people"} liked this ad
+          </p>
+        ) : (
+          <PropertyCardMeta property={property} />
+        )}
 
         <div className="flex items-center justify-between">
           {property.Category.Title === "Buy" ? (

@@ -855,7 +855,7 @@ func (m *postgresDBRepo) DeleteProperty(id int) error {
 	query := `delete from properties where id = $1`
 
 	_, err := m.DB.ExecContext(ctx, query, id)
-	if err != nil {		
+	if err != nil {
 		return err
 	}
 
@@ -870,9 +870,9 @@ func (m *postgresDBRepo) UserUpdateProperty(property models.Property) error {
 	query := `update properties set title = $1, description = $2, price = $3, type = $4, duration = $5, size = $6, city = $7, state = $8, bedroom = $9, bathroom = $10, images = $11, category_id = $12, updated_at = $13 
 	where id = $14 and user_id = $15`
 
-	_, err := m.DB.ExecContext(ctx, query, property.Title, property.Description, property.Price,property.Type, property.Duration, property.Size, property.City, property.State, property.Bedroom, property.Bathroom, property.Images, property.CategoryID, time.Now(), property.ID, property.UserID)
-	
-	if err != nil {		
+	_, err := m.DB.ExecContext(ctx, query, property.Title, property.Description, property.Price, property.Type, property.Duration, property.Size, property.City, property.State, property.Bedroom, property.Bathroom, property.Images, property.CategoryID, time.Now(), property.ID, property.UserID)
+
+	if err != nil {
 		return err
 	}
 
@@ -887,7 +887,154 @@ func (m *postgresDBRepo) UserUpdatePropertyStatus(id int, status string) error {
 	query := `update properties set status = $1, updated_at = $2 where id = $3`
 
 	_, err := m.DB.ExecContext(ctx, query, status, time.Now(), id)
-	if err != nil {		
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// InsertNewProperty inserts a new property for a user
+func (m *postgresDBRepo) InsertNewFavourite(favourite models.Favourite) error {
+	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `insert into favourites (property_id, user_id, created_at, updated_at) values ($1, $2, $3, $4)`
+
+	_, err := m.DB.ExecContext(context, query, favourite.PropertyID, favourite.UserID, time.Now(), time.Now())
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Get favourites for a property
+func (m *postgresDBRepo) PropertyFavourites(propertyID int) ([]models.Favourite, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	var favourites []models.Favourite
+
+	query := `select f.id, f.property_id, f.user_id, f.created_at, f.updated_at,
+	u.id, p.id, p.title, p.price, p.images, p.category_id
+	from favourites f
+	left join users u on (f.user_id = u.id)
+	left join properties p on (f.property_id = p.id)
+	where f.property_id = $1
+	order by f.created_at desc`
+
+	rows, err := m.DB.QueryContext(ctx, query, propertyID)
+	if err != nil {
+		return favourites, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var favourite models.Favourite
+		var imagesArrayString string
+
+		err := rows.Scan(
+			&favourite.ID,
+			&favourite.PropertyID,
+			&favourite.UserID,
+			&favourite.CreatedAt,
+			&favourite.UpdatedAt,
+			&favourite.User.ID,
+			&favourite.Property.ID,
+			&favourite.Property.Title,
+			&favourite.Property.Price,
+			&imagesArrayString,
+			&favourite.Property.CategoryID,
+		)
+
+		// Convert the array string to a string slice using the function
+		favourite.Property.Images = helpers.ConvertPostgresArrayToStringSlice(imagesArrayString)
+
+		if err != nil {
+			return favourites, err
+		}
+		favourites = append(favourites, favourite)
+	}
+
+	if err = rows.Err(); err != nil {
+		return favourites, err
+	}
+
+	return favourites, nil
+}
+
+// Get favourites for a user
+func (m *postgresDBRepo) GetUserFavourites(userID int) ([]models.Favourite, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	var favourites []models.Favourite
+
+	query := `select f.id, f.property_id, f.user_id, f.created_at, f.updated_at,
+	u.id, p.id, p.title, p.price, p.bedroom, p.bathroom, p.type, p.city, p.state, p.images, p.category_id
+	from favourites f
+	left join users u on (f.user_id = u.id)
+	left join properties p on (f.property_id = p.id)
+	where f.user_id = $1
+	order by f.created_at desc`
+
+	rows, err := m.DB.QueryContext(ctx, query, userID)
+	if err != nil {
+		return favourites, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var favourite models.Favourite
+		var imagesArrayString string
+
+		err := rows.Scan(
+			&favourite.ID,
+			&favourite.PropertyID,
+			&favourite.UserID,
+			&favourite.CreatedAt,
+			&favourite.UpdatedAt,
+			&favourite.User.ID,
+			&favourite.Property.ID,
+			&favourite.Property.Title,
+			&favourite.Property.Price,
+			&favourite.Property.Bedroom,
+			&favourite.Property.Bathroom,
+			&favourite.Property.Type,
+			&favourite.Property.City,
+			&favourite.Property.State,
+			&imagesArrayString,
+			&favourite.Property.CategoryID,
+		)
+
+		// Convert the array string to a string slice using the function
+		favourite.Property.Images = helpers.ConvertPostgresArrayToStringSlice(imagesArrayString)
+
+		if err != nil {
+			return favourites, err
+		}
+		favourites = append(favourites, favourite)
+	}
+
+	if err = rows.Err(); err != nil {
+		return favourites, err
+	}
+
+	return favourites, nil
+}
+
+// InsertNewProperty inserts a new property for a user
+func (m *postgresDBRepo) DeleteFavourite(favourite models.Favourite) error {
+	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `delete from favourites where property_id = $1 and user_id = $2`
+
+	_, err := m.DB.ExecContext(context, query, favourite.PropertyID, favourite.UserID)
+
+	if err != nil {
 		return err
 	}
 

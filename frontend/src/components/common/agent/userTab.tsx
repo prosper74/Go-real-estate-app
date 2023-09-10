@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from "react";
-import Link from "next/link";
 import Router from "next/router";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,16 +7,16 @@ import Cookies from "js-cookie";
 import crypto from "crypto";
 import { setUser } from "@src/store/reducers/userReducer";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
-import AgentSidebar from "./agentSidebar";
-import PropertyCard from "../properties/propertyCard";
+import MainProfile from "./mainProfile";
 import { PageLoader } from "../helpers/loader";
 import ResendEmailVerificationButton from "../Buttons/emailVerificationButton";
 import VerificationModal from "../accountVerification";
 import { SingleProperty, UserProps } from "../helpers/interfaces";
+import UserFavourites from "./userFavourites";
 
 interface IProps {
-  user: UserProps;
-  ads: SingleProperty;
+  user?: UserProps;
+  ads?: SingleProperty;
 }
 
 const generateSHA1 = (data: any) => {
@@ -39,15 +38,15 @@ const UserTab: FC<IProps> = () => {
   const user = useSelector((state: IProps) => state.user);
   const defaultUser = { username: "Guest" };
   const [fetchedUser, setFetchedUser] = useState<UserProps>();
-  const dispatch = useDispatch();  
+  const dispatch = useDispatch();
   const [isVerification, setIsVerification] = useState(false);
   const [verificationModalOpen, setVerificationModalOpen] = useState(false);
-  const [ads, setAds] = useState<SingleProperty[]>([]);  
+  const [ads, setAds] = useState<SingleProperty[]>([]);
 
   const handleDelete = (propertyID: number, images: string[]) => {
     axios
       .get(
-        `${process.env.NEXT_PUBLIC_REST_API}/user/properties?user_id=${user.userId}&property_id=${propertyID}&jwt=${user.jwt}`
+        `${process.env.NEXT_PUBLIC_REST_API}/user/properties?user_id=${user?.userId}&property_id=${propertyID}&jwt=${user?.jwt}`
       )
       .then((res) => {
         if (res.data.error) {
@@ -113,7 +112,7 @@ const UserTab: FC<IProps> = () => {
   const handleStatusUpdate = (propertyID: number, propertyStatus: string) => {
     axios
       .get(
-        `${process.env.NEXT_PUBLIC_REST_API}/user/update-property-status?user_id=${user.userId}&property_id=${propertyID}&property_status=${propertyStatus}&jwt=${user.jwt}`
+        `${process.env.NEXT_PUBLIC_REST_API}/user/update-property-status?user_id=${user?.userId}&property_id=${propertyID}&property_status=${propertyStatus}&jwt=${user?.jwt}`
       )
       .then((res) => {
         if (res.data.error) {
@@ -149,10 +148,10 @@ const UserTab: FC<IProps> = () => {
   };
 
   useEffect(() => {
-    if (user.userId) {
+    if (user?.userId) {
       axios
         .get(
-          `${process.env.NEXT_PUBLIC_REST_API}/auth/dashboard?id=${user.userId}`
+          `${process.env.NEXT_PUBLIC_REST_API}/auth/dashboard?id=${user?.userId}`
         )
         .then((res) => {
           if (res.data.error) {
@@ -260,93 +259,15 @@ const UserTab: FC<IProps> = () => {
                   "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-purple-400 ring-white ring-opacity-60"
                 )}
               >
-                <div className="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 sm:gap-4">
-                  {/* agent sidebar */}
-                  <div className="mb-6 sm:mb-0">
-                    <div className="flex justify-between mb-4">
-                      <button
-                        className={`inline-flex justify-center rounded-md border border-transparent bg-purple-100 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2`}
-                      >
-                        Edit Profile
-                      </button>
-
-                      {fetchedUser?.Verification === "verified" ? (
-                        <Link href="/create-ad">
-                          <button className="inline-flex justify-center rounded-md border border-transparent bg-purple-100 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2">
-                            Create Ad
-                          </button>
-                        </Link>
-                      ) : (
-                        <button
-                          disabled={isVerification}
-                          onClick={() =>
-                            setVerificationModalOpen(!verificationModalOpen)
-                          }
-                          className="inline-flex justify-center rounded-md border border-transparent bg-purple-100 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-50"
-                        >
-                          Verify Account
-                        </button>
-                      )}
-                    </div>
-
-                    <AgentSidebar
-                      agent={fetchedUser}
-                      totalCount={!ads ? 0 : ads.length}
-                    />
-                  </div>
-
-                  {!ads ? (
-                    <div className="flex flex-col col-span-2 justify-center items-center text-center">
-                      <h3 className="font-medium text-lg mb-6">
-                        {fetchedUser?.Verification === "verified"
-                          ? "You do not have any ads. Create one"
-                          : isVerification
-                          ? "You have submitted your verification documents and they are under review. You will be able to create ad once your account is verified"
-                          : "Please verify your account, then create new ads"}
-                      </h3>
-                      {fetchedUser?.Verification === "verified" ? (
-                        <Link
-                          href="/create-ad"
-                          className="inline-flex justify-center rounded-md border border-transparent bg-purple-300 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2"
-                        >
-                          Create Ad
-                        </Link>
-                      ) : (
-                        <>
-                          {isVerification ? (
-                            <Link
-                              href="/faq"
-                              className="inline-flex justify-center rounded-md border border-transparent bg-purple-300 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-50"
-                            >
-                              Contact Support
-                            </Link>
-                          ) : (
-                            <button
-                              onClick={() =>
-                                setVerificationModalOpen(!verificationModalOpen)
-                              }
-                              className="inline-flex justify-center rounded-md border border-transparent bg-purple-300 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-50"
-                            >
-                              Verify Account
-                            </button>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="grid gap-4 col-span-2 sm:col-span-1 lg:col-span-2 2xl:col-span-3 mb-8">
-                      {ads.map((property: SingleProperty) => (
-                        <span key={property.ID}>
-                          <PropertyCard
-                            property={property}
-                            handleDelete={handleDelete}
-                            handleStatusUpdate={handleStatusUpdate}
-                          />
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                <MainProfile
+                  fetchedUser={fetchedUser}
+                  ads={ads}
+                  isVerification={isVerification}
+                  verificationModalOpen={verificationModalOpen}
+                  setVerificationModalOpen={setVerificationModalOpen}
+                  handleDelete={handleDelete}
+                  handleStatusUpdate={handleStatusUpdate}
+                />
               </Tab.Panel>
               <Tab.Panel
                 className={classNames(
@@ -362,7 +283,7 @@ const UserTab: FC<IProps> = () => {
                   "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-purple-400 ring-white ring-opacity-60"
                 )}
               >
-                Favourites
+                <UserFavourites />
               </Tab.Panel>
             </Tab.Panels>
           </Tab.Group>

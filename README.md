@@ -2,43 +2,21 @@
 
 This is a fullstack real estate app, built with Go version 1.19 and NextJs
 
-https://github.com/prosper74/Go-real-estate-app/assets/67523206/9ec3fdaf-4cea-49ff-ab9e-07dcb87e04cd
-
-This project is a simple real estate app project which aims to connect people with properties directly. It has some key features like;
+This project is a simple hotel booking and reservation project with key features like;
 
 - Authentication
-- Agents create, update and delete their properties
-- Agents verification
-- admin dashboard (Coming Soon)
+- admin dashboard
 - Create and manage properties
 - Showcase the properties
 - Notifification system
 
-### Database used
-Postgres
-
 ### Packages used
 
-#### Go
-- <a href="https://github.com/alexedwards/scs" target="_blank">Alex Edwards SCS</a> - For managing sessions
-- <a href="https://github.com/go-chi/chi" target="_blank">Chi router</a> - For create routes
-- <a href="https://github.com/justinas/nosurf" target="_blank">Justinas nosurf</a> - Cross-Site Request Forgery
-- <a href="https://github.com/jackc/pgx" target="_blank">JackC PGX</a> - PGX is a pure Go driver and toolkit for PostgreSQL.
-- <a href="https://github.com/sendinblue/APIv3-go-library" target="_blank">SendinBlue</a> Used for sending mails.
-- <a href="https://github.com/golang-jwt/jwt" target="_blank">Go JWT</a> - For JWT authentications.
-
-#### Next JS
-- <a href="https://www.typescriptlang.org" target="_blank">TypeScript</a> - For type checking
-- <a href="https://react-redux.js.org" target="_blank">React Redux</a> - For state management
-- <a href="https://tailwindcss.com/docs/installation" target="_blank">Tailwind CSS</a> - For styling
-- <a href="https://headlessui.com" target="_blank">HeadlessUI</a> - Tailwind CSS Plugin
-- <a href="https://www.flowbite-react.com" target="_blank">Tailwind CSS</a> - Tailwind CSS Plugin
-- <a href="https://lexical.dev/docs/getting-started/react#video-tutorials" target="_blank">React Lexical</a> - Rich text editor
-- <a href="https://react-hook-form.com" target="_blank">React hook form and zod</a> - Forms and form validations
-- <a href="https://www.npmjs.com/package/cloudinary-react" target="_blank">Cloudinary React</a> - To store images
-- <a href="https://www.framer.com/motion/?utm_source=motion-readme-docs" target="_blank">Framer Motion</a> - For animations
-- <a href="https://www.npmjs.com/package/react-showdown" target="_blank">React Showdown</a> - For reading markdown
-- <a href="https://swiperjs.com/react" target="_blank">Swiper js</a> - For sliders
+- [Alex Edwards SCS](https://github.com/alexedwards/scs/v2) package for managing sessions
+- [Chi router](https://github.com/go-chi/chi/v5)
+- [Justinas nosurf](https://github.com/justinas/nosurf)
+- [JackC PGX](https://github.com/jackc/pgx/v5) pgx is a pure Go driver and toolkit for PostgreSQL.
+- [Go Simple Mail](https://github.com/xhit/go-simple-mail) Used for sending mails.
 
 ### Note:
 
@@ -56,13 +34,13 @@ Postgres
 
 ### Run the server
 
-- Manually: `go run cmd/web/main.go cmd/web/middleware.go cmd/web/routes.go cmd/web/sendMail.go`
-- Batch (Please use the linux method even on windows, as it works pretty well):  
+- Manual: `go run cmd/web/main.go cmd/web/middleware.go cmd/web/routes.go cmd/web/sendMail.go`
+- Batch:  
 **On Windows** - create a `run.bat` file in the root directory of the project and paste the below code
 
   ```
-  go build -o out cmd/web/*.go
-  ./out.exe
+  go build -o bookings cmd/web/*.go
+  ./bookings.exe
   ```
 
   Then run `run.bat` in the terminal
@@ -72,11 +50,17 @@ Postgres
   ```
   #!/bin/bash
 
-  go build -o out cmd/web/*.go
-  ./out <pass your flag dependencies here>
+  go build -o booking cmd/web/*.go
+  ./bookings
   ```
 
   Run `chmod +x run.sh` then run `./run.sh` in the terminal
+
+### The test file
+
+- To output test in hmtl format run `go test -coverprofile=coverage.out && go tool cover -html=coverage.out`
+- To know the percentage coverage run `go test -cover`
+- Run test for the entire project `go test -v ./...`
 
 ### Soda migration
 
