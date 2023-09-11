@@ -58,6 +58,7 @@ func routes(app *config.AppConfig) http.Handler {
 	// user dashboard
 	mux.Get("/auth/dashboard", handlers.Repo.UserDashboard)
 	mux.Post("/user/update-image-and-phone", handlers.Repo.UpdateUserImageAndPhone)
+	mux.Post("/user/update-image", handlers.Repo.UserUpdateImage)
 	mux.Post("/user/verification", handlers.Repo.InsertAccountVerification)
 	mux.Post("/user/create-ad", handlers.Repo.CreateNewProperty)
 	mux.Get("/user/properties", handlers.Repo.UserDeleteProperty)
@@ -65,7 +66,7 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Post("/user/update-ad", handlers.Repo.UserUpdateProperty)
 	mux.Post("/user/add-favourite", handlers.Repo.UserAddFavourite)
 	mux.Post("/user/remove-favourite", handlers.Repo.UserRemoveFavourite)
-	mux.Get("/user/favourites", handlers.Repo.UserFavourites)
+	mux.Get("/user/favourites", handlers.Repo.UserFavourites)	
 
 	mux.Route("/admin", func(mux chi.Router) {
 		// Use the Auth middleware

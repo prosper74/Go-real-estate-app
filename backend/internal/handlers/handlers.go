@@ -626,6 +626,68 @@ func (m *Repository) UpdateUserImageAndPhone(w http.ResponseWriter, r *http.Requ
 	w.Write(resp)
 }
 
+// User updates profile photo
+func (m *Repository) UserUpdateImage(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		m.App.Session.Put(r.Context(), "error", "Can't parse form")
+		return
+	}
+
+	user := models.User{}
+	data := make(map[string]interface{})
+
+	user.ID, _ = strconv.Atoi(r.PostFormValue("user_id"))
+	user.Token = r.PostFormValue("jwt")
+	user.Image = r.PostFormValue("image")
+
+	// Load the env file and get the JWT secret
+	err = godotenv.Load()
+	if err != nil {
+		log.Println("Error loading .env file")
+	}
+	jwtSecret := os.Getenv("JWTSECRET")
+
+	// Parse and verify the JWT token
+	token, err := jwt.Parse(user.Token, func(token *jwt.Token) (interface{}, error) {
+		return []byte(jwtSecret), nil
+	})
+	if err != nil {
+		http.Error(w, "Unable to parse token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Unable to parse token. Error: %s", err)
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	if token.Valid {
+		// Update the user's account status as verified
+		err = m.DB.UserUpdateImage(user)
+		if err != nil {
+			helpers.ServerError(w, err)
+			data["error"] = "Unable to update user's image and phone. Please contact support"
+			out, _ := json.MarshalIndent(data, "", "    ")
+			resp := []byte(out)
+			w.Write(resp)
+			return
+		}
+	} else {
+		http.Error(w, "Invalid token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Invalid token, please contact support. Error: %s", err)
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	data["message"] = "Successful"
+	data["user"] = user
+	out, _ := json.MarshalIndent(data, "", "    ")
+	resp := []byte(out)
+	w.Write(resp)
+}
+
 // InsertAccountVerification inserts new verification for user into the database
 func (m *Repository) InsertAccountVerification(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
