@@ -1,16 +1,10 @@
 "use client";
 
-import { FC, useCallback, useEffect, useState } from "react";
-import Cookies from "js-cookie";
-import Router from "next/router";
-import { Dialog } from "@headlessui/react";
+import { useCallback, useState } from "react";
 import axios from "axios";
 import crypto from "crypto";
 import { Tooltip } from "flowbite-react";
 import { HiTrash } from "react-icons/hi";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { useDispatch, useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
 // @ts-ignore
@@ -18,21 +12,15 @@ import { Image } from "cloudinary-react";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import { setUser } from "@src/store/reducers/userReducer";
 import {
-  ForwardArrow,
-  CloseIcon,
-} from "@src/components/common/helpers/svgIcons";
-import {
   IImageUpload,
   UserProps,
 } from "@src/components/common/helpers/interfaces";
 import { Button, Modal } from "flowbite-react";
-import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 interface IProps {
   user?: UserProps;
   modalOpen: boolean;
   setModalOpen: (open: boolean) => void;
-  handleImageUpdate?: any;
 }
 
 const generateSHA1 = (data: any) => {
@@ -51,11 +39,8 @@ export default function StatusImageModal({
   setModalOpen,
 }: IProps) {
   const user = useSelector((state: IProps) => state.user);
-  const [fetchedUser, setFetchedUser] = useState<UserProps>();
   const dispatch = useDispatch();
   const [uploadedImage, setUploadedImage] = useState<any>();
-  const [loading, setLoading] = useState(false);
-  const defaultUser = { username: "Guest" };
 
   const onDrop = useCallback(async (acceptedFiles: any) => {
     const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/upload`;
@@ -96,8 +81,6 @@ export default function StatusImageModal({
   const uploadedImageURL = uploadedImage && uploadedImage.public_id;
 
   const onSubmit = () => {
-    setLoading(true);
-
     axios
       .post(
         `${process.env.NEXT_PUBLIC_REST_API}/user/update-image`,
@@ -114,8 +97,6 @@ export default function StatusImageModal({
         }
       )
       .then((res) => {
-        setLoading(false);
-
         if (res.data.error) {
           dispatch(
             setSnackbar({
@@ -141,7 +122,6 @@ export default function StatusImageModal({
         }
       })
       .catch(() => {
-        setLoading(false);
         dispatch(
           setSnackbar({
             status: "error",
