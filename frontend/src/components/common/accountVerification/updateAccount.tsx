@@ -19,7 +19,7 @@ import {
   ForwardArrow,
   CloseIcon,
 } from "@src/components/common/helpers/svgIcons";
-import { IImageUpload, UserProps } from "../helpers/interfaces";
+import { IImageUpload, UserProps } from "@src/components/common/helpers/interfaces";
 
 interface IProps {
   user?: UserProps;
@@ -100,7 +100,7 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
     resolver: zodResolver(schema),
   });
 
-  const uploadedImageURL = uploadedImage && uploadedImage.url;
+  const uploadedImageURL = uploadedImage && uploadedImage.public_id;
 
   const onSubmit = handleSubmit((data) => {
     setLoading(true);

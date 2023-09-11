@@ -4,6 +4,7 @@ import { HiPencilAlt } from "react-icons/hi";
 import { timeSince } from "../helpers/dateFunction";
 import { VerifiedIcon } from "../helpers/svgIcons";
 import { UserProps } from "../helpers/interfaces";
+import StatusImageModal from "../modals/updateImageModal";
 
 interface IProps {
   agent?: UserProps;
@@ -16,7 +17,8 @@ const AgentSidebar: FC<IProps> = ({
   totalCount,
   isDashboard = false,
 }) => {
-  const [updateImageModal, setUpdateImageModal] = useState(false)
+  const [updateImageModal, setUpdateImageModal] = useState(false);
+
   return (
     <div className="sticky top-20">
       <div className="py-2 px-4 rounded-xl shadow-md bg-white flex flex-col sm:flex-row lg:flex-col items-center justify-evenly gap-1 sm:gap-12 lg:gap-1">
@@ -69,6 +71,8 @@ const AgentSidebar: FC<IProps> = ({
           <p className="my-2">Active Ads: {totalCount}</p>
         </div>
       </div>
+
+      <StatusImageModal modalOpen={updateImageModal} setModalOpen={setUpdateImageModal} />
     </div>
   );
 };
