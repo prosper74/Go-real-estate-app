@@ -51,7 +51,7 @@ const MainProfile: FC<IProps> = ({
           )}
         </div>
 
-        <AgentSidebar agent={fetchedUser} totalCount={!ads ? 0 : ads.length} />
+        <AgentSidebar agent={fetchedUser} totalCount={!ads ? 0 : ads.length} isDashboard={true} />
       </div>
 
       {!ads ? (
