@@ -731,6 +731,24 @@ func (m *postgresDBRepo) UpdateUserImageAndPhone(user models.User) error {
 	return nil
 }
 
+// UserUpdateImage updates a user image in the database
+func (m *postgresDBRepo) UserUpdateImage(user models.User) error {
+	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `
+		update users set image = $1, updated_at = $2 where id = $3
+	`
+
+	_, err := m.DB.ExecContext(context, query, user.Image, time.Now(), user.ID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // Authenticate authenticates a user
 func (m *postgresDBRepo) Authenticate(email, testPassword string) (int, string, string, error) {
 	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
