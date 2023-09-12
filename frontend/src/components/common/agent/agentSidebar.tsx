@@ -22,7 +22,7 @@ const AgentSidebar: FC<IProps> = ({
 
   return (
     <div className="sticky top-20">
-      <div className="py-2 px-4 rounded-xl shadow-md bg-white flex flex-col sm:flex-row lg:flex-col items-center justify-evenly gap-1 sm:gap-12 lg:gap-1">
+      <div className="py-5 px-4 rounded-xl shadow-md bg-white flex flex-col sm:flex-row lg:flex-col items-center justify-evenly gap-1 sm:gap-12 lg:gap-1">
         <div className="relative">
           <Image
             cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}

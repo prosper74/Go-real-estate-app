@@ -3,7 +3,7 @@ import Link from "next/link";
 import Router from "next/router";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { Navbar, Dropdown, Avatar } from "flowbite-react";
+import { Navbar, Dropdown } from "flowbite-react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
@@ -12,6 +12,8 @@ import AuthButton from "../Buttons/authButton";
 import AuthPortal from "@src/components/auth";
 import { setUser } from "@src/store/reducers/userReducer";
 import { UserProps } from "../helpers/interfaces";
+// @ts-ignore
+import { Image as CloudinaryImage } from "cloudinary-react";
 
 interface IProps {
   user: UserProps;
@@ -89,8 +91,8 @@ export default function Header() {
         <Link href="/">
           <Image
             src="/logo.svg"
-            width={150}
-            height={40}
+            width={155}
+            height={45}
             className="mr-3 h-6 sm:h-9"
             alt="Logo"
           />
@@ -107,10 +109,16 @@ export default function Header() {
               arrowIcon={false}
               inline={true}
               label={
-                <Avatar
+                <CloudinaryImage
+                  cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
+                  publicId={
+                    user?.Image || fetchedUser?.Image || "/avatar_icon.webp"
+                  }
                   alt="User settings"
-                  img={user?.Image || fetchedUser?.Image || "/avatar_icon.webp"}
-                  rounded={true}
+                  width="40"
+                  height="40"
+                  crop="scale"
+                  className="rounded-full object-cover"
                 />
               }
             >

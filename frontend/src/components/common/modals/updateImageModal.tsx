@@ -125,7 +125,7 @@ export default function StatusImageModal({
         dispatch(
           setSnackbar({
             status: "error",
-            message: ` There was an error. Please contact support`,
+            message: ` Please log out and log back in. If error persist contact support`,
             open: true,
           })
         );

@@ -91,8 +91,6 @@ const UserFavourites: FC<IProps> = () => {
       });
   }, []);
 
-  console.log("favourites: ", favourites);
-
   return (
     <>
       {favourites === null ? (
