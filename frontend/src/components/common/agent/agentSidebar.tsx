@@ -9,13 +9,17 @@ import { Image } from "cloudinary-react";
 
 interface IProps {
   agent?: UserProps;
-  totalCount?: number;
+  totalAds?: number;
+  ActiveAds?: number;
+  InactiveAds?: number;
   isDashboard?: boolean;
 }
 
 const AgentSidebar: FC<IProps> = ({
   agent,
-  totalCount,
+  totalAds,
+  ActiveAds,
+  InactiveAds,
   isDashboard = false,
 }) => {
   const [updateImageModal, setUpdateImageModal] = useState(false);
@@ -70,7 +74,9 @@ const AgentSidebar: FC<IProps> = ({
               "Not verified"
             )}
           </p>
-          <p className="my-2">Active Ads: {totalCount}</p>
+          <p className="my-2">Active Ads: {ActiveAds || 0}</p>
+          <p className="my-2">Inactive Ads: {InactiveAds || 0}</p>
+          <p className="my-2">Total Ads: {totalAds || 0}</p>
         </div>
       </div>
 

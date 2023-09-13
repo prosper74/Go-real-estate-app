@@ -38,7 +38,7 @@ export default function AgentProperties({ properties }: IProps) {
         >
           {/* agent sidebar */}
           <motion.div variants={imageAnimate}>
-            <AgentSidebar agent={agent} totalCount={properties.length} />
+            <AgentSidebar agent={agent} totalAds={properties.length} />
           </motion.div>
 
           {/* Agent Properties  */}

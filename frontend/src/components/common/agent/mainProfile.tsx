@@ -21,8 +21,13 @@ const MainProfile: FC<IProps> = ({
   verificationModalOpen,
   setVerificationModalOpen,
   handleDelete,
-  handleStatusUpdate
+  handleStatusUpdate,
 }) => {
+  const ActiveAds = ads?.filter((ad) => ad.Status === "enabled");
+  const InactiveAds = ads?.filter(
+    (ad) => ad.Status === "disabled" || ad.Status === "pending"
+  );
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 sm:gap-4">
       {/* agent sidebar */}
@@ -51,7 +56,13 @@ const MainProfile: FC<IProps> = ({
           )}
         </div>
 
-        <AgentSidebar agent={fetchedUser} totalCount={!ads ? 0 : ads.length} isDashboard={true} />
+        <AgentSidebar
+          agent={fetchedUser}
+          ActiveAds={!ActiveAds ? 0 : ActiveAds?.length}
+          InactiveAds={!InactiveAds ? 0 : InactiveAds?.length}
+          totalAds={!ads ? 0 : ads.length}
+          isDashboard={true}
+        />
       </div>
 
       {!ads ? (
