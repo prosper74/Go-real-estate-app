@@ -1,11 +1,12 @@
 import { FC, useState } from "react";
+import Image from "next/image";
 import { HiPencilAlt } from "react-icons/hi";
 import { timeSince } from "../helpers/dateFunction";
 import { VerifiedIcon } from "../helpers/svgIcons";
 import { UserProps } from "../helpers/interfaces";
 import StatusImageModal from "../modals/updateImageModal";
 // @ts-ignore
-import { Image } from "cloudinary-react";
+import { Image as CloudinaryImage } from "cloudinary-react";
 
 interface IProps {
   agent?: UserProps;
@@ -28,14 +29,25 @@ const AgentSidebar: FC<IProps> = ({
     <div className="sticky top-20">
       <div className="py-5 px-4 rounded-xl shadow-md bg-white flex flex-col sm:flex-row lg:flex-col items-center justify-evenly gap-1 sm:gap-12 lg:gap-1">
         <div className="relative">
-          <Image
-            cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
-            publicId={agent?.Image ? agent?.Image : "/logoIcon.svg"}
-            width="224"
-            height="224"
-            crop="scale"
-            className="rounded-full object-cover shadow-lg"
-          />
+          {agent?.Image ? (
+            <CloudinaryImage
+              cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
+              publicId={agent?.Image}
+              alt="user image"
+              width="224"
+              height="224"
+              crop="scale"
+              className="rounded-full object-cover shadow-lg"
+            />
+          ) : (
+            <Image
+              src={"/logoIcon.svg"}
+              alt="logo"
+              width={224}
+              height={224}
+              className="rounded-full object-cover shadow-lg"
+            />
+          )}
 
           {isDashboard && (
             <button
