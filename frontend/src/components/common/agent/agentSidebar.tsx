@@ -75,8 +75,12 @@ const AgentSidebar: FC<IProps> = ({
             )}
           </p>
           <p className="my-2">Active Ads: {ActiveAds || 0}</p>
-          <p className="my-2">Inactive Ads: {InactiveAds || 0}</p>
-          <p className="my-2">Total Ads: {totalAds || 0}</p>
+          {isDashboard && (
+            <>
+              <p className="my-2">Inactive Ads: {InactiveAds || 0}</p>
+              <p className="my-2">Total Ads: {totalAds || 0}</p>
+            </>
+          )}
         </div>
       </div>
 

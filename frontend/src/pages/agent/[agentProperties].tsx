@@ -3,7 +3,10 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import PropertyCard from "@src/components/common/properties/propertyCard";
 import AgentSidebar from "@src/components/common/agent/agentSidebar";
-import { SingleProperty, UserProps } from "@src/components/common/helpers/interfaces";
+import {
+  SingleProperty,
+  UserProps,
+} from "@src/components/common/helpers/interfaces";
 import {
   imageAnimate,
   imageAnimateRight,
@@ -18,6 +21,10 @@ export default function AgentProperties({ properties }: IProps) {
   //@ts-ignore
   const agent = properties[0].User;
   const pageTitle = `Agent | ${agent.FirstName} ${agent.LastName}`;
+  const ActiveAds = properties?.filter((property: SingleProperty) => property.Status === "enabled");
+  const InactiveAds = properties?.filter(
+    (property: SingleProperty) => property.Status === "disabled" || property.Status === "pending"
+  );
   return (
     <>
       <Head>
@@ -38,7 +45,12 @@ export default function AgentProperties({ properties }: IProps) {
         >
           {/* agent sidebar */}
           <motion.div variants={imageAnimate}>
-            <AgentSidebar agent={agent} totalAds={properties.length} />
+            <AgentSidebar
+              agent={agent}
+              ActiveAds={!ActiveAds ? 0 : ActiveAds?.length}
+              InactiveAds={!InactiveAds ? 0 : InactiveAds?.length}
+              totalAds={properties.length}
+            />
           </motion.div>
 
           {/* Agent Properties  */}
@@ -48,10 +60,7 @@ export default function AgentProperties({ properties }: IProps) {
           >
             <div className="grid gap-6">
               {properties.map((property: SingleProperty) => (
-                <PropertyCard
-                  key={property.ID}
-                  property={property}
-                />
+                <PropertyCard key={property.ID} property={property} />
               ))}
             </div>
           </motion.div>
