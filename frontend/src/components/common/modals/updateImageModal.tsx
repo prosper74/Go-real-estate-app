@@ -34,13 +34,14 @@ const generateSignature = (publicId: string, apiSecret: string | undefined) => {
   return `public_id=${publicId}&timestamp=${timestamp}${apiSecret}`;
 };
 
-export default function StatusImageModal({
-  modalOpen,
-  setModalOpen,
-}: IProps) {
+export default function StatusImageModal({ modalOpen, setModalOpen }: IProps) {
   const user = useSelector((state: IProps) => state.user);
   const dispatch = useDispatch();
   const [uploadedImage, setUploadedImage] = useState<any>();
+
+  function closeModal() {
+    setModalOpen(false);
+  }
 
   const onDrop = useCallback(async (acceptedFiles: any) => {
     const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/upload`;
@@ -132,6 +133,33 @@ export default function StatusImageModal({
       });
   };
 
+  const onCancel = () => {
+    if (uploadedImage) {
+      const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
+      const timestamp = new Date().getTime();
+      const apiKey = process.env.NEXT_PUBLIC_CLOUDINARY_KEY;
+      const apiSecret = process.env.NEXT_PUBLIC_CLOUDINARY_SECRET;
+      const signature = generateSHA1(
+        generateSignature(uploadedImage.public_id, apiSecret)
+      );
+      const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/destroy`;
+
+      axios
+        .post(url, {
+          public_id: uploadedImage.public_id,
+          signature: signature,
+          api_key: apiKey,
+          timestamp: timestamp,
+        })
+        .then(() => {
+          setUploadedImage("");
+        })
+        .catch(() => {});
+    }
+
+    closeModal();
+  };
+
   const handleDelete = (publicId: string) => {
     const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
     const timestamp = new Date().getTime();
@@ -168,10 +196,6 @@ export default function StatusImageModal({
         );
       });
   };
-
-  function closeModal() {
-    setModalOpen(false);
-  }
 
   return (
     <>
@@ -235,7 +259,7 @@ export default function StatusImageModal({
             </div>
 
             <div className="flex justify-center gap-4">
-              <Button color="gray" onClick={closeModal}>
+              <Button color="gray" onClick={onCancel}>
                 Cancel
               </Button>
 
