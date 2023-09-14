@@ -21,6 +21,7 @@ interface IProps {
   user?: UserProps;
   modalOpen: boolean;
   setModalOpen: (open: boolean) => void;
+  profilePhoto?: string;
 }
 
 const generateSHA1 = (data: any) => {
@@ -29,12 +30,19 @@ const generateSHA1 = (data: any) => {
   return hash.digest("hex");
 };
 
-const generateSignature = (publicId: string, apiSecret: string | undefined) => {
+const generateSignature = (
+  publicId: string | undefined,
+  apiSecret: string | undefined
+) => {
   const timestamp = new Date().getTime();
   return `public_id=${publicId}&timestamp=${timestamp}${apiSecret}`;
 };
 
-export default function StatusImageModal({ modalOpen, setModalOpen }: IProps) {
+export default function StatusImageModal({
+  modalOpen,
+  setModalOpen,
+  profilePhoto,
+}: IProps) {
   const user = useSelector((state: IProps) => state.user);
   const dispatch = useDispatch();
   const [uploadedImage, setUploadedImage] = useState<any>();
@@ -120,6 +128,26 @@ export default function StatusImageModal({ modalOpen, setModalOpen }: IProps) {
               open: true,
             })
           );
+
+          // delete the former user profilePhoto from cloudinary
+          const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
+          const timestamp = new Date().getTime();
+          const apiKey = process.env.NEXT_PUBLIC_CLOUDINARY_KEY;
+          const apiSecret = process.env.NEXT_PUBLIC_CLOUDINARY_SECRET;
+          const signature = generateSHA1(
+            generateSignature(profilePhoto, apiSecret)
+          );
+          const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/destroy`;
+
+          axios
+            .post(url, {
+              public_id: profilePhoto,
+              signature: signature,
+              api_key: apiKey,
+              timestamp: timestamp,
+            })
+            .then(() => {})
+            .catch(() => {});
         }
       })
       .catch(() => {

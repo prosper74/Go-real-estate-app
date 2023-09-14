@@ -99,6 +99,7 @@ const AgentSidebar: FC<IProps> = ({
       <StatusImageModal
         modalOpen={updateImageModal}
         setModalOpen={setUpdateImageModal}
+        profilePhoto={agent?.Image}
       />
     </div>
   );
