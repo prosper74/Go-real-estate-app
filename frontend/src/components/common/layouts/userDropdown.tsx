@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { UserProps } from '../helpers/interfaces';
 
 interface IProps {
-  user: UserProps;
+  user?: UserProps;
 }
 
 const UserDropdown: FC<IProps> = () => {
@@ -18,7 +18,7 @@ const UserDropdown: FC<IProps> = () => {
   const defaultUser = { username: 'Guest' };
   const [isOpen, setIsOpen] = useState(false);
 
-  const userImage = user.Image && user.Image;
+  const userImage = user?.Image && user?.Image;
 
   const handleLogout = async () => {
     setIsOpen(!isOpen);
@@ -34,7 +34,7 @@ const UserDropdown: FC<IProps> = () => {
           className="inline-flex justify-center w-full rounded-md border border-gray-100 shadow-sm px-3 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
         >
           <a className="flex items-center mr-2" href="#">
-            <span>{isMedium && user.userName.substr(0, 7)}</span>
+            <span>{isMedium && user?.userName.substr(0, 7)}</span>
             <img
               className={`ml-2 sm:ml-4 ${
                 userImage && 'w-10 h-10 object-cover rounded-full'

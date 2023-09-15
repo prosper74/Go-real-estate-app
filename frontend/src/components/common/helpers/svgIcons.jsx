@@ -260,12 +260,13 @@ export const UserAddIcon = ({ width, height }) => {
   );
 };
 
-export const UserIcon = ({ width, height, fill }) => {
+export const UserIcon = ({
+  dimensions = "w-10 h-10",
+  fill = "currentColor",
+}) => {
   return (
     <svg
-      width={width}
-      height={height}
-      className="mx-auto"
+      className={dimensions}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
     >
@@ -495,12 +496,13 @@ export const HomeIconFixed = () => {
   );
 };
 
-export const RentIcon = ({ width, height, fill }) => {
+export const RentIcon = ({
+  dimensions = "w-10 h-10",
+  fill = "currentColor",
+}) => {
   return (
     <svg
-      width={width}
-      height={height}
-      className="mx-auto"
+      className={dimensions}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
     >
@@ -525,12 +527,13 @@ export const RentIconFixed = () => {
   );
 };
 
-export const ShortletIcon = ({ width, height, fill }) => {
+export const ShortletIcon = ({
+  dimensions = "w-10 h-10",
+  fill = "currentColor",
+}) => {
   return (
     <svg
-      width={width}
-      height={height}
-      className="mx-auto"
+      className={dimensions}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
     >
@@ -568,12 +571,13 @@ export const HomeAltIcon = () => {
   );
 };
 
-export const SettingsIcon = ({ width, height, fill }) => {
+export const SettingsIcon = ({
+  dimensions = "w-10 h-10",
+  fill = "currentColor",
+}) => {
   return (
     <svg
-      width={width}
-      height={height}
-      className="mx-auto"
+      className={dimensions}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
     >
@@ -711,8 +715,8 @@ export const AppleIcon = () => {
 
 export const FavouriteIcon = ({
   dimensions = "w-6 h-6",
-  fill="#9932cc",
-  outline="none"
+  fill = "#9932cc",
+  outline = "none",
 }) => {
   return (
     <svg
@@ -721,7 +725,12 @@ export const FavouriteIcon = ({
       viewBox="0 0 16 16"
       id="Heart"
     >
-      <path fill={fill} stroke={outline} d="M5.047 2.506c-2.114 0-3.533 1.711-3.533 3.824 0 2.398 3.35 5.263 6.22 7.176 2.871-1.913 6.182-4.824 6.221-7.176.035-2.113-1.333-3.824-3.447-3.824-.902 0-1.817.477-2.774 1.433-.957-.956-1.785-1.433-2.687-1.433z" className="colorStroke000000 svgStroke" />
+      <path
+        fill={fill}
+        stroke={outline}
+        d="M5.047 2.506c-2.114 0-3.533 1.711-3.533 3.824 0 2.398 3.35 5.263 6.22 7.176 2.871-1.913 6.182-4.824 6.221-7.176.035-2.113-1.333-3.824-3.447-3.824-.902 0-1.817.477-2.774 1.433-.957-.956-1.785-1.433-2.687-1.433z"
+        className="colorStroke000000 svgStroke"
+      />
     </svg>
   );
 };
