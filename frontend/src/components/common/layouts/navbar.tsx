@@ -163,7 +163,7 @@ export default function Header() {
             ))}
           </ul>
         </Navbar.Collapse>
-      </Navbar>
+      </Navbar>     
 
       {/* Auth Modal Popup */}
       <AuthPortal isOpen={isOpen} setIsOpen={setIsOpen} />
