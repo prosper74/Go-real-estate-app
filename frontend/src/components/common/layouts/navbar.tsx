@@ -36,63 +36,67 @@ const Navbar: FC<IProps> = () => {
   });
 
   return (
-    <div className="container text-center mx-auto">
+    <>
       {/* Desktop Menu */}
-      <section className="shadow-lg fixed top-0 inset-x-0 w-full text-gray-700 font-heading font-medium bg-gray-50 bg-opacity-100 z-[10000]">
-        <nav className="flex justify-between px-4 md:px-2 xl:px-32 py-2">
-          <div className="flex w-full items-center">
-            <Link href="/">
-              <Image className="h-9" src="/logo.svg" alt="Safe Haven Logo" />
-            </Link>
-            <ul className="hidden md:flex px-4 ml-24 md:ml-10 xl:ml-32">
-              <li className="mr-16">
-                <Link href="/buy">
-                  <button
-                    className={`text-base text-gray-500 hover:text-purple-500 uppercase ${
-                      selectedNav === "buy" ? "text-purple-500" : ""
-                    }`}
-                  >
-                    Buy
-                  </button>
-                </Link>
-              </li>
-              <li className="mr-16">
-                <Link href="/rent">
-                  <button
-                    className={`text-base text-gray-500 hover:text-purple-500 uppercase ${
-                      selectedNav === "rent" ? "text-purple-500" : ""
-                    }`}
-                  >
-                    Rent
-                  </button>
-                </Link>
-              </li>
-              <li className="mr-16">
-                <Link href="/shortlet">
-                  <button
-                    className={`text-base text-gray-500 hover:text-purple-500 uppercase ${
-                      selectedNav === "shortlet" ? "text-purple-500" : ""
-                    }`}
-                  >
-                    Shortlet
-                  </button>
-                </Link>
-              </li>
-            </ul>
+      <section className="shadow-lg fixed w-full z-20 top-0 left-0 border-b border-gray-200 bg-[#fdeaff5d] !backdrop-blur-[12px] sm:!px-10 lg:!px-32">
+        <nav className="flex w-full items-center justify-between">
+          <Link href="/">
+            <Image
+              src="/logo.svg"
+              alt="Safe Haven Logo"
+              width={155}
+              height={45}
+              className="mr-3 h-6 sm:h-9"
+            />
+          </Link>
+          <ul className="hidden md:flex px-4 ml-24 md:ml-10 xl:ml-32">
+            <li className="mr-16">
+              <Link href="/buy">
+                <button
+                  className={`text-base text-gray-500 hover:text-purple-500 uppercase ${
+                    selectedNav === "buy" ? "text-purple-500" : ""
+                  }`}
+                >
+                  Buy
+                </button>
+              </Link>
+            </li>
+            <li className="mr-16">
+              <Link href="/rent">
+                <button
+                  className={`text-base text-gray-500 hover:text-purple-500 uppercase ${
+                    selectedNav === "rent" ? "text-purple-500" : ""
+                  }`}
+                >
+                  Rent
+                </button>
+              </Link>
+            </li>
+            <li className="mr-16">
+              <Link href="/shortlet">
+                <button
+                  className={`text-base text-gray-500 hover:text-purple-500 uppercase ${
+                    selectedNav === "shortlet" ? "text-purple-500" : ""
+                  }`}
+                >
+                  Shortlet
+                </button>
+              </Link>
+            </li>
+          </ul>
 
-            {/* User buttons  */}
-            {user.jwt && user.onboarding ? (
-              <div className="flex items-center ml-auto">
-                <UserDropdown />
-              </div>
-            ) : (
-              <AuthButton
-                isOpen={isOpen}
-                setIsOpen={setIsOpen}
-                buttonText="Login"
-              />
-            )}
-          </div>
+          {/* User buttons  */}
+          {user.jwt && user.onboarding ? (
+            <div className="flex items-center ml-auto">
+              <UserDropdown />
+            </div>
+          ) : (
+            <AuthButton
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              buttonText="Login"
+            />
+          )}
         </nav>
       </section>
       {/* End of Desktop menu */}
@@ -141,22 +145,8 @@ const Navbar: FC<IProps> = () => {
 
       {/* Auth Modal Popup */}
       <AuthPortal isOpen={isOpen} setIsOpen={setIsOpen} />
-    </div>
+    </>
   );
 };
 
 export default Navbar;
-
-{
-  /* <CloudinaryImage
-                  cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
-                  publicId={
-                    user?.Image || fetchedUser?.Image || "/avatar_icon.webp"
-                  }
-                  alt="User settings"
-                  width="40"
-                  height="40"
-                  crop="scale"
-                  className="rounded-full object-cover"
-                /> */
-}
