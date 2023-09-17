@@ -477,6 +477,7 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 	// Allways renew the token in seesion for login or logout
 	_ = m.App.Session.RenewToken(r.Context())
 
+	// user := models.User{}
 	data := make(map[string]interface{})
 
 	err := r.ParseForm()
@@ -492,7 +493,7 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 	email := r.Form.Get("email")
 	password := r.Form.Get("password")
 
-	id, firstName, _, err := m.DB.Authenticate(email, password)
+	user, err := m.DB.Authenticate(email, password)
 	if err != nil {
 		log.Println(err)
 
@@ -504,17 +505,15 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Generate jwt if the user needs to make request to the server
-	jwt, err := helpers.GenerateJWTToken(id)
+	user.Token, err = helpers.GenerateJWTToken(user.ID)
 	if err != nil {
 		helpers.ServerError(w, err)
 		return
 	}
 
-	m.App.Session.Put(r.Context(), "user_id", id)
+	m.App.Session.Put(r.Context(), "user_id", user.ID)
 	data["message"] = "Login successful"
-	data["user"] = id
-	data["first_name"] = firstName
-	data["jwt"] = jwt
+	data["user"] = user
 	out, _ := json.MarshalIndent(data, "", "    ")
 	resp := []byte(out)
 	w.Write(resp)
