@@ -39,7 +39,7 @@ const Navbar: FC<IProps> = () => {
     <>
       {/* Desktop Menu */}
       <section className="shadow-lg fixed w-full z-20 top-0 left-0 border-b border-gray-200 bg-[#fdeaff5d] !backdrop-blur-[12px] sm:!px-10 lg:!px-32">
-        <nav className="flex w-full items-center justify-between">
+        <nav className={`flex w-full items-center justify-between ${!user.onboarding && 'py-3'}`}>
           <Link href="/">
             <Image
               src="/logo.svg"

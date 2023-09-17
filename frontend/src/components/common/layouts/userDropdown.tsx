@@ -1,11 +1,15 @@
 // index.tsx
-import React, { FC, Fragment, useState } from 'react';
-import { Menu, Transition } from '@headlessui/react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from '@src/store/reducers/userReducer';
-import { useIsMedium } from '@src/components/common/hooks/mediaQuery';
-import Link from 'next/link';
-import { UserProps } from '../helpers/interfaces';
+import React, { FC, Fragment, useState } from "react";
+import Link from "next/link";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { Menu, Transition } from "@headlessui/react";
+import { useDispatch, useSelector } from "react-redux";
+// @ts-ignore 
+import { Image } from "cloudinary-react";
+import { setUser } from "@src/store/reducers/userReducer";
+import { useIsMedium } from "@src/components/common/hooks/mediaQuery";
+import { UserProps } from "../helpers/interfaces";
 
 interface IProps {
   user?: UserProps;
@@ -15,20 +19,27 @@ const UserDropdown: FC<IProps> = () => {
   const user = useSelector((state: IProps) => state.user);
   const isMedium = useIsMedium();
   const dispatch = useDispatch();
-  const defaultUser = { username: 'Guest' };
+  const defaultUser = { username: "Guest" };
   const [isOpen, setIsOpen] = useState(false);
 
   const userImage = user?.Image && user?.Image;
 
   const handleLogout = async () => {
     setIsOpen(!isOpen);
-    typeof window !== 'undefined' && window.localStorage.removeItem('user');
+    typeof window !== "undefined" && Cookies.remove("user");
     dispatch(setUser(defaultUser));
+
+    axios
+      .get(`${process.env.NEXT_PUBLIC_REST_API}/user/logout`)
+      .then()
+      .catch((error) => console.error(error));
   };
 
   function handleModal() {
     setIsOpen(!isOpen);
   }
+
+  console.log(user);
 
   return (
     <Menu as="div" className="relative inline-block text-left z-1000">
@@ -39,13 +50,24 @@ const UserDropdown: FC<IProps> = () => {
         >
           <button className="flex items-center mr-2">
             <span>{isMedium && user?.userName.substring(0, 7)}</span>
-            <img
-              className={`ml-2 sm:ml-4 ${
-                userImage && 'w-10 h-10 object-cover rounded-full'
-              }`}
-              src={userImage ? userImage : '/assets/images/avatar-online.png'}
-              alt="user image"
-            />
+            {user?.Image ? (
+              <Image
+                cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
+                publicId={user?.Image}
+                alt="User settings"
+                width="40"
+                height="40"
+                crop="scale"
+                className="ml-2 sm:ml-4 w-10 h-10 object-cover rounded-full"
+              />
+            ) : (
+              <img
+                className="ml-2 sm:ml-4 w-10 h-10 object-cover rounded-full"
+                src={userImage ? userImage : "/assets/images/avatar-online.png"}
+                alt="user image"
+              />
+            )}
+
             <img
               className="ml-4"
               src="/assets/images/arrow-down-gray.svg"
@@ -89,7 +111,7 @@ const UserDropdown: FC<IProps> = () => {
               </Link>
             </Menu.Item>
             <Menu.Item>
-              <Link href="#">
+              <Link href="/faq">
                 <button
                   onClick={() => setIsOpen(!isOpen)}
                   className={`text-gray-900 block px-4 py-2 w-full text-left text-sm rounded-md hover:bg-slate-100`}
@@ -100,7 +122,6 @@ const UserDropdown: FC<IProps> = () => {
             </Menu.Item>
             <Menu.Item>
               <button
-                type="submit"
                 className={`text-gray-900 block px-4 py-2 w-full text-left text-sm rounded-md hover:bg-slate-100`}
                 onClick={handleLogout}
               >
