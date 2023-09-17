@@ -48,8 +48,8 @@ const UserDropdown: FC<IProps> = () => {
           onClick={handleModal}
           className="inline-flex justify-center w-full rounded-md border border-gray-100 shadow-sm px-3 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
         >
-          <button className="flex items-center mr-2">
-            <span>{isMedium && user?.userName.substring(0, 7)}</span>
+          <div className="flex items-center mr-2">
+            <span>{isMedium && user?.FirstName.substring(0, 7)}</span>
             {user?.Image ? (
               <Image
                 cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
@@ -73,7 +73,7 @@ const UserDropdown: FC<IProps> = () => {
               src="/assets/images/arrow-down-gray.svg"
               alt="arrow down icon"
             />
-          </button>
+          </div>
         </Menu.Button>
       </div>
 

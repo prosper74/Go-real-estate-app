@@ -755,6 +755,7 @@ func (m *postgresDBRepo) Authenticate(email, testPassword string) (models.User, 
 	defer cancel()
 
 	var user models.User
+	var hashedPassword string
 
 	row := m.DB.QueryRowContext(context, "select id, first_name, last_name, email, image, password from users where email = $1", email)
 	err := row.Scan(
@@ -763,13 +764,13 @@ func (m *postgresDBRepo) Authenticate(email, testPassword string) (models.User, 
 		&user.LastName,
 		&user.Email,
 		&user.Image,
-		&user.Password,
+		&hashedPassword,
 	)
 	if err != nil {
 		return user, err
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(testPassword))
+	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(testPassword))
 	if err == bcrypt.ErrMismatchedHashAndPassword {
 		return user, errors.New("incorrect password")
 	} else if err != nil {

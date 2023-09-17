@@ -22,19 +22,19 @@ export default function AccountPage() {
 
   return (
     <>
-      {user.jwt && user.onboarding ? (
+      {user.onboarding ? (
         <>
           <Head>
-            <title>
-              My account | {user.userName}
-            </title>
+            <title>My account | {user.FirstName}</title>
             <link rel="icon" href="/favicon.png" />
             <meta content={`${user.FirstName} account page`} />
           </Head>
           <AccountPortal />
         </>
       ) : (
-        <PageLoader />
+        <>
+          <PageLoader />
+        </>
       )}
     </>
   );
