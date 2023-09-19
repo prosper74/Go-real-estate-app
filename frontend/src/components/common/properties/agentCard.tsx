@@ -2,6 +2,8 @@ import React, { FC, Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Link from "next/link";
 import Image from "next/image";
+// @ts-ignore
+import { Image as CloudinaryImage } from "cloudinary-react";
 import { UserProps } from "../helpers/interfaces";
 import { VerifiedIcon } from "../helpers/svgIcons";
 
@@ -78,13 +80,25 @@ const AgentCard: FC<IProps> = ({ agent }) => {
                   Agent Information
                 </Dialog.Title>
 
-                <Image
-                  src={agent.Image ? agent.Image : "/logo.svg"}
-                  alt="logo"
-                  width={120}
-                  height={120}
-                  className="w-24 h-24 mt-6 rounded-full object-cover"
-                />
+                {agent.Image ? (
+                  <CloudinaryImage
+                    cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
+                    publicId={agent.Image}
+                    alt="User settings"
+                    width="180"
+                    height="180"
+                    crop="scale"
+                    className="w-40 h-40 mt-6 rounded-full object-cover"
+                  />
+                ) : (
+                  <Image
+                    src="/logo.svg"
+                    alt="logo"
+                    width={120}
+                    height={120}
+                    className="w-24 h-24 mt-6 rounded-full object-cover"
+                  />
+                )}
 
                 <div className="my-4">
                   <p className="text-lg text-gray-500 my-2 capitalize">
