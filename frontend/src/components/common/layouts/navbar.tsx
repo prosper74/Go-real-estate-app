@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navbar, Dropdown } from "flowbite-react";
 import Cookies from "js-cookie";
 import axios from "axios";
-import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import { MainMenu } from "./layoutData";
 import AuthButton from "../Buttons/authButton";
 import AuthPortal from "@src/components/auth";
@@ -22,7 +21,6 @@ interface IProps {
 export default function Header() {
   const user = useSelector((state: IProps) => state.user);
   const dispatch = useDispatch();
-  const [fetchedUser, setFetchedUser] = useState<UserProps>();
   const [selectedNav, setSelectedNav] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const defaultUser = { username: "Guest" };
@@ -31,7 +29,6 @@ export default function Header() {
     setIsOpen(!isOpen);
     typeof window !== "undefined" && Cookies.remove("user");
     dispatch(setUser(defaultUser));
-    setFetchedUser(undefined);
 
     axios
       .get(`${process.env.NEXT_PUBLIC_REST_API}/user/logout`)
@@ -40,32 +37,8 @@ export default function Header() {
   };
 
   useEffect(() => {
-    if (user.ID) {
-      axios
-        .get(
-          `${process.env.NEXT_PUBLIC_REST_API}/auth/dashboard?id=${user.ID}`
-        )
-        .then((res) => {
-          if (res.data.error) {
-            console.error(res.data.error);
-          } else {
-            setFetchedUser(res.data.user);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-          typeof window !== "undefined" && Cookies.remove("user");
-          dispatch(setUser(defaultUser));
-          dispatch(
-            setSnackbar({
-              status: "error",
-              message: "There was an error, please login again",
-              open: true,
-            })
-          );
-          setFetchedUser(undefined);
-          Router.push("/");
-        });
+    if (!user.jwt) {
+      Router.push("/");
     }
   }, [user]);
 
@@ -109,28 +82,35 @@ export default function Header() {
               arrowIcon={false}
               inline={true}
               label={
-                <CloudinaryImage
-                  cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
-                  publicId={
-                    user?.Image || fetchedUser?.Image || "/avatar_icon.webp"
-                  }
-                  alt="User settings"
-                  width="40"
-                  height="40"
-                  crop="scale"
-                  className="rounded-full object-cover"
-                />
+                user?.Image ? (
+                  <CloudinaryImage
+                    cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
+                    publicId={user?.Image}
+                    alt="User settings"
+                    width="45"
+                    height="45"
+                    crop="scale"
+                    className="rounded-full object-cover"
+                  />
+                ) : (
+                  <Image
+                    src="/avatar_icon.webp"
+                    width={45}
+                    height={45}
+                    className="rounded-full object-cover"
+                    alt="Logo"
+                  />
+                )
               }
             >
               <Dropdown.Header>
                 <span className="block text-sm">
-                  {fetchedUser?.FirstName} {fetchedUser?.LastName}
+                  {user?.FirstName} {user?.LastName}
                 </span>
                 <span className="block truncate text-sm font-medium">
-                  {fetchedUser?.Email}
+                  {user?.Email}
                 </span>
               </Dropdown.Header>
-              {/* <Dropdown.Item>Dashboard</Dropdown.Item> */}
               <Dropdown.Item>
                 <Link href="/agent/account">Dashboard</Link>
               </Dropdown.Item>
