@@ -477,6 +477,7 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 	// Allways renew the token in seesion for login or logout
 	_ = m.App.Session.RenewToken(r.Context())
 
+	// user := models.User{}
 	data := make(map[string]interface{})
 
 	err := r.ParseForm()
