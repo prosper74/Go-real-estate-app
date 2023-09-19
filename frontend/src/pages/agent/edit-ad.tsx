@@ -20,7 +20,7 @@ const EditProperty: FC<IProps> = ({ property }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user.userId !== property?.UserID) {
+    if (user.ID !== property?.UserID) {
       dispatch(
         setSnackbar({
           status: "error",

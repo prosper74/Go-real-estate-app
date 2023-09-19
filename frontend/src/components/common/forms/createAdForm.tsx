@@ -144,7 +144,7 @@ export const CreateAdForm: FC<IImageUpload> = () => {
           status: "pending",
           size: data.size,
           images: imagesURL,
-          user_id: user.userId,
+          user_id: user.ID,
           jwt: user.jwt,
         },
         {

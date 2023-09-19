@@ -111,7 +111,7 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
         {
           image: uploadedImageURL,
           phone: data.phone,
-          user_id: user?.userId,
+          user_id: user?.ID,
           jwt: user?.jwt,
         },
         {
@@ -204,10 +204,10 @@ const UpdateAccount: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
   };
 
   useEffect(() => {
-    if (user?.userId) {
+    if (user?.ID) {
       axios
         .get(
-          `${process.env.NEXT_PUBLIC_REST_API}/auth/dashboard?id=${user.userId}`
+          `${process.env.NEXT_PUBLIC_REST_API}/auth/dashboard?id=${user.ID}`
         )
         .then((res) => {
           if (res.data.error) {

@@ -146,7 +146,7 @@ export default function PropertyCard({
           </Tooltip>
         )}
 
-        {user?.userId === property.UserID && (
+        {user?.ID === property.UserID && (
           <div className="absolute top-4 right-4">
             <CardEditButton
               propertyID={property.ID}

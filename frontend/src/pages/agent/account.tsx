@@ -26,7 +26,7 @@ export default function AccountPage() {
         <>
           <Head>
             <title>
-              My account | {user.userName}
+              My account | {user.FirstName}
             </title>
             <link rel="icon" href="/favicon.png" />
             <meta content={`${user.FirstName} account page`} />

@@ -21,7 +21,7 @@ const UserFavourites: FC<IProps> = () => {
         `${process.env.NEXT_PUBLIC_REST_API}/user/remove-favourite`,
         {
           property_id: propertyID,
-          user_id: user?.userId,
+          user_id: user?.ID,
           jwt: user?.jwt,
         },
         {
@@ -66,7 +66,7 @@ const UserFavourites: FC<IProps> = () => {
   useEffect(() => {
     axios
       .get(
-        `${process.env.NEXT_PUBLIC_REST_API}/user/favourites?user_id=${user?.userId}&jwt=${user?.jwt}`
+        `${process.env.NEXT_PUBLIC_REST_API}/user/favourites?user_id=${user?.ID}&jwt=${user?.jwt}`
       )
       .then((response) => {
         if (response.data.error) {

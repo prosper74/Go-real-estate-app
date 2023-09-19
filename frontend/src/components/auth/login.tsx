@@ -91,9 +91,13 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
         } else {
           dispatch(
             setUser({
-              userId: response.data.user,
-              userName: response.data.first_name,
-              jwt: response.data.jwt,
+              ID: response.data.user.ID,
+              FirstName: response.data.user.FirstName,
+              LastName: response.data.user.LastName,
+              Email: response.data.user.Email,
+              Phone: response.data.user.Phone,
+              Image: response.data.user.Image,
+              jwt: response.data.user.Token,
               onboarding: true,
             })
           );

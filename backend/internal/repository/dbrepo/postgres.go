@@ -750,28 +750,27 @@ func (m *postgresDBRepo) UserUpdateImage(user models.User) error {
 }
 
 // Authenticate authenticates a user
-func (m *postgresDBRepo) Authenticate(email, testPassword string) (int, string, string, error) {
+func (m *postgresDBRepo) Authenticate(email, testPassword string) (models.User, error) {
 	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	var id int
-	var firstName string
+	var user models.User
 	var hashedPassword string
 
-	row := m.DB.QueryRowContext(context, "select id, first_name, password from users where email = $1", email)
-	err := row.Scan(&id, &firstName, &hashedPassword)
+	row := m.DB.QueryRowContext(context, "select id, first_name, last_name, email, phone, image, password from users where email = $1", email)
+	err := row.Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.Phone, &user.Image, &hashedPassword)
 	if err != nil {
-		return id, "", "", err
+		return user, err
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(testPassword))
 	if err == bcrypt.ErrMismatchedHashAndPassword {
-		return 0, "", "", errors.New("incorrect password")
+		return user, errors.New("incorrect password")
 	} else if err != nil {
-		return 0, "", "", err
+		return user, err
 	}
 
-	return id, firstName, hashedPassword, nil
+	return user, nil
 }
 
 // InsertAccountVerification inserts a new account verification for a user

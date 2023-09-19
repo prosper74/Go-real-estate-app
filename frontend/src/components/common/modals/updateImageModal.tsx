@@ -95,7 +95,7 @@ export default function StatusImageModal({
         `${process.env.NEXT_PUBLIC_REST_API}/user/update-image`,
         {
           image: uploadedImageURL,
-          user_id: user?.userId,
+          user_id: user?.ID,
           jwt: user?.jwt,
         },
         {

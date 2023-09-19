@@ -42,7 +42,7 @@ export default function PropertySlider({ properties, tab }: IProps) {
   const handleDelete = (propertyID: number, images: string[]) => {
     axios
       .get(
-        `${process.env.NEXT_PUBLIC_REST_API}/user/properties?user_id=${user?.userId}&property_id=${propertyID}&jwt=${user?.jwt}`
+        `${process.env.NEXT_PUBLIC_REST_API}/user/properties?user_id=${user?.ID}&property_id=${propertyID}&jwt=${user?.jwt}`
       )
       .then((res) => {
         if (res.data.error) {
@@ -116,7 +116,7 @@ export default function PropertySlider({ properties, tab }: IProps) {
     (propertyID: number, propertyStatus: string) => {
       axios
         .get(
-          `${process.env.NEXT_PUBLIC_REST_API}/user/update-property-status?user_id=${user?.userId}&property_id=${propertyID}&property_status=${propertyStatus}&jwt=${user?.jwt}`
+          `${process.env.NEXT_PUBLIC_REST_API}/user/update-property-status?user_id=${user?.ID}&property_id=${propertyID}&property_status=${propertyStatus}&jwt=${user?.jwt}`
         )
         .then((res) => {
           if (res.data.error) {

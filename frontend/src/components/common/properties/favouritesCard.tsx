@@ -75,7 +75,7 @@ export default function FavouritesCard({
           </h3>
         </div>
 
-        {user?.userId === favourite?.UserID && (
+        {user?.ID === favourite?.UserID && (
           <button
             className="absolute top-4 right-4"
             onClick={() => handleRemoveFavourite(favourite?.Property.ID)}

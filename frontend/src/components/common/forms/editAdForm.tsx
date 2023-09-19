@@ -148,7 +148,7 @@ export const EditAdForm: FC<IProps> = ({ property }) => {
           duration: selectedCategory === "Buy" ? "" : data.period,
           size: inputValues.size,
           images: imagesURL,
-          user_id: user?.userId,
+          user_id: user?.ID,
           jwt: user?.jwt,
         },
         {

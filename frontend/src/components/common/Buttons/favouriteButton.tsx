@@ -37,7 +37,7 @@ const FavouriteButton: FC<IProps> = ({ property }) => {
             `${process.env.NEXT_PUBLIC_REST_API}/user/remove-favourite`,
             {
               property_id: property?.ID,
-              user_id: user?.userId,
+              user_id: user?.ID,
               jwt: user?.jwt,
             },
             {
@@ -86,7 +86,7 @@ const FavouriteButton: FC<IProps> = ({ property }) => {
             `${process.env.NEXT_PUBLIC_REST_API}/user/add-favourite`,
             {
               property_id: property?.ID,
-              user_id: user?.userId,
+              user_id: user?.ID,
               jwt: user?.jwt,
             },
             {
@@ -164,7 +164,7 @@ const FavouriteButton: FC<IProps> = ({ property }) => {
   useEffect(() => {
     if (
       favourites?.some(
-        (favorite: FavouriteProps) => favorite.UserID === user?.userId
+        (favorite: FavouriteProps) => favorite.UserID === user?.ID
       )
     ) {
       setIsLiked(true);

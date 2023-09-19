@@ -24,7 +24,7 @@ const ResendEmailVerificationButton: FC<IProps> = ({ inline }) => {
       .post(
         `${process.env.NEXT_PUBLIC_REST_API}/resend-email`,
         {
-          user_id: user?.userId,
+          user_id: user?.ID,
         },
         {
           headers: {

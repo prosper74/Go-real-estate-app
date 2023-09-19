@@ -46,7 +46,7 @@ const UserTab: FC<IProps> = () => {
   const handleDelete = (propertyID: number, images: string[]) => {
     axios
       .get(
-        `${process.env.NEXT_PUBLIC_REST_API}/user/properties?user_id=${user?.userId}&property_id=${propertyID}&jwt=${user?.jwt}`
+        `${process.env.NEXT_PUBLIC_REST_API}/user/properties?user_id=${user?.ID}&property_id=${propertyID}&jwt=${user?.jwt}`
       )
       .then((res) => {
         if (res.data.error) {
@@ -112,7 +112,7 @@ const UserTab: FC<IProps> = () => {
   const handleStatusUpdate = (propertyID: number, propertyStatus: string) => {
     axios
       .get(
-        `${process.env.NEXT_PUBLIC_REST_API}/user/update-property-status?user_id=${user?.userId}&property_id=${propertyID}&property_status=${propertyStatus}&jwt=${user?.jwt}`
+        `${process.env.NEXT_PUBLIC_REST_API}/user/update-property-status?user_id=${user?.ID}&property_id=${propertyID}&property_status=${propertyStatus}&jwt=${user?.jwt}`
       )
       .then((res) => {
         if (res.data.error) {
@@ -148,10 +148,10 @@ const UserTab: FC<IProps> = () => {
   };
 
   useEffect(() => {
-    if (user?.userId) {
+    if (user?.ID) {
       axios
         .get(
-          `${process.env.NEXT_PUBLIC_REST_API}/auth/dashboard?id=${user?.userId}`
+          `${process.env.NEXT_PUBLIC_REST_API}/auth/dashboard?id=${user?.ID}`
         )
         .then((res) => {
           if (res.data.error) {
@@ -163,7 +163,7 @@ const UserTab: FC<IProps> = () => {
         .catch((error) => console.error(error));
 
       axios
-        .get(`${process.env.NEXT_PUBLIC_REST_API}/user?id=${user.userId}`)
+        .get(`${process.env.NEXT_PUBLIC_REST_API}/user?id=${user.ID}`)
         .then((res) => {
           setAds(res.data.properties);
         })

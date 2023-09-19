@@ -120,7 +120,7 @@ const VerifyAccount: FC<IProps> = ({
           identity_image: uploadedIdentityImageURL,
           address: data.address,
           address_image: uploadedAddressImageURL,
-          user_id: user?.userId,
+          user_id: user?.ID,
           jwt: user?.jwt,
         },
         {

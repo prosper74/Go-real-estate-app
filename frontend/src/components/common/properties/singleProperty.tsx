@@ -26,7 +26,7 @@ const SinglePropertyBody: FC<IProps> = ({ property }) => {
       {/* Property Name  */}
       <div className="flex justify-between items-center my-3 ">
         <p className="italic">{property.Category.Title}</p>
-        {user?.userId !== property.UserID && (
+        {user?.ID !== property.UserID && (
           <FavouriteButton property={property} />
         )}
       </div>
