@@ -104,7 +104,7 @@ const Login: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
           dispatch(
             setSnackbar({
               status: "success",
-              message: ` Welcome Back, ${response.data.first_name}`,
+              message: ` Welcome Back, ${response.data.user.FirstName}`,
               open: true,
             })
           );
