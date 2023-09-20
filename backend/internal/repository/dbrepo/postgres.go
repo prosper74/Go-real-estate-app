@@ -763,7 +763,7 @@ func (m *postgresDBRepo) Authenticate(email, testPassword string) (models.User, 
 		return user, err
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(testPassword))
+	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(testPassword))
 	if err == bcrypt.ErrMismatchedHashAndPassword {
 		return user, errors.New("incorrect password")
 	} else if err != nil {
