@@ -261,6 +261,7 @@ const UserTab: FC<IProps> = () => {
               >
                 <MainProfile
                   fetchedUser={fetchedUser}
+                  setFetchedUser={setFetchedUser}
                   ads={ads}
                   isVerification={isVerification}
                   verificationModalOpen={verificationModalOpen}

@@ -3,9 +3,11 @@ import Link from "next/link";
 import AgentSidebar from "./agentSidebar";
 import PropertyCard from "../properties/propertyCard";
 import { SingleProperty, UserProps } from "../helpers/interfaces";
+import UpdateUserProfileModal from "../modals/updateUserProfileModal";
 
 interface IProps {
   fetchedUser?: UserProps;
+  setFetchedUser: any;
   ads?: SingleProperty[];
   isVerification: boolean;
   verificationModalOpen: boolean;
@@ -16,6 +18,7 @@ interface IProps {
 
 const MainProfile: FC<IProps> = ({
   fetchedUser,
+  setFetchedUser,
   ads,
   isVerification,
   verificationModalOpen,
@@ -37,10 +40,17 @@ const MainProfile: FC<IProps> = ({
         <div className="flex justify-between mb-4">
           <button
             className={`inline-flex justify-center rounded-md border border-transparent bg-purple-100 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2`}
-
+            onClick={() => setUpdateProfileModal(true)}
           >
             Edit Profile
           </button>
+
+          <UpdateUserProfileModal
+            modalOpen={updateProfileModal}
+            setModalOpen={setUpdateProfileModal}
+            fetchedUser={fetchedUser}
+            setFetchedUser={setFetchedUser}
+          />
 
           {fetchedUser?.Verification === "verified" ? (
             <Link href="/create-ad">
