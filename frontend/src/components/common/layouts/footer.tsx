@@ -39,7 +39,7 @@ export default function Footer() {
 
   return (
     <motion.footer
-      className="border-t mt-20 px-4 sm:!px-10 lg:!px-32"
+      className="border-t mt-8 px-4 sm:!px-10 lg:!px-32"
       initial={"offscreen"}
       whileInView={"onscreen"}
       viewport={{ once: false, amount: 0.3 }}

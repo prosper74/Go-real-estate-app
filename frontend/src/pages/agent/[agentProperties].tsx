@@ -35,7 +35,7 @@ export default function AgentProperties({ properties }: IProps) {
         />
       </Head>
 
-      <main className="px-4 mx-auto my-28 sm:!px-10 lg:!px-32">
+      <main className="px-4 mx-auto my-20 sm:!px-10 lg:!px-32">
         <motion.div
           className="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 gap-6"
           initial={"offscreen"}

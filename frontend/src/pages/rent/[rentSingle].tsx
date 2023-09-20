@@ -40,7 +40,7 @@ export default function RentSingle({ data }: IProps) {
         <meta content="View all ads of properties that are to be sold" />
       </Head>
 
-      <motion.main className="px-4 mx-auto my-24 sm:!px-10 lg:!px-32">
+      <motion.main className="px-4 mx-auto my-20 sm:!px-10 lg:!px-32">
         <Breadcrumb
           category={property.Category.Title}
           property={property.Title}

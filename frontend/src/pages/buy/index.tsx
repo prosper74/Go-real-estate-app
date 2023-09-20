@@ -22,7 +22,7 @@ export default function BuyProperties({ data }: any) {
         <link rel="icon" href="/favicon.png" />
       </Head>
 
-      <section className="px-4 mx-auto mt-20 mb-32 sm:!px-10 lg:!px-32">
+      <section className="px-4 mx-auto my-20 sm:!px-10 lg:!px-32">
         <motion.div
           className="mb-16 text-gray-500 sm:text-lg dark:text-gray-400"
           initial={"offscreen"}
