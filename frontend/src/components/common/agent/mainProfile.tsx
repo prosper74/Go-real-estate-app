@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import Link from "next/link";
 import AgentSidebar from "./agentSidebar";
 import PropertyCard from "../properties/propertyCard";
@@ -23,6 +23,8 @@ const MainProfile: FC<IProps> = ({
   handleDelete,
   handleStatusUpdate,
 }) => {
+  const [updateProfileModal, setUpdateProfileModal] = useState(false);
+
   const ActiveAds = ads?.filter((ad) => ad.Status === "enabled");
   const InactiveAds = ads?.filter(
     (ad) => ad.Status === "disabled" || ad.Status === "pending"
@@ -35,6 +37,7 @@ const MainProfile: FC<IProps> = ({
         <div className="flex justify-between mb-4">
           <button
             className={`inline-flex justify-center rounded-md border border-transparent bg-purple-100 px-4 py-2 text-sm font-medium text-purple-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2`}
+
           >
             Edit Profile
           </button>
