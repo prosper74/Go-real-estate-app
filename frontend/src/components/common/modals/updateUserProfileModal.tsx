@@ -10,7 +10,7 @@ import { z } from "zod";
 import { Image } from "cloudinary-react";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import { UserProps } from "@src/components/common/helpers/interfaces";
-import { Modal } from "flowbite-react";
+import { Modal, Tooltip } from "flowbite-react";
 import { ForwardArrow } from "../helpers/svgIcons";
 
 interface IProps {
@@ -97,7 +97,7 @@ export default function UpdateUserProfileModal({
             })
           );
         }
-        setLoading(false)
+        setLoading(false);
       })
       .catch(() => {
         dispatch(
@@ -107,7 +107,7 @@ export default function UpdateUserProfileModal({
             open: true,
           })
         );
-        setLoading(false)
+        setLoading(false);
       });
   });
 
@@ -128,7 +128,7 @@ export default function UpdateUserProfileModal({
 
             <form>
               <div className="grid grid-cols-2 gap-2">
-                <div>
+                <div className="col-span-2 sm:col-span-1">
                   <label htmlFor="first_name">{fetchedUser?.FirstName}</label>
                   <input
                     id="first_name"
@@ -149,7 +149,7 @@ export default function UpdateUserProfileModal({
                   )}
                 </div>
 
-                <div>
+                <div className="col-span-2 sm:col-span-1">
                   <label htmlFor="last_name">{fetchedUser?.LastName}</label>
                   <input
                     id="last_name"
@@ -170,20 +170,22 @@ export default function UpdateUserProfileModal({
                   )}
                 </div>
 
-                <div>
-                  <label htmlFor="email">{fetchedUser?.Email}</label>
-                  <input
-                    disabled
-                    id="email"
-                    autoComplete="email"
-                    placeholder="Contact support to update your email"
-                    type="text"
-                    {...register("email")}
-                    className="focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full"
-                  />
+                <div className="col-span-2 sm:col-span-1">
+                  <Tooltip content={`Your email can not be changed`} style="light">
+                    <label htmlFor="email">{fetchedUser?.Email}</label>
+                    <input
+                      disabled
+                      id="email"
+                      autoComplete="email"
+                      placeholder="Can't be changed"
+                      type="text"
+                      {...register("email")}
+                      className="focus:outline-purple-600 bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full"
+                    />
+                  </Tooltip>
                 </div>
 
-                <div>
+                <div className="col-span-2 sm:col-span-1">
                   <label htmlFor="phone">{fetchedUser?.Phone || "+234"}</label>
                   <input
                     id="phone"
