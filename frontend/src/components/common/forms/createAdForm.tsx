@@ -29,8 +29,8 @@ const schema = z.object({
   state: z.string(),
   title: z
     .string()
-    .min(5, { message: "Title must be at at least 10 characters" })
-    .max(50, { message: "Title must not be more than 40 characters" }),
+    .min(10, { message: "Title must be at at least 10 characters" })
+    .max(60, { message: "Title must not be more than 60 characters" }),
   city: z
     .string()
     .min(3, { message: "Min 3 characters" })
@@ -301,14 +301,14 @@ export const CreateAdForm: FC<IImageUpload> = () => {
                       type="text"
                       {...register("title")}
                       className={`focus:outline-purple-600 focus:rounded-lg bg-slate-100 border rounded-lg px-3 py-2 mt-1 text-base w-full ${
-                        errors.name &&
+                        errors.title &&
                         "border-red-500 text-red-500 focus:outline-red-500"
                       }`}
                     />
-                    {errors.name?.message && (
+                    {errors.title?.message && (
                       <p className="text-red-500 text-sm mt-2">
                         {/* @ts-ignore */}
-                        {errors.name?.message}
+                        {errors.title?.message}
                       </p>
                     )}
                   </div>
