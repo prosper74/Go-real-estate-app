@@ -763,6 +763,60 @@ func (m *Repository) UserUpdateImage(w http.ResponseWriter, r *http.Request) {
 	w.Write(resp)
 }
 
+// Delete property
+func (m *Repository) UserDeleteAccount(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+
+	userID, _ := strconv.Atoi(r.PostFormValue("user_id"))
+	tokenString := r.PostFormValue("jwt")
+
+	// Load the env file and get the JWT secret
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Error loading .env file")
+	}
+	jwtSecret := os.Getenv("JWTSECRET")
+
+	// Parse and verify the JWT token
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(jwtSecret), nil
+	})
+	if err != nil {
+		http.Error(w, "Unable to parse token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Unable to parse token. Error: %s", err)
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	if !token.Valid {
+		http.Error(w, "Invalid token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Invalid token, please contact support. Error: %s", err)
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// Delete the user from database
+	err = m.DB.DeleteUserAccount(userID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to delete account. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	data["message"] = "Successful"
+	out, _ := json.MarshalIndent(data, "", "    ")
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
+}
+
 // InsertAccountVerification inserts new verification for user into the database
 func (m *Repository) InsertAccountVerification(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()

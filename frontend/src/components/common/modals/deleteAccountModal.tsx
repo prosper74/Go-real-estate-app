@@ -36,7 +36,7 @@ export default function DeleteAccountModal({
 
     axios
       .post(
-        `${process.env.NEXT_PUBLIC_REST_API}/user/update-profile`,
+        `${process.env.NEXT_PUBLIC_REST_API}/user/delete-account`,
         {
           user_id: user?.ID,
           jwt: user?.jwt,
@@ -93,7 +93,7 @@ export default function DeleteAccountModal({
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
 
             <h3 className="mb-5 text-lg font-bold text-gray-500 dark:text-gray-400">
-              Are you sure you want to delete your Account?
+              Are you sure you want to delete your Account? 😢
             </h3>
 
             <p className="mb-3 font-normal text-gray-500 dark:text-gray-400">
@@ -114,7 +114,7 @@ export default function DeleteAccountModal({
                 {loading ? (
                   <div className="border-b-2 border-white rounded-full animate-spin w-6 h-6 "></div>
                 ) : (
-                  <DeleteIcon />
+                  <DeleteIcon dimensions="w-5 h-5" />
                 )}
                 
               </Button>

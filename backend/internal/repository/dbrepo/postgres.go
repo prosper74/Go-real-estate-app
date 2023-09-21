@@ -767,6 +767,21 @@ func (m *postgresDBRepo) UserUpdateImage(user models.User) error {
 	return nil
 }
 
+// DeleteUserAccount deletes user from DB
+func (m *postgresDBRepo) DeleteUserAccount(id int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `delete from users where id = $1`
+
+	_, err := m.DB.ExecContext(ctx, query, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // Authenticate authenticates a user
 func (m *postgresDBRepo) Authenticate(email, testPassword string) (models.User, error) {
 	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)

@@ -173,7 +173,9 @@ export default function ResetPassword({ queryParams }: any) {
                     <label
                       htmlFor="confirmPassword"
                       className={`font-semibold text-base pb-1 block ${
-                        errors.confirmPassword ? "text-red-500" : "text - gray - 600"
+                        errors.confirmPassword
+                          ? "text-red-500"
+                          : "text - gray - 600"
                       }`}
                     >
                       Confirm Password

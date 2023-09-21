@@ -17,6 +17,7 @@ type DatabaseRepo interface {
 	UpdateUserVerification(user models.User) error
 	UpdateUserVerificationStatus(user models.User) error
 	UpdateUserPassword(user models.User) error
+	DeleteUserAccount(id int) error
 
 	AllProperties() ([]models.Property, error)
 	AllFeaturedProperties() ([]models.Property, error)
