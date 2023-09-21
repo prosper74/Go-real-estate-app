@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Router from "next/router";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { Navbar, Dropdown } from "flowbite-react";
@@ -35,12 +34,6 @@ export default function Header() {
       .then()
       .catch((error) => console.error(error));
   };
-
-  useEffect(() => {
-    if (!user.jwt) {
-      Router.push("/");
-    }
-  }, [user]);
 
   useEffect(() => {
     if (window.location.href.indexOf("/buy") > -1) {
