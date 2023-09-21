@@ -7,6 +7,7 @@ import { UserProps } from "../helpers/interfaces";
 import StatusImageModal from "../modals/updateImageModal";
 // @ts-ignore
 import { Image as CloudinaryImage } from "cloudinary-react";
+import DeleteAccountModal from "../modals/deleteAccountModal";
 
 interface IProps {
   agent?: UserProps;
@@ -24,10 +25,11 @@ const AgentSidebar: FC<IProps> = ({
   isDashboard = false,
 }) => {
   const [updateImageModal, setUpdateImageModal] = useState(false);
+  const [deleteAccountModal, SetDeleteAccountModal] = useState(false);
 
   return (
     <div className="sticky top-20">
-      <div className="py-5 px-4 rounded-xl shadow-md bg-white flex flex-col sm:flex-row lg:flex-col items-center justify-evenly gap-1 sm:gap-12 lg:gap-1">
+      <div className="py-5 px-4 rounded-xl shadow-md bg-white flex flex-col sm:flex-row lg:flex-col justify-evenly gap-1 sm:gap-12 lg:gap-1">
         <div className="relative">
           {agent?.Image ? (
             <CloudinaryImage
@@ -94,12 +96,26 @@ const AgentSidebar: FC<IProps> = ({
             </>
           )}
         </div>
+
+        {isDashboard && (
+          <button
+            className={`rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-2`}
+            onClick={() => SetDeleteAccountModal(true)}
+          >
+            Delete Account
+          </button>
+        )}
       </div>
 
       <StatusImageModal
         modalOpen={updateImageModal}
         setModalOpen={setUpdateImageModal}
         profilePhoto={agent?.Image}
+      />
+
+      <DeleteAccountModal
+        modalOpen={deleteAccountModal}
+        setModalOpen={SetDeleteAccountModal}
       />
     </div>
   );
