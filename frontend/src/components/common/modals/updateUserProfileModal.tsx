@@ -101,6 +101,7 @@ export default function UpdateUserProfileModal({
           );
         }
         setLoading(false);
+        closeModal();
       })
       .catch(() => {
         dispatch(
@@ -174,7 +175,10 @@ export default function UpdateUserProfileModal({
                 </div>
 
                 <div className="col-span-2 sm:col-span-1">
-                  <Tooltip content={`Your email can not be changed`} style="light">
+                  <Tooltip
+                    content={`Your email can not be changed`}
+                    style="light"
+                  >
                     <label htmlFor="email">{fetchedUser?.Email}</label>
                     <input
                       disabled
