@@ -58,7 +58,7 @@ export default function FavouritesCard({
 
         <Link href={adLink}>
           <h3 className="text-xl md:text-2xl font-bold tracking-tight">
-            {favourite?.Property.Title}
+            {favourite?.Property.Title.substring(0, 27)}
           </h3>
         </Link>
 
