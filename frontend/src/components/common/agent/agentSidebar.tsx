@@ -53,7 +53,7 @@ const AgentSidebar: FC<IProps> = ({
 
           {isDashboard && (
             <button
-              className="absolute bottom-0 right-0 p-2 text-primary bg-gray-100 rounded-full shadow-lg"
+              className="absolute bottom-1/2 right-0 p-2 text-primary bg-gray-100 rounded-full shadow-lg"
               onClick={() => setUpdateImageModal(true)}
             >
               <HiPencilAlt size={25} />
@@ -95,16 +95,16 @@ const AgentSidebar: FC<IProps> = ({
               <p className="my-2">Total Ads: {totalAds || 0}</p>
             </>
           )}
-        </div>
 
-        {isDashboard && (
-          <button
-            className={`rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-2`}
-            onClick={() => SetDeleteAccountModal(true)}
-          >
-            Delete Account
-          </button>
-        )}
+          {isDashboard && (
+            <button
+              className={`rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-2`}
+              onClick={() => SetDeleteAccountModal(true)}
+            >
+              Delete Account
+            </button>
+          )}
+        </div>
       </div>
 
       <StatusImageModal
