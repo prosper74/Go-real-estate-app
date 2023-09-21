@@ -10,6 +10,7 @@ type DatabaseRepo interface {
 	GetUserByEmail(email string) (models.User, error)
 	UpdateUserAccessLevel(user models.User) error
 	Authenticate(email, testPassword string) (models.User, error)
+	UpdateUserProfile(user models.User) error
 	UpdateUserImageAndPhone(user models.User) error
 	UserUpdateImage(user models.User) error
 	InsertAccountVerification(d models.AccountVerification) error

@@ -663,7 +663,7 @@ func (m *postgresDBRepo) GetUserByID(id int) (models.User, error) {
 	return user, nil
 }
 
-// GetUserByID returns a user by email
+// GetUserByEmail returns a user by email
 func (m *postgresDBRepo) GetUserByEmail(email string) (models.User, error) {
 	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -693,6 +693,24 @@ func (m *postgresDBRepo) GetUserByEmail(email string) (models.User, error) {
 	}
 
 	return user, nil
+}
+
+// UpdateUserImageAndPhone updates a user image and phone in the database
+func (m *postgresDBRepo) UpdateUserProfile(user models.User) error {
+	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `
+		update users set first_name = $1, last_name = $2, phone = $3, address = $4, updated_at = $5 where id = $6
+	`
+
+	_, err := m.DB.ExecContext(context, query, user.FirstName, user.LastName, user.Phone, user.Address, time.Now(), user.ID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // UpdateUser updates a user in the database

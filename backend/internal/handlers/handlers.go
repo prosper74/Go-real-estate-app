@@ -562,7 +562,7 @@ func (m *Repository) UserDashboard(w http.ResponseWriter, r *http.Request) {
 	w.Write(resp)
 }
 
-// UpdateUserImageAndPhone handlers
+// Update user profile handlers
 func (m *Repository) UserUpdateProfile(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
@@ -575,8 +575,10 @@ func (m *Repository) UserUpdateProfile(w http.ResponseWriter, r *http.Request) {
 
 	user.ID, _ = strconv.Atoi(r.PostFormValue("user_id"))
 	user.Token = r.PostFormValue("jwt")
-	user.Image = r.PostFormValue("image")
+	user.FirstName = r.PostFormValue("first_name")
+	user.LastName = r.PostFormValue("last_name")
 	user.Phone = r.PostFormValue("phone")
+	user.Address = r.PostFormValue("address")
 
 	// Load the env file and get the JWT secret
 	err = godotenv.Load()
@@ -598,18 +600,7 @@ func (m *Repository) UserUpdateProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if token.Valid {
-		// Update the user's account status as verified
-		err = m.DB.UpdateUserImageAndPhone(user)
-		if err != nil {
-			helpers.ServerError(w, err)
-			data["error"] = "Unable to update user's image and phone. Please contact support"
-			out, _ := json.MarshalIndent(data, "", "    ")
-			resp := []byte(out)
-			w.Write(resp)
-			return
-		}
-	} else {
+	if !token.Valid {
 		http.Error(w, "Invalid token", http.StatusBadRequest)
 		data["error"] = fmt.Sprintf("Invalid token, please contact support. Error: %s", err)
 		out, _ := json.MarshalIndent(data, "", "    ")
@@ -618,8 +609,30 @@ func (m *Repository) UserUpdateProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Update user profile
+	err = m.DB.UpdateUserProfile(user)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to update user's profile. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// Get the new user profile from database
+	fetchedUser, err := m.DB.GetUserByID(user.ID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to Get User from database"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
 	data["message"] = "Successful"
-	data["user"] = user
+	data["user"] = fetchedUser
 	out, _ := json.MarshalIndent(data, "", "    ")
 	resp := []byte(out)
 	w.Write(resp)

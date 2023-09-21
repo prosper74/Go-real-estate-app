@@ -68,6 +68,9 @@ export default function UpdateUserProfileModal({
         `${process.env.NEXT_PUBLIC_REST_API}/user/update-profile`,
         {
           first_name: data.first_name,
+          last_name: data.last_name,
+          phone: data.phone,
+          address: data.address,
           user_id: user?.ID,
           jwt: user?.jwt,
         },
