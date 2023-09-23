@@ -1098,7 +1098,7 @@ func (m *postgresDBRepo) InsertNewReview(review models.Review) error {
 
 	query := `insert into reviews (description, rating, property_id, user_id, created_at, updated_at) values ($1, $2, $3, $4, $5, $6)`
 
-	_, err := m.DB.ExecContext(context, query, review.PropertyID, review.UserID, time.Now(), time.Now())
+	_, err := m.DB.ExecContext(context, query, review.Description, review.Rating, review.PropertyID, review.UserID, time.Now(), time.Now())
 
 	if err != nil {
 		return err
