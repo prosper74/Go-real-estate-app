@@ -589,7 +589,10 @@ export const SettingsIcon = ({
   );
 };
 
-export const DeleteIcon = ({ dimensions = "w-10 h-10", fill = "currentColor" }) => {
+export const DeleteIcon = ({
+  dimensions = "w-10 h-10",
+  fill = "currentColor",
+}) => {
   return (
     <svg
       className={dimensions}
@@ -730,6 +733,20 @@ export const FavouriteIcon = ({
         d="M5.047 2.506c-2.114 0-3.533 1.711-3.533 3.824 0 2.398 3.35 5.263 6.22 7.176 2.871-1.913 6.182-4.824 6.221-7.176.035-2.113-1.333-3.824-3.447-3.824-.902 0-1.817.477-2.774 1.433-.957-.956-1.785-1.433-2.687-1.433z"
         className="colorStroke000000 svgStroke"
       />
+    </svg>
+  );
+};
+
+export const StarIcon = ({ dimensions = "w-6 h-6", fill = "#FACA15", outline = "none" }) => {
+  return (
+    <svg
+      className={dimensions}
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 22 20"
+    >
+      <path fill={fill}
+        stroke={outline} d="m10.4 4.7 1.8 3.6c.1.1.2.2.4.3l3.9.6c.4.1.6.6.3.9L14 12.9c-.1.1-.2.3-.1.4l.7 3.9c.1.4-.4.7-.7.5l-3.5-1.8c-.1-.1-.3-.1-.5 0l-3.5 1.8c-.4.2-.8-.1-.7-.5l.7-3.9c0-.2 0-.3-.1-.4l-3.1-3c-.3-.3-.1-.8.3-.8l3.9-.6c.2 0 .3-.1.4-.3l1.8-3.6c.1-.3.7-.3.8.1z" />
     </svg>
   );
 };
