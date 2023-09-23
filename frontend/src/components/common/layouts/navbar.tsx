@@ -12,7 +12,6 @@ import { setUser } from "@src/store/reducers/userReducer";
 import { UserProps } from "../helpers/interfaces";
 // @ts-ignore
 import { Image as CloudinaryImage } from "cloudinary-react";
-import { StarIcon } from "../helpers/svgIcons";
 
 interface IProps {
   user: UserProps;
@@ -112,10 +111,10 @@ export default function Header() {
                 <Link href="/create-ad">Create Ad</Link>
               </Dropdown.Item>
               <Dropdown.Item>
-                <Link href="/faq">Support</Link>
+                <Link href="/faq">Support </Link>
               </Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item onClick={handleLogout}>Sign out <StarIcon /></Dropdown.Item>
+              <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
             </Dropdown>
           )}
 

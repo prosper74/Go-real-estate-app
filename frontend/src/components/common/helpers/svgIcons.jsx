@@ -737,7 +737,11 @@ export const FavouriteIcon = ({
   );
 };
 
-export const StarIcon = ({ dimensions = "w-6 h-6", fill = "#FACA15", outline = "none" }) => {
+export const StarIcon = ({
+  dimensions = "w-6 h-6",
+  fill = "#FACA15",
+  outline = "none",
+}) => {
   return (
     <svg
       className={dimensions}
@@ -745,8 +749,28 @@ export const StarIcon = ({ dimensions = "w-6 h-6", fill = "#FACA15", outline = "
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 22 20"
     >
-      <path fill={fill}
-        stroke={outline} d="m10.4 4.7 1.8 3.6c.1.1.2.2.4.3l3.9.6c.4.1.6.6.3.9L14 12.9c-.1.1-.2.3-.1.4l.7 3.9c.1.4-.4.7-.7.5l-3.5-1.8c-.1-.1-.3-.1-.5 0l-3.5 1.8c-.4.2-.8-.1-.7-.5l.7-3.9c0-.2 0-.3-.1-.4l-3.1-3c-.3-.3-.1-.8.3-.8l3.9-.6c.2 0 .3-.1.4-.3l1.8-3.6c.1-.3.7-.3.8.1z" />
+      <path
+        fill={fill}
+        stroke={outline}
+        d="m10.4 4.7 1.8 3.6c.1.1.2.2.4.3l3.9.6c.4.1.6.6.3.9L14 12.9c-.1.1-.2.3-.1.4l.7 3.9c.1.4-.4.7-.7.5l-3.5-1.8c-.1-.1-.3-.1-.5 0l-3.5 1.8c-.4.2-.8-.1-.7-.5l.7-3.9c0-.2 0-.3-.1-.4l-3.1-3c-.3-.3-.1-.8.3-.8l3.9-.6c.2 0 .3-.1.4-.3l1.8-3.6c.1-.3.7-.3.8.1z"
+      />
+    </svg>
+  );
+};
+
+export const StarHalfIcon = ({ dimensions = "w-4 h-4" }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 32.238 32"
+      id="Star"
+      className={dimensions}
+    >
+      <path
+        d="M31.884 12.946a1.998 1.998 0 0 0-1.616-1.36l-8.62-1.252-3.854-7.812a2 2 0 0 0-3.588 0l-3.854 7.81-8.62 1.252a1.999 1.999 0 0 0-1.108 3.412l6.238 6.08-1.472 8.586A2.002 2.002 0 0 0 7.36 32c.318 0 .638-.076.93-.23L16 27.716l7.71 4.054a1.993 1.993 0 0 0 2.106-.152 2.002 2.002 0 0 0 .796-1.956l-1.472-8.586 6.238-6.08a1.997 1.997 0 0 0 .506-2.05zm-8.894 7.432L24.64 30 16 25.458V3.406l4.32 8.754 9.66 1.404-6.99 6.814z"
+        fill="#faca15"
+        class="color000000 svgShape"
+      ></path>
     </svg>
   );
 };

@@ -1,16 +1,28 @@
-import { StarIcon } from "./svgIcons";
+import { StarIcon, StarHalfIcon } from "./svgIcons";
 
-const Rating = ({ number, size }) => {
+interface IProps {
+  number: number;
+  dimensions?: string;
+}
+
+const Rating = ({ number, dimensions }: IProps) => {
   const diff = 5 - Math.ceil(number);
 
   return (
     <>
-      {[...Array(Math.floor(number))].map((e, i) => (
-        <StarIcon key={i} />
+      {[...Array(Math.floor(number))].map((_e, i) => (
+        <StarIcon dimensions={dimensions && dimensions} key={i} />
       ))}
-      {number % 1 !== 0 ? <StarHalf className={classes.size} /> : null}
-      {[...Array(diff)].map((e, i) => (
-        <StarBorder key={`${i}-empty`} className={classes.size} />
+      {number % 1 !== 0 ? (
+        <StarHalfIcon dimensions={dimensions && dimensions} />
+      ) : null}
+      {[...Array(diff)].map((_e, i) => (
+        <StarIcon
+          key={`${i}-empty`}
+          dimensions={dimensions && dimensions}
+          fill="none"
+          outline="#FACA15"
+        />
       ))}
     </>
   );
