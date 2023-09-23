@@ -1741,7 +1741,7 @@ func (m *Repository) UserAddReview(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data["favourites"] = propertyReviews
+	data["reviews"] = propertyReviews
 	data["message"] = "Successful"
 	out, _ := json.MarshalIndent(data, "", "    ")
 
