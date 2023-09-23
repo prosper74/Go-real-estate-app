@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { Tab } from "@headlessui/react";
 import { SingleProperty } from "../helpers/interfaces";
 import MarkdownView from "react-showdown";
+import Reviews from "../reviews";
 
 const classNames = (...classes: String[]) => {
   return classes.filter(Boolean).join(" ");
@@ -60,7 +61,7 @@ const DescriptionTab: FC<IProps> = ({ property }) => {
               "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-purple-400 ring-white ring-opacity-60"
             )}
           >
-            Reviews
+            <Reviews />
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
