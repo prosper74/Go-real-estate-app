@@ -80,7 +80,7 @@ type Favourite struct {
 type Review struct {
 	ID          int
 	Description string
-	Rating      float32
+	Rating      float64
 	UserID      int
 	PropertyID  int
 	User        User

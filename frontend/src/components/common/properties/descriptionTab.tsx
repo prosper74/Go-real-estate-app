@@ -61,7 +61,7 @@ const DescriptionTab: FC<IProps> = ({ property }) => {
               "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-purple-400 ring-white ring-opacity-60"
             )}
           >
-            <Reviews />
+            <Reviews propertyID={property.ID} />
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>

@@ -10,11 +10,13 @@ import Rating from "../helpers/starRating";
 import { ForwardArrow } from "../helpers/svgIcons";
 import AuthPortal from "@src/components/auth";
 import AuthButton from "../Buttons/authButton";
+import axios from "axios";
+import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 
 interface IProps {
   user?: UserProps;
   propertyID?: number;
-  reviews?: any;
+  setReviews?: any;
 }
 
 const schema = z.object({
@@ -24,7 +26,7 @@ const schema = z.object({
     .max(500, { message: "review must be max 500 characters" }),
 });
 
-export default function Review() {
+export default function Review({ propertyID, setReviews }: IProps) {
   const user = useSelector((state: IProps) => state.user);
   const dispatch = useDispatch();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -35,6 +37,7 @@ export default function Review() {
 
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -44,7 +47,60 @@ export default function Review() {
 
   const onSubmit = handleSubmit((data) => {
     setLoading(true);
-    console.log(data);
+
+    axios
+      .post(
+        `${process.env.NEXT_PUBLIC_REST_API}/user/create-review`,
+        {
+          review: data.review,
+          rating,
+          property_id: propertyID,
+          user_id: user?.ID,
+          jwt: user?.jwt,
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      )
+      .then((res) => {
+        setLoading(false);
+
+        if (res.data.error) {
+          dispatch(
+            setSnackbar({
+              status: "error",
+              message: res.data.error,
+              open: true,
+            })
+          );
+        } else {
+          dispatch(
+            setSnackbar({
+              status: "success",
+              message: ` Reviews added`,
+              open: true,
+            })
+          );
+          // set reviews to the new reviews from server
+          setReviews(res.data.reviews);
+          reset();
+          setRating(0);
+          setTempRating(0);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        dispatch(
+          setSnackbar({
+            status: "error",
+            message: ` There was an error, please contact support`,
+            open: true,
+          })
+        );
+        setLoading(false);
+      });
   });
 
   return (
@@ -64,27 +120,31 @@ export default function Review() {
             {user.FirstName + " " + user.LastName}
           </h3>
 
-          <button
-            className="flex items-center"
-            ref={ratingRef}
-            onClick={() => setRating(tempRating)}
-            onMouseLeave={() => {
-              if (tempRating > rating) {
-                setTempRating(rating);
-              }
-            }}
-            onMouseMove={(e) => {
-              const hoverRating =
-                ((ratingRef.current.getBoundingClientRect().left - e.clientX) /
-                  ratingRef.current.getBoundingClientRect().width) *
-                -5;
+          <div className="flex items-center">
+            <button
+              className="flex items-center"
+              ref={ratingRef}
+              onClick={() => setRating(tempRating)}
+              onMouseLeave={() => {
+                if (tempRating > rating) {
+                  setTempRating(rating);
+                }
+              }}
+              onMouseMove={(e) => {
+                const hoverRating =
+                  ((ratingRef.current.getBoundingClientRect().left -
+                    e.clientX) /
+                    ratingRef.current.getBoundingClientRect().width) *
+                  -5;
 
-              setTempRating(Math.round(hoverRating * 2) / 2);
-            }}
-          >
-            <Rating number={rating > tempRating ? rating : tempRating} />
-            <p className="ml-4">{tempRating || "Enter rating star"}</p>
-          </button>
+                setTempRating(Math.round(hoverRating * 2) / 2);
+              }}
+            >
+              <Rating number={rating > tempRating ? rating : tempRating} />
+            </button>
+
+            <p>{tempRating || "Enter rating star"}</p>
+          </div>
 
           <form>
             <textarea

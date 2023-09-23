@@ -944,7 +944,7 @@ func (m *postgresDBRepo) UserUpdatePropertyStatus(id int, status string) error {
 	return nil
 }
 
-// InsertNewProperty inserts a new property for a user
+// InsertNewFavourite inserts a new favourite for a user
 func (m *postgresDBRepo) InsertNewFavourite(favourite models.Favourite) error {
 	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -1089,4 +1089,73 @@ func (m *postgresDBRepo) DeleteFavourite(favourite models.Favourite) error {
 	}
 
 	return nil
+}
+
+// InsertNewReview inserts a new review for a user
+func (m *postgresDBRepo) InsertNewReview(review models.Review) error {
+	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `insert into reviews (description, rating, property_id, user_id, created_at, updated_at) values ($1, $2, $3, $4, $5, $6)`
+
+	_, err := m.DB.ExecContext(context, query, review.PropertyID, review.UserID, time.Now(), time.Now())
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Get favourites for a property
+func (m *postgresDBRepo) PropertyReviews(propertyID int) ([]models.Review, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	var reviews []models.Review
+
+	query := `select r.id, r.description, r.rating, r.property_id, r.user_id, r.created_at, r.updated_at,
+	u.id, u.first_name, u.last_name, u.image, p.id, p.title
+	from reviews r
+	left join users u on (r.user_id = u.id)
+	left join properties p on (r.property_id = p.id)
+	where r.property_id = $1
+	order by r.created_at desc`
+
+	rows, err := m.DB.QueryContext(ctx, query, propertyID)
+	if err != nil {
+		return reviews, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var review models.Review
+
+		err := rows.Scan(
+			&review.ID,
+			&review.Description,
+			&review.Rating,
+			&review.PropertyID,
+			&review.UserID,
+			&review.CreatedAt,
+			&review.UpdatedAt,
+			&review.User.ID,
+			&review.User.FirstName,
+			&review.User.LastName,
+			&review.User.Image,
+			&review.Property.ID,
+			&review.Property.Title,
+		)
+
+		if err != nil {
+			return reviews, err
+		}
+		reviews = append(reviews, review)
+	}
+
+	if err = rows.Err(); err != nil {
+		return reviews, err
+	}
+
+	return reviews, nil
 }

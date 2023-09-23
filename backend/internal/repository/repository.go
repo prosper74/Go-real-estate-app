@@ -36,4 +36,7 @@ type DatabaseRepo interface {
 	PropertyFavourites(propertyID int) ([]models.Favourite, error)
 	GetUserFavourites(userID int) ([]models.Favourite, error)
 	DeleteFavourite(favourite models.Favourite) error
+
+	InsertNewReview(review models.Review) error
+	PropertyReviews(propertyID int) ([]models.Review, error)
 }

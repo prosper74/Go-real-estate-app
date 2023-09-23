@@ -105,3 +105,15 @@ export interface FavouriteProps {
   CreatedAt: string;
   UpdatedAt: string;
 }
+
+export interface ReviewProps {
+  ID: number;
+  Description: string;
+  Rating: number;
+  UserID: number;
+  PropertyID: number;
+  User: UserProps;
+  Property: SingleProperty;
+  CreatedAt: string;
+  UpdatedAt: string;
+}
