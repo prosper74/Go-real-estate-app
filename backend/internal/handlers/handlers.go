@@ -1731,7 +1731,7 @@ func (m *Repository) UserAddReview(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// fetch reviews from the database
-	propertyReviews, err := m.DB.PropertyReviews(review.PropertyID)
+	propertyReviews, err := m.DB.GetPropertyReviews(review.PropertyID)
 	if err != nil {
 		helpers.ServerError(w, err)
 		data["error"] = "Unable to get property reviews. Please contact support"
@@ -1743,6 +1743,31 @@ func (m *Repository) UserAddReview(w http.ResponseWriter, r *http.Request) {
 
 	data["reviews"] = propertyReviews
 	data["message"] = "Successful"
+	out, _ := json.MarshalIndent(data, "", "    ")
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
+}
+
+// Get all the favourites of a property
+func (m *Repository) GetPropertyReviews(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+
+	propertyID, _ := strconv.Atoi(r.URL.Query().Get("id"))
+
+	// fetch reviews from the database
+	reviews, err := m.DB.GetPropertyReviews(propertyID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to get property reviews. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	data["message"] = "Successful"
+	data["reviews"] = reviews
 	out, _ := json.MarshalIndent(data, "", "    ")
 
 	w.Header().Set("Content-Type", "application/json")

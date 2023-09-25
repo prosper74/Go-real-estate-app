@@ -1108,7 +1108,7 @@ func (m *postgresDBRepo) InsertNewReview(review models.Review) error {
 }
 
 // Get favourites for a property
-func (m *postgresDBRepo) PropertyReviews(propertyID int) ([]models.Review, error) {
+func (m *postgresDBRepo) GetPropertyReviews(propertyID int) ([]models.Review, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 

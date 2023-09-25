@@ -22,7 +22,7 @@ export default function Reviews({ propertyID }: IProps) {
   useEffect(() => {
     axios
       .get(
-        `${process.env.NEXT_PUBLIC_REST_API}/user/reviews?user_id=${user?.ID}&jwt=${user?.jwt}`
+        `${process.env.NEXT_PUBLIC_REST_API}/reviews?id=${propertyID}`
       )
       .then((response) => {
         if (response.data.error) {

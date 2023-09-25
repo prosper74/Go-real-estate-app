@@ -54,6 +54,7 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/user/logout", handlers.Repo.Logout)	
 	mux.Post("/reset-password", handlers.Repo.UpdateUserPassword)
 	mux.Get("/favourites", handlers.Repo.GetPropertyFavourites)
+	mux.Get("/reviews", handlers.Repo.GetPropertyReviews)
 
 	// user dashboard
 	mux.Get("/auth/dashboard", handlers.Repo.UserDashboard)
