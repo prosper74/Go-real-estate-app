@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 import { Image as CloudinaryImage } from "cloudinary-react";
 import Review from "./review";
 import { ReviewProps, UserProps } from "../helpers/interfaces";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import { timeSince } from "../helpers/dateFunction";
+import Rating from "../helpers/starRating";
 
 interface IProps {
   user?: UserProps;
@@ -15,15 +16,12 @@ interface IProps {
 }
 
 export default function Reviews({ propertyID }: IProps) {
-  const user = useSelector((state: IProps) => state.user);
   const dispatch = useDispatch();
   const [reviews, setReviews] = useState<ReviewProps[]>();
 
   useEffect(() => {
     axios
-      .get(
-        `${process.env.NEXT_PUBLIC_REST_API}/reviews?id=${propertyID}`
-      )
+      .get(`${process.env.NEXT_PUBLIC_REST_API}/reviews?id=${propertyID}`)
       .then((response) => {
         if (response.data.error) {
           dispatch(
@@ -47,15 +45,16 @@ export default function Reviews({ propertyID }: IProps) {
       });
   }, []);
 
-  console.log("Reviews: ", reviews);
-
   return (
     <section className="sm:p-4">
       <Review propertyID={propertyID} setReviews={setReviews} />
 
       {/* latest reviews  */}
       {reviews?.map((review) => (
-        <div key={review.ID} className="border border-purple-500 rounded-lg p-3 my-3">
+        <div
+          key={review.ID}
+          className="border border-purple-500 rounded-lg p-3 my-3"
+        >
           <div className="flex gap-2">
             <CloudinaryImage
               cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
@@ -72,11 +71,23 @@ export default function Reviews({ propertyID }: IProps) {
                 {review.User.FirstName + " " + review.User.LastName}
               </h3>
 
-              <p><em>Created: {timeSince(new Date(review.CreatedAt))} ago</em></p>
+              <div className="flex items-center">
+                <span className="flex items-center">
+                  <Rating
+                    number={review.Rating}
+                    dimensions="w-4 h-4"
+                    halfStarDimensions="w-[15px] h-[15px]"
+                  />
+                </span>
+                &nbsp; | &nbsp;
+                <p>
+                  <em>{timeSince(new Date(review.CreatedAt))} ago</em>
+                </p>
+              </div>
             </span>
           </div>
 
-          <div>
+          <div className="mt-2">
             <p>{review.Description}</p>
           </div>
         </div>
