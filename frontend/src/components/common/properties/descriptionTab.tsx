@@ -14,7 +14,7 @@ interface IProps {
 
 const DescriptionTab: FC<IProps> = ({ property }) => {
   return (
-    <div className="w-full py-8 items-center">
+    <div className="w-full py-8 items-center" id="reviews_section">
       <Tab.Group>
         <Tab.List className="flex p-1 space-x-1 bg-purple-100 rounded-xl">
           <Tab

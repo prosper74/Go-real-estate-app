@@ -1,6 +1,7 @@
 "use client";
 
 import { Pagination } from "flowbite-react";
+import Router from "next/router";
 
 interface IProps {
   currentPage: number;
@@ -23,6 +24,7 @@ export default function PaginationWithNavigation({
         currentPage={currentPage}
         onPageChange={(page) => {
           setCurrentPage(page);
+          Router.push("#reviews_section");
         }}
         showIcons
         totalPages={totalPages}
