@@ -59,7 +59,6 @@ export default function ReviewCard({ review, handleDelete }: IProps) {
         <span className="absolute top-4 right-3">
           <ReviewEditButton
             review={review}
-            isEditMode={isEditMode}
             setIsEditMode={setIsEditMode}
             handleDelete={handleDelete}
           />

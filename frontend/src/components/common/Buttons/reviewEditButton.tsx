@@ -1,23 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { Dropdown } from "flowbite-react";
-import { HiStop, HiTrash, HiPencilAlt, HiDotsVertical } from "react-icons/hi";
-import DeleteModal from "../modals/deleteModal";
-import StatusUpdateModal from "../modals/statusUpdateModal";
-import { Image, ReviewProps } from "../helpers/interfaces";
+import { HiTrash, HiPencilAlt, HiDotsVertical } from "react-icons/hi";
+import { ReviewProps } from "../helpers/interfaces";
+import DeleteReviewModal from "../modals/deleteReviewModal";
 
 interface IProps {
   review: ReviewProps;
-  isEditMode: boolean;
   setIsEditMode: (open: boolean) => void;
   handleDelete: any;
 }
 
 export default function ReviewEditButton({
   review,
-  isEditMode,
   setIsEditMode,
   handleDelete,
 }: IProps) {
@@ -43,13 +39,12 @@ export default function ReviewEditButton({
         </Dropdown.Item>
       </Dropdown>
 
-      {/* <DeleteReviewModal
+      <DeleteReviewModal
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
         handleDelete={handleDelete}
-        propertyID={propertyID}
-        propertyImages={propertyImages}
-      /> */}
+        reviewID={review.ID}
+      />
     </>
   );
 }
