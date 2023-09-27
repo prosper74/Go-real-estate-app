@@ -1813,15 +1813,15 @@ func (m *Repository) UserDeleteReview(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Delete the review from database
-	// err = m.DB.DeleteReview(reviewID)
-	// if err != nil {
-	// 	helpers.ServerError(w, err)
-	// 	data["error"] = "Unable to delete review. Please contact support"
-	// 	out, _ := json.MarshalIndent(data, "", "    ")
-	// 	resp := []byte(out)
-	// 	w.Write(resp)
-	// 	return
-	// }
+	err = m.DB.DeleteReview(reviewID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to delete review. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
 
 	// Return the new property reviews
 	propertyReviews, err := m.DB.GetPropertyReviews(propertyID)
@@ -1835,18 +1835,18 @@ func (m *Repository) UserDeleteReview(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Return the new user reviews
-	// userReviews, err := m.DB.GetPropertyReviews(propertyID)
-	// if err != nil {
-	// 	helpers.ServerError(w, err)
-	// 	data["error"] = "Unable to get property reviews. Please contact support"
-	// 	out, _ := json.MarshalIndent(data, "", "    ")
-	// 	resp := []byte(out)
-	// 	w.Write(resp)
-	// 	return
-	// }
+	userReviews, err := m.DB.GetUserReviews(userID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to get user reviews. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
 
 	data["propertyReviews"] = propertyReviews
-	// data["userReviews"] = userReviews
+	data["userReviews"] = userReviews
 	data["message"] = "Successful"
 	out, _ := json.MarshalIndent(data, "", "    ")
 

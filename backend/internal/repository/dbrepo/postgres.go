@@ -1075,7 +1075,7 @@ func (m *postgresDBRepo) GetUserFavourites(userID int) ([]models.Favourite, erro
 	return favourites, nil
 }
 
-// InsertNewProperty inserts a new property for a user
+// Delete favourite from the database
 func (m *postgresDBRepo) DeleteFavourite(favourite models.Favourite) error {
 	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -1107,7 +1107,7 @@ func (m *postgresDBRepo) InsertNewReview(review models.Review) error {
 	return nil
 }
 
-// Get favourites for a property
+// Get reviews for a user
 func (m *postgresDBRepo) GetPropertyReviews(propertyID int) ([]models.Review, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -1158,4 +1158,73 @@ func (m *postgresDBRepo) GetPropertyReviews(propertyID int) ([]models.Review, er
 	}
 
 	return reviews, nil
+}
+
+// Get favourites for a property
+func (m *postgresDBRepo) GetUserReviews(userID int) ([]models.Review, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	var reviews []models.Review
+
+	query := `select r.id, r.description, r.rating, r.property_id, r.user_id, r.created_at, r.updated_at,
+	u.id, u.first_name, u.last_name, u.image, p.id, p.title
+	from reviews r
+	left join users u on (r.user_id = u.id)
+	left join properties p on (r.property_id = p.id)
+	where r.user_id = $1
+	order by r.created_at desc`
+
+	rows, err := m.DB.QueryContext(ctx, query, userID)
+	if err != nil {
+		return reviews, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var review models.Review
+
+		err := rows.Scan(
+			&review.ID,
+			&review.Description,
+			&review.Rating,
+			&review.PropertyID,
+			&review.UserID,
+			&review.CreatedAt,
+			&review.UpdatedAt,
+			&review.User.ID,
+			&review.User.FirstName,
+			&review.User.LastName,
+			&review.User.Image,
+			&review.Property.ID,
+			&review.Property.Title,
+		)
+
+		if err != nil {
+			return reviews, err
+		}
+		reviews = append(reviews, review)
+	}
+
+	if err = rows.Err(); err != nil {
+		return reviews, err
+	}
+
+	return reviews, nil
+}
+
+// Delete review from the database
+func (m *postgresDBRepo) DeleteReview(reviewID int) error {
+	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `delete from reviews where id = $1`
+
+	_, err := m.DB.ExecContext(context, query, reviewID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

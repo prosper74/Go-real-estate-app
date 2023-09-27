@@ -39,4 +39,6 @@ type DatabaseRepo interface {
 
 	InsertNewReview(review models.Review) error
 	GetPropertyReviews(propertyID int) ([]models.Review, error)
+	GetUserReviews(userID int) ([]models.Review, error)
+	DeleteReview(reviewID int) error
 }
