@@ -1773,3 +1773,83 @@ func (m *Repository) GetPropertyReviews(w http.ResponseWriter, r *http.Request) 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(out)
 }
+
+// Delete review
+func (m *Repository) UserDeleteReview(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+
+	propertyID, _ := strconv.Atoi(r.URL.Query().Get("property_id"))
+	reviewID, _ := strconv.Atoi(r.URL.Query().Get("review_id"))
+	userID, _ := strconv.Atoi(r.URL.Query().Get("user_id"))
+	tokenString := r.URL.Query().Get("jwt")
+
+	// Load the env file and get the JWT secret
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Error loading .env file")
+	}
+	jwtSecret := os.Getenv("JWTSECRET")
+
+	// Parse and verify the JWT token
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(jwtSecret), nil
+	})
+	if err != nil {
+		http.Error(w, "Unable to parse token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Unable to parse token. Error: %s", err)
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	if !token.Valid {
+		http.Error(w, "Invalid token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Invalid token, please contact support. Error: %s", err)
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// Delete the review from database
+	// err = m.DB.DeleteReview(reviewID)
+	// if err != nil {
+	// 	helpers.ServerError(w, err)
+	// 	data["error"] = "Unable to delete review. Please contact support"
+	// 	out, _ := json.MarshalIndent(data, "", "    ")
+	// 	resp := []byte(out)
+	// 	w.Write(resp)
+	// 	return
+	// }
+
+	// Return the new property reviews
+	propertyReviews, err := m.DB.GetPropertyReviews(propertyID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to get property reviews. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// Return the new user reviews
+	// userReviews, err := m.DB.GetPropertyReviews(propertyID)
+	// if err != nil {
+	// 	helpers.ServerError(w, err)
+	// 	data["error"] = "Unable to get property reviews. Please contact support"
+	// 	out, _ := json.MarshalIndent(data, "", "    ")
+	// 	resp := []byte(out)
+	// 	w.Write(resp)
+	// 	return
+	// }
+
+	data["propertyReviews"] = propertyReviews
+	// data["userReviews"] = userReviews
+	data["message"] = "Successful"
+	out, _ := json.MarshalIndent(data, "", "    ")
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
+}
