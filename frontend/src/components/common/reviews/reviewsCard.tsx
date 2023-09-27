@@ -1,17 +1,21 @@
 // @ts-ignore
 import { Image as CloudinaryImage } from "cloudinary-react";
-import { ReviewProps } from "../helpers/interfaces";
+import { ReviewProps, UserProps } from "../helpers/interfaces";
 import { timeSince } from "../helpers/dateFunction";
 import Rating from "../helpers/starRating";
+import { HiDotsVertical } from "react-icons/hi";
+import { useSelector } from "react-redux";
 
 interface IProps {
+  user?: UserProps;
   review: ReviewProps;
 }
 
 export default function ReviewCard({ review }: IProps) {
+  const user = useSelector((state: IProps) => state.user);
+
   return (
-    <div
-    className="border border-purple-500 rounded-lg p-3 my-3">
+    <div className="relative border border-purple-500 rounded-lg p-3 my-3">
       <div className="flex gap-2">
         <CloudinaryImage
           cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
@@ -23,12 +27,12 @@ export default function ReviewCard({ review }: IProps) {
           className="rounded-full object-cover"
         />
 
-        <span>
-          <h3 className="font-bold text-lg text-stone-900">
+        <div>
+          <h3 className="font-bold text-lg text-stone-900 pr-4">
             {review.User.FirstName + " " + review.User.LastName}
           </h3>
 
-          <div className="flex items-center">
+          <div className="flex items-center justify-between">
             <span className="flex items-center">
               <Rating
                 number={review.Rating}
@@ -41,12 +45,18 @@ export default function ReviewCard({ review }: IProps) {
               <em>{timeSince(new Date(review.CreatedAt))} ago</em>
             </p>
           </div>
-        </span>
+        </div>
       </div>
 
       <div className="mt-2">
         <p>{review.Description}</p>
       </div>
+
+      {user?.ID === review.UserID && (
+        <span className="absolute top-4 right-3">
+          <HiDotsVertical />
+        </span>
+      )}
     </div>
   );
 }
