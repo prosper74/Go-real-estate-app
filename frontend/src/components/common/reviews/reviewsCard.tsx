@@ -1,18 +1,21 @@
+import { useState } from "react";
 // @ts-ignore
 import { Image as CloudinaryImage } from "cloudinary-react";
 import { ReviewProps, UserProps } from "../helpers/interfaces";
 import { timeSince } from "../helpers/dateFunction";
 import Rating from "../helpers/starRating";
-import { HiDotsVertical } from "react-icons/hi";
 import { useSelector } from "react-redux";
+import ReviewEditButton from "../Buttons/reviewEditButton";
 
 interface IProps {
   user?: UserProps;
   review: ReviewProps;
+  handleDelete?: any;
 }
 
-export default function ReviewCard({ review }: IProps) {
+export default function ReviewCard({ review, handleDelete }: IProps) {
   const user = useSelector((state: IProps) => state.user);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   return (
     <div className="relative border border-purple-500 rounded-lg p-3 my-3">
@@ -54,7 +57,12 @@ export default function ReviewCard({ review }: IProps) {
 
       {user?.ID === review.UserID && (
         <span className="absolute top-4 right-3">
-          <HiDotsVertical />
+          <ReviewEditButton
+            review={review}
+            isEditMode={isEditMode}
+            setIsEditMode={setIsEditMode}
+            handleDelete={handleDelete}
+          />
         </span>
       )}
     </div>
