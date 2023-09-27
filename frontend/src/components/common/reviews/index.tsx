@@ -8,6 +8,7 @@ import axios from "axios";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
 import { timeSince } from "../helpers/dateFunction";
 import Rating from "../helpers/starRating";
+import PaginationWithNavigation from "../helpers/pagination";
 
 interface IProps {
   user?: UserProps;
@@ -18,6 +19,8 @@ interface IProps {
 export default function Reviews({ propertyID }: IProps) {
   const dispatch = useDispatch();
   const [reviews, setReviews] = useState<ReviewProps[]>();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, _setPostsPerPage] = useState(5);
 
   useEffect(() => {
     axios
@@ -45,12 +48,18 @@ export default function Reviews({ propertyID }: IProps) {
       });
   }, []);
 
+  const lastPostIndex = currentPage * postsPerPage;
+  const firstPostIndex = lastPostIndex - postsPerPage;
+  const currentReviews = reviews?.slice(firstPostIndex, lastPostIndex);
+
+  const totalReviews = reviews?.length || 0;
+
   return (
     <section className="sm:p-4">
       <Review propertyID={propertyID} setReviews={setReviews} />
 
       {/* latest reviews  */}
-      {reviews?.map((review) => (
+      {currentReviews?.map((review) => (
         <div
           key={review.ID}
           className="border border-purple-500 rounded-lg p-3 my-3"
@@ -60,7 +69,7 @@ export default function Reviews({ propertyID }: IProps) {
               cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
               publicId={review.User.Image}
               alt="User image"
-              width="45"
+              width="48"
               height="45"
               crop="scale"
               className="rounded-full object-cover"
@@ -92,6 +101,13 @@ export default function Reviews({ propertyID }: IProps) {
           </div>
         </div>
       ))}
+
+      <PaginationWithNavigation
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalReviews={totalReviews}
+        postsPerPage={postsPerPage}
+      />
     </section>
   );
 }

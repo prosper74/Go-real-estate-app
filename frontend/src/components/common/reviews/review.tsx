@@ -1,4 +1,4 @@
-// @ts-nocheckf
+// @ts-nocheck
 import { useLayoutEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Image } from "cloudinary-react";
