@@ -11,9 +11,10 @@ interface IProps {
   user?: UserProps;
   review: ReviewProps;
   handleDelete?: any;
+  setReviews?: any;
 }
 
-export default function ReviewCard({ review, handleDelete }: IProps) {
+export default function ReviewCard({ review, handleDelete, setReviews }: IProps) {
   const user = useSelector((state: IProps) => state.user);
   const [isEditMode, setIsEditMode] = useState(false);
 
