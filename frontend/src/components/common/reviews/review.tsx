@@ -24,7 +24,7 @@ const schema = z.object({
   review: z
     .string()
     .min(5, { message: "review must be at at least 5 characters" })
-    .max(500, { message: "review must be max 500 characters" }),
+    .max(400, { message: "review must be max 400 characters" }),
 });
 
 export default function Review({ propertyID, setReviews }: IProps) {
