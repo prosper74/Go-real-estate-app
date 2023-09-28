@@ -1160,7 +1160,7 @@ func (m *postgresDBRepo) GetPropertyReviews(propertyID int) ([]models.Review, er
 	return reviews, nil
 }
 
-// Get favourites for a property
+// Get user reviews
 func (m *postgresDBRepo) GetUserReviews(userID int) ([]models.Review, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()

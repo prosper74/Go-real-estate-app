@@ -20,10 +20,10 @@ export default function UserReviews() {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, _setPostsPerPage] = useState(5);
 
-  const handleDelete = (reviewID: number) => {
+  const handleDelete = (reviewID: number, propertyID: number) => {
     axios
       .get(
-        `${process.env.NEXT_PUBLIC_REST_API}/user/delete-review?user_id=${user?.ID}&review_id=${reviewID}&jwt=${user?.jwt}`
+        `${process.env.NEXT_PUBLIC_REST_API}/user/delete-review?user_id=${user?.ID}&property_id=${propertyID}&review_id=${reviewID}&jwt=${user?.jwt}`
       )
       .then((res) => {
         if (res.data.error) {
@@ -42,7 +42,7 @@ export default function UserReviews() {
               open: true,
             })
           );
-          setReviews(res.data.propertyReviews);
+          setReviews(res.data.userReviews);
         }
       })
       .catch((err) => {
@@ -60,7 +60,9 @@ export default function UserReviews() {
 
   useEffect(() => {
     axios
-      .get(`${process.env.NEXT_PUBLIC_REST_API}/user/reviews?user_id=${user?.ID}&jwt=${user?.jwt}`)
+      .get(
+        `${process.env.NEXT_PUBLIC_REST_API}/user/reviews?user_id=${user?.ID}&jwt=${user?.jwt}`
+      )
       .then((response) => {
         if (response.data.error) {
           dispatch(

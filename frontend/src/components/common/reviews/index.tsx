@@ -25,7 +25,7 @@ export default function Reviews({ propertyID }: IProps) {
   const handleDelete = (reviewID: number) => {
     axios
       .get(
-        `${process.env.NEXT_PUBLIC_REST_API}/user/reviews?user_id=${user?.ID}&property_id=${propertyID}&review_id=${reviewID}&jwt=${user?.jwt}`
+        `${process.env.NEXT_PUBLIC_REST_API}/user/delete-review?user_id=${user?.ID}&property_id=${propertyID}&review_id=${reviewID}&jwt=${user?.jwt}`
       )
       .then((res) => {
         if (res.data.error) {

@@ -43,6 +43,7 @@ export default function ReviewEditButton({
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
         handleDelete={handleDelete}
+        propertyID={review.PropertyID}
         reviewID={review.ID}
       />
     </>

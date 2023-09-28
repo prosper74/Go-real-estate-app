@@ -7,6 +7,7 @@ interface IProps {
   modalOpen: boolean;
   setModalOpen: (open: boolean) => void;
   handleDelete: any;
+  propertyID?: number;
   reviewID: number;
 }
 
@@ -14,6 +15,7 @@ export default function DeleteReviewModal({
   modalOpen,
   setModalOpen,
   handleDelete,
+  propertyID,
   reviewID,
 }: IProps) {
   function closeModal() {
@@ -35,7 +37,7 @@ export default function DeleteReviewModal({
                 color="failure"
                 onClick={() => {
                   closeModal();
-                  handleDelete(reviewID);
+                  handleDelete(reviewID, propertyID);
                 }}
               >
                 Yes, I'm sure
