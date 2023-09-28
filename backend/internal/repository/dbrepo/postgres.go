@@ -1213,6 +1213,22 @@ func (m *postgresDBRepo) GetUserReviews(userID int) ([]models.Review, error) {
 	return reviews, nil
 }
 
+// Update review
+func (m *postgresDBRepo) UpdateReview(review models.Review) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `update reviews set description = $1, rating = $2, updated_at = $3 where id = $4 and user_id = $5`
+
+	_, err := m.DB.ExecContext(ctx, query, review.Description, review.Rating, time.Now(), review.ID, review.UserID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // Delete review from the database
 func (m *postgresDBRepo) DeleteReview(reviewID int) error {
 	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)

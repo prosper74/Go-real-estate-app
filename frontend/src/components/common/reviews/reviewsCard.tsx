@@ -1,5 +1,5 @@
+// @ts-nocheckee
 import { useRef, useState } from "react";
-// @ts-ignore
 import { Image as CloudinaryImage } from "cloudinary-react";
 import { ReviewProps, UserProps } from "../helpers/interfaces";
 import { timeSince } from "../helpers/dateFunction";
@@ -197,7 +197,7 @@ export default function ReviewCard({
                   : "hover:bg-purple-700 text-white"
               }`}
             >
-              <span className="mr-2">Submit Review</span>
+              <span className="mr-2">Update Review</span>
               {loading ? (
                 <div className="border-b-2 border-white rounded-full animate-spin w-6 h-6 "></div>
               ) : (
