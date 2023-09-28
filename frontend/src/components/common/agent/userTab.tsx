@@ -13,6 +13,7 @@ import ResendEmailVerificationButton from "../Buttons/emailVerificationButton";
 import VerificationModal from "../accountVerification";
 import { SingleProperty, UserProps } from "../helpers/interfaces";
 import UserFavourites from "./userFavourites";
+import UserReviews from "../reviews/userReviews";
 
 interface IProps {
   user?: UserProps;
@@ -276,7 +277,7 @@ const UserTab: FC<IProps> = () => {
                   "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-purple-400 ring-white ring-opacity-60"
                 )}
               >
-                Reviews
+                <UserReviews />
               </Tab.Panel>
               <Tab.Panel
                 className={classNames(

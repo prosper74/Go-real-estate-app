@@ -1774,6 +1774,61 @@ func (m *Repository) GetPropertyReviews(w http.ResponseWriter, r *http.Request) 
 	w.Write(out)
 }
 
+// Get all the favourites of a property
+func (m *Repository) GetUserReviews(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+
+	userID, _ := strconv.Atoi(r.URL.Query().Get("user_id"))
+	tokenString := r.URL.Query().Get("jwt")
+
+	// Load the env file and get the JWT secret
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Error loading .env file")
+	}
+	jwtSecret := os.Getenv("JWTSECRET")
+
+	// Parse and verify the JWT token
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(jwtSecret), nil
+	})
+	if err != nil {
+		http.Error(w, "Unable to parse token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Unable to parse token. Error: %s", err)
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	if !token.Valid {
+		http.Error(w, "Invalid token", http.StatusBadRequest)
+		data["error"] = fmt.Sprintf("Invalid token, please contact support. Error: %s", err)
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	// fetch reviews from the database
+	reviews, err := m.DB.GetUserReviews(userID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		data["error"] = "Unable to get user reviews. Please contact support"
+		out, _ := json.MarshalIndent(data, "", "    ")
+		resp := []byte(out)
+		w.Write(resp)
+		return
+	}
+
+	data["message"] = "Successful"
+	data["reviews"] = reviews
+	out, _ := json.MarshalIndent(data, "", "    ")
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
+}
+
 // Update user property status
 func (m *Repository) UserUpdateReview(w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]interface{})
