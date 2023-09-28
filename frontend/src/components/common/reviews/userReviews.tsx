@@ -94,8 +94,6 @@ export default function UserReviews() {
 
   return (
     <section className="sm:p-4">
-      {/* <Review propertyID={propertyID} setReviews={setReviews} /> */}
-
       {totalReviews < 1 ? (
         <div className="text-center my-4">
           <h3 className="font-semibold text-stone-700">
@@ -112,6 +110,7 @@ export default function UserReviews() {
               setReviews={setReviews}
               review={review}
               handleDelete={handleDelete}
+              isDashboard={true}
             />
           ))}
 

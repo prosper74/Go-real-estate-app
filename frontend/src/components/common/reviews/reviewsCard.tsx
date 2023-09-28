@@ -9,18 +9,21 @@ import ReviewEditButton from "../Buttons/reviewEditButton";
 import { CloseIcon, ForwardArrow } from "../helpers/svgIcons";
 import axios from "axios";
 import { setSnackbar } from "@src/store/reducers/feedbackReducer";
+import Link from "next/link";
 
 interface IProps {
   user?: UserProps;
   review: ReviewProps;
   handleDelete?: any;
   setReviews?: any;
+  isDashboard?: boolean;
 }
 
 export default function ReviewCard({
   review,
   handleDelete,
   setReviews,
+  isDashboard = false,
 }: IProps) {
   const user = useSelector((state: IProps) => state.user);
   const dispatch = useDispatch();
@@ -96,6 +99,20 @@ export default function ReviewCard({
       : setIsReviewError(false);
   };
 
+  const categogry =
+    review.Property.CategoryID === 1
+      ? "buy"
+      : review.Property.CategoryID === 2
+      ? "rent"
+      : "shortlet";
+
+  const adLink = review.Property.Title
+    ? `/${categogry}/property?title=${review.Property.Title.toLowerCase().replace(
+        / /g,
+        "-"
+      )}&id=${review.PropertyID}`
+    : "";
+
   return (
     <div className="relative border border-purple-500 rounded-lg p-3 my-3">
       <div className="flex gap-2">
@@ -110,9 +127,17 @@ export default function ReviewCard({
         />
 
         <div>
-          <h3 className="font-bold text-lg text-stone-900 pr-4">
-            {review.User.FirstName + " " + review.User.LastName}
-          </h3>
+          {isDashboard ? (
+            <Link href={adLink}>
+              <h3 className="font-bold text-lg text-stone-900 pr-4">
+                {review.Property.Title}
+              </h3>
+            </Link>
+          ) : (
+            <h3 className="font-bold text-lg text-stone-900 pr-4">
+              {review.User.FirstName + " " + review.User.LastName}
+            </h3>
+          )}
 
           <div className="flex items-center justify-between">
             {isEditMode ? (
