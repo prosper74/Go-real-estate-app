@@ -118,7 +118,7 @@ export default function ReviewCard({
       <div className="flex gap-2">
         <CloudinaryImage
           cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_NAME}
-          publicId={review.User.Image}
+          publicId={isDashboard ? review.Property.Images[0] : review.User.Image}
           alt="User image"
           width="48"
           height="45"
