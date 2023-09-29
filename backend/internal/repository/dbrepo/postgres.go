@@ -1166,9 +1166,10 @@ func (m *postgresDBRepo) GetUserReviews(userID int) ([]models.Review, error) {
 	defer cancel()
 
 	var reviews []models.Review
+	var imagesArrayString string
 
 	query := `select r.id, r.description, r.rating, r.property_id, r.user_id, r.created_at, r.updated_at,
-	u.id, u.first_name, u.last_name, u.image, p.id, p.title, p.category_id
+	u.id, u.first_name, u.last_name, u.image, p.id, p.title, p.category_id, p.images
 	from reviews r
 	left join users u on (r.user_id = u.id)
 	left join properties p on (r.property_id = p.id)
@@ -1199,7 +1200,11 @@ func (m *postgresDBRepo) GetUserReviews(userID int) ([]models.Review, error) {
 			&review.Property.ID,
 			&review.Property.Title,
 			&review.Property.CategoryID,
+			&imagesArrayString,
 		)
+
+		// Convert the array string to a string slice using the function
+		review.Property.Images = helpers.ConvertPostgresArrayToStringSlice(imagesArrayString)
 
 		if err != nil {
 			return reviews, err
