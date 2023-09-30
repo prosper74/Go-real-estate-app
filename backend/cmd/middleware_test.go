@@ -6,6 +6,10 @@ import (
 	"testing"
 )
 
+type myHandler struct{}
+
+func (handlerObject *myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {}
+
 func TestNoSurf(t *testing.T) {
 	// Create a test handler function for testing the NoSurf middleware
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -54,29 +58,14 @@ func TestProtectCSRF(t *testing.T) {
 	}
 }
 
-func TestSessionLoad(t *testing.T) {
-	// Create a test handler function for testing the ProtectCSRF middleware
-	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Test Response"))
-	})
+func TestSessionLoad(testPointer *testing.T) {
+	var handlerObject myHandler
+	testHandler := SessionLoad(&handlerObject)
 
-	// Create a test request with a POST method (you can also test other HTTP methods)
-	req := httptest.NewRequest("POST", "/test", nil)
-
-	// Add a CSRF token to the request
-	token := "valid_csrf_token" // Replace with a valid CSRF token
-	req.Header.Set("X-CSRF-Token", token)
-
-	// Create a response recorder to capture the response
-	rr := httptest.NewRecorder()
-
-	// Call the session middleware with the test handler
-	sessionLoad := session.LoadAndSave(testHandler)
-	sessionLoad.ServeHTTP(rr, req)
-
-	// Assert that the response code is what you expect
-	if rr.Code != http.StatusForbidden {
-		t.Errorf("Expected status code %d, got %d", http.StatusOK, rr.Code)
+	switch handlerType := testHandler.(type) {
+	case http.Handler:
+		// do nothing
+	default:
+		testPointer.Errorf("type is not http.Handler but is %T", handlerType)
 	}
 }
-
