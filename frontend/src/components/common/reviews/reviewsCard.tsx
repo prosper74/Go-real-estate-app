@@ -1,4 +1,4 @@
-// @ts-nocheckee
+// @ts-nocheck
 import { useRef, useState } from "react";
 import { Image as CloudinaryImage } from "cloudinary-react";
 import { ReviewProps, UserProps } from "../helpers/interfaces";
