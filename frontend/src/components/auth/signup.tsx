@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import Link from "next/link";
+// import Link from "next/link";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -299,9 +299,9 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
             {/* Social Logins */}
             <div className="p-2">
               <div className="grid grid-cols-2 gap-4">
-                <Link
-                  href={`${process.env.NEXT_PUBLIC_REST_API}/connect/google`}
-                >
+                {/* <Link
+                  href={`#!`}
+                > */}
                   <button
                     type="button"
                     className="transition duration-200 border border-gray-200 text-gray-700 w-full py-2.5 rounded-lg text-base shadow-sm hover:shadow-md font-normal text-center flex items-center justify-center"
@@ -309,10 +309,10 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                     <GoogleIcon dimensions="w-6 h-6" />
                     Google
                   </button>
-                </Link>
-                <Link
-                  href={`${process.env.NEXT_PUBLIC_REST_API}/connect/facebook`}
-                >
+                {/* </Link> */}
+                {/* <Link
+                  href={`#!`}
+                > */}
                   <button
                     type="button"
                     className="transition duration-200 border border-gray-200 text-gray-700 w-full py-2.5 rounded-lg text-base shadow-sm hover:shadow-md font-normal text-center flex items-center justify-center"
@@ -320,7 +320,7 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
                     <FacebookIcon dimensions="w-6 h-6" />
                     Facebook
                   </button>
-                </Link>
+                {/* </Link> */}
               </div>
             </div>
           </div>
