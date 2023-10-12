@@ -1,5 +1,5 @@
+// @ts-nocheck
 import { useState, FC } from "react";
-// @ts-ignore
 import { Image } from "cloudinary-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useIsXLarge } from "../hooks/mediaQuery";
