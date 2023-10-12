@@ -10,6 +10,10 @@ This project is a simple hotel booking and reservation project with key features
 - Showcase the properties
 - Notifification system
 
+### Test account
+email: suyiajayi4@gmail.com
+password: Password@24
+
 ### Packages used
 
 - [Alex Edwards SCS](https://github.com/alexedwards/scs/v2) package for managing sessions
