@@ -29,6 +29,8 @@
     "dotenv": "^16.0.3",
     "dotenv-safe": "^8.2.0",
     "eslint": "8.40.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-next": "13.4.1",
     "flowbite": "^1.8.1",
     "flowbite-react": "^0.5.0",
