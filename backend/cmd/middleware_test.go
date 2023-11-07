@@ -6,10 +6,6 @@ import (
 	"testing"
 )
 
-type myHandler struct{}
-
-func (handlerObject *myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {}
-
 func TestNoSurf(t *testing.T) {
 	// Create a test handler function for testing the NoSurf middleware
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

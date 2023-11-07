@@ -40,7 +40,6 @@ const ForgotPassword: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
   const onSubmit = handleSubmit((data) => {
     setLoading(true);
     axios
-
       .post(
         `${process.env.NEXT_PUBLIC_REST_API}/forgot-password`,
         {
