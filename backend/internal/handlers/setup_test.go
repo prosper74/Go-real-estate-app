@@ -18,7 +18,6 @@ import (
 
 var app config.AppConfig
 var session *scs.SessionManager
-var pathToTemplates = "./../../templates"
 
 func TestMain(m *testing.M) {
 	// what am I going to put in the session
