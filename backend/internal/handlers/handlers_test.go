@@ -28,6 +28,17 @@ var theTests = []struct {
 	{"buy", "/buy", "GET", http.StatusOK},
 	{"rent", "/rent", "GET", http.StatusOK},
 	{"shortlet", "/shortlet", "GET", http.StatusOK},
+	{"category", "/category/1", "GET", http.StatusOK},
+	{"property", "/property", "GET", http.StatusOK},
+	{"user", "/user", "GET", http.StatusOK},
+	{"verify email", "/verify-email", "GET", http.StatusOK},
+	{"logout", "/user/logout", "GET", http.StatusOK},
+	{"favourites", "/favourites", "GET", http.StatusOK},
+	{"reviews", "/reviews", "GET", http.StatusOK},
+	{"auth dashboard", "/auth/dashboard", "GET", http.StatusOK},
+	{"user favourites", "/user/favourites", "GET", http.StatusOK},
+	{"user reviews", "/user/reviews", "GET", http.StatusOK},
+	{"user delete review", "/user/delete-review", "GET", http.StatusOK},
 }
 
 func TestHandlers(testPointer *testing.T) {
