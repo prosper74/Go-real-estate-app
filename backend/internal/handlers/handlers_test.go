@@ -25,6 +25,9 @@ var theTests = []struct {
 	{"home", "/", "GET", http.StatusOK},
 	{"about", "/about", "GET", http.StatusOK},
 	{"contact", "/contact", "GET", http.StatusOK},
+	{"buy", "/buy", "GET", http.StatusOK},
+	{"rent", "/rent", "GET", http.StatusOK},
+	{"shortlet", "/shortlet", "GET", http.StatusOK},
 }
 
 func TestHandlers(testPointer *testing.T) {
