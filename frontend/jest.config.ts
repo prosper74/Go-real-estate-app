@@ -1,5 +1,10 @@
-// @ts-nocheck
-module.exports = {
+import type {Config} from 'jest';
+import {defaults} from 'jest-config';
+
+const config: Config = {
+  // preset: 'ts-jest',
+  // testEnvironment: 'node',
+  moduleFileExtensions: [...defaults.moduleFileExtensions, 'mts'],
   testEnvironment: "jest-environment-jsdom",
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   testPathIgnorePatterns: [
@@ -33,4 +38,4 @@ module.exports = {
   },
 };
 
-export {};
+export default config;
