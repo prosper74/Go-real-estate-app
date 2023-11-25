@@ -36,6 +36,3 @@ describe('Home', () => {
     expect(button).not.toBeDisabled();
   });
 });
-
-BFCMSHARED23
-BFCMTLD23
