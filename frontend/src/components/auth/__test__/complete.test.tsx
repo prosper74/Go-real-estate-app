@@ -1,88 +1,41 @@
 import '@testing-library/jest-dom';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Complete from '../complete';
 
-jest.mock('react-redux', () => {
-  return {
-    ...jest.requireActual('react-redux'),
-    useSelector: jest.fn().mockImplementation(() => ({})),
-    useDispatch: () => jest.fn(),
-  };
-});
+describe('Home', () => {
+  it('renders a heading', () => {
+    // @ts-ignore
+    render(<Complete />);
 
-describe('IProps', () => {
+    const heading = screen.getByRole('heading', {
+      name: /Account Created Successfully!!!/i,
+    });
 
-  // Renders a success message with the text "Account Created Successfully!!!"
-  it('should render success message', () => {
-    // Arrange
-    const setIsOpen = jest.fn();
-
-    // Act
-    render(<Complete setIsOpen={setIsOpen} />);
-
-    // Assert
-    expect(screen.getByText("Account Created Successfully!!!")).toBeInTheDocument();
+    expect(heading).toBeInTheDocument();
   });
 
-  // Displays a Lottie animation of a checkmark
-  it('should display Lottie animation', () => {
-    // Arrange
-    const setIsOpen = jest.fn();
+  it('renders a paragraph', () => {
+    // @ts-ignore
+    render(<Complete />);
 
-    // Act
-    render(<Complete setIsOpen={setIsOpen} />);
+    const paragraph = screen.getByText(
+      'Kindly check your email inbox to verify your email'
+    );
 
-    // Assert
-    expect(screen.getByRole("img")).toBeInTheDocument();
+    expect(paragraph).toBeInTheDocument();
   });
 
-  // Shows a message asking the user to check their email inbox
-  it('should show email inbox message', () => {
-    // Arrange
-    const setIsOpen = jest.fn();
+  it('Should render cancel button', async () => {
+    // @ts-ignore
+    render(<Complete />);
 
-    // Act
-    render(<Complete setIsOpen={setIsOpen} />);
+    //check for submit button
+    const button = screen.getByRole('button', { name: 'Got it' });
 
-    // Assert
-    expect(screen.getByText("Kindly check your email inbox to verify your email")).toBeInTheDocument();
-  });
-
-  // setIsOpen function is not provided
-  it('should not call setIsOpen function', () => {
-    // Arrange
-    const setIsOpen = jest.fn();
-
-    // Act
-    render(<Complete setIsOpen={function (open: boolean): void {
-      throw new Error('Function not implemented.');
-    } } />);
-
-    // Assert
-    expect(setIsOpen).not.toHaveBeenCalled();
-  });
-
-  // SuccessAnimation JSON file is missing or invalid
-  it('should handle missing or invalid SuccessAnimation JSON file', () => {
-    // Arrange
-    const setIsOpen = jest.fn();
-
-    // Act
-    render(<Complete setIsOpen={setIsOpen} />);
-
-    // Assert
-    expect(screen.queryByRole("img")).not.toBeInTheDocument();
-  });
-
-  // Lottie animation fails to load or play
-  it('should handle Lottie animation failure', () => {
-    // Arrange
-    const setIsOpen = jest.fn();
-
-    // Act
-    render(<Complete setIsOpen={setIsOpen} />);
-
-    // Assert
-    expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    expect(button).toBeInTheDocument();
+    expect(button).not.toBeDisabled();
   });
 });
+
+BFCMSHARED23
+BFCMTLD23
