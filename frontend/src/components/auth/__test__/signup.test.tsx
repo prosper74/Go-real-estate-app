@@ -1,196 +1,72 @@
-import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
-import Signup from '../signup';
+import "@testing-library/jest-dom";
+import { render, screen, fireEvent } from "@testing-library/react";
+import Signup from "../signup";
 
-describe('IProps', () => {
+const formInputValues = [
+  {
+    label: "First name",
+    correctTestValue: "John",
+  },
+  {
+    label: "Last name",
+    correctTestValue: "Doe",
+  },
+  {
+    label: "Email",
+    correctTestValue: "john@gmail.com",
+  },
+  {
+    label: "Password",
+    correctTestValue: "ASrty6655#$%f",
+  },
+];
 
-  // Function sets isOpen to true when setIsOpen is called with true
-  it('should set isOpen to true when setIsOpen is called with true', () => {
-    const setIsOpen = jest.fn();
-    const setSelectedStep = jest.fn();
-    const steps = [];
-    const templateData = {
-      StringMap: [],
-      IntMap: [],
-      FloatMap: [],
-      Data: {},
-      CSRFToken: "",
-      Flash: "",
-      Warning: "",
-      Error: "",
-      Form: {},
-      IsAuthenticated: 0,
-    };
+jest.mock("react-redux", () => {
+  return {
+    ...jest.requireActual("react-redux"),
+    useSelector: jest.fn().mockImplementation(() => ({})),
+    useDispatch: () => jest.fn(),
+  };
+});
 
-    const props: IProps = {
-      setIsOpen,
-      setSelectedStep,
-      steps,
-      templateData,
-    };
-
-    // Call the function
-    props.setIsOpen(true);
-
-    // Assertion
-    expect(setIsOpen).toHaveBeenCalledWith(true);
+describe("new user signup form", () => {
+  it("Should render all form inputs", () => {
+    // @ts-ignore
+    render(<Signup />);
+    formInputValues.forEach((value) => {
+      expect(screen.getByLabelText(value.label)).toBeInTheDocument();
+    });
   });
 
-  // Function sets isOpen to false when setIsOpen is called with false
-  it('should set isOpen to false when setIsOpen is called with false', () => {
-    const setIsOpen = jest.fn();
-    const setSelectedStep = jest.fn();
-    const steps = [];
-    const templateData = {
-      StringMap: [],
-      IntMap: [],
-      FloatMap: [],
-      Data: {},
-      CSRFToken: "",
-      Flash: "",
-      Warning: "",
-      Error: "",
-      Form: {},
-      IsAuthenticated: 0,
-    };
+  it("Should render submit button", async () => {
+    // @ts-ignore
+    render(<Signup />);
 
-    const props: IProps = {
-      setIsOpen,
-      setSelectedStep,
-      steps,
-      templateData,
-    };
+    //check for submit button
+    const button = screen.getByRole("button", { name: "Sign up" });
 
-    // Call the function
-    props.setIsOpen(false);
-
-    // Assertion
-    expect(setIsOpen).toHaveBeenCalledWith(false);
+    expect(button).toBeInTheDocument();
+    expect(button).not.toBeDisabled();
   });
 
-  // Function sets selectedStep to the provided number when setSelectedStep is called
-  it('should set selectedStep to the provided number when setSelectedStep is called', () => {
-    const setIsOpen = jest.fn();
-    const setSelectedStep = jest.fn();
-    const steps = [];
-    const templateData = {
-      StringMap: [],
-      IntMap: [],
-      FloatMap: [],
-      Data: {},
-      CSRFToken: "",
-      Flash: "",
-      Warning: "",
-      Error: "",
-      Form: {},
-      IsAuthenticated: 0,
-    };
+  it("Should submit when inputs are filled and submit button clicked", async () => {
+    // @ts-ignore
+    render(<Signup />);
 
-    const props: IProps = {
-      setIsOpen,
-      setSelectedStep,
-      steps,
-      templateData,
-    };
+    //check for submit button
+    const submitButton = screen.getByRole("button", { name: "Sign up" });
 
-    // Call the function
-    props.setSelectedStep(2);
+    formInputValues.forEach((mockValue) => {
+      const input = screen.getByLabelText(mockValue.label);
+      fireEvent.change(input, {
+        target: { value: mockValue.correctTestValue },
+      });
+    });
 
-    // Assertion
-    expect(setSelectedStep).toHaveBeenCalledWith(2);
-  });
+    fireEvent.click(submitButton);
 
-  // setIsOpen is not called with a boolean value
-  it('should not call setIsOpen when called with a non-boolean value', () => {
-    const setIsOpen = jest.fn();
-    const setSelectedStep = jest.fn();
-    const steps = [];
-    const templateData = {
-      StringMap: [],
-      IntMap: [],
-      FloatMap: [],
-      Data: {},
-      CSRFToken: "",
-      Flash: "",
-      Warning: "",
-      Error: "",
-      Form: {},
-      IsAuthenticated: 0,
-    };
-
-    const props: IProps = {
-      setIsOpen,
-      setSelectedStep,
-      steps,
-      templateData,
-    };
-
-    // Call the function with a non-boolean value
-    props.setIsOpen(123);
-
-    // Assertion
-    expect(setIsOpen).not.toHaveBeenCalled();
-  });
-
-  // setSelectedStep is not called with a number value
-  it('should not call setSelectedStep when called with a non-number value', () => {
-    const setIsOpen = jest.fn();
-    const setSelectedStep = jest.fn();
-    const steps = [];
-    const templateData = {
-      StringMap: [],
-      IntMap: [],
-      FloatMap: [],
-      Data: {},
-      CSRFToken: "",
-      Flash: "",
-      Warning: "",
-      Error: "",
-      Form: {},
-      IsAuthenticated: 0,
-    };
-
-    const props: IProps = {
-      setIsOpen,
-      setSelectedStep,
-      steps,
-      templateData,
-    };
-
-    // Call the function with a non-number value
-    props.setSelectedStep("2");
-
-    // Assertion
-    expect(setSelectedStep).not.toHaveBeenCalled();
-  });
-
-  // steps prop is not provided
-  it('should not call setSelectedStep when steps prop is not provided', () => {
-    const setIsOpen = jest.fn();
-    const setSelectedStep = jest.fn();
-    const templateData = {
-      StringMap: [],
-      IntMap: [],
-      FloatMap: [],
-      Data: {},
-      CSRFToken: "",
-      Flash: "",
-      Warning: "",
-      Error: "",
-      Form: {},
-      IsAuthenticated: 0,
-    };
-
-    const props: IProps = {
-      setIsOpen,
-      setSelectedStep,
-      templateData,
-    };
-
-    // Call the function
-    props.setSelectedStep(2);
-
-    // Assertion
-    expect(setSelectedStep).not.toHaveBeenCalled();
+    expect(
+      await screen.findByRole("button", { name: "Submitting" })
+    ).toBeInTheDocument();
   });
 });
