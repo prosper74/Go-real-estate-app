@@ -80,4 +80,15 @@ describe("new user signup form", () => {
     expect(button).toBeInTheDocument();
     expect(button).not.toBeDisabled();
   });
+
+  it("Should render facebook OAuth button", async () => {
+    // @ts-ignore
+    render(<Signup />);
+
+    //check for submit button
+    const button = screen.getByRole("button", { name: "Facebook" });
+
+    expect(button).toBeInTheDocument();
+    expect(button).not.toBeDisabled();
+  });
 });
