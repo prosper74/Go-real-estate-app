@@ -299,27 +299,21 @@ const Signup: FC<IProps> = ({ setIsOpen, steps, setSelectedStep }) => {
             {/* Social Logins */}
             <div className="p-2">
               <div className="grid grid-cols-2 gap-4">
-                {/* <Link
-                  href={`#!`}
-                > */}
-                  <button
-                    type="button"
-                    className="transition duration-200 border border-gray-200 text-gray-700 w-full py-2.5 rounded-lg text-base shadow-sm hover:shadow-md font-normal text-center flex items-center justify-center"
-                  >
-                    <GoogleIcon dimensions="w-6 h-6" />
-                    Google
-                  </button>
-                {/* </Link> */}
-                {/* <Link
-                  href={`#!`}
-                > */}
-                  <button
-                    type="button"
-                    className="transition duration-200 border border-gray-200 text-gray-700 w-full py-2.5 rounded-lg text-base shadow-sm hover:shadow-md font-normal text-center flex items-center justify-center"
-                  >
-                    <FacebookIcon dimensions="w-6 h-6" />
-                    Facebook
-                  </button>
+                <button
+                  type="button"
+                  className="transition duration-200 border border-gray-200 text-gray-700 w-full py-2.5 rounded-lg text-base shadow-sm hover:shadow-md font-normal text-center flex items-center justify-center"
+                >
+                  <GoogleIcon dimensions="w-6 h-6" />
+                  Google
+                </button>
+
+                <button
+                  type="button"
+                  className="transition duration-200 border border-gray-200 text-gray-700 w-full py-2.5 rounded-lg text-base shadow-sm hover:shadow-md font-normal text-center flex items-center justify-center"
+                >
+                  <FacebookIcon dimensions="w-6 h-6" />
+                  Facebook
+                </button>
                 {/* </Link> */}
               </div>
             </div>
