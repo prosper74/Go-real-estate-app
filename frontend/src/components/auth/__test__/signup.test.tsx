@@ -69,4 +69,15 @@ describe("new user signup form", () => {
       await screen.findByRole("button", { name: "Submitting" })
     ).toBeInTheDocument();
   });
+
+  it("Should render google OAuth button", async () => {
+    // @ts-ignore
+    render(<Signup />);
+
+    //check for submit button
+    const button = screen.getByRole("button", { name: "Google" });
+
+    expect(button).toBeInTheDocument();
+    expect(button).not.toBeDisabled();
+  });
 });
