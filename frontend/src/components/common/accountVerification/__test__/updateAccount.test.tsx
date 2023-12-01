@@ -22,6 +22,50 @@ jest.mock('react-redux', () => {
 });
 
 describe('user Update Account form', () => {
+  it('renders a heading', () => {
+    // @ts-ignore
+    render(<UpdateAccount />);
+
+    const heading = screen.getByRole('heading', {
+      name: /Update Account Information/i,
+    });
+
+    expect(heading).toBeInTheDocument();
+  });
+
+  it('renders a paragraph', () => {
+    // @ts-ignore
+    render(<UpdateAccount />);
+
+    const paragraph = screen.getByText(
+      'Please provide your image and valid phone number. Note: You can only upload one image (PNG/JPEG), and image size should not exceed 1MB'
+    );
+
+    expect(paragraph).toBeInTheDocument();
+  });
+
+  it('renders a paragraph', () => {
+    // @ts-ignore
+    render(<UpdateAccount />);
+
+    const paragraph = screen.getByText(
+      'Image (Must show your face and your ears clearly)'
+    );
+
+    expect(paragraph).toBeInTheDocument();
+  });
+
+  it('renders a paragraph', () => {
+    // @ts-ignore
+    render(<UpdateAccount />);
+
+    const paragraph = screen.getByText(
+      'Upload your image. Click to add or drag n drop image'
+    );
+
+    expect(paragraph).toBeInTheDocument();
+  });
+
   it('Should render all form inputs', () => {
     // @ts-ignore
     render(<UpdateAccount />);
