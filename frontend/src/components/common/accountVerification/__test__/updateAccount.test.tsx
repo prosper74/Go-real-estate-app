@@ -20,42 +20,58 @@ describe("user Update Account Information", () => {
     ).toBeInTheDocument();
   });
 
-      // Allows the user to upload an image and displays it
-      it('should allow the user to upload an image and display it', () => {
-        // Mock dependencies
-        const setIsOpen = jest.fn();
-        const steps: never[] = [];
-        const setSelectedStep = jest.fn();
-  
-        // Render the component
-        render(<UpdateAccount setIsOpen={setIsOpen} steps={steps} setSelectedStep={setSelectedStep} setIsVerification={function (): void {
+  // Allows the user to upload an image and displays it
+  it("should allow the user to upload an image and display it", () => {
+    // Mock dependencies
+    const setIsOpen = jest.fn();
+    const steps: never[] = [];
+    const setSelectedStep = jest.fn();
+
+    // Render the component
+    render(
+      <UpdateAccount
+        setIsOpen={setIsOpen}
+        steps={steps}
+        setSelectedStep={setSelectedStep}
+        setIsVerification={function (): void {
           throw new Error("Function not implemented.");
-        } } />);
-  
-        // Simulate image upload
-        const file = new File(['image'], 'test.png', { type: 'image/png' });
-        const input = screen.getByLabelText('Upload your image');
-        fireEvent.change(input, { target: { files: [file] } });
-  
-        // Assert that the uploaded image is displayed
-        expect(screen.getByAltText('Uploaded Image')).toBeInTheDocument();
-      });
+        }}
+      />
+    );
 
-          // Allows the user to input a phone number
-    it('should allow the user to input a phone number', () => {
-      // Mock dependencies
-      const setIsOpen = jest.fn();
-      const steps = [];
-      const setSelectedStep = jest.fn();
+    // Simulate image upload
+    const file = new File(["image"], "test.png", { type: "image/png" });
+    const input = screen.getByLabelText("Upload your image");
+    fireEvent.change(input, { target: { files: [file] } });
 
-      // Render the component
-      render(<UpdateAccount setIsOpen={setIsOpen} steps={steps} setSelectedStep={setSelectedStep} />);
+    // Assert that the uploaded image is displayed
+    expect(screen.getByAltText("Uploaded Image")).toBeInTheDocument();
+  });
 
-      // Simulate phone number input
-      const input = screen.getByPlaceholderText('Enter your valid phone number');
-      fireEvent.change(input, { target: { value: '1234567890' } });
+  // Allows the user to input a phone number
+  it("should allow the user to input a phone number", () => {
+    // Mock dependencies
+    const setIsOpen = jest.fn();
+    const steps: never[] = [];
+    const setSelectedStep = jest.fn();
 
-      // Assert that the phone number is correctly inputted
-      expect(input.value).toBe('1234567890');
-    });
+    // Render the component
+    render(
+      <UpdateAccount
+        setIsOpen={setIsOpen}
+        steps={steps}
+        setSelectedStep={setSelectedStep}
+        setIsVerification={function (): void {
+          throw new Error("Function not implemented.");
+        }}
+      />
+    );
+
+    // Simulate phone number input
+    const input = screen.getByPlaceholderText("Enter your valid phone number");
+    fireEvent.change(input, { target: { value: "1234567890" } });
+
+    // Assert that the phone number is correctly inputted
+    expect(input.value).toBe("1234567890");
+  });
 });
