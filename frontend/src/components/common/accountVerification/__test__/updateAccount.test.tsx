@@ -24,11 +24,13 @@ describe("user Update Account Information", () => {
       it('should allow the user to upload an image and display it', () => {
         // Mock dependencies
         const setIsOpen = jest.fn();
-        const steps = [];
+        const steps: never[] = [];
         const setSelectedStep = jest.fn();
   
         // Render the component
-        render(<UpdateAccount setIsOpen={setIsOpen} steps={steps} setSelectedStep={setSelectedStep} />);
+        render(<UpdateAccount setIsOpen={setIsOpen} steps={steps} setSelectedStep={setSelectedStep} setIsVerification={function (): void {
+          throw new Error("Function not implemented.");
+        } } />);
   
         // Simulate image upload
         const file = new File(['image'], 'test.png', { type: 'image/png' });
