@@ -79,7 +79,7 @@ describe("user Update Account Information", () => {
   it("should display an error message when the user does not upload an image", () => {
     // Mock dependencies
     const setIsOpen = jest.fn();
-    const steps = [];
+    const steps: never[] = [];
     const setSelectedStep = jest.fn();
 
     // Render the component
@@ -87,8 +87,9 @@ describe("user Update Account Information", () => {
       <UpdateAccount
         setIsOpen={setIsOpen}
         steps={steps}
-        setSelectedStep={setSelectedStep}
-      />
+        setSelectedStep={setSelectedStep} setIsVerification={function (): void {
+          throw new Error("Function not implemented.");
+        } }      />
     );
 
     // Submit the form without uploading an image
