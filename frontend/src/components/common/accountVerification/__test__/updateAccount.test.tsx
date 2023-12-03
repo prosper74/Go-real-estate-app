@@ -74,4 +74,28 @@ describe("user Update Account Information", () => {
     // Assert that the phone number is correctly inputted
     expect(input.value).toBe("1234567890");
   });
+
+  // User does not upload an image
+  it("should display an error message when the user does not upload an image", () => {
+    // Mock dependencies
+    const setIsOpen = jest.fn();
+    const steps = [];
+    const setSelectedStep = jest.fn();
+
+    // Render the component
+    render(
+      <UpdateAccount
+        setIsOpen={setIsOpen}
+        steps={steps}
+        setSelectedStep={setSelectedStep}
+      />
+    );
+
+    // Submit the form without uploading an image
+    const submitButton = screen.getByText("Submit & Continue");
+    fireEvent.click(submitButton);
+
+    // Assert that the error message is displayed
+    expect(screen.getByText("Please upload an image")).toBeInTheDocument();
+  });
 });
