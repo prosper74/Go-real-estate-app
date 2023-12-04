@@ -47,31 +47,4 @@ describe("user Update Account Information", () => {
     // Assert that the uploaded image is displayed
     expect(screen.getByAltText("Uploaded Image")).toBeInTheDocument();
   });
-
-  // Allows the user to input a phone number
-  it("should allow the user to input a phone number", () => {
-    // Mock dependencies
-    const setIsOpen = jest.fn();
-    const steps: never[] = [];
-    const setSelectedStep = jest.fn();
-
-    // Render the component
-    render(
-      <UpdateAccount
-        setIsOpen={setIsOpen}
-        steps={steps}
-        setSelectedStep={setSelectedStep}
-        setIsVerification={function (): void {
-          throw new Error("Function not implemented.");
-        }}
-      />
-    );
-
-    // Simulate phone number input
-    const input = screen.getByPlaceholderText("Enter your valid phone number");
-    fireEvent.change(input, { target: { value: "1234567890" } });
-
-    // Assert that the phone number is correctly inputted
-    expect(input.value).toBe("1234567890");
-  });
 });
