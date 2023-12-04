@@ -99,4 +99,23 @@ describe("user Update Account Information", () => {
     // Assert that the error message is displayed
     expect(screen.getByText("Please upload an image")).toBeInTheDocument();
   });
+
+      // User uploads an image that is not a PNG or JPEG
+      it('should display an error message when the user uploads an image that is not a PNG or JPEG', () => {
+        // Mock dependencies
+        const setIsOpen = jest.fn();
+        const steps = [];
+        const setSelectedStep = jest.fn();
+  
+        // Render the component
+        render(<UpdateAccount setIsOpen={setIsOpen} steps={steps} setSelectedStep={setSelectedStep} />);
+  
+        // Simulate image upload with invalid file type
+        const file = new File(['image'], 'test.txt', { type: 'text/plain' });
+        const input = screen.getByLabelText('Upload your image');
+        fireEvent.change(input, { target: { files: [file] } });
+  
+        // Assert that the error message is displayed
+        expect(screen.getByText('Please upload a PNG or JPEG image')).toBeInTheDocument();
+      });
 });
