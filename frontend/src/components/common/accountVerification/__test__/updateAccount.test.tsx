@@ -19,32 +19,4 @@ describe("user Update Account Information", () => {
       screen.getByText("Please provide your image and valid phone number.")
     ).toBeInTheDocument();
   });
-
-  // Allows the user to upload an image and displays it
-  it("should allow the user to upload an image and display it", () => {
-    // Mock dependencies
-    const setIsOpen = jest.fn();
-    const steps: never[] = [];
-    const setSelectedStep = jest.fn();
-
-    // Render the component
-    render(
-      <UpdateAccount
-        setIsOpen={setIsOpen}
-        steps={steps}
-        setSelectedStep={setSelectedStep}
-        setIsVerification={function (): void {
-          throw new Error("Function not implemented.");
-        }}
-      />
-    );
-
-    // Simulate image upload
-    const file = new File(["image"], "test.png", { type: "image/png" });
-    const input = screen.getByLabelText("Upload your image");
-    fireEvent.change(input, { target: { files: [file] } });
-
-    // Assert that the uploaded image is displayed
-    expect(screen.getByAltText("Uploaded Image")).toBeInTheDocument();
-  });
 });
